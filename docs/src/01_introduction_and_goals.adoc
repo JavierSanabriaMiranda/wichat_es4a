@@ -17,33 +17,21 @@ These include
 ****
 endif::arc42help[]
 
-=== Requirements Overview
+=== Descripción de los requisitos
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Short description of the functional requirements, driving forces, extract (or abstract)
-of requirements. Link to (hopefully existing) requirements documents
-(with version number and information where to find it).
+* **Registro e Inicio de Sesión de Usuarios:** Los usuarios deberán registrarse para participar en los juegos, o iniciar sesión si ya se han registrado previamente.
 
-.Motivation
-From the point of view of the end users a system is created or modified to
-improve support of a business activity and/or improve the quality.
+* **Generación de Preguntas y Respuestas:** El sistema proporcionará preguntas de diversas temáticas. Se generarán automáticamente respuestas correctas e incorrectas utilizando datos de Wikidata. Cada pregunta tendrá 4 posibles respuestas.
 
-.Form
-Short textual description, probably in tabular use-case format.
-If requirements documents exist this overview should refer to these documents.
+* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
 
-Keep these excerpts as short as possible. Balance readability of this document with potential redundancy w.r.t to requirements documents.
+* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de juegos jugados, preguntas acertadas y falladas, y el tiempo utilizado.
 
+* **Límite de Tiempo para Responder:** Cada pregunta tendrá un límite de tiempo determinado para ser respondida por los usuarios.
 
-.Further Information
+* **API de Acceso a la Información:** Se ofrecerá una API documentada para acceder a la información de los usuarios y a las preguntas generadas. Esto facilitará la integración con otros servicios o plataformas.
 
-See https://docs.arc42.org/section-1/[Introduction and Goals] in the arc42 documentation.
-
-****
-endif::arc42help[]
+* **Generación Automática de Contenidos:** Las imágenes de las preguntas y las pistas serán generadas automáticamente utilizando datos de Wikidata. Esto garantizará la variedad y el contexto adecuado de las preguntas.
 
 === Quality Goals
 
