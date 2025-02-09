@@ -74,28 +74,30 @@ endif::arc42help[]
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Contents
-Explicit overview of stakeholders of the system, i.e. all person, roles or organizations that
+.Contenido
+Descripción explícita de los interesados del sistema, es decir, todas las personas, roles u organizaciones que
 
-* should know the architecture
-* have to be convinced of the architecture
-* have to work with the architecture or with code
-* need the documentation of the architecture for their work
-* have to come up with decisions about the system or its development
+* deben conocer la arquitectura
+* les debe convencer la arquitectura
+* deben trabajar con la arquitectura o con el código
+* necesitan la documentación de la arquitectura para su trabajo
+* deben tomar decisiones sobre el sistema o su desarrollo
 
-.Motivation
-You should know all parties involved in development of the system or affected by the system.
-Otherwise, you may get nasty surprises later in the development process.
-These stakeholders determine the extent and the level of detail of your work and its results.
+.Motivación
+Debe conocer a todas las partes involucradas en el desarrollo del sistema o afectadas por el sistema.
+De lo contrario, puede tener sorpresas desagradables más adelante en el proceso de desarrollo.
+Estos interesados determinan el alcance y el nivel de detalle de su trabajo y sus resultados.
 
-.Form
-Table with role names, person names, and their expectations with respect to the architecture and its documentation.
+.Forma
+Tabla con nombres de roles, nombres de personas y sus expectativas con respecto a la arquitectura y su documentación.
 ****
 endif::arc42help[]
 
 [options="header",cols="1,2,2"]
 |===
-|Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
+|Rol/Nombre|Contacto|Expectativas
+| _Cliente_ | _RTVE_ | _Alta disponibilidad, seguridad y cumplimiento de normativas_
+| _Compañía Contratada_ | _ChattySw_ | _Entrega a tiempo, dentro del presupuesto y con alta calidad_
+| _Equipo de Desarrollo_ | _Andrea Acero Suárez, Ana Díez Díaz, Aitor Gómez Ogueta, Adriana Herrero González, Claudia Nistal Martínez, Javier Sanabria Miranda_ | _Claridad en los requisitos, apoyo continuo del cliente y herramientas adecuadas_
+| _Usuarios_ | _Futuros usuarios de la aplicación_ | _Facilidad en el uso, rendimiento eficiente y características claras e innovadoras_
 |===
