@@ -44,7 +44,7 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 | Repositorio Público        | El código fuente estará alojado en un repositorio público en GitHub, y será accesible para los miembros del equipo.
 |===
 
- **CONVENCIONES**
+**CONVENCIONES**
 
 [cols="1,3",options="header"]
 |===
