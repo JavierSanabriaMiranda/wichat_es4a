@@ -55,26 +55,109 @@ endif::arc42help[]
 
 **<optionally: Explanation of external domain interfaces>**
 
-=== Technical Context
+=== Contexto Técnico
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Contents
-Technical interfaces (channels and transmission media) linking your system to its environment. In addition a mapping of domain specific input/output to the channels, i.e. an explanation which I/O uses which channel.
+.Contenido
+Interfaces técnicas (canales y medios de transmisión) que juntan el sistema con su entorno. Además un mapeo del dominio especifico de entrada/salida a los canales, es decir una explicación de qué entrada salida usa cada canal.
 
-.Motivation
-Many stakeholders make architectural decision based on the technical interfaces between the system and its context. Especially infrastructure or hardware designers decide these technical interfaces.
+.Motivación
+Muchos stakeholders toman decisiones arquitectónicas basadas en las interfaces técnicas entre el sistema y su contexto. En especial, los diseñadores de hardware o infraestructura deciden estas interfaces técnicas.
 
-.Form
-E.g. UML deployment diagram describing channels to neighboring systems,
-together with a mapping table showing the relationships between channels and input/output.
+.Forma
+E.g. Diagrama UML de despliegue describiendo canales con los sistemas vecinos,
+junto a una tabla de mapeo mostrando las relaciones entre canales y la entrada/salida.
 
 ****
 endif::arc42help[]
 
-**<Diagram or Table>**
+==== Diagrama de Despliegue
 
-**<optionally: Explanation of technical interfaces>**
+[plantuml,diagrama-despliegue,png]
+----
+@startuml
+skinparam cloudColor LightBlue
+skinparam databaseColor LightGreen
+skinparam nodeColor LightGray
+
+cloud "Usuario" {
+    [Navegador Web]
+}
+
+node "WebApp" {
+    [Aplicación React]
+}
+
+node "Backend (Servidor)" {
+    [API Node.js]
+    [Servicio LLM]
+    [Servicio Autenticación (authservice)]
+    [Servicio Usuario (userservice)]
+}
+
+database "WikiData" {
+    [API WikiData] 
+}
+
+database "MongoDB" {
+    [Base de Datos de Usuarios]
+}
+
+node "Monitorización" {
+    [Prometheus]
+    [Grafana]
+}
+
+
+[Navegador Web] --> [Aplicación React] : HTTP Request
+[Aplicación React] --> [API Node.js] : API Request (REST)
+[API Node.js] --> [Servicio Autenticación (authservice)] : Solicita autenticación de usuario
+[API Node.js] --> [Servicio LLM] : Solicitar pista
+[API Node.js] --> [Servicio Usuario (userservice)] : Inserta/Consulta datos
+[API WikiData] --> [API Node.js] : Envía imagen y respuesta
+[API WikiData] --> [Servicio LLM] : Envía pistas
+[Servicio LLM] --> [API Node.js] : Responder con pista
+[API Node.js] --> [Aplicación React] : Enviar info al usuario
+[Servicio Autenticación (authservice)] --> [Base de Datos de Usuarios] : Verifica LogIn
+[Servicio Usuario (userservice)] --> [Base de Datos de Usuarios] : Inserta/Consulta datos
+
+
+[Prometheus] --> [API Node.js] : Recolectar métricas
+[Grafana] --> [Prometheus] : Visualización de métricas
+
+@enduml
+----
+
+==== Explicación de Interfaces Técnicas
+
+===== API Node.js
+API que hace de enlace entre las distintas partes de la aplicación
+
+===== Aplicación React
+Aplicación web hecha con React que aporta al usuario una interfaz con la que interactuar y por medio de la cual hacer las peticiones
+correspondientes al backend
+
+===== Servicio de Autenticación
+Interfaz que se comunica con la base de datos de usuarios a fin de comprobar si los datos introducidos de inicio de sesión
+se corresponden con un usuario relaciones
+
+===== Servicio de Usuario
+Interfaz que se comunica con la base de datos de usuarios a fin de consultar y actualizar la información referente a los usuarios y
+sus partidas
+
+===== Servicio LLM
+Servicio que, por medio de las pistas obtenidas de WikiData, procesará y responderá a las pistas que pida el usuario
+
+===== API WikiData
+API del servicio web WikiData que aportará a la aplicación las imágenes para el juego, las respuestas a las mismas y las
+pistas que el LLM utilizará para responder a los usuarios
+
+===== Prometheus
+Interfaz que almacena en su base de datos optimizada las métricas traidas de la API Node.js
+
+===== Grafana
+Interfaz que por medio de consultas a Prometheus, muestra gráficamente los datos obtenidos de las mismas
 
 **<Mapping Input/Output to Channels>**
