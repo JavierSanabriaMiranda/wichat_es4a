@@ -53,8 +53,6 @@ endif::arc42help[]
 
 **<Diagram or Table>**
 
-**<optionally: Explanation of external domain interfaces>**
-
 === Contexto Técnico
 
 ifdef::arc42help[]
@@ -139,6 +137,9 @@ API que hace de enlace entre las distintas partes de la aplicación
 Aplicación web hecha con React que aporta al usuario una interfaz con la que interactuar y por medio de la cual hacer las peticiones
 correspondientes al backend
 
+===== Base de Datos de Usuarios
+Base de datos que almacena toda la información referente a los usuarios como su nombre de usuario, sus datos de logIn, su histórico de partidas, etc
+
 ===== Servicio de Autenticación
 Interfaz que se comunica con la base de datos de usuarios a fin de comprobar si los datos introducidos de inicio de sesión
 se corresponden con un usuario relaciones
@@ -155,7 +156,7 @@ API del servicio web WikiData que aportará a la aplicación las imágenes para 
 pistas que el LLM utilizará para responder a los usuarios
 
 ===== Prometheus
-Interfaz que almacena en su base de datos optimizada las métricas traidas de la API Node.js
+Interfaz que almacena en su base de datos optimizada las métricas traidas de la Gateway
 
 ===== Grafana
 Interfaz que por medio de consultas a Prometheus, muestra gráficamente los datos obtenidos de las mismas
@@ -165,14 +166,14 @@ Interfaz que por medio de consultas a Prometheus, muestra gráficamente los dato
 [options="header",cols="1,2,2"]
 |===
 | Canal | Entrada | Salida
-| Navegador Web -> Aplicación React | Aplicación React recibe peticiones HTTP del usuario indicando sus acciones | Responde con información a través de la interfaz.
-| Aplicación React -> API Node.js | API Node.js recibe peticiones REST para obtener datos como imágenes y respuestas o solicitar operaciones como iniciar sesión | API Node.js procesa la solicitud y devuelve una respuesta con la información solicitada.
-| API Node.js -> Servicio Autenticación | Servicio de Autenticación recibe datos de inicio de sesión de un usuario | Responde con la comprobación de si el usuario existe.
-| Servicio Autenticación -> Base de Datos de Usuarios | La Base de Datos recibe una consulta SELECT en la que comprueba si cierto usuario existe | La base de datos devuelve el usuario en caso de que exista.
-| API Node.js -> Servicio Usuario | Servicio de Usuario recibe consultas o inserciones de datos | Responde con los datos solicitados o la confirmación de la operación.
-| API Node.js -> Servicio LLM | Servicio LLM recibe solicitudes de pistas | Responde con la pista generada por el modelo.
-| API Node.js -> API WikiData | La API Node.js consulta la API WikiData para obtener información adicional | La API WikiData responde con la imagen o la respuesta solicitada.
-| Prometheus -> API Node.js | Prometheus recolecta métricas de la API Node.js | La API Node.js responde con las métricas solicitadas.
-| Grafana -> Prometheus | Grafana solicita métricas a Prometheus para visualizar | Prometheus responde con las métricas para la visualización.
+| Aplicación React | Peticiones HTTP del usuario indicando sus acciones | Responde con información a través de la interfaz.
+| Gateway | Peticiones REST de webapp para obtener datos como imágenes y respuestas o solicitar operaciones como iniciar sesión | Respuesta con la información solicitada.
+| Servicio Autenticación | Datos de inicio de sesión de un usuario | Consulta de comprobación de los datos de inicio de sesión
+| Servicio Usuario | Datos a consultar o insertar en la base de datos | Consulta o inserción completa a la base de datos
+| Base de Datos de Usuarios | Instrucciones SQL para consultas o insercioes | Resultado de las consultas o confirmación de las inserciones
+| Servicio LLM | Prompt de solicitud de pistas | Pista generada por el modelo a partir de información de Wikidata
+| API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
+| Prometheus | Métricas de Gateway | Almacenamiento de las métricas en su base de datos
+| Grafana | Métricas organizadas en Prometheus | Gráficos de visualización de las métricas
 |===
 
