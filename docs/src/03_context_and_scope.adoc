@@ -91,7 +91,7 @@ node "WebApp" {
 }
 
 node "Backend (Servidor)" {
-    [API Node.js]
+    [Gateway]
     [Servicio LLM]
     [Servicio Autenticación (authservice)]
     [Servicio Usuario (userservice)]
@@ -112,19 +112,19 @@ node "Monitorización" {
 
 
 [Navegador Web] --> [Aplicación React] : HTTP Request
-[Aplicación React] --> [API Node.js] : API Request (REST)
-[API Node.js] --> [Servicio Autenticación (authservice)] : Solicita autenticación de usuario
-[API Node.js] --> [Servicio LLM] : Solicitar pista
-[API Node.js] --> [Servicio Usuario (userservice)] : Inserta/Consulta datos
-[API WikiData] --> [API Node.js] : Envía imagen y respuesta
+[Aplicación React] --> [Gateway] : API Request (REST)
+[Gateway] --> [Servicio Autenticación (authservice)] : Solicita autenticación de usuario
+[Gateway] --> [Servicio LLM] : Solicitar pista
+[Gateway] --> [Servicio Usuario (userservice)] : Inserta/Consulta datos
+[API WikiData] --> [Gateway] : Envía imagen y respuesta
 [API WikiData] --> [Servicio LLM] : Envía pistas
-[Servicio LLM] --> [API Node.js] : Responder con pista
-[API Node.js] --> [Aplicación React] : Enviar info al usuario
+[Servicio LLM] --> [Gateway] : Responder con pista
+[Gateway] --> [Aplicación React] : Enviar info al usuario
 [Servicio Autenticación (authservice)] --> [Base de Datos de Usuarios] : Verifica LogIn
 [Servicio Usuario (userservice)] --> [Base de Datos de Usuarios] : Inserta/Consulta datos
 
 
-[Prometheus] --> [API Node.js] : Recolectar métricas
+[Prometheus] --> [Gateway] : Recolectar métricas
 [Grafana] --> [Prometheus] : Visualización de métricas
 
 @enduml
@@ -132,7 +132,7 @@ node "Monitorización" {
 
 ==== Explicación de Interfaces Técnicas
 
-===== API Node.js
+===== Gateway
 API que hace de enlace entre las distintas partes de la aplicación
 
 ===== Aplicación React
