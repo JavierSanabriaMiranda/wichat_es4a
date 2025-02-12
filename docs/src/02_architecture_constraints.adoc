@@ -13,13 +13,13 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción
-| Uso de un LLM              | Se utilizará un modelo de lenguaje grande (LLM) para generar automáticamente preguntas y respuestas y permitir obtener pistas.
-| Wikidata                   | Las preguntas y respuestas, así como las pistas, se generarán a partir de los datos de Wikidata.
-| Despliegue                 | La web deberá estar desplegada y accesible a través de la Web.
-| Generación de Preguntas    | Las preguntas tendrán una respuesta correcta y varias incorrectas. Las respuestas se generarán automáticamente.
-| API Usage                  | Se utilizarán APIs para acceder a la información de usuarios y preguntas generadas. 
-| Frontend Web               | El sistema tendrá al menos un frontend web desplegado y accesible a través de la Web.
-| Límite de tiempo           | Las preguntas deben ser respondidas dentro de un plazo de tiempo determinado.
+| _Uso de un LLM_              | Se utilizará un modelo de lenguaje grande (LLM) para generar automáticamente preguntas y respuestas y permitir obtener pistas.
+| _Wikidata_                   | Las preguntas y respuestas, así como las pistas, se generarán a partir de los datos de Wikidata.
+| _Docker_                 | La web deberá estar desplegada y accesible a través de la Web.
+| _Generación de Preguntas_    | Las preguntas tendrán una respuesta correcta y varias incorrectas. Las respuestas se generarán automáticamente.
+| _API Usage_                 | Se utilizarán APIs para acceder a la información de usuarios y preguntas generadas. 
+| _Frontend Web_               | El sistema tendrá al menos un frontend web desplegado y accesible a través de la Web.
+| _Límite de tiempo_           | Las preguntas deben ser respondidas dentro de un plazo de tiempo determinado.
 |===
 
 **RESTRICCIONES ORGANIZATIVAS**
@@ -27,18 +27,18 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción
-| Gestión de Usuarios        | Los usuarios podrán registrarse, iniciar sesión y revisar su historial de participación en el sistema.
-| Grupos de 4-6 personas      | Grupos pequeños de alumnos para realizar el trabajo, elegidos por el profesor.
+| _Gestión de Usuarios_        | Los usuarios podrán registrarse, iniciar sesión y revisar su historial de participación en el sistema.
+| _Grupos de 4-6 personas_      | Grupos pequeños de alumnos para realizar el trabajo, elegidos por el profesor.
 |===
 
 **RESTRICCIONES POLÍTICAS**
 
 [cols="1,3",options="header"]
 |===
-| Restricción               | Descripción
-| Tema de la Aplicación      | La aplicación será similar al programa "Saber y Ganar", por lo que las preguntas estarán relacionadas con imágenes.
-| Uso de Arc42               | El proyecto seguirá el estándar de documentación Arc42.
-| Repositorio Público        | El código fuente estará alojado en un repositorio público en GitHub, y será accesible para los miembros del equipo.
+| Restricción              | Descripción
+| _Tema de la Aplicación_      | La aplicación será similar al programa "Saber y Ganar", por lo que las preguntas estarán relacionadas con imágenes.
+| _Uso de Arc42_               | El proyecto seguirá el estándar de documentación Arc42.
+| _Repositorio Público_        | El código fuente estará alojado en un repositorio público en GitHub, y será accesible para los miembros del equipo.
 |===
 
 **CONVENCIONES**
@@ -46,9 +46,9 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción 
-| Convenciones de Nombres    | El nombre de la aplicación será WIChat.
-| Uso de Git y Github        | Se utilizará Git como sistema de control de versiones, y el repositorio será alojado en GitHub.
-| Documentación Arc42        | Se seguirá la convención de documentación Arc42.
+| _Convenciones de Nombres_    | El nombre de la aplicación será WIChat.
+| _Uso de Git y Github_        | Se utilizará Git como sistema de control de versiones, y el repositorio será alojado en GitHub.
+| _Documentación Arc42_        | Se seguirá la convención de documentación Arc42.
 |===
  
 ifdef::arc42help[]
