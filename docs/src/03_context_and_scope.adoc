@@ -16,7 +16,7 @@ Si es necesario, diferencie el contexto empresarial (entradas y salidas específ
 .Motivación
 Las interfaces de dominio y las interfaces técnicas con los socios de comunicación se encuentran entre los aspectos más críticos de su sistema. Asegúrese de comprenderlas por completo.
 
-.Forma
+.Formato
 Varias opciones:
 
 * Varios diagramas de contexto
@@ -65,7 +65,7 @@ Opcionalmente, puede añadir formatos o protocolos de comunicación específicos
 .Motivación
 Todas las partes interesadas deben comprender qué datos se intercambian con el entorno del sistema.
 
-.Forma
+.Formato
 Todo tipo de diagramas que muestran el sistema como una caja negra y especifican las interfaces del dominio con los socios de comunicación.
 
 Como alternativa (o adicionalmente), puede utilizar una tabla. 
