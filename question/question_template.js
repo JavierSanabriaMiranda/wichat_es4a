@@ -1,4 +1,4 @@
-[
+module.exports =[
     {
         "question": "¿A qué país pertenece esta bandera: <countryLabel>?",
         "selector": "<countryLabel>",
@@ -6,7 +6,7 @@
         //la consulta selecciona 3 variables -> nombre del pais, nombre de la bandera y la imagen de la bandera
         "query": "SELECT ?countryLabel ?flagLabel ?flag" +
         //country debe ser una -> instancia(P31) de -> pais(Q6256)
-                 "WHERE { ?country wdt:P31 wd:Q6256." +
+                 "WHERE { ?countryLabel wdt:P31 wd:Q6256." +
         //country tiene -> una relación con bandera(P41)
                  "?country wdt:P41 ?flag." +
         //solicitar que se obtengan las etiquetas

@@ -1,0 +1,16 @@
+const fetch = require('node-fetch');
+
+const questions = require('./question_template.js');
+
+const url = "https://query.wikidata.org/sparql";
+
+async function main() {  
+    for (let i = 0; i < questions.length; i++) {
+        const question = questions[i];
+        console.log(question); 
+    }
+}
+
+main();
+
+
