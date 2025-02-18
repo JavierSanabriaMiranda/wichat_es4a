@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 // Esquema para Topic
 const topicSchema = new Schema({
   type: {
-    type: String,
+    type: [String],
     required: true
   }
 });
