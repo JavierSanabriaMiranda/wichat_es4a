@@ -14,8 +14,8 @@ const questionSchema = new Schema({
 
 
 //se crea el modelo a partir del esquema que se definió previamente
-const Question = model("Question", questionSchema);
+const Template = model("Template", questionSchema);
 
 //sirve para representar lo que se exportará desde el archivo actual -> el modelo de Pregunta
-module.exports = Question;
+module.exports = Template;
 
