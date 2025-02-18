@@ -1,101 +1,112 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-introduction-and-goals]]
-== Introduction and Goals
+== Introducción y Objetivos
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-Describes the relevant requirements and the driving forces that software architects and development team must consider. 
-These include
+Describe las necesidades importantes y las fuerzas mayores que los arquitectos del software y el equipo de desarrollo deben considerar 
+Esto incluye
 
-* underlying business goals, 
-* essential features, 
-* essential functional requirements, 
-* quality goals for the architecture and
-* relevant stakeholders and their expectations
+* Objetivos comerciales subyacentes,
+* Características esenciales,
+* Requisitos funcionales esenciales,
+* Objetivos de calidad para la arquitectura y
+* Partes interesadas relevantes y sus expectativas.
 ****
 endif::arc42help[]
 
-=== Requirements Overview
+=== Descripción de los requisitos
+
+* **Registro e Inicio de Sesión de Usuarios:** Los usuarios deberán registrarse para participar en los juegos, o iniciar sesión si ya se han registrado previamente.
+
+* **Generación de Preguntas y Respuestas:** El sistema proporcionará preguntas de diversas temáticas. Se generarán automáticamente respuestas correctas e incorrectas utilizando datos de Wikidata. Cada pregunta tendrá 4 posibles respuestas.
+
+* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
+
+* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de juegos jugados, preguntas acertadas y falladas, y el tiempo utilizado.
+
+* **Límite de Tiempo para Responder:** Cada pregunta tendrá un límite de tiempo determinado para ser respondida por los usuarios.
+
+* **API de Acceso a la Información:** Se ofrecerá una API documentada para acceder a la información de los usuarios y a las preguntas generadas. Esto facilitará la integración con otros servicios o plataformas.
+
+* **Generación Automática de Contenidos:** Las imágenes de las preguntas y las pistas serán generadas automáticamente utilizando datos de Wikidata. Esto garantizará la variedad y el contexto adecuado de las preguntas.
+
+=== Objetivos de Calidad
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Contents
-Short description of the functional requirements, driving forces, extract (or abstract)
-of requirements. Link to (hopefully existing) requirements documents
-(with version number and information where to find it).
+.Contenido
+Los tres (máximo cinco) objetivos de calidad más importantes para la arquitectura, cuya satisfacción es de máxima importancia para los principales interesados.
+Nos referimos realmente a los objetivos de calidad de la arquitectura. No los confundas con los objetivos del proyecto.
+No son necesariamente idénticos.
 
-.Motivation
-From the point of view of the end users a system is created or modified to
-improve support of a business activity and/or improve the quality.
+Considera esta visión general de posibles temas (basados en el estándar ISO 25010):
 
-.Form
-Short textual description, probably in tabular use-case format.
-If requirements documents exist this overview should refer to these documents.
+image::01_2_iso-25010-topics-EN.drawio.png["Categorías de Requisitos de Calidad"]
 
-Keep these excerpts as short as possible. Balance readability of this document with potential redundancy w.r.t to requirements documents.
+.Motivación
+Debes conocer los objetivos de calidad de tus interesados más importantes, ya que influirán en decisiones arquitectónicas fundamentales.
+Asegúrate de ser muy concreto sobre estas cualidades y evita palabras de moda.
+Si como arquitecto no sabes cómo se juzgará la calidad de tu trabajo...
 
-
-.Further Information
-
-See https://docs.arc42.org/section-1/[Introduction and Goals] in the arc42 documentation.
+.Formato
+Una tabla con los objetivos de calidad y escenarios concretos, ordenados por prioridades.
 
 ****
 endif::arc42help[]
 
-=== Quality Goals
+[cols="2,3", options="header"]
+|===
+|Meta |Descripción
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-The top three (max five) quality goals for the architecture whose fulfillment is of highest importance to the major stakeholders. 
-We really mean quality goals for the architecture. Don't confuse them with project goals.
-They are not necessarily identical.
+|Rendimiento
+|El sistema debe garantizar tiempos de respuesta dentro de los límites aceptables, incluso en condiciones de alta demanda. Se optimizará el uso de recursos para minimizar la latencia y mejorar la experiencia del usuario. Además, se implementarán optimizaciones de consultas para reducir la carga en los servidores y mejorar la velocidad de ejecución de las funciones más críticas.
 
-Consider this overview of potential topics (based upon the ISO 25010 standard):
+|Escalabilidad
+|El diseño del sistema debe permitir un crecimiento eficiente, asegurando que pueda manejar un aumento en la cantidad de usuarios y datos sin afectar negativamente el rendimiento.
 
-image::01_2_iso-25010-topics-EN.drawio.png["Categories of Quality Requirements"]
+|Seguridad
+|Se establecerán medidas de seguridad para proteger los datos de los usuarios y prevenir accesos no autorizados. Se implementarán mecanismos de autenticación y estándares básicos para garantizar la integridad y privacidad de la información.
 
-.Motivation
-You should know the quality goals of your most important stakeholders, since they will influence fundamental architectural decisions. 
-Make sure to be very concrete about these qualities, avoid buzzwords.
-If you as an architect do not know how the quality of your work will be judged...
+|Mantenibilidad
+|El código del sistema debe ser claro, modular y bien documentado para facilitar futuras modificaciones y mejoras. Se adoptarán buenas prácticas de desarrollo, como la separación de responsabilidades, la reutilización de código y la escritura de pruebas unitarias para garantizar la estabilidad del sistema a lo largo del tiempo. Además, se fomentará el uso de herramientas de control de versiones para gestionar los cambios de manera eficiente.
 
-.Form
-A table with quality goals and concrete scenarios, ordered by priorities
-****
-endif::arc42help[]
+|Usabilidad
+|Para asegurar una experiencia de usuario óptima, el sistema contará con una interfaz intuitiva y coherente. Se priorizará un diseño claro y accesible, facilitando la navegación. Se tendrán en cuenta principios de usabilidad como la predictibilidad, la coherencia visual y la retroalimentación adecuada, de manera que cualquier usuario, independientemente de su experiencia, pueda utilizar el sistema sin dificultades.
+|===
 
 === Stakeholders
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Contents
-Explicit overview of stakeholders of the system, i.e. all person, roles or organizations that
+.Contenido
+Descripción explícita de los interesados del sistema, es decir, todas las personas, roles u organizaciones que
 
-* should know the architecture
-* have to be convinced of the architecture
-* have to work with the architecture or with code
-* need the documentation of the architecture for their work
-* have to come up with decisions about the system or its development
+* deben conocer la arquitectura
+* les debe convencer la arquitectura
+* deben trabajar con la arquitectura o con el código
+* necesitan la documentación de la arquitectura para su trabajo
+* deben tomar decisiones sobre el sistema o su desarrollo
 
-.Motivation
-You should know all parties involved in development of the system or affected by the system.
-Otherwise, you may get nasty surprises later in the development process.
-These stakeholders determine the extent and the level of detail of your work and its results.
+.Motivación
+Debe conocer a todas las partes involucradas en el desarrollo del sistema o afectadas por el sistema.
+De lo contrario, puede tener sorpresas desagradables más adelante en el proceso de desarrollo.
+Estos interesados determinan el alcance y el nivel de detalle de su trabajo y sus resultados.
 
-.Form
-Table with role names, person names, and their expectations with respect to the architecture and its documentation.
+.Forma
+Tabla con nombres de roles, nombres de personas y sus expectativas con respecto a la arquitectura y su documentación.
 ****
 endif::arc42help[]
 
 [options="header",cols="1,2,2"]
 |===
-|Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
+|Rol/Nombre|Contacto|Expectativas
+| _Cliente_ | _RTVE_ | _Alta disponibilidad, seguridad y cumplimiento de normativas_
+| _Compañía Contratada_ | _ChattySw_ | _Entrega a tiempo, dentro del presupuesto y con alta calidad_
+| _Equipo de Desarrollo_ | _Andrea Acero Suárez, Ana Díez Díaz, Aitor Gómez Ogueta, Adriana Herrero González, Claudia Nistal Martínez, Javier Sanabria Miranda_ | _Claridad en los requisitos, apoyo continuo del cliente y herramientas adecuadas_
+| _Usuarios_ | _Futuros usuarios de la aplicación_ | _Facilidad en el uso, rendimiento eficiente y características claras e innovadoras_
 |===
