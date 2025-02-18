@@ -96,60 +96,8 @@ endif::arc42help[]
 
 ==== Diagrama de Despliegue
 
-[plantuml,diagrama-despliegue,png]
-----
-@startuml
-skinparam cloudColor LightBlue
-skinparam databaseColor LightGreen
-skinparam nodeColor LightGray
+image::../images/diagrama-despliegue.png[Diagrama de Despliegue]
 
-cloud "Usuario" {
-    [Navegador Web]
-}
-
-node "WebApp" {
-    [Aplicación React]
-}
-
-node "Backend (Servidor)" {
-    [Gateway]
-    [Servicio LLM]
-    [Servicio Autenticación (authservice)]
-    [Servicio Usuario (userservice)]
-}
-
-database "WikiData" {
-    [API WikiData] 
-}
-
-database "MongoDB" {
-    [Base de Datos de Usuarios]
-}
-
-node "Monitorización" {
-    [Prometheus]
-    [Grafana]
-}
-
-
-[Navegador Web] --> [Aplicación React] : HTTP Request
-[Aplicación React] --> [Gateway] : API Request (REST)
-[Gateway] --> [Servicio Autenticación (authservice)] : Solicita autenticación de usuario
-[Gateway] --> [Servicio LLM] : Solicitar pista
-[Gateway] --> [Servicio Usuario (userservice)] : Inserta/Consulta datos
-[API WikiData] --> [Gateway] : Envía imagen y respuesta
-[API WikiData] --> [Servicio LLM] : Envía pistas
-[Servicio LLM] --> [Gateway] : Responder con pista
-[Gateway] --> [Aplicación React] : Enviar info al usuario
-[Servicio Autenticación (authservice)] --> [Base de Datos de Usuarios] : Verifica LogIn
-[Servicio Usuario (userservice)] --> [Base de Datos de Usuarios] : Inserta/Consulta datos
-
-
-[Prometheus] --> [Gateway] : Recolectar métricas
-[Grafana] --> [Prometheus] : Visualización de métricas
-
-@enduml
-----
 
 ==== Explicación de Interfaces Técnicas
 
@@ -174,15 +122,12 @@ sus partidas
 ===== Servicio LLM
 Servicio que, por medio de las pistas obtenidas de WikiData, procesará y responderá a las pistas que pida el usuario
 
+===== API LLM
+Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
+
 ===== API WikiData
 API del servicio web WikiData que aportará a la aplicación las imágenes para el juego, las respuestas a las mismas y las
 pistas que el LLM utilizará para responder a los usuarios
-
-===== Prometheus
-Interfaz que almacena en su base de datos optimizada las métricas traidas de la Gateway
-
-===== Grafana
-Interfaz que por medio de consultas a Prometheus, muestra gráficamente los datos obtenidos de las mismas
 
 ==== Mapeo de Canales de Entrada/salida
 
@@ -195,8 +140,7 @@ Interfaz que por medio de consultas a Prometheus, muestra gráficamente los dato
 | Servicio Usuario | Datos a consultar o insertar en la base de datos | Consulta o inserción completa a la base de datos
 | Base de Datos de Usuarios | Instrucciones SQL para consultas o insercioes | Resultado de las consultas o confirmación de las inserciones
 | Servicio LLM | Prompt de solicitud de pistas | Pista generada por el modelo a partir de información de Wikidata
+| API LLM | Prompt de solicitu de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
 | API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
-| Prometheus | Métricas de Gateway | Almacenamiento de las métricas en su base de datos
-| Grafana | Métricas organizadas en Prometheus | Gráficos de visualización de las métricas
 |===
 
