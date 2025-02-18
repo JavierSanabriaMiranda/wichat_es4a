@@ -32,4 +32,4 @@ async function getRandomCountryAndFlag() {
 }
 
 
-//getRandomCountryAndFlag();
+getRandomCountryAndFlag();

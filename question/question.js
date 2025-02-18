@@ -5,11 +5,7 @@ const { ObjectId } = Types;
 //esquema para bd de pregunta
 const questionSchema = new Schema({
     question: { type: String, required: true },
-    topics: [{ 
-        type: ObjectId, 
-        ref: "Topic", 
-        required: true 
-    }],
+    topic: { type: String, required: true },
     answer: { type: String, required: true }, 
     options: { type: [String], required: true },
     imageUrl: { type: String, required: true },
