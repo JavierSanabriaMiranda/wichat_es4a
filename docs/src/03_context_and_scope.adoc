@@ -35,13 +35,17 @@ endif::arc42help[]
 [plantuml,png]
 ----
   actor Usuario
-  database Pod as "Base de Datos"
-  Usuario --> (WIChat): Interactúa
-  WIChat --> (Wikidata): Solicita datos
-  Wikidata --> (WIChat): Devuelve imágenes y respuestas
-  WIChat --> (LLM_API): Envía consultas
-  LLM_API --> (WIChat): Devuelve respuestas
-  Usuario --> (Pod): Inicia sesión y registra resultados de partida
+  artifact WiChatApplication {
+    database Pod as "Base de Datos"
+    Usuario --> (WIChat): Interactúa
+    WIChat --> (Wikidata): Solicita datos
+    Wikidata --> (WIChat): Devuelve imágenes y respuestas
+    WIChat --> (LLM_API): Envía consultas
+    LLM_API --> (WIChat): Devuelve respuestas
+    WIChat --> (Pod): Inicia sesión y registra resultados de partidas
+    Pod --> WIChat: Devuelve datos registrados del usuario
+  }
+  
 ----
 
 
