@@ -1,0 +1,37 @@
+#game-answer-buttons-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    margin: 1%;
+    width: 40%;
+    height: 3em;
+    font-size: 1.2em;
+    border-radius: 3%;
+    background-color: #feb06a;
+    color: #606d87;
+    cursor: pointer;
+}
+
+button:hover {
+    margin: 1%;
+    width: 40%;
+    height: 3em;
+    font-size: 1.2em;
+    border-radius: 2%;
+    background-color: #f88c2e;
+    color: #fbf6f3;
+    cursor: pointer;
+}
+
+.answer-button-correct-answer, .answer-button-correct-answer:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.answer-button-wrong-answer, .answer-button-wrong-answer:hover {
+    background-color: #f44336;
+    color: white;
+}
