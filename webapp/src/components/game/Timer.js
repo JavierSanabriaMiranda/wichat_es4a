@@ -12,7 +12,7 @@ const Timer = ({initialTime, onTimeUp}) => {
     const className = timeLeft <= 5 ? "game-timer-warning-minus-5" : (timeLeft <= 10 ? "game-timer-warning-minus-10" : "game-timer");
 
     useEffect(() => {
-        console.log(`Time left: ${timeLeft}`);
+        //console.log(`Time left: ${timeLeft}`);
 
         if (timeLeft <= 0) {
             if (onTimeUp) onTimeUp(); // Execute the callback function when the time reaches 0

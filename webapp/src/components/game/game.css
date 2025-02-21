@@ -77,25 +77,48 @@
 
 /* ===================== LLM CHAT STYLE ===================== */
 
+.llm-chat-aside {
+    margin-right: 1em;
+    grid-column: -1;
+    grid-row: 2/5;
+}
+
+.llm-chat {
+    position: relative;
+    border-style: solid;
+    height: 60vh;
+    width: 20vw;
+}
+
 .llm-chat-messages {
     display: flex;
     flex-direction: column;
-
     max-height: 60vh;
     width: 20vw; 
     padding: 2%;
     box-sizing: border-box;
 }
 
-.llm-chat-aside {
-    margin-right: 4%;
-    grid-column: -1;
-    grid-row: 2/4;
+.llm-message, .user-message {
+    margin: 2% 0;
+    padding: 1em;
+    border-radius: 15px; 
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.llm-message {
+    background-color: #5d6c89;
+    color: white;
+}
+
+.user-message {
+    background-color: #36d6e7;
 }
 
 .llm-chat-input {
-    width: 80%;
-    margin: 1%;
+    width: 100%;
+    font-size: 1.2em;
 }
 
 .send-prompt-button {
@@ -104,8 +127,12 @@
     font-size: 1.2em;
     border-radius: 3%;
     background-color: #fbf6f3;
-    color: #606d87;
     cursor: pointer;
+}
+
+.send-prompt-button > img {
+    width: 70%;
+    height: auto;
 }
 
 .llm-icon {
@@ -119,18 +146,14 @@
     background-color: white;
 }
 
-.llm-chat {
-    position: relative;
-    border-style: solid;
-    border-width: 0.2em;
-    height: 60vh;
-    width: 20vw;
-}
-
 .llm-chat-form {
     display: flex;
     justify-content: space-between;
     border-style: solid;
+}
+
+.llm-chat-form, .llm-chat {
+    border-width: 0.2em;
 }
 
 /* ===================== POINTS STYLE ===================== */

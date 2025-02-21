@@ -15,7 +15,7 @@ const Game = ({ questionTime }) => {
 
     const [points, setPoints] = useState(0);
     const [image, setImage] = useState(null);
-    const [question, setQuestion] = useState("");
+    const [question, setQuestion] = useState("¿Cuál es la capital de España?");
 
 
     const onTimeUp = () => { }
