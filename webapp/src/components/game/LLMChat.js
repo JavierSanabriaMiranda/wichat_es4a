@@ -14,6 +14,7 @@ const LLMChat = () => {
 
     return (
         <div className="llm-chat">
+            <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
             <Scrollbars
                 style={{ width: '100%', height: '100%' }}
                 autoHide // Oculta el scroll cuando no se usa
@@ -24,7 +25,7 @@ const LLMChat = () => {
                 )}
             >
                 <div className="llm-chat-messages" >
-                    <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                    
                     <p>¡Hola! Soy el LLM, ¿en qué puedo ayudarte?</p>
                     <p>¡Hola! Soy el LLM, ¿en qué puedo ayudarte?</p>
                     <p>¡Hola! Soy el LLM, ¿en qué puedo ayudarte?</p>
