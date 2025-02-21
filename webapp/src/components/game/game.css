@@ -1,3 +1,12 @@
+
+.game-screen {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: space-between;
+    height: 100vh;
+    width: 100vw;
+}
+
 /* ===================== ANSWER BUTTONS STYLE ===================== */
 
 #game-answer-buttons-section {
@@ -6,7 +15,7 @@
     justify-content: center;
 }
 
-button {
+.answer-button-not-answered, .answer-button-correct-answer, .answer-button-wrong-answer {
     margin: 1%;
     width: 40%;
     height: 3em;
@@ -17,55 +26,91 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    margin: 1%;
-    width: 40%;
-    height: 3em;
-    font-size: 1.2em;
-    border-radius: 2%;
+.answer-button-not-answered:hover {
     background-color: #f88c2e;
     color: #fbf6f3;
-    cursor: pointer;
 }
 
-.answer-button-correct-answer, .answer-button-correct-answer:hover {
+.answer-button-correct-answer {
     background-color: #4CAF50;
     color: white;
 }
 
-.answer-button-wrong-answer, .answer-button-wrong-answer:hover {
+.answer-button-wrong-answer {
     background-color: #f44336;
     color: white;
 }
 
 /* ===================== TIMER STYLE ===================== */
 
-.gameTimer {
+
+.game-timer, .game-timer-warning-minus-10, .game-timer-warning-minus-5 {
+    margin: 10% 0 0 10%;
+    grid-column: 0;
     font-family: 'Lucida Console', 'Monaco', monospace;
     font-size: 4em;
-    font-weight: bolder;
+    font-weight: bolder;    
+}
+
+.game-timer {
     color: #f88c2e;
-    margin: 2%;
 }
 
 @keyframes blink {
     50% { opacity: 0; }
 }
 
-.gameTimerWarningMinus10 {
-    font-family: 'Lucida Console', 'Monaco', monospace;
-    font-size: 4em;
-    font-weight: bolder;
+.game-timer-warning-minus-10 {
     animation: blink 1s infinite;
     color: red;
-    margin: 2%;
 }
 
-.gameTimerWarningMinus5 {
-    font-family: 'Lucida Console', 'Monaco', monospace;
-    font-size: 4em;
-    font-weight: bolder;
+.game-timer-warning-minus-5 {
     animation: blink 0.5s infinite;
     color: red;
-    margin: 2%;
+}
+
+/* ===================== LLM CHAT STYLE ===================== */
+
+.llm-chat-messages {
+    overflow-y: scroll;
+    height: 50vh;
+    width: 20vw;
+}
+
+.llm-chat-aside {
+    grid-column: -1;
+}
+
+.llm-chat-input {
+    width: 80%;
+    margin: 1%;
+}
+
+.send-prompt-button {
+    width: 15%;
+    height: 2em;
+    font-size: 1.2em;
+    border-radius: 3%;
+    background-color: #fbf6f3;
+    color: #606d87;
+    cursor: pointer;
+}
+
+.llm-icon {
+    width: 10%;
+    height: auto;
+    margin: 1%;
+}
+
+.llm-chat {
+    position: relative;
+    border-style: solid;
+    border-width: 3px;
+}
+
+.llm-chat-form {
+    display: flex;
+    justify-content: space-between;
+    border-style: solid;
 }

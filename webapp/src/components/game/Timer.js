@@ -9,7 +9,7 @@ import './game.css';
 const Timer = ({initialTime, onTimeUp}) => {
 
     const [timeLeft, setTimeLeft] = useState(initialTime);
-    const className = timeLeft <= 5 ? "gameTimerWarningMinus5" : (timeLeft <= 10 ? "gameTimerWarningMinus10" : "gameTimer");
+    const className = timeLeft <= 5 ? "game-timer-warning-minus-5" : (timeLeft <= 10 ? "game-timer-warning-minus-10" : "game-timer");
 
     useEffect(() => {
         console.log(`Time left: ${timeLeft}`);

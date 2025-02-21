@@ -12,7 +12,7 @@ const AnswerButton = ({answerText, isCorrectAnswer}) => {
 
     const buttonClassName = wasSelected ?
         (isCorrectAnswer ? "answer-button-correct-answer" : "answer-button-wrong-answer")
-        : "answer-button not-answered";
+        : "answer-button-not-answered";
 
     const handleClick = () => {
         setWasSelected(true);

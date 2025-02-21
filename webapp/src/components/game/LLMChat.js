@@ -1,5 +1,4 @@
 import React from 'react';
-import { Scrollbar } from 'react-scrollbars-custom';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
