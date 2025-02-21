@@ -1,6 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import './game.css';
 
+/**
+ * React component to represent a timer whose time is decremented every second.
+ * @param {Number} initialTime - The initial time in seconds.
+ * @param {Function} onTimeUp - A callback function to be executed when the time reaches 0.
+ */
 const Timer = ({initialTime, onTimeUp}) => {
 
     const [timeLeft, setTimeLeft] = useState(initialTime);
@@ -10,7 +15,7 @@ const Timer = ({initialTime, onTimeUp}) => {
         console.log(`Time left: ${timeLeft}`);
 
         if (timeLeft <= 0) {
-            if (onTimeUp) onTimeUp(); // Ejecuta una acción cuando el tiempo llega a 0
+            if (onTimeUp) onTimeUp(); // Execute the callback function when the time reaches 0
             return;
         }
 
@@ -18,7 +23,7 @@ const Timer = ({initialTime, onTimeUp}) => {
             setTimeLeft((prevTime) => prevTime - 1);
         }, 1000);
 
-        return () => clearInterval(timer); // Limpia el temporizador cuando el componente se desmonta
+        return () => clearInterval(timer); // Clean up the timer when the component is unmounted
     }, [timeLeft, onTimeUp]);
     
     return (
