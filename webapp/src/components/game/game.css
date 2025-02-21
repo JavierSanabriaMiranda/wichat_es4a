@@ -2,6 +2,7 @@
 .game-screen {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 0.3fr 1fr 1fr 1fr;
     justify-content: space-between;
     height: 100vh;
     width: 100vw;
@@ -10,14 +11,18 @@
 /* ===================== ANSWER BUTTONS STYLE ===================== */
 
 #game-answer-buttons-section {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-column: 0 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#question-answers-section {
+    grid-column: 1 / 4;
 }
 
 .answer-button-not-answered, .answer-button-correct-answer, .answer-button-wrong-answer {
-    margin: 1%;
-    width: 40%;
+    margin: 3%;
+    width: 90%;
     height: 3em;
     font-size: 1.2em;
     border-radius: 3%;
@@ -73,13 +78,19 @@
 /* ===================== LLM CHAT STYLE ===================== */
 
 .llm-chat-messages {
-    overflow-y: scroll;
-    height: 50vh;
-    width: 20vw;
+    display: flex;
+    flex-direction: column;
+
+    max-height: 60vh;
+    width: 20vw; /* O prueba con un ancho absoluto en px */
+    padding: 2%;
+    box-sizing: border-box; /* Asegura que el padding no aumente el tamaño del contenedor */
 }
 
 .llm-chat-aside {
+    margin-right: 4%;
     grid-column: -1;
+    grid-row: 2/4;
 }
 
 .llm-chat-input {
@@ -106,11 +117,48 @@
 .llm-chat {
     position: relative;
     border-style: solid;
-    border-width: 3px;
+    border-width: 0.2em;
+    height: 60vh;
+    width: 20vw;
 }
 
 .llm-chat-form {
     display: flex;
     justify-content: space-between;
     border-style: solid;
+}
+
+/* ===================== POINTS STYLE ===================== */
+
+.game-points {
+    margin: 10% 10% 0 0;
+    display: flex;
+    justify-content: center;
+    grid-column: -1;
+    font-size: 4em;
+}
+
+/* ===================== IMG STYLE ===================== */
+
+.question-img {
+    max-width: 20vw;
+    height: auto;
+
+}
+
+.div-question-img {
+    grid-column: 1/4;
+    display: flex;
+    justify-content: center;
+}
+
+/* ===================== QUESTION STYLE ===================== */
+
+.game-question {
+    grid-row: 2;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    grid-column: 1/4;
+    font-size: 1.5em;
 }

@@ -13,12 +13,30 @@ import './game.css';
  */
 const Game = ({ questionTime }) => {
 
-    const ontTimeUp = () => { }
+    const [points, setPoints] = useState(0);
+    const [image, setImage] = useState(null);
+    const [question, setQuestion] = useState("");
+
+
+    const onTimeUp = () => { }
+
+    const addPoints = (pointsToAdd) => { 
+        setPoints(points + pointsToAdd);
+    }
 
     return (
         <main className='game-screen'>
-            <Timer initialTime={questionTime} onTimeUp={ontTimeUp}/>
-            <section>
+            <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
+            <div className='game-points'>
+                {points}pts
+            </div>
+            <div className='game-question'>
+                <p>{question}</p>
+            </div>
+            <div className='div-question-img'>
+                <img className="question-img" src="/logo512.png" ></img>
+            </div>
+            <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
                     <AnswerButton answerText="Answer 1" isCorrectAnswer={true} />
                     <AnswerButton answerText="Answer 2" isCorrectAnswer={false} />
