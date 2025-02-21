@@ -35,3 +35,33 @@ button:hover {
     background-color: #f44336;
     color: white;
 }
+
+.gameTimer {
+    font-family: 'Lucida Console', 'Monaco', monospace;
+    font-size: 4em;
+    font-weight: bolder;
+    color: #f88c2e;
+    margin: 2%;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.gameTimerWarningMinus10 {
+    font-family: 'Lucida Console', 'Monaco', monospace;
+    font-size: 4em;
+    font-weight: bolder;
+    animation: blink 1s infinite;
+    color: red;
+    margin: 2%;
+}
+
+.gameTimerWarningMinus5 {
+    font-family: 'Lucida Console', 'Monaco', monospace;
+    font-size: 4em;
+    font-weight: bolder;
+    animation: blink 0.5s infinite;
+    color: red;
+    margin: 2%;
+}

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import AnswerButton from './AnswerButton';
+import Timer from './Timer';
 import './game.css';
 
-const Game = () => {
+const Game = ({questionTime}) => {
+
+    const ontTimeUp = () => {}
 
     return(
         <>
-        <div id="gameTimer">
-            {/* Introducir el código del timer */}
-        </div>
+        <Timer initialTime={questionTime} onTimeUp={ontTimeUp} />
         <section>
             <div id="game-answer-buttons-section">
                 <AnswerButton answerText="Answer 1" isCorrectAnswer={true} />
