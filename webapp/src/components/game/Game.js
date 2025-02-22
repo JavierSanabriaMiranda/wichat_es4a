@@ -48,12 +48,14 @@ const Game = ({ questionTime }) => {
 
     return (
         <main className='game-screen' key={gameKey}>
-            <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
+            <div className='timer-div'>
+                <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
+            </div>
             <div className={`game-points-and-exit-div ${animatePoints ? 'animate-points' : ''}`}>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
-                {points}pts
+                <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
                 <button className='exit-button' onClick={askExitGame}>
-                    <img src="/exit-icon.png" className='exit-icon' alt='exit-button'/>
+                    <img src="/exit-icon.png" className='exit-icon' alt='exit-button' />
                 </button>
             </div>
             <div className='game-question'>
@@ -75,7 +77,7 @@ const Game = ({ questionTime }) => {
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>Siguiente</button>
-                <button onClick={() => addPoints(10)}>Sumar puntos</button>
+                <button onClick={() => addPoints(100)}>Sumar puntos</button>
             </div>
 
         </main>
