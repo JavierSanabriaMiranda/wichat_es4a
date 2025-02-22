@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Button, Snackbar, Box} from '@mui/material';
+import { Container, Typography, TextField, Snackbar, Box} from '@mui/material';
 import './UserProfile.css';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const UserPofile = ({userName, onSelectOption}) => {
-
 
     const changeSelectedOption = (option) => {
         if (option !== 'edit' && option !== 'history') {
@@ -16,23 +21,45 @@ export const UserPofile = ({userName, onSelectOption}) => {
     }
 
     return (
-        <main className="user-profile">
-            <div className="profile-header">
-                Bienvenido/a <span className="username">{userName}</span>
+        <Container fluid className="vh-100 w-100">
+            {/* Cabecera */}
+            <div className="w-100vw text-center p-3 border-bottom">
+                <h4>Bienvenido/a <span className="fw-bold">{userName}</span></h4>
             </div>
 
-            <div className="profile-content">
+            {/* Contenedor principal con sidebar y contenido */}
+            <Tab.Container className="w-100vw" id="main-container" defaultActiveKey="edit">
+                <Row className="w-100vw border mt-3">
                 {/* Sidebar */}
-                <div className="sidebar">
-                    <button onClick={() => onSelectOption('edit')}>Editar Perfil</button>
-                    <button onClick={() => onSelectOption('history')}>Historial de Partidas</button>
-                </div>
+                <Col sm={3} className="bg-light border-end p-3">
+                    <Nav variant="pills" className="flex-column">
+                        <Nav.Item>
+                            <Nav.Link eventKey="edit">Editar Perfil</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="history">Ver Historial de Partidas</Nav.Link>
+                        </Nav.Item>
+                    </Nav>
+                </Col>
 
-                {/* Área Principal*/}
-                <div className="main-area"></div>
-            </div>
+                {/* Contenido dinámico */}
+                <Col sm={9} className="p-3 d-flex flex-column h-100">
+                    <Tab.Content className='flex-grow-1 overflow-auto'>
+                        <Tab.Pane eventKey="edit" className="w-100 h-100">
+                            <h5>Editar Perfil</h5>
+                            <p>Aquí iría el formulario de edición...</p>
+                        </Tab.Pane>
+                        <Tab.Pane eventKey="history">
+                            <h5>Historial de Partidas</h5>
+                            <p>Aquí se mostraría el historial...</p>
+                        </Tab.Pane>
+                    </Tab.Content>
+                </Col>
+                </Row>
+            </Tab.Container>
 
-            <button className="back-button">Volver al Menú</button>
-        </main>
+            {/* Botón Volver al Menú */}
+            <Button variant="primary" size="lg" className=" mt-4">Volver al Menú</Button>
+        </Container>
       );
 }
