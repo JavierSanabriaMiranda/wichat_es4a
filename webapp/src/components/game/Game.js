@@ -17,13 +17,17 @@ const Game = ({ questionTime }) => {
     const [image, setImage] = useState("/logo512.png");
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
     const [gameKey, setGameKey] = useState(0); // Add a state variable for the key
+    const [animatePoints, setAnimatePoints] = useState(false); // Add a state variable for animation
+    const [pointsToAdd, setPointsToAdd] = useState(0); // Add a state variable for points to add
 
     const onTimeUp = () => {
         // TODO
-     }
+    }
 
     const addPoints = (pointsToAdd) => {
+        setPointsToAdd(pointsToAdd);
         setPoints(points + pointsToAdd);
+        setTimeout(() => setPointsToAdd(0), 1000); // Remove points to add animation after 1 second
     }
 
     const passQuestion = () => {
@@ -35,14 +39,22 @@ const Game = ({ questionTime }) => {
      */
     const prepareUIForNextQuestion = () => {
         // Increment the key to force rerender
-        setGameKey(prevKey => prevKey + 1); 
+        setGameKey(prevKey => prevKey + 1);
+    }
+
+    const askExitGame = () => {
+        // TODO
     }
 
     return (
         <main className='game-screen' key={gameKey}>
             <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
-            <div className='game-points'>
+            <div className={`game-points-and-exit-div ${animatePoints ? 'animate-points' : ''}`}>
+                {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
                 {points}pts
+                <button className='exit-button' onClick={askExitGame}>
+                    <img src="/exit-icon.png" className='exit-icon' alt='exit-button'/>
+                </button>
             </div>
             <div className='game-question'>
                 <p>{question}</p>
@@ -63,6 +75,7 @@ const Game = ({ questionTime }) => {
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>Siguiente</button>
+                <button onClick={() => addPoints(10)}>Sumar puntos</button>
             </div>
 
         </main>
