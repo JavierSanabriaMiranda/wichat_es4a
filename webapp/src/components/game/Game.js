@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
 import LLMChat from './LLMChat';
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import './game.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 /**
  * React component that represents a wichat game with his timer, question, image, 
@@ -16,9 +19,10 @@ const Game = ({ questionTime }) => {
     const [points, setPoints] = useState(0);
     const [image, setImage] = useState("/logo512.png");
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
-    const [gameKey, setGameKey] = useState(0); 
-    const [pointsToAdd, setPointsToAdd] = useState(0); 
+    const [gameKey, setGameKey] = useState(0);
+    const [pointsToAdd, setPointsToAdd] = useState(0);
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
+    const [showModal, setShowModal] = useState(false);
 
     const onTimeUp = () => {
         // TODO
@@ -51,6 +55,20 @@ const Game = ({ questionTime }) => {
      * Function that asks the user if he really wants to exit the game.
      */
     const askExitGame = () => {
+        setShowModal(true);
+    }
+
+    /**
+     * Function that handles the close of the modal
+     */
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    /**
+     * Function that exits the game without saving the progress.
+     */
+    const exitFromGame = () => {
         // TODO
     }
 
@@ -62,9 +80,9 @@ const Game = ({ questionTime }) => {
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
                 <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
-                <button 
-                    onClick={askExitGame} 
-                    className="exit-button" 
+                <button
+                    onClick={askExitGame}
+                    className="exit-button"
                     onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
                     onMouseLeave={() => setExitIcon("/exit-icon.png")}
                 >
@@ -92,6 +110,21 @@ const Game = ({ questionTime }) => {
                 <button className="pass-button" onClick={passQuestion}>Siguiente</button>
                 <button onClick={() => addPoints(100)}>Sumar puntos</button>
             </div>
+            {/* Modal to ask the user if he really wants to exit the game */}
+            <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>¿Estás seguro que deseas salir?</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Si sales perderás el progreso de la partida en curso</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cerrar
+                    </Button>
+                    <Button variant="danger" onClick={exitFromGame}>
+                        Salir
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
         </main>
     )
