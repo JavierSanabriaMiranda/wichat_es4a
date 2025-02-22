@@ -135,6 +135,10 @@
     cursor: pointer;
 }
 
+.send-prompt-button:hover {
+    background-color: rgb(237, 230, 230);
+}
+
 .send-prompt-button > img {
     width: 70%;
     height: auto;

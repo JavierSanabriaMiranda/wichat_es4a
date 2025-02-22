@@ -16,8 +16,9 @@ const Game = ({ questionTime }) => {
     const [points, setPoints] = useState(0);
     const [image, setImage] = useState("/logo512.png");
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
-    const [gameKey, setGameKey] = useState(0); // Add a state variable for the key
-    const [pointsToAdd, setPointsToAdd] = useState(0); // Add a state variable for points to add
+    const [gameKey, setGameKey] = useState(0); 
+    const [pointsToAdd, setPointsToAdd] = useState(0); 
+    const [exitIcon, setExitIcon] = useState("/exit-icon.png");
 
     const onTimeUp = () => {
         // TODO
@@ -61,8 +62,13 @@ const Game = ({ questionTime }) => {
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
                 <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
-                <button className='exit-button' onClick={askExitGame}>
-                    <img src="/exit-icon.png" className='exit-icon' alt='exit-button' />
+                <button 
+                    onClick={askExitGame} 
+                    className="exit-button" 
+                    onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
+                    onMouseLeave={() => setExitIcon("/exit-icon.png")}
+                >
+                    <img src={exitIcon} className='exit-icon' alt='exit-button' />
                 </button>
             </div>
             <div className='game-question'>
@@ -73,10 +79,10 @@ const Game = ({ questionTime }) => {
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
-                    <AnswerButton answerText="Answer 1" isCorrectAnswer={true} />
-                    <AnswerButton answerText="Answer 2" isCorrectAnswer={false} />
-                    <AnswerButton answerText="Answer 3" isCorrectAnswer={false} />
-                    <AnswerButton answerText="Answer 4" isCorrectAnswer={false} />
+                    <AnswerButton answerText="React" isCorrectAnswer={true} />
+                    <AnswerButton answerText="JQuery" isCorrectAnswer={false} />
+                    <AnswerButton answerText="Angular" isCorrectAnswer={false} />
+                    <AnswerButton answerText="Bootstrap" isCorrectAnswer={false} />
                 </div>
             </section>
             <aside className='llm-chat-aside'>
