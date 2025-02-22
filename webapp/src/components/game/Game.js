@@ -14,8 +14,9 @@ import './game.css';
 const Game = ({ questionTime }) => {
 
     const [points, setPoints] = useState(0);
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState("/logo512.png");
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
+    const [gameKey, setGameKey] = useState(0); // Add a state variable for the key
 
     const onTimeUp = () => {
         // TODO
@@ -26,11 +27,19 @@ const Game = ({ questionTime }) => {
     }
 
     const passQuestion = () => {
-        // TODO
+        prepareUIForNextQuestion();
+    }
+
+    /**
+     * Function that prepares the UI for the next question resetting the timer and the answer buttons.
+     */
+    const prepareUIForNextQuestion = () => {
+        // Increment the key to force rerender
+        setGameKey(prevKey => prevKey + 1); 
     }
 
     return (
-        <main className='game-screen'>
+        <main className='game-screen' key={gameKey}>
             <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
             <div className='game-points'>
                 {points}pts
@@ -39,7 +48,7 @@ const Game = ({ questionTime }) => {
                 <p>{question}</p>
             </div>
             <div className='div-question-img'>
-                <img className="question-img" src="/logo512.png" ></img>
+                <img className="question-img" src={image} ></img>
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
