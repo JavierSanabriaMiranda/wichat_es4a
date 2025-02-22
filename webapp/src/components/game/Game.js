@@ -17,13 +17,17 @@ const Game = ({ questionTime }) => {
     const [image, setImage] = useState("/logo512.png");
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
     const [gameKey, setGameKey] = useState(0); // Add a state variable for the key
-    const [animatePoints, setAnimatePoints] = useState(false); // Add a state variable for animation
     const [pointsToAdd, setPointsToAdd] = useState(0); // Add a state variable for points to add
 
     const onTimeUp = () => {
         // TODO
     }
 
+    /**
+     * Function that adds points to the user and animates the points to add.
+     * 
+     * @param {Number} pointsToAdd 
+     */
     const addPoints = (pointsToAdd) => {
         setPointsToAdd(pointsToAdd);
         setPoints(points + pointsToAdd);
@@ -42,6 +46,9 @@ const Game = ({ questionTime }) => {
         setGameKey(prevKey => prevKey + 1);
     }
 
+    /**
+     * Function that asks the user if he really wants to exit the game.
+     */
     const askExitGame = () => {
         // TODO
     }
@@ -51,7 +58,7 @@ const Game = ({ questionTime }) => {
             <div className='timer-div'>
                 <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
             </div>
-            <div className={`game-points-and-exit-div ${animatePoints ? 'animate-points' : ''}`}>
+            <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
                 <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
                 <button className='exit-button' onClick={askExitGame}>

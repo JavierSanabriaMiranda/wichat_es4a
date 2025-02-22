@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import './game.css';
 
 /**
  * React component to represent a timer whose time is decremented every second.
