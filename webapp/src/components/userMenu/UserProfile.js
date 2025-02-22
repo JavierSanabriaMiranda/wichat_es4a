@@ -9,49 +9,54 @@ import Tab from 'react-bootstrap/Tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditUser } from './EditUser';
 
+
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const UserPofile = ({userName}) => {
 
     return (
-        <Container fluid className="vh-100 w-100">
+        <main>
             {/* Cabecera */}
-            <div className="w-100vw text-center p-3 border-bottom">
-                <h4>Bienvenido/a <span className="fw-bold">{userName}</span></h4>
+            <div className="w-95vw text-center p-3" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
+                <h2>Bienvenido/a <span className="fw-bold">{userName}</span></h2>
             </div>
 
             {/* Contenedor principal con sidebar y contenido */}
-            <Tab.Container className="w-100vw" id="main-container" defaultActiveKey="edit">
-                <Row className="w-100vw border mt-3">
-                {/* Sidebar */}
-                <Col sm={3} className="bg-light border-end p-3">
-                    <Nav variant="pills" className="flex-column">
-                        <Nav.Item>
-                            <Nav.Link eventKey="edit">Editar Perfil</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="history">Ver Historial de Partidas</Nav.Link>
-                        </Nav.Item>
-                    </Nav>
-                </Col>
+            <Tab.Container className="w-95vw" id="main-container" defaultActiveKey="edit">
+                <Row className="w-95vw border mt-3">
+                    {/* Sidebar */}
+                    <Col sm={3} className="border-end p-3" style={{ backgroundColor: '#5D6C89' }}>
+                        <Nav variant="pills" className="flex-column">
+                            <Nav.Item>
+                                <Nav.Link eventKey="edit" style={{color: 'white'}}>Editar Perfil</Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="history" style={{color: 'white'}}>Ver Historial de Partidas</Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                    </Col>
 
-                {/* Contenido dinámico */}
-                <Col sm={9} className="p-3 d-flex flex-column h-100">
-                    <Tab.Content className='flex-grow-1 overflow-auto'>
-                        <Tab.Pane eventKey="edit" className="w-100 h-100">
-                            <EditUser userName = {userName}/>
-                        </Tab.Pane>
-                        <Tab.Pane eventKey="history">
-                            <h5>Historial de Partidas</h5>
-                            <p>Aquí se mostraría el historial...</p>
-                        </Tab.Pane>
-                    </Tab.Content>
-                </Col>
+                    {/* Contenido dinámico */}
+                    <Col sm={9} className="p-3 d-flex flex-column h-100">
+                        <Tab.Content className='flex-grow-1 overflow-auto'>
+                            <Tab.Pane eventKey="edit" className="w-100 h-100">
+                                <EditUser userName={userName} />
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="history">
+                                <h5>Historial de Partidas</h5>
+                                <p>Aquí se mostraría el historial...</p>
+                            </Tab.Pane>
+                        </Tab.Content>
+                    </Col>
                 </Row>
             </Tab.Container>
 
             {/* Botón Volver al Menú */}
-            <Button size="lg" className=" position-absolute bottom-0 end-0 m-3">Volver al Menú</Button>
-        </Container>
-      );
+            <Button size="lg" className="position-absolute bottom-0 end-0 m-3" 
+                    style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89'
+                    }}>
+                        Volver al Menú
+            </Button>
+        </main>
+    );
 }

@@ -9,7 +9,7 @@ const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000
 
 export const EditUser = ({userName}) => {
     return (
-        <Form>
+        <Form >
             <Form.Group className="mb-3" controlId="formBasic">
                 <Form.Label>Nombre de Usuario</Form.Label>
                 <Form.Control type="email" placeholder= {userName} disabled />
@@ -26,7 +26,7 @@ export const EditUser = ({userName}) => {
                 <Form.Label>Repetir Nueva Contraseña</Form.Label>
                 <Form.Control type="password" placeholder="Contraseña" />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className='end-0' type="submit" style={{ backgroundColor: '#FEB06A' ,borderColor: '#FEB06A',  color:"#5D6C89"}}>
                 Guardar Cambios
             </Button>
         </Form>
