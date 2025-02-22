@@ -1,0 +1,78 @@
+/* Ocupa toda la pantalla */
+.user-profile {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Cabecera */
+  .profile-header {
+    width: 95vw;
+    text-align: center;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    background: #f8f8f8;
+  }
+  
+  /* Contenido principal */
+  .profile-content {
+    display: flex;
+    width: 95vw;
+    height: 100vh;
+    border: 1px solid #ccc;
+    background: white;
+  }
+  
+  /* Sidebar con botones */
+  .sidebar {
+    background: #f4f4f4;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .sidebar button {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .sidebar button:hover {
+    background: #ddd;
+  }
+  
+  /* Área principal */
+  .main-area {
+    flex-grow: 1;
+    background: white;
+  }
+  
+  /* Botón Volver al Menú */
+  .back-button {
+    width: 200px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  
+  .back-button:hover {
+    background: #ddd;
+  }
+  
