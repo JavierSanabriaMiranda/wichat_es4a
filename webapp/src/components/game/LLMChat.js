@@ -8,7 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 const LLMChat = () => {
 
     const [messages, setMessages] = useState([
-        <p className="llm-message">¡Hola! Soy el Wichat, ¿en qué puedo ayudarte?</p>
+        <p className="llm-message">¡Hola! Soy Wichat, ¿en qué puedo ayudarte?</p>
     ]);
     const [inputValue, setInputValue] = useState('');
 

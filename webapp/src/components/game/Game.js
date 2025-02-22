@@ -17,11 +17,16 @@ const Game = ({ questionTime }) => {
     const [image, setImage] = useState(null);
     const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
 
+    const onTimeUp = () => {
+        // TODO
+     }
 
-    const onTimeUp = () => { }
-
-    const addPoints = (pointsToAdd) => { 
+    const addPoints = (pointsToAdd) => {
         setPoints(points + pointsToAdd);
+    }
+
+    const passQuestion = () => {
+        // TODO
     }
 
     return (
@@ -47,6 +52,10 @@ const Game = ({ questionTime }) => {
             <aside className='llm-chat-aside'>
                 <LLMChat />
             </aside>
+            <div className="pass-button-div">
+                <button className="pass-button" onClick={passQuestion}>Siguiente</button>
+            </div>
+
         </main>
     )
 }
