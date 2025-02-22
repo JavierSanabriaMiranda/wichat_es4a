@@ -26,14 +26,13 @@
     height: 3em;
     font-size: 1.2em;
     border-radius: 3%;
-    background-color: #feb06a;
-    color: #606d87;
+    background-color: #5d6c89;
+    color: #fbf6f3;
     cursor: pointer;
 }
 
 .answer-button-not-answered:hover {
-    background-color: #f88c2e;
-    color: #fbf6f3;
+    background-color: #475a80;
 }
 
 .answer-button-correct-answer {
