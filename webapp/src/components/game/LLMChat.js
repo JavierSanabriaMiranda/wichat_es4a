@@ -46,8 +46,11 @@ const LLMChat = () => {
                 renderThumbVertical={props => (
                     <div {...props} style={{ backgroundColor: 'gray', borderRadius: '4px' }} />
                 )}
+                renderThumbHorizontal={props => (
+                    <div {...props} style={{ display: 'none' }} /> // Hide horizontal scrollbar
+                )}
             >
-                <div className="llm-chat-messages" >
+                <div className="llm-chat-messages"> 
                     {messages.map((msg, index) => (
                         <div key={index}>{msg}</div>
                     ))}
