@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import { useTranslation } from 'react-i18next';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
@@ -7,8 +8,10 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
  */
 const LLMChat = () => {
 
+    const { t } = useTranslation();
+
     const [messages, setMessages] = useState([
-        <p className="llm-message">¡Hola! Soy Wichat, ¿en qué puedo ayudarte?</p>
+        <p className="llm-message">{t('llm-chat-welcome-msg')}</p>
     ]);
     const [inputValue, setInputValue] = useState('');
 
@@ -61,7 +64,7 @@ const LLMChat = () => {
                     type="text"
                     name='prompt'
                     className="llm-chat-input"
-                    placeholder='¡Pídeme una pista!'
+                    placeholder={t('llm-chat-placeholder')}
                     value={inputValue}
                     onChange={handleInputChange}
                 />

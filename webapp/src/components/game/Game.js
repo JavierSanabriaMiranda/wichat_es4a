@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
 import LLMChat from './LLMChat';
@@ -15,6 +16,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * @returns 
  */
 const Game = ({ questionTime }) => {
+
+    const { t } = useTranslation();
 
     const [points, setPoints] = useState(0);
     const [image, setImage] = useState("/logo512.png");
@@ -107,25 +110,24 @@ const Game = ({ questionTime }) => {
                 <LLMChat />
             </aside>
             <div className="pass-button-div">
-                <button className="pass-button" onClick={passQuestion}>Siguiente</button>
+                <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
                 <button onClick={() => addPoints(100)}>Sumar puntos</button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>¿Estás seguro que deseas salir?</Modal.Title>
+                    <Modal.Title>{t('exit-confirm-msg-title')}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Si sales perderás el progreso de la partida en curso</Modal.Body>
+                <Modal.Body>{t('exit-confirm-msg-body')}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleCloseModal}>
-                        Cerrar
+                        {t('exit-confirm-msg-close')}
                     </Button>
                     <Button variant="danger" onClick={exitFromGame}>
-                        Salir
+                    {t('exit-confirm-msg-exit')}
                     </Button>
                 </Modal.Footer>
             </Modal>
-
         </main>
     )
 }

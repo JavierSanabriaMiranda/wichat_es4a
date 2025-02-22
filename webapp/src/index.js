@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
+import i18n from './i18n/i18next.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
