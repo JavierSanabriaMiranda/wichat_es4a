@@ -9,6 +9,7 @@ import Tab from 'react-bootstrap/Tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditUser } from './EditUser';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n/i18next.js';
 
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
