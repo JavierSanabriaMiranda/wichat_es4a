@@ -1,0 +1,11 @@
+{
+    "welcome-message": "Welcome ",
+    "edit-profile": "Edit Profile",
+    "game-history": "Game History",
+    "menu-button-text": "Back to Menu",
+    "user-name-edit": "Username",
+    "no-edit-permission": "Username cannot be changed.",
+    "password-edit": "Password",
+    "password-edit-confirm": "Confirm Password",
+    "save-changes-button": "Save Changes"
+}
