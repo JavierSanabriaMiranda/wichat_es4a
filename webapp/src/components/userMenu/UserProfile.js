@@ -8,17 +8,20 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditUser } from './EditUser';
+import { useTranslation } from 'react-i18next';
 
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const UserPofile = ({userName}) => {
 
+    const { t } = useTranslation();
+
     return (
         <main>
             {/* Cabecera */}
             <div className="w-95vw text-center p-3" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
-                <h2>Bienvenido/a <span className="fw-bold">{userName}</span></h2>
+                <h2>{t('welcome-message')} <span className="fw-bold">{userName}</span></h2>
             </div>
 
             {/* Contenedor principal con sidebar y contenido */}
@@ -28,10 +31,10 @@ export const UserPofile = ({userName}) => {
                     <Col sm={3} className="border-end p-3" style={{ backgroundColor: '#5D6C89' }}>
                         <Nav variant="pills" className="flex-column">
                             <Nav.Item>
-                                <Nav.Link eventKey="edit" style={{color: 'white'}}>Editar Perfil</Nav.Link>
+                                <Nav.Link eventKey="edit" style={{color: 'white'}}>{t('edit-profile')}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="history" style={{color: 'white'}}>Ver Historial de Partidas</Nav.Link>
+                                <Nav.Link eventKey="history" style={{color: 'white'}}>{t('game-history')}</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Col>
@@ -55,7 +58,7 @@ export const UserPofile = ({userName}) => {
             <Button size="lg" className="position-absolute bottom-0 end-0 m-3" 
                     style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89'
                     }}>
-                        Volver al Menú
+                        {t('menu-button-text')}
             </Button>
         </main>
     );

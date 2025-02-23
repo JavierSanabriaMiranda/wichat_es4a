@@ -4,8 +4,9 @@
     "game-history": "Game History",
     "menu-button-text": "Back to Menu",
     "user-name-edit": "Username",
-    "no-edit-permission": "Username cannot be changed.",
-    "password-edit": "Password",
+    "not-edit-permission": "Username cannot be changed.",
+    "password-edit": "New Password",
+    "password-placeholder": "Password",
     "password-edit-confirm": "Confirm Password",
     "save-changes-button": "Save Changes"
 }

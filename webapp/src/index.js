@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { UserPofile } from './components/userMenu/UserProfile';
+import i18n from './i18n/i18next.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/*<App /> */}
-    <UserPofile userName={"uo294420"} onSelectOption={"edit"}/>
+    <UserPofile userName={"uo294420"}/>
   </React.StrictMode>
 );
 

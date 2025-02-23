@@ -4,8 +4,9 @@
     "game-history": "Historial de Partidas",
     "menu-button-text": "Volver al Menú",
     "user-name-edit": "Nombre de Usuario",
-    "no-edit-permission": "No se puede modificar el nombre de usuario.",
-    "password-edit": "Contraseña",
+    "not-edit-permission": "No se puede modificar el nombre de usuario.",
+    "password-edit": "Nueva Contraseña",
+    "password-placeholder": "Contraseña",
     "password-edit-confirm": "Confirmar Contraseña",
     "save-changes-button": "Guardar Cambios"
 }
