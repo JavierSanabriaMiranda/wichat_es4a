@@ -1,37 +1,80 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
-== Architecture Decisions
+== Decisiones Arquitectónicas
 
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Contents
-Important, expensive, large scale or risky architecture decisions including rationales.
-With "decisions" we mean selecting one alternative based on given criteria.
+.Contenidos
+Decisiones arquitectónicas importantes, de riesgo, costosas o a gran escala incluyendo sus justificaciones.
+Con "decisiones" nos referimos a elegir una alternativa basada en criterios dados.
 
-Please use your judgement to decide whether an architectural decision should be documented
-here in this central section or whether you better document it locally
-(e.g. within the white box template of one building block).
+Por favor, usa tu juicio para decidir cuando una decisión arquitectónica debería ser documentada
+aqui en esta sección y cuando sería mejor documentarla de manera local 
+(por ejemplo, dentro de la plantilla de caja blanca de un bloque de construcción)
 
-Avoid redundancy. 
-Refer to section 4, where you already captured the most important decisions of your architecture.
+Evitar redundancia.
+Menciona la sección 4 donde ya se ha recogio las decisiones más importantes de la arquitectura
 
-.Motivation
-Stakeholders of your system should be able to comprehend and retrace your decisions.
+.Motivación
+Los Stakeholder de tu sistema deberían ser capaces de comprender y seguir el razonamiento detrás de tus decisiones
 
-.Form
-Various options:
+.Formato
+Varias opciones:
 
-* ADR (https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions[Documenting Architecture Decisions]) for every important decision
-* List or table, ordered by importance and consequences or:
-* more detailed in form of separate sections per decision
+* ADR (https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions[Documenting Architecture Decisions]) para cada decisión importante
+* Lista o tabla ordenada por importancia y consecuencias o:
+* mas detalle en secciones separadas por decisión
 
-.Further Information
+.Más Información
 
-See https://docs.arc42.org/section-9/[Architecture Decisions] in the arc42 documentation.
-There you will find links and examples about ADR.
-
+Ver https://docs.arc42.org/section-9/[Architecture Decisions] en la documentación arc42.
+Ahí encontrarás links y ejemplos sobre ADR
 ****
 endif::arc42help[]
+
+===  MongoDB como SGBD
+
+Fecha: 24-02-2025
+
+==== Estado
+Aceptado
+
+==== Contexto
+Necesitamos un sistema de gestión de bases de datos que nos aporte facilidad y rapidez 
+para trabajar con JavaScript.
+Nuestra base de datos a priori no va a tener una estructura muy compleja 
+
+==== Decisión
+Utilizaremos MongoDB como SGDB.
+
+MongoDB es un SGDB no relacional que tiene una fácil integración con JavaScript, sobre todo por medio de Node.js, siendo muy 
+utilizado en aplicaciones web que siguen la familia tecnológica MERN.
+
+Un SGDB SQL ofrecería mayor integridad referencial y transacciones ACID, lo que garantiza mayor consistencia en los datos. 
+Sin embargo, para nuestro caso de uso, priorizamos la flexibilidad de esquemas y la facilidad de escalar la base de datos 
+sin necesidad de modificaciones estructurales constantes. Además, las relaciones entre datos en nuestro modelo son relativamente simples, 
+por lo que no necesitamos la normalización estricta de un SGDB SQL
+
+Sumado a esto, Node.js dispone de la librería oficial Mongoose que aporta algo más de consistencia en 
+los datos (formatos, obligatoriedad...) sin llegar a imponer esquemas rígidos
+
+Nuestra base de datos manejará información de usuarios y su historial de partidas. 
+Dado que cada partida contiene preguntas y respuestas, una estructura flexible con documentos anidados 
+(arrays de preguntas por partida) facilitará el almacenamiento y consulta de estos datos. Además, la integración 
+con Node.js nos permitirá acceder a los datos de forma sencilla y eficiente.
+
+==== Consecuencias
+
+Al ser una base de datos NoSQL, no contamos con integridad referencial automática ni con restricciones como claves foráneas. 
+Esto puede aumentar el riesgo de inconsistencias o datos duplicados si no se aplican buenas prácticas en la capa de aplicación. 
+Sin embargo, podemos mitigar estos problemas usando Mongoose para definir validaciones y asegurarnos de que los datos cumplen 
+con ciertos criterios antes de ser almacenados
+
+Por otro lado, MondoDB nos permite poder modificar la estructura de la base
+de datos a medida que van avanzando las funcionalidades de la aplicación.
+
+A su vez podremos implementar la aplicación con un acceso cómodo y simple al propio SGDB gracias 
+a su buen funcionamiento con JavaScript
