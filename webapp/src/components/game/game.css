@@ -44,6 +44,20 @@
     color: white;
 }
 
+.answer-button-content {
+    position: relative;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.answer-icon {
+    position: absolute;
+    width: 10%;
+    height: auto;
+    right: 5%;
+}
+
 /* ===================== TIMER STYLE ===================== */
 
 .timer-div {

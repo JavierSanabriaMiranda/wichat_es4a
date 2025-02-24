@@ -21,7 +21,16 @@ const AnswerButton = ({answerText, isCorrectAnswer}) => {
 
     return (
         <button onClick={handleClick} className={buttonClassName} >
+            <div className="answer-button-content">
             {answerText}
+            {wasSelected && (
+                <img 
+                    src={isCorrectAnswer ? "/correct-icon.png" : "/wrong-icon.png"} 
+                    alt={isCorrectAnswer ? "Correct" : "Incorrect"} 
+                    className="answer-icon"
+                />
+            )}
+            </div>
         </button>
     )
 }
