@@ -13,15 +13,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * answers and chat with the LLM to ask for clues.
  * 
  * @param {Number} questionTime - The initial time in seconds to answer the question.
+ * @param {Array} answers - The array of answers with the text and if it is the correct answer.
+ * @param {Object} question - The object with the question and the image.
  * @returns 
  */
-const Game = ({ questionTime }) => {
+const Game = ({ questionTime, answers, question }) => {
 
     const { t } = useTranslation();
 
     const [points, setPoints] = useState(0);
-    const [image, setImage] = useState("/logo512.png");
-    const [question, setQuestion] = useState("¿Qué librería de desarrollo web es esta?");
     const [gameKey, setGameKey] = useState(0);
     const [pointsToAdd, setPointsToAdd] = useState(0);
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
@@ -93,17 +93,23 @@ const Game = ({ questionTime }) => {
                 </button>
             </div>
             <div className='game-question'>
-                <p>{question}</p>
+                <p>{question.text}</p>
             </div>
             <div className='div-question-img'>
-                <img className="question-img" src={image} ></img>
+                <img className="question-img" src={question.image} ></img>
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
-                    <AnswerButton answerText="React" isCorrectAnswer={true} />
-                    <AnswerButton answerText="JQuery" isCorrectAnswer={false} />
-                    <AnswerButton answerText="Angular" isCorrectAnswer={false} />
-                    <AnswerButton answerText="Bootstrap" isCorrectAnswer={false} />
+                    { /* Create the answerButtons */ }
+                    { /* Uses key to help React renderizing */}
+                    {answers.map((answer, index) => (
+                        <AnswerButton
+                            key={index} 
+                            answerText={answer.text}
+                            isCorrectAnswer={answer.isCorrect}
+                        />
+                    ))}
+                    
                 </div>
             </section>
             <aside className='llm-chat-aside'>
@@ -124,7 +130,7 @@ const Game = ({ questionTime }) => {
                         {t('exit-confirm-msg-close')}
                     </Button>
                     <Button variant="danger" onClick={exitFromGame}>
-                    {t('exit-confirm-msg-exit')}
+                        {t('exit-confirm-msg-exit')}
                     </Button>
                 </Modal.Footer>
             </Modal>

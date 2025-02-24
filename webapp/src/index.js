@@ -7,10 +7,36 @@ import reportWebVitals from './reportWebVitals';
 import i18n from './i18n/i18next.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const answers = [
+  {
+    text: "React",
+    isCorrect: true
+  },
+  {
+    text: "Angular",
+    isCorrect: false
+  },
+  {
+    text: "Vue",
+    isCorrect: false
+  },
+  {
+    text: "Svelte",
+    isCorrect: false
+  }
+];
+
+const question = {
+  text: "¿Qué librería web es esta?",
+  image: "/logo512.png"
+};
+
+
 root.render(
   <React.StrictMode>
     {/* <App /> */}
-    <Game questionTime={15}/>
+    <Game questionTime={15} answers={answers} question={question}/>
   </React.StrictMode>
 );
 
