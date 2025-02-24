@@ -15,7 +15,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * @param {Number} questionTime - The initial time in seconds to answer the question.
  * @param {Array} answers - The array of answers with the text and if it is the correct answer.
  * @param {Object} question - The object with the question and the image.
- * @returns 
+ * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
 const Game = ({ questionTime, answers, question }) => {
 

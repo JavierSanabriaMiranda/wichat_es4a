@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
- * @returns 
+ * @returns a chat with the LLM to ask for clues.
  */
 const LLMChat = () => {
 

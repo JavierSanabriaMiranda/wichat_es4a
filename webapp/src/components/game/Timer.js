@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react';
  * React component to represent a timer whose time is decremented every second.
  * @param {Number} initialTime - The initial time in seconds.
  * @param {Function} onTimeUp - A callback function to be executed when the time reaches 0.
+ * @returns A timer that decrements the time every second.
  */
 const Timer = ({initialTime, onTimeUp}) => {
 
