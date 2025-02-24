@@ -117,7 +117,6 @@ const Game = ({ questionTime, answers, question }) => {
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
-                <button onClick={() => addPoints(100)}>Sumar puntos</button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
