@@ -14,5 +14,12 @@
     "password-update-success": "Contraseña actualizada con éxito.",
     "password-update-failure": "Error al actualizar la contraseña.",
     "close-button-text": "Cerrar",
-    "modal-title-edit-profile": "Editar Perfil"
+    "modal-title-edit-profile": "Editar Perfil",
+    "pass-button-text": "Siguiente",
+    "llm-chat-welcome-msg": "¡Hola! Soy Wichat, ¿en qué puedo ayudarte?",
+    "llm-chat-placeholder": "¡Pídeme una pista!",
+    "exit-confirm-msg-title": "¿Estás seguro que deseas salir?",
+    "exit-confirm-msg-body": "Si sales perderás el progreso de la partida en curso",
+    "exit-confirm-msg-exit": "Salir",
+    "exit-confirm-msg-close": "Cerrar"
 }
