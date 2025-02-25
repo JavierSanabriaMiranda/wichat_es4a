@@ -8,5 +8,9 @@
     "password-edit": "Nueva Contraseña",
     "password-placeholder": "Contraseña",
     "password-edit-confirm": "Confirmar Contraseña",
-    "save-changes-button": "Guardar Cambios"
+    "save-changes-button": "Guardar Cambios",
+    "password-mismatch-error": "Las contraseñas no coinciden.",
+    "empty-fields-error": "Por favro, rellene todos los campos.",
+    "password-update-success": "Contraseña actualizada con éxito.",
+    "password-update-failure": "Error al actualizar la contraseña."
 }
