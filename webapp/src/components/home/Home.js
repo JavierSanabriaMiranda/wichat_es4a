@@ -5,11 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { VscAccount } from "react-icons/vsc";
 import { VscArrowRight } from "react-icons/vsc";
 import Configuration from "./Configuration";
+import { useTranslation } from 'react-i18next';
 
 
 
 const Home = () => {
   const [showConfig, setShowConfig] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center vh-100 bg-white">
@@ -24,7 +26,7 @@ const Home = () => {
                 <Dropdown.Item>Inglés</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          <Nav.Link href="#" style={{ fontSize: "20px"}}>Reglas</Nav.Link>
+          <Nav.Link href="#" style={{ fontSize: "20px"}}>{t('rules-menu')}</Nav.Link>
           <Nav.Link href="#">
               <VscAccount size={30}/>
           </Nav.Link>
