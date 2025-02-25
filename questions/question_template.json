@@ -19,26 +19,62 @@
         "topics": ["geography", "image"],
         "query": "SELECT ?countryLabel ?capitalLabel ?capitalImage WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P36 ?capital. ?capital wdt:P18 ?capitalImage. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } }",
         "imageurl": "<capitalImage>"
+    },  
+    {
+        "question": "¿Qué equipo de fútbol es este? <clubLabel>",
+        "selector": "<clubLabel>",
+        "topics": ["sports"],
+        "query": "SELECT ?club ?clubLabel ?logo WHERE { ?club wdt:P31 wd:Q476028; wdt:P154 ?logo. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } }",
+        "imageurl": "<logo>"
     },
     {
-        "question": "¿Quién es la persona histórica que aparece en esta foto: <personLabel>?",
+        "question": "¿Quién es el jugador de fútbol en esta imagen? <personaLabel>",
+        "selector": "<personaLabel>",
+        "topics": ["sports"],
+        "query": "SELECT ?persona ?personaLabel ?imagen WHERE { ?persona wdt:P31 wd:Q5; wdt:P106 wd:Q937857; OPTIONAL { ?persona wdt:P18 ?imagen. } SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 10",
+        "imageurl": "<imagen>"
+    },
+    {
+        "question": "¿Quién es el jugador de fútbol en esta imagen? <playerLabel>",
+        "selector": "<playerLabel>",
+        "topics": ["sports"],
+        "query": "SELECT ?player ?playerLabel ?image WHERE { ?player wdt:P106 wd:Q937857; ?player wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 10",
+        "imageurl": "<image>"
+    },
+    {
+        "question": "¿En qué estadio deportivo fue tomada esta imagen? <stadiumLabel>",
+        "selector": "<stadiumLabel>",
+        "topics": ["sports"],
+        "query": "SELECT ?stadium ?stadiumLabel ?image WHERE { ?stadium wdt:P31 wd:Q483110; ?stadium wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 10",
+        "imageurl": "<image>"
+    },
+    {
+        "question": "¿Quién es esta persona histórica? <personLabel>",
         "selector": "<personLabel>",
         "topics": ["history"],
-        "query": "SELECT ?personLabel ?image WHERE { ?person wdt:P31 wd:Q5. ?person wdt:P570 ?deathDate. ?person wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } }",
+        "query": "SELECT ?person ?personLabel ?image WHERE { ?person wdt:P31 wd:Q5; wdt:P18 ?image; wdt:P106 ?occupation. ?occupation wdt:P279* wd:Q82955. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 10",
         "imageurl": "<image>"
     },
     {
-        "question": "¿En qué fecha ocurrió este acontecimiento histórico?",
-        "selector": "<eventLabel>",
-        "topics": ["history", "image"],
-        "query": "SELECT ?eventLabel ?date ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P585 ?date. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } }",
+        "question": "¿A qué monumento histórico pertenece esta imagen? <monumentLabel>",
+        "selector": "<monumentLabel>",
+        "topics": ["history"],
+        "query": "SELECT ?monument ?monumentLabel ?image WHERE { ?monument wdt:P31 wd:Q4989906; ?monument wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 25",
         "imageurl": "<image>"
     },
     {
-        "question": "¿Dónde ocurrió este acontecimiento histórico?",
-        "selector": "<eventLabel>",
-        "topics": ["history", "location", "image"],
-        "query": "SELECT ?eventLabel ?locationLabel ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P276 ?location. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } }",
+        "question": "¿Qué museo histórico es este? <museumLabel>",
+        "selector": "<museumLabel>",
+        "topics": ["history"],
+        "query": "SELECT ?museum ?museumLabel ?image WHERE { ?museum wdt:P31 wd:Q33506; ?museum wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 10",
+        "imageurl": "<image>"
+    },
+    {
+        "question": "¿En qué sitio arqueológico fue tomada esta imagen? <siteLabel>",
+        "selector": "<siteLabel>",
+        "topics": ["history"],
+        "query": "SELECT ?site ?siteLabel ?image WHERE { ?site wdt:P31 wd:Q839954; ?site wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\". } } LIMIT 10",
         "imageurl": "<image>"
     }
 ]
+
