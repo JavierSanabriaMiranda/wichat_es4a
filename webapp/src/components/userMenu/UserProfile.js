@@ -26,8 +26,8 @@ export const UserPofile = ({userName}) => {
             </div>
 
             {/* Contenedor principal con sidebar y contenido */}
-            <Tab.Container className="w-95vw" id="main-container" defaultActiveKey="edit">
-                <Row className="w-95vw border mt-3">
+            <Tab.Container id="main-container" defaultActiveKey="edit">
+                <Row className="border mt-3 mx-0">
                     {/* Sidebar */}
                     <Col sm={3} className="border-end p-3" style={{ backgroundColor: '#5D6C89' }}>
                         <Nav variant="pills" className="flex-column">
