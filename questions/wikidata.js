@@ -40,6 +40,29 @@ async function fetchSPARQL(query) {
   return data.results.bindings;
 }
 
+//Función para obtner la pregunta y la respuesta
+export async function obtenerPreguntaYRespuesta() {
+  try {
+    const templates = loadQuestionTemplates();  // Cargamos las plantillas desde el archivo
+
+    const randomTemplate = templates[Math.floor(Math.random() * templates.length)]; // Seleccionamos una plantilla aleatoria
+    console.log(`Plantilla seleccionada: ${randomTemplate.question}`);
+
+    const query = randomTemplate.query;  // Obtenemos la consulta SPARQL de la plantilla seleccionada
+
+    const results = await fetchSPARQL(query);
+    
+    return {
+      pregunta: randomTemplate.question,
+      respuesta: result[randomTemplate.selector].value,
+      respuestasFalsasa: ["Resp1", "Resp2", "Resp3"]
+    };
+  } catch (error) {
+    console.error("Error ejecutando el script:", error);
+  }
+}
+
+
 // Función principal
 async function main() {
   try {
