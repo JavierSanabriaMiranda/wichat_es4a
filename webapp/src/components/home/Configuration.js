@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { Button, Dropdown, Container } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { red } from "@mui/material/colors";
+import { GoXCircle } from "react-icons/go";
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
   const [time, setTime] = useState(120);
 
+  const handleClose = () => {
+    onClose();  
+  };
+
   return (
     <div className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50">
-      <div className="bg-white p-4 rounded shadow-lg text-center position-relative" style={{ width: "300px" }}>
-        <button
-          onClick={onClose}
-          className="text-danger fs-4 position-absolute top-0 start-0 m-2 border-0 bg-transparent"
-        >✖</button>
-        <h2 className="mb-3">Configuración de la Partida</h2>
+      <div className="bg-white p-4 rounded shadow-lg text-center position-relative" style={{ width: "325px" }}>
+      <GoXCircle 
+        onClick={handleClose} 
+        style={{
+          position: 'absolute', 
+          top: '10px',           
+          left: '10px',          
+          color: 'red',          
+          fontSize: '30px',      
+          cursor: 'pointer'     
+        }} 
+      />
+        <h2 className="mb-3">Configuración de la Partida </h2>
         <div className="mb-3 d-flex align-items-center justify-content-between">
           <label className="me-2">Número de Preguntas:</label>
           <Dropdown onSelect={(value) => setQuestions(Number(value))}>

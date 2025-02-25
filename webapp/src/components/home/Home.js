@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Dropdown } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { VscAccount } from "react-icons/vsc";
 import { VscArrowRight } from "react-icons/vsc";
 import Configuration from "./Configuration";
+
+
 
 const Home = () => {
   const [showConfig, setShowConfig] = useState(false);
@@ -15,8 +17,14 @@ const Home = () => {
       <Navbar bg="light" expand="lg" fixed="top" className="w-100">
         <Container>
           <Nav className="ms-auto">
-          <Nav.Link href="#" style={{ fontSize: "20px" }}>Idioma</Nav.Link>
-          <Nav.Link href="#" style={{ fontSize: "20px" }}>Reglas</Nav.Link>
+          <Dropdown align="end">
+          <Dropdown.Toggle variant="link" id="dropdown-language" style={{ fontSize: "20px",color: "rgb(0 0 0 / 65%)", textDecoration: "none" }}>Idioma</Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item>Español</Dropdown.Item>
+                <Dropdown.Item>Inglés</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          <Nav.Link href="#" style={{ fontSize: "20px"}}>Reglas</Nav.Link>
           <Nav.Link href="#">
               <VscAccount size={30}/>
           </Nav.Link>
