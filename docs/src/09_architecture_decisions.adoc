@@ -16,7 +16,7 @@ aqui en esta sección y cuando sería mejor documentarla de manera local
 (por ejemplo, dentro de la plantilla de caja blanca de un bloque de construcción)
 
 Evitar redundancia.
-Menciona la sección 4 donde ya se ha recogio las decisiones más importantes de la arquitectura
+Menciona la sección 4 donde ya se han recogido las decisiones más importantes de la arquitectura
 
 .Motivación
 Los Stakeholder de tu sistema deberían ser capaces de comprender y seguir el razonamiento detrás de tus decisiones
