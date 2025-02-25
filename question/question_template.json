@@ -1,0 +1,81 @@
+[
+    {
+        "question": "¿A qué país pertenece esta bandera: <in>?",
+        "selector": "<in>",
+        "topics": ["flag"],
+        "query": "SELECT ?name ?image WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P41 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?country rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿A qué país pertenece este contorno: <in>?",
+        "selector": "<in>",
+        "topics": ["geography", "map"],
+        "query": "SELECT ?name ?image WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?country rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Cuál es la capital de este país: <in>?",
+        "selector": "<in>",
+        "topics": ["geography", "image"],
+        "query": "SELECT ?name ?image WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P36 ?capital. ?capital wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?capital rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Quién es la persona histórica que aparece en esta foto: <in>?",
+        "selector": "<in>",
+        "topics": ["history"],
+        "query": "SELECT ?name ?image WHERE { ?person wdt:P31 wd:Q5. ?person wdt:P570 ?deathDate. ?person wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?person rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿En qué fecha ocurrió este acontecimiento histórico: <in>?",
+        "selector": "<in>",
+        "topics": ["history", "image"],
+        "query": "SELECT ?name ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P585 ?date. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?event rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Dónde ocurrió este acontecimiento histórico: <in>?",
+        "selector": "<in>",
+        "topics": ["history", "location", "image"],
+        "query": "SELECT ?name ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P276 ?location. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?event rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Cuál es el nombre del animal: <in>?",
+        "selector": "<in>",
+        "topics": ["science", "image"],
+        "query": "SELECT ?name ?image WHERE { ?animal wdt:P225 ?name. ?animal wdt:P171 ?taxon. ?animal wdt:P18 ?image.} LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Cuál es el nombre del deporte: <in>?",
+        "selector": "<in>",
+        "topics": ["sports", "image"],
+        "query": "SELECT ?name ?image WHERE { ?deporte wdt:P31 wd:Q349. ?deporte wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language 'es,en'. ?deporte rdfs:label ?name. } } LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Cuál es el nombre de la planta: <in>?",
+        "selector": "<in>",
+        "topics": ["science", "image"],
+        "query": "SELECT ?name ?image WHERE { ?planta wdt:P225 ?name. ?planta wdt:P18 ?image. ?planta wdt:P5037 ?value.} LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    },
+
+    {
+        "question": "¿Cuál es el nombre del fenómeno natural: <in>?",
+        "selector": "<in>",
+        "topics": ["science", "image"],
+        "query": "SELECT ?name ?image WHERE { ?fenomeno wdt:P10260 ?value. ?fenomeno rdfs:label ?name. ?fenomeno wdt:P18 ?image.} LIMIT 1 OFFSET ",
+        "imageurl": "<image>"
+    }
+]
