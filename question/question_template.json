@@ -14,7 +14,6 @@
         "query": "SELECT ?name ?image WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?country rdfs:label ?name. } } LIMIT 1 OFFSET ",
         "imageurl": "<image>"
     },
-
     {
         "question": "¿Cuál es la capital de este país: <in>?",
         "selector": "<in>",
@@ -30,7 +29,6 @@
         "query": "SELECT ?name ?image WHERE { ?person wdt:P31 wd:Q5. ?person wdt:P570 ?deathDate. ?person wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?person rdfs:label ?name. } } LIMIT 1 OFFSET ",
         "imageurl": "<image>"
     },
-
     {
         "question": "¿En qué fecha ocurrió este acontecimiento histórico: <in>?",
         "selector": "<in>",
@@ -46,7 +44,6 @@
         "query": "SELECT ?name ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P276 ?location. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". ?event rdfs:label ?name. } } LIMIT 1 OFFSET ",
         "imageurl": "<image>"
     },
-
     {
         "question": "¿Cuál es el nombre del animal: <in>?",
         "selector": "<in>",
@@ -62,7 +59,6 @@
         "query": "SELECT ?name ?image WHERE { ?deporte wdt:P31 wd:Q349. ?deporte wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language 'es,en'. ?deporte rdfs:label ?name. } } LIMIT 1 OFFSET ",
         "imageurl": "<image>"
     },
-
     {
         "question": "¿Cuál es el nombre de la planta: <in>?",
         "selector": "<in>",
@@ -70,7 +66,6 @@
         "query": "SELECT ?name ?image WHERE { ?planta wdt:P225 ?name. ?planta wdt:P18 ?image. ?planta wdt:P5037 ?value.} LIMIT 1 OFFSET ",
         "imageurl": "<image>"
     },
-
     {
         "question": "¿Cuál es el nombre del fenómeno natural: <in>?",
         "selector": "<in>",
