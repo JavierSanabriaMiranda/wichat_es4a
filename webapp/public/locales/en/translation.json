@@ -1,0 +1,9 @@
+{
+    "pass-button-text": "Pass",
+    "llm-chat-welcome-msg": "Hi! Im Wichat, can I help you with something?",
+    "llm-chat-placeholder": "Ask me for a clue!",
+    "exit-confirm-msg-title": "Are you sure you want to exit?",
+    "exit-confirm-msg-body": "You will lose your progress in this game.",
+    "exit-confirm-msg-exit": "Exit",
+    "exit-confirm-msg-close": "Close"
+}
