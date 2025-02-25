@@ -12,5 +12,7 @@
     "password-mismatch-error": "Las contraseñas no coinciden.",
     "empty-fields-error": "Por favro, rellene todos los campos.",
     "password-update-success": "Contraseña actualizada con éxito.",
-    "password-update-failure": "Error al actualizar la contraseña."
+    "password-update-failure": "Error al actualizar la contraseña.",
+    "close-button-text": "Cerrar",
+    "modal-title-edit-profile": "Editar Perfil"
 }

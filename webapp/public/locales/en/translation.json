@@ -12,5 +12,7 @@
     "password-mismatch-error": "Passwords do not match.",
     "empty-fields-error": "Please fill in all fields.",
     "password-update-success": "Password updated successfully.",
-    "password-update-failure": "Password update failed."
+    "password-update-failure": "Password update failed.",
+    "close-button-text": "Close",
+    "modal-title-edit-profile": "Edit Profile"
 }
