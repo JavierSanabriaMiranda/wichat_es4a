@@ -1,74 +1,77 @@
 [
     {
-        "question": "¿A qué país pertenece esta bandera: <in>?",
-        "selector": "<in>",
+        "question": "¿A qué país pertenece esta bandera: <input>?",
+        "selector": "<input>",
         "topics": ["geography"],
-        "query": "SELECT ?in ?flagLabel ?flag WHERE { ?in wdt:P31 wd:Q6256. ?country wdt:P41 ?flag. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "imageurl": "<output>"
     },
 
     {
-        "question": "¿A qué país pertenece este contorno: <in>?",
-        "selector": "<in>",
-        "topics": ["geography", "map"],
-        "query": "SELECT ?in ?contour WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P18 ?contour. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿A qué país pertenece este contorno: <input>?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "imageurl": "<output>"
     },
-    
     {
-        "question": "¿Cuál es la capital de este país: <in>?",
-        "selector": "<in>",
-        "topics": ["geography", "image"],
-        "query": "SELECT ?in ?capitalLabel ?capitalImage WHERE { ?country wdt:P31 wd:Q6256. ?country wdt:P36 ?capital. ?capital wdt:P18 ?capitalImage. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿Cuál es la capital de este país: <input>?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "imageurl": "<output>"
     },
-
     {
-        "question": "¿Quién es la persona histórica que aparece en esta foto: <in>?",
-        "selector": "<in>",
+        "question": "¿En qué sitio arqueológico fue tomada esta imagen? <input>",
+        "selector": "<input>",
         "topics": ["history"],
-        "query": "SELECT ?in ?image WHERE { ?person wdt:P31 wd:Q5. ?person wdt:P570 ?deathDate. ?person wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
-    },
-    
-    {
-        "question": "¿En qué fecha ocurrió este acontecimiento histórico: <in>?",
-        "selector": "<in>",
-        "topics": ["history", "image"],
-        "query": "SELECT ?in ?date ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P585 ?date. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') } ",
+        "imageurl": "<output>"
     },
 
     {
-        "question": "¿Dónde ocurrió este acontecimiento histórico: <in>?",
-        "selector": "<in>",
-        "topics": ["history", "location", "image"],
-        "query": "SELECT ?in ?locationLabel ?image WHERE { ?event wdt:P31 wd:Q1190554. ?event wdt:P276 ?location. ?event wdt:P18 ?image. SERVICE wikibase:label { bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],es\". } } LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿Quién es esta persona histórica? <input>",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5. ?entity wdt:P18 ?image. ?entity wdt:P106 ?occupation. ?occupation wdt:P279* wd:Q82955. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') } ",
+        "imageurl": "<output>"
     },
-
-    
     {
-        "question": "¿Cuál es el nombre del animal: <in>?",
-        "selector": "<in>",
-        "topics": ["science", "image"],
-        "query": "SELECT ?animal ?nombre_cientifico ?image WHERE { ?animal wdt:P225 ?nombre_cientifico. ?animal wdt:P171 ?taxon. ?animal wdt:P18 ?image.} LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿A qué monumento histórico pertenece esta imagen? <input>",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q4989906. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') } ",
+        "imageurl": "<output>"
     },
-    
     {
-        "question": "¿Cuál es el nombre de la planta: <in>?",
-        "selector": "<in>",
-        "topics": ["science", "image"],
-        "query": "SELECT ?planta ?nombre_cientifico ?image WHERE { ?planta wdt:P225 ?nombre_cientifico. ?planta wdt:P18 ?image. ?planta wdt:P5037 ?value.} LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿Qué museo histórico es este? <input>",
+        "selector": "<input>",
+        "topics": ["historyy"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q33506. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') } ",
+        "imageurl": "<output>"
     },
     
     {
-        "question": "¿Cuál es el nombre del fenómeno natural: <in>?",
-        "selector": "<in>",
-        "topics": ["science", "image"],
-        "query": "SELECT ?fenomeno ?nombre ?image WHERE { ?fenomeno wdt:P10260 ?value. ?fenomeno rdfs:label ?nombre. ?fenomeno wdt:P18 ?image.} LIMIT 1 OFFSET ",
-        "imageurl": "<out>"
+        "question": "¿Cuál es el nombre del animal: <input>?",
+        "selector": "<input>",
+        "topics": ["science"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P171 ?taxon. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "imageurl": "<output>"
+    },
+    
+    {
+        "question": "¿Cuál es el nombre de la planta: <input>?",
+        "selector": "<input>",
+        "topics": ["science"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P18 ?image. ?entity wdt:P5037 ?value. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "imageurl": "<output>"
+    },
+    
+    {
+        "question": "¿Qué alimento es este: <input>?",
+        "selector": "<input>",
+        "topics": ["sciencee"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q2095. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
+        "imageurl": "<output>"
     }
 ]

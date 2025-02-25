@@ -42,8 +42,9 @@ function loadQuestionTemplatesWithTopic(topic) {
 }
 
 async function executeQuery(query) {
-  const offset = Math.floor(Math.random() * 100);
-  query += offset;
+  const offset = Math.floor(Math.random() * 100); // Generar un desplazamiento aleatorio
+  const finalQuery = query + `LIMIT 100 OFFSET ${offset}`;
+  console.log("Consulta generada:", finalQuery);
 
   const response = await fetch(url, {
     method: "POST",
@@ -51,7 +52,7 @@ async function executeQuery(query) {
       "Content-Type": "application/sparql-query",
       "Accept": "application/json"
     },
-    body: query
+    body: finalQuery
   });
 
   if (!response.ok) {
@@ -59,25 +60,47 @@ async function executeQuery(query) {
   }
 
   const data = await response.json();
-  return data.results.bindings;
+  const allResults = data.results.bindings;
+
+  const uniqueResults = [];
+  const seenValues = new Set();
+
+  for (const result of allResults) {
+    const answerKey = "label"; 
+    if (result[answerKey]?.value && !seenValues.has(result[answerKey].value)) {
+      seenValues.add(result[answerKey].value);
+      uniqueResults.push(result);
+    }
+    // Paramos cuando tengamos 4 respuestas únicas
+    if (uniqueResults.length == 4) break; 
+  }
+
+  return uniqueResults;
 }
 
 async function main(topic) {
   try {
-    const templates = loadQuestionTemplatesWithTopic(topic) //cogemos solo las plantillas que pasen por el filtrado de topic
+    const templates = loadQuestionTemplatesWithTopic(topic); // Filtramos las plantillas por el tema
 
-    const randomTemplate = templates[Math.floor(Math.random() * templates.length)]; //seleccionamos una plantilla aleatoria
+    const randomTemplate = templates[Math.floor(Math.random() * templates.length)]; // Seleccionamos una plantilla aleatoria
     console.log(`Plantilla seleccionada: ${randomTemplate.question}`);
 
-    const query = randomTemplate.query;  //obtenemos la consulta SPARQL de la plantilla seleccionada
+    const query = randomTemplate.query;  
 
     const results = await executeQuery(query);
-    results.forEach((item) => {
-      console.log(`Datos obtenidos: ${JSON.stringify(item, null, 2)}`);
-    });
+
+    // Comprobar si results contiene datos antes de imprimir
+    if (results.length > 0) {
+      results.forEach((item) => {
+        console.log(`Datos obtenidos: ${JSON.stringify(item, null, 2)}`);
+      });
+    }else{
+      console.log("nun hay datos")
+    }
+
   } catch (error) {
     console.error("Error ejecutando el script:", error);
   }
 }
 
-main("history").catch(console.error);
+main("sciencee").catch(console.error);
