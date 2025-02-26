@@ -42,6 +42,7 @@ const gameHistory = [
     "date": "15/02/25",
     "questions": [
       {
+        "topic": "Tecnología",
         "imageUrl": "/logo512.png",
         "answers": [
           { "text": "Respuesta 1", "isCorrect": false },
@@ -51,6 +52,7 @@ const gameHistory = [
         ]
       },
       {
+        "topic": "Tecnología",
         "imageUrl": "/logo512.png",
         "answers": [
           { "text": "Respuesta A", "isCorrect": false },
@@ -68,6 +70,7 @@ const gameHistory = [
     "date": "12/02/25",
     "questions": [
       {
+        "topic": "Tecnología",
         "imageUrl": "/logo512.png",
         "answers": [
           { "text": "Opción 1", "isCorrect": true },
@@ -84,7 +87,7 @@ const gameHistory = [
 root.render(
   <React.StrictMode>
     {/*<App /> */}
-    <UserPofile userName={"uo294420"} numberOfGamesPlayed={5}/>
+    <UserPofile userName={"uo294420"} gameHistory= {gameHistory}/>
   </React.StrictMode>
 );
 

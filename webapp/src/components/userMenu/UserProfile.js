@@ -10,13 +10,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditUser } from './EditUser';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18next.js';
+import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
+import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserPofile = ({userName}) => {
+export const UserPofile = ({userName, gameHistory}) => {
 
     const { t } = useTranslation();
+    const [selectedGame, setSelectedGame] = useState(null);
 
     return (
         <main>
@@ -47,8 +50,23 @@ export const UserPofile = ({userName}) => {
                                 <EditUser userName={userName} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="history">
-                                <h5>Historial de Partidas</h5>
-                                <p>Aquí se mostraría el historial...</p>
+                                <h5>Partidas Recientes</h5>
+                                {gameHistory.map((game, index) => (
+                                    <GameHistoryButton 
+                                        key={index}
+                                        points={game.points}
+                                        correctAnswers={game.correctAnswers}
+                                        date={game.date}
+                                        onClick={() => setSelectedGame(game)}
+                                    />
+                                ))}
+
+                                {selectedGame && (
+                                    <>
+                                        <h5 className="mt-4">Detalles de la Partida</h5>
+                                        <QuestionAccordion questions={selectedGame.questions} />
+                                    </>
+                                )}
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>
