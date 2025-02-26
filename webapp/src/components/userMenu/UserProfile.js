@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Typography, TextField, Snackbar, Box} from '@mui/material';
+import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
@@ -16,8 +16,7 @@ import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserPofile = ({userName, gameHistory}) => {
-
+export const UserPofile = ({ userName, gameHistory }) => {
     const { t } = useTranslation();
     const [selectedGame, setSelectedGame] = useState(null);
 
@@ -35,10 +34,10 @@ export const UserPofile = ({userName, gameHistory}) => {
                     <Col sm={3} className="border-end p-3" style={{ backgroundColor: '#5D6C89' }}>
                         <Nav variant="pills" className="flex-column">
                             <Nav.Item>
-                                <Nav.Link eventKey="edit" style={{color: 'white'}}>{t('edit-profile')}</Nav.Link>
+                                <Nav.Link eventKey="edit" style={{ color: 'white' }}>{t('edit-profile')}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="history" style={{color: 'white'}}>{t('game-history')}</Nav.Link>
+                                <Nav.Link eventKey="history" style={{ color: 'white' }}>{t('game-history')}</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Col>
@@ -50,25 +49,36 @@ export const UserPofile = ({userName, gameHistory}) => {
                                 <EditUser userName={userName} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="history">
-                                <h5>Partidas Recientes</h5>
-                                <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-                                {gameHistory.map((game, index) => (
-                                    <GameHistoryButton 
-                                        key={index}
-                                        points={game.points}
-                                        correctAnswers={game.correctAnswers}
-                                        date={game.date}
-                                        onClick={() => setSelectedGame(game)}
-                                    />
-                                ))}
-                                </div>
-                                <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-                                {selectedGame && (
-                                    <>
-                                        <h5 className="mt-4">Detalles de la Partida</h5>
-                                        <QuestionAccordion questions={selectedGame.questions} />
-                                    </>
-                                )}
+                            <div style={{ maxHeight: '70vh', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                                    {!selectedGame ? (
+                                        //Mostrar la lista de partidas si NO hay partida seleccionada
+                                        <>
+                                            <h5>Partidas Recientes</h5>
+                                                {gameHistory.map((game, index) => (
+                                                    <GameHistoryButton
+                                                        key={index}
+                                                        points={game.points}
+                                                        correctAnswers={game.correctAnswers}
+                                                        date={game.date}
+                                                        onClick={() => setSelectedGame(game)}
+                                                    />
+                                                ))}
+                                        </>
+                                    ) : (
+                                        // Mostrar detalles de la partida si hay una partida seleccionada
+                                        <>
+                                            <h5 className="mt-4">Detalles de la Partida</h5>
+                                            <QuestionAccordion questions={selectedGame.questions} />
+                                            {/* Botón para volver a la lista de partidas */}
+                                            <Button
+                                                className="mt-3"
+                                                style={{ backgroundColor: '#5D6C89', color: '#FEB06A', borderColor: '#5D6C89' }}
+                                                onClick={() => setSelectedGame(null)}
+                                            >
+                                                {t('back-button-text')}
+                                            </Button>
+                                        </>
+                                    )}
                                 </div>
                             </Tab.Pane>
                         </Tab.Content>
@@ -77,11 +87,13 @@ export const UserPofile = ({userName, gameHistory}) => {
             </Tab.Container>
 
             {/* Botón Volver al Menú */}
-            <Button size="lg" className="position-absolute bottom-0 end-0 m-3" 
-                    style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89'
-                    }}>
-                        {t('menu-button-text')}
+            <Button
+                size="lg"
+                className="position-absolute bottom-0 end-0 m-3"
+                style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}
+            >
+                {t('menu-button-text')}
             </Button>
         </main>
     );
-}
+};
