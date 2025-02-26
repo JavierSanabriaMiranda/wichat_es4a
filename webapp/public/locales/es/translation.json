@@ -6,5 +6,14 @@
     "welcome-home":"Bienvenido a",
     "hello-home": "Holaaa",
     "quickGame-home": "Partida Rápida",
-    "chaosMode-home": "Modo Caos"
+    "chaosMode-home": "Modo Caos",
+    "title-configuration": "Configuración de la partida",
+    "numberQuestions-configuration": "Número de preguntas:",
+    "time-configuration": "Tiempo:",
+    "play-configuration":"Jugar",
+    "history-configuration":"Historia",
+    "science-configuration":"Ciencia",
+    "art-configuration":"Arte",
+    "sport-configuration":"Deportes",
+    "geography-configuration":"Geografía"
 }

@@ -3,10 +3,14 @@ import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { red } from "@mui/material/colors";
 import { GoXCircle } from "react-icons/go";
+import { useTranslation } from "react-i18next";
+import i18n from "../../i18n/i18next";
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
   const [time, setTime] = useState(120);
+
+  const { t } = useTranslation();
 
   const handleClose = () => {
     onClose();  
@@ -26,9 +30,9 @@ const Configuration = ({ onClose }) => {
           cursor: 'pointer'     
         }} 
       />
-        <h2 className="mb-3">Configuración de la Partida </h2>
+        <h2 className="mb-3">{t("title-configuration")}</h2>
         <div className="mb-3 d-flex align-items-center justify-content-between">
-          <label className="me-2">Número de Preguntas:</label>
+          <label className="me-2">{t("numberQuestions-configuration")}</label>
           <Dropdown onSelect={(value) => setQuestions(Number(value))}>
             <Dropdown.Toggle variant="light">{questions}</Dropdown.Toggle>
             <Dropdown.Menu>
@@ -39,7 +43,7 @@ const Configuration = ({ onClose }) => {
           </Dropdown>
         </div>
         <div className="mb-3 d-flex align-items-center justify-content-between">
-          <label className="me-2">Tiempo:</label>
+          <label className="me-2">{t("time-configuration")}</label>
           <Dropdown onSelect={(value) => setTime(Number(value))}>
             <Dropdown.Toggle variant="light">{time}s</Dropdown.Toggle>
             <Dropdown.Menu>
@@ -52,14 +56,14 @@ const Configuration = ({ onClose }) => {
         <div className="mb-3">
           <label className="d-block">Topics</label>
           <div className="d-flex flex-wrap justify-content-center gap-2">
-          <Button className="px-3 py-1 text-white" style={{ backgroundColor: "purple", border: "none", fontSize: "0.8rem" }}>Historia</Button>
-            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "green", border: "none", fontSize: "0.8rem" }}>Ciencia</Button>
-            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "red", border: "none", fontSize: "0.8rem" }}>Arte</Button>
-            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "orange", border: "none", fontSize: "0.8rem" }}>Deportes</Button>
-            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "blue", border: "none", fontSize: "0.8rem" }}>Geografía</Button>
+          <Button className="px-3 py-1 text-white" style={{ backgroundColor: "purple", border: "none", fontSize: "0.8rem" }}>{t("history-configuration")}</Button>
+            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "green", border: "none", fontSize: "0.8rem" }}>{t("science-configuration")}</Button>
+            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "red", border: "none", fontSize: "0.8rem" }}>{t("art-configuration")}</Button>
+            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "orange", border: "none", fontSize: "0.8rem" }}>{t("sport-configuration")}</Button>
+            <Button className="px-3 py-1 text-white" style={{ backgroundColor: "blue", border: "none", fontSize: "0.8rem" }}>{t("geography-configuration")}</Button>
           </div>
         </div>
-        <Button variant="primary" className="w-100">Jugar</Button>
+        <Button variant="primary" className="w-100">{t("play-configuration")}</Button>
       </div>
     </div>
   );
