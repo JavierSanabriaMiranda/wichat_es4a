@@ -11,10 +11,15 @@
     text-align: center;
     font-weight: bold;
     margin-top: 2rem;
+    color: #5D6C89;
   }
   
   .home-subheading {
-    color: #6c757d; /* Estilo de texto secundario */
+    color: #5D6C89; 
+  }
+
+  .app-name{
+    color: #5D6C89; 
   }
   
   .home-buttons {

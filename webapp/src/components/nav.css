@@ -11,6 +11,11 @@
   .dropdown-language:hover, .rules-menu:hover {
     color: #FEB06A;
   }
+
+  .dropdown-language:active, .rules-menu:active {
+    color: #FEB06A;
+  }
+  
   
   .icon-menu {
     font-size: 20px;
@@ -30,27 +35,23 @@
     color: #FBF6F3;
   }
   
-  /* Color blanco por defecto */
+
 #dropdown-language {
     color: #FBF6F3;
     transition: color 0.3s ease-in-out;
 }
 
-/* Al pasar el ratón, se pone naranja */
 #dropdown-language:hover {
     color: #FEB06A;
 }
 
-/* Cuando el dropdown está abierto, se mantiene naranja */
 #dropdown-language.show {
     color: #FEB06A;
 }
 
-/* Cuando el dropdown se cierra, vuelve a blanco */
 #dropdown-language:not(.show):not(:hover) {
     color: #FBF6F3;
 }
-
 
 
   

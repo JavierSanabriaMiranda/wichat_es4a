@@ -16,7 +16,7 @@ const Home = () => {
 
       {/* Contenido Principal */}
       <h1 className="home-heading">
-        {t("welcome-home")} <span className="text-dark">WiChat</span>
+        {t("welcome-home")} <span className="app-name">WiChat</span>
       </h1>
       <p className="home-subheading">{t("hello-home")}</p>
       <div className="home-buttons">
