@@ -17,7 +17,6 @@ const NavBar = () => {
     <Navbar expand="lg" fixed="top" className="navbar-custom w-100">
       <Container>
         <Nav className="ms-auto">
-          {/* Dropdown de idioma */}
           <Dropdown align="end">
             <Dropdown.Toggle
               variant="link"
@@ -27,8 +26,8 @@ const NavBar = () => {
               {t("language-menu")}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item onClick={() => changeLanguage("es")}>{t("spanish-menu")}</Dropdown.Item>
-              <Dropdown.Item onClick={() => changeLanguage("en")}>{t("english-menu")}</Dropdown.Item>
+              <Dropdown.Item className="language-options" onClick={() => changeLanguage("es")}>{t("spanish-menu")}</Dropdown.Item>
+              <Dropdown.Item className="language-options" onClick={() => changeLanguage("en")}>{t("english-menu")}</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
 
