@@ -1,10 +1,12 @@
 import React from 'react';
+import i18n from './i18n/i18next.js';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
-import i18n from './i18n/i18next.js';
+import { UserPofile } from './components/userMenu/UserProfile';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -35,8 +37,8 @@ const question = {
 
 root.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <Game questionTime={15} answers={answers} question={question}/>
+    {/*<App /> */}
+    <UserPofile userName={"uo294420"}/>
   </React.StrictMode>
 );
 
