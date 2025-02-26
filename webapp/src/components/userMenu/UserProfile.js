@@ -51,6 +51,7 @@ export const UserPofile = ({userName, gameHistory}) => {
                             </Tab.Pane>
                             <Tab.Pane eventKey="history">
                                 <h5>Partidas Recientes</h5>
+                                <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
                                 {gameHistory.map((game, index) => (
                                     <GameHistoryButton 
                                         key={index}
@@ -60,13 +61,15 @@ export const UserPofile = ({userName, gameHistory}) => {
                                         onClick={() => setSelectedGame(game)}
                                     />
                                 ))}
-
+                                </div>
+                                <div style={{ maxHeight: '300px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
                                 {selectedGame && (
                                     <>
                                         <h5 className="mt-4">Detalles de la Partida</h5>
                                         <QuestionAccordion questions={selectedGame.questions} />
                                     </>
                                 )}
+                                </div>
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>
