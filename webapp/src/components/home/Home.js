@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Configuration from "./Configuration";
 import { useTranslation } from "react-i18next";
 import NavBar from "../NavBar";
