@@ -1,3 +1,10 @@
 {
-    "rules-menu": "Reglas"
+    "rules-menu": "Reglas",
+    "language-menu": "Idioma",
+    "spanish-menu": "Español",
+    "english-menu": "Inglés",
+    "welcome-home":"Bienvenido a",
+    "hello-home": "Holaaa",
+    "quickGame-home": "Partida Rápida",
+    "chaosMode-home": "Modo Caos"
 }
