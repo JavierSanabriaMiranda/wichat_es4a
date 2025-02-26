@@ -38,7 +38,7 @@ const question = {
 root.render(
   <React.StrictMode>
     {/*<App /> */}
-    <UserPofile userName={"uo294420"}/>
+    <UserPofile userName={"uo294420"} numberOfGamesPlayed={5}/>
   </React.StrictMode>
 );
 
