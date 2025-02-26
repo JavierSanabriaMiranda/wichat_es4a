@@ -16,7 +16,6 @@ export const EditUser = ({ userName }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
     const [showModal, setShowModal] = useState(false);
 
     /**
@@ -86,7 +85,6 @@ export const EditUser = ({ userName }) => {
                 </Form.Group>
 
                 {error && <p className="text-danger">{error}</p>}
-                {successMessage && <p className="text-success">{successMessage}</p>}
 
                 <Button type="submit" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: "#5D6C89" }}>
                     {t('save-changes-button')}
