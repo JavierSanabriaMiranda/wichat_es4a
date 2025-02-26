@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { red } from "@mui/material/colors";
 import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
-import i18n from "../../i18n/i18next";
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);

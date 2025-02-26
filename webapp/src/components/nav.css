@@ -3,21 +3,13 @@
 }
 
 
-.dropdown-language, .rules-menu{
+.dropdown-language, .rules-menu, .icon-menu{
     font-size: 20px;
     color: #FBF6F3;
     text-decoration: none ;
 }
 
-.dropdown-language:hover, .rules-menu:hover{
+.dropdown-language:hover, .rules-menu:hover, .icon-menu.hover{
     color: #FEB06A;
 }
 
-.icon-menu {
-    size: 80px;
-    color: #FBF6F3;
-}
-
-.icon-menu:hover{
-    color: #FEB06A;
-}
