@@ -79,4 +79,4 @@ async function main(topic) {
   }
 }
 
-main("sports").catch(console.error);
+main("art").catch(console.error);
