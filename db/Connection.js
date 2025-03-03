@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-const { MongoMemoryServer } = require('mongodb-memory-server');
+import mongoose from "mongoose";
+import { MongoMemoryServer } from "mongodb-memory-server";
+
+let mongoServer;
 
 //async -> asegura que el código no se bloquee mientras espera que MongoDB se conecte.
 const connect = async() => {
@@ -11,7 +13,7 @@ const connect = async() => {
             console.log("MongoDB URL server")
         } else {
             //si no hay una variable de entorno DB_URL, creamos un servidor de MongoDB en memoria usando MongoMemoryServer
-            const mongoServer = await MongoMemoryServer.create();  //se crea un servidor de bd en memoria
+            mongoServer = await MongoMemoryServer.create();  //se crea un servidor de bd en memoria
             const mongoUri = mongoServer.getUri();  //obtenemos la URL del servidor en memoria
             await mongoose.connect(mongoUri)  //nos conectamos a mongoDB
 
@@ -26,5 +28,16 @@ const connect = async() => {
     }
 }
 
+const disconnect = async () => {
+    try {
+        await mongoose.disconnect();
+        if (mongoServer) {
+            await mongoServer.stop();
+        }
+        console.log("MongoDB disconnected");
+    } catch (error) {
+        console.error("Error al desconectar de MongoDB:", error);
+    }
+};
 
-module.exports = connect;
+export {connect, disconnect};
