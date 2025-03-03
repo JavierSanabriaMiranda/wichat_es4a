@@ -5,7 +5,7 @@ import './index.css';
 import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
-import { UserPofile } from './components/userMenu/UserProfile';
+import { UserProfile } from './components/userMenu/UserProfile';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -87,7 +87,7 @@ const gameHistory = [
 root.render(
   <React.StrictMode>
     {/*<App /> */}
-    <UserPofile userName={"uo294420"} gameHistory= {gameHistory}/>
+    <UserProfile userName={"uo294420"} gameHistory= {gameHistory}/>
   </React.StrictMode>
 );
 

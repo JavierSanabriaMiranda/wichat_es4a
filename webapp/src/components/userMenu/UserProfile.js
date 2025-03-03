@@ -16,7 +16,7 @@ import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserPofile = ({ userName, gameHistory }) => {
+export const UserProfile = ({ userName, gameHistory }) => {
     const { t } = useTranslation();
     const [selectedGame, setSelectedGame] = useState(null);
 
