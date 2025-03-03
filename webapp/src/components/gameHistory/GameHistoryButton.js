@@ -12,7 +12,9 @@ import { Calendar, CheckCircle } from 'lucide-react';
  * This component represents the button with the game info that appears on the user's profile.
  * Clicking on it will show the history of the game it describes.
  */
-export const GameHistoryButton = ( {points, correctAnswers, date, onClick}  ) => {
+export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date, onClick}  ) => {
+
+    const { t } = useTranslation();
 
     return (
         <Button 
@@ -23,7 +25,7 @@ export const GameHistoryButton = ( {points, correctAnswers, date, onClick}  ) =>
         >
             <span className="d-flex align-items-center">
                 <CheckCircle size={20} className="me-2 text-success" />
-                {correctAnswers} respuestas
+                {correctAnswers} / {totalQuestions}
             </span>
             <Badge bg="secondary">{points} pts</Badge>
             <span className="d-flex align-items-center">

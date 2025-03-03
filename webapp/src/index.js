@@ -66,7 +66,7 @@ const gameHistory = [
   {
     "points": 1250,
     "correctAnswers": 14,
-    "totalQuestions": 30,
+    "totalQuestions": 25,
     "date": "12/02/25",
     "questions": [
       {

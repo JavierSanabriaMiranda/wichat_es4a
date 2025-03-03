@@ -53,12 +53,13 @@ export const UserPofile = ({ userName, gameHistory }) => {
                                     {!selectedGame ? (
                                         //Mostrar la lista de partidas si NO hay partida seleccionada
                                         <>
-                                            <h5>Partidas Recientes</h5>
+                                            <h5>{t('recent-games-text')}</h5>
                                                 {gameHistory.map((game, index) => (
                                                     <GameHistoryButton
                                                         key={index}
                                                         points={game.points}
                                                         correctAnswers={game.correctAnswers}
+                                                        totalQuestions={game.totalQuestions}
                                                         date={game.date}
                                                         onClick={() => setSelectedGame(game)}
                                                     />
@@ -67,7 +68,7 @@ export const UserPofile = ({ userName, gameHistory }) => {
                                     ) : (
                                         // Mostrar detalles de la partida si hay una partida seleccionada
                                         <>
-                                            <h5 className="mt-4">Detalles de la Partida</h5>
+                                            <h5 className="mt-4">{t('game-details-text')}</h5>
                                             <QuestionAccordion questions={selectedGame.questions} />
                                             {/* Botón para volver a la lista de partidas */}
                                             <Button
