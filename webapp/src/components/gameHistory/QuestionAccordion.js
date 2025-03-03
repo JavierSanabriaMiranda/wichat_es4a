@@ -6,7 +6,10 @@ import i18n from '../../i18n/i18next.js';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 
-
+/** 
+ * This component represents each of the questions displayed in the history or summary of a game.
+ * Each question has a topic, an image, and a list of answers.
+ */
 export const QuestionAccordion = ({ questions }) => {
     return (
         <Accordion>
