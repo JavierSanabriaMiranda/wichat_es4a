@@ -24,5 +24,9 @@
     "exit-confirm-msg-close": "Close",
     "back-button-text": "Back",
     "recent-games-text": "Recent Games",
-    "game-details-text": "Game Details"
+    "game-details-text": "Game Details",
+    "password-error-min-length": "Password must be at least 8 characters long.",
+    "password-error-uppercase": "Password must contain at least one uppercase letter.",
+    "password-error-number": "Password must contain at least one number.",
+    "password-error-no-spaces": "Password must not contain spaces."
 }

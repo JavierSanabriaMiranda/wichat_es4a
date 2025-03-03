@@ -30,12 +30,43 @@ export const EditUser = ({ userName }) => {
         return true;
     };
 
+    /**
+     * Función que valida la contraseña cuando se intenta guardar. Valida que:
+     * - Tenga al menos una mayúscula
+     * - Tenga al menos un número
+     * - No tenga espacios
+     */
+    const validatePasswordContentOnSubmit = () => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+        const hasNoSpaces = !/\s/.test(password);
+
+        if (!hasUpperCase) {
+            return t('password-error-uppercase');
+        }
+        if (!hasNumber) {
+            return t('password-error-number');
+        }
+        if (!hasNoSpaces) {
+            return t('password-error-no-spaces');
+        }
+
+        return ''; 
+    };
+
 
     /**
      * Función para manejar el envío del formulario
      */
     const handleSubmit = async (e) => {
         e.preventDefault(); // Evita que la página se recargue
+
+        // Validar contenido de la contraseña solo al enviar el formulario
+        const validationError = validatePasswordContentOnSubmit();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
 
         if (!validatePasswords()) return;
 
@@ -51,6 +82,31 @@ export const EditUser = ({ userName }) => {
         }
     };
 
+    /**
+     * Función para validar la contraseña. Valida que:
+     * - Tenga al menos 8 caracteres
+     */
+    const checkPasswordLength = (password) => {
+        const minLength = 8;
+    
+        if (password.length < minLength) {
+            return t('password-error-min-length');
+        }
+    
+        return ''; 
+    };
+    
+    // Validar en el cambio de contraseña
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        
+        const errorMsg = checkPasswordLength(newPassword);
+        setError(errorMsg); // Muestra el error si hay uno
+    };
+    
+
+    
     return (
         <>
             <Form onSubmit={handleSubmit}>
@@ -68,7 +124,7 @@ export const EditUser = ({ userName }) => {
                         type="password" 
                         placeholder={t('password-placeholder')} 
                         value={password} 
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={handlePasswordChange}
                         required
                     />
                 </Form.Group>

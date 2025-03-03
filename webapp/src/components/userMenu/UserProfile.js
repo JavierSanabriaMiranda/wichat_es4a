@@ -69,7 +69,7 @@ export const UserProfile = ({ userName, gameHistory }) => {
                                         // Mostrar detalles de la partida si hay una partida seleccionada
                                         <>
                                             <h5 className="mt-4">{t('game-details-text')}</h5>
-                                            <QuestionAccordion questions={selectedGame.questions} />
+                                            <QuestionAccordion questions={selectedGame.questions}  />
                                             {/* Botón para volver a la lista de partidas */}
                                             <Button
                                                 className="mt-3"
