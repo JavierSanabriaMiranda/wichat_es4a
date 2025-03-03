@@ -73,7 +73,7 @@ export const UserProfile = ({ userName, gameHistory }) => {
                                             {/* Botón para volver a la lista de partidas */}
                                             <Button
                                                 className="mt-3"
-                                                style={{ backgroundColor: '#5D6C89', color: '#FEB06A', borderColor: '#5D6C89' }}
+                                                style={{ backgroundColor: '#FEB06A', color: '#5D6C89' , borderColor: '#FEB06A' }}
                                                 onClick={() => setSelectedGame(null)}
                                             >
                                                 {t('back-button-text')}
