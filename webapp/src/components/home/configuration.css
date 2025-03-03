@@ -1,0 +1,98 @@
+h2{
+    font-size: 33px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+  
+.config-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    width: 325px;
+}
+  
+.close-icon {
+    position: absolute;
+    top: 10px; 
+    left: 8px;
+    color: red;
+    font-size: 28px;
+    cursor: pointer;
+}
+  
+.title {
+    margin-bottom: 15px;
+}
+  
+.config-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+  
+.topics-section {
+    margin-bottom: 15px;
+}
+  
+.topics-label {
+    display: block;
+    margin-bottom: 5px;
+}
+  
+.topics-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: center;
+    gap: 8px;
+}
+  
+.topics-container div {
+    grid-column: span 3;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+  
+.topic-button {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border: none;
+    color: white;
+    transition: background-color 0.3s;
+}
+  
+.topic-button:hover, .topic-button:active {
+    background-color: #36D6E7;
+}
+  
+.purple { background-color: purple; }
+.green { background-color: green; }
+.red { background-color: red; }
+.orange { background-color: orange; }
+.blue { background-color: blue; }
+  
+.play-button {
+    width: 100%;
+    background-color: #5D6C89 ;
+    border: none;
+    transition: background-color 0.3s;
+}
+  
+.play-button:hover, .play-button:active {
+    background-color: #36D6E7;
+}
+  
