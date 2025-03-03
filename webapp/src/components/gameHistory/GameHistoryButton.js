@@ -27,7 +27,9 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
                 <CheckCircle size={20} className="me-2 text-success" />
                 {correctAnswers} / {totalQuestions}
             </span>
-            <Badge bg="secondary">{points} pts</Badge>
+            <Badge bg="secondary" className="fs-5 text-white fw-bold p-2">
+                {points} pts
+            </Badge>
             <span className="d-flex align-items-center">
                 <Calendar size={20} className="me-2 text-muted" />
                 {new Date(date).toLocaleDateString()}
