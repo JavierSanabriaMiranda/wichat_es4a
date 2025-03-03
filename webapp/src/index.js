@@ -39,7 +39,7 @@ const gameHistory = [
     "points": 1450,
     "correctAnswers": 18,
     "totalQuestions": 30,
-    "date": "15/02/25",
+    "date": "1/02/25", //Ojo con el formato de la fecha
     "questions": [
       {
         "topic": "Tecnología",
