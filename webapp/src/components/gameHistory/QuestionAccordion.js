@@ -17,7 +17,12 @@ export const QuestionAccordion = ({ questions }) => {
                 <Accordion.Item eventKey={index.toString()} key={index}>
                     <Accordion.Header>{question.topic}</Accordion.Header>
                     <Accordion.Body>
-                        <Image src={question.imageUrl} rounded />
+                        <Image 
+                            src={question.imageUrl} 
+                            rounded 
+                            className="img-fluid"
+                            style={{ maxWidth: '200px', height: 'auto' }} 
+                        />
                         {question.answers.map((answer, i) => (
                             <p key={i} style={{ color: answer.isCorrect ? 'green' : 'red' }}>
                                 {answer.text} {answer.isCorrect ? '✔' : '❌'}
