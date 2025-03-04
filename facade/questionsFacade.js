@@ -1,69 +1,77 @@
-import { obtenerPreguntaYRespuesta } from '../questions/wikidata.js'; // Ajusta la ruta correcta
+import { executeFullFlow } from '../question/wikidata.js';
+import { getTopicsFromDatabase } from '../database/partidaRepository.js'; // Suponiendo que esta función obtiene los topics
 
-class PreguntaHandler {
+class QuestionService {
   constructor() {
     this.pregunta = "";
-    this.respuestaC = "";  // Respuesta correcta
-    this.respuestasFalsas = []; // Respuestas falsas
+    this.respuestaCorrecta = "";
+    this.respuestasFalsas = [];
+    this.imagen = "";
+    this.topics = [];
   }
 
-  // Método asíncrono para obtener una pregunta desde obtenerPreguntaYRespuesta()
-  async dameLaPregunta() {
+  // ✅ Método para obtener los temas desde la base de datos
+  async obtenerTopics() {
     try {
-      // Obtenemos la pregunta, la respuesta correcta y las falsas
-      const { pregunta, respuesta, respuestasFalsas } = await obtenerPreguntaYRespuesta();
-
-      // Mezclamos las respuestas (correcta + falsas)
-      const respuestasMezcladas = [respuesta, ...respuestasFalsas].sort(() => Math.random() - 0.5);
-
-      // Retornamos el JSON con la pregunta y respuestas
-      return {
-        pregunta: pregunta,
-        respuestas: respuestasMezcladas
-      };
+      this.topics = await getTopicsFromDatabase(); // Obtiene los topics desde la BD
+      console.log("Topics obtenidos de la BD:", this.topics);
+      return this.topics;
     } catch (error) {
-      console.error("Error al obtener la pregunta:", error);
-      return { error: "No se pudo obtener la pregunta" };
+      console.error("Error al obtener los topics:", error);
+      return { error: "No se pudieron obtener los topics." };
     }
   }
 
+  // ✅ Método para pedir una pregunta con las respuestas mezcladas
+  async pedirPregunta() {
+    try {
+      // Asegurar que hay topics disponibles antes de pedir una pregunta
+      if (this.topics.length === 0) {
+        await this.obtenerTopics();
+      }
 
-  // Método para devolver la pregunta y respuestas
-  async envioPregunta() {
-    return await this.dameLaPregunta();
+      const resultado = await executeFullFlow(); // Pide la pregunta con los topics
+
+      console.log("Resultados finales recibidos:", resultado); // Debugging
+
+      if (!resultado || typeof resultado !== "object" || !resultado.question || !resultado.correct || !Array.isArray(resultado.options)) {
+        throw new Error("Los datos obtenidos no tienen el formato esperado.");
+      }
+
+      // Guardamos los datos en la instancia
+      this.pregunta = resultado.question;
+      this.respuestaCorrecta = resultado.correct;
+      this.respuestasFalsas = resultado.options;
+      this.imagen = resultado.image || null;
+
+      // Mezclamos las respuestas (correcta + falsas)
+      const respuestasMezcladas = [resultado.correct, ...resultado.options].sort(() => Math.random() - 0.5);
+
+      return {
+        pregunta: this.pregunta,
+        respuestas: respuestasMezcladas,
+        imagen: this.imagen
+      };
+
+    } catch (error) {
+      console.error("Error al obtener la pregunta:", error);
+      return { error: "No se pudo obtener la pregunta", detalles: error.message };
+    }
   }
 
-  // Método para verificar si la respuesta del usuario es correcta
-  esCorrecta(respUsuario) {
-    return respUsuario === this.respuestaC;
-  }
-
-  // Método auxiliar para mezclar las respuestas en orden aleatorio
-  mezclarRespuestas(respuestas) {
-    return respuestas.sort(() => Math.random() - 0.5);
+  // ✅ Método para verificar si una respuesta es correcta
+  esCorrecta(respuestaUsuario) {
+    return respuestaUsuario === this.respuestaCorrecta;
   }
 }
 
-// Ejemplo de uso con async/await
-async function main() {
-  try {
-    const preguntaHandler = new PreguntaHandler();
+// 🔹 Prueba la clase
+(async () => {
+  const questionService = new QuestionService();
 
-    // Obtener la pregunta y respuestas de manera asíncrona
-    const { pregunta, respuestas } = await preguntaHandler.envioPregunta();
+  await questionService.obtenerTopics(); // Obtener los topics primero
+  const pregunta = await questionService.pedirPregunta();
+  console.log("Pregunta obtenida:", pregunta);
 
-    console.log("Pregunta:", pregunta);
-    console.log("Respuestas posibles:", respuestas);
-
-    // Simulación de respuesta del usuario
-    const respuestaUsuario = respuestas[0]; // Ejemplo: usuario elige la primera opción
-
-    // Verificar si la respuesta es correcta
-    const esCorrecta = preguntaHandler.esCorrecta(respuestaUsuario);
-    console.log("¿Es correcta la respuesta?", esCorrecta ? "Sí" : "No");
-  } catch (error) {
-    console.error("Error ejecutando el script:", error);
-  }
-}
-
-main().catch(console.error);
+  console.log("Verificación de respuesta:", questionService.esCorrecta("TSG 1899 Hoffenheim")); // Ejemplo de validación
+})();

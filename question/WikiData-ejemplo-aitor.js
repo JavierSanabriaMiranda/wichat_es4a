@@ -31,5 +31,4 @@ async function getRandomCountryAndFlag() {
     console.log("Flag URL: " + result.flag.value);
 }
 
-
 getRandomCountryAndFlag();
