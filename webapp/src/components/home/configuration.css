@@ -44,7 +44,6 @@ h2 {
     margin-bottom: 15px;
 }
 
-
 .toggle-btn-history {
     background-color: #9b59b6 !important;
     color: white;
@@ -75,39 +74,44 @@ h2 {
     border: none;
 }
 
+/* 🔹 Cuando un botón es seleccionado, se cambia permanentemente a #36D6E7 */
+.selected {
+    background-color: #36D6E7 !important;
+}
+
+/* Efecto hover para todos los botones */
 .toggle-btn-history:hover,
 .toggle-btn-science:hover,
 .toggle-btn-art:hover, 
 .toggle-btn-sport:hover, 
 .toggle-btn-geography:hover {
     background-color: #36D6E7 !important;
-
 }
+
 
 
 .buttonGroup {
     display: flex;
     flex-direction: column;
     align-items: center; 
-  }
-  
-  .buttonGroup > div {
+}
+
+.buttonGroup > div {
     display: flex;
     justify-content: center;
     gap: 10px; 
     width: 100%;
-  }
-  
-  .first-row {
+}
+
+.first-row {
     justify-content: flex-start; 
-  }
-  
-  .second-row {
+}
+
+.second-row {
     justify-content: center; 
     margin-top: 15px; 
     margin-bottom: 15px;
-  }
-  
+}
 
 .play-button {
     width: 100%;
@@ -119,4 +123,3 @@ h2 {
 .play-button:hover {
     background-color: #36D6E7;
 }
-

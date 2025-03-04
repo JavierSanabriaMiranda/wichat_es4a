@@ -4,16 +4,25 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
 import "./configuration.css";
-import ToggleButton from 'react-bootstrap/ToggleButton';
-import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
+import ToggleButton from "react-bootstrap/ToggleButton";
+import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
   const [time, setTime] = useState(120);
   const { t } = useTranslation();
+  const [selectedButtons, setSelectedButtons] = useState([]); // Estado para controlar los botones seleccionados
 
   const handleClose = () => {
     onClose();
+  };
+
+  const handleButtonClick = (value) => {
+    setSelectedButtons((prevSelected) =>
+      prevSelected.includes(value)
+        ? prevSelected.filter((item) => item !== value) // Si ya está, lo quita
+        : [...prevSelected, value] // Si no está, lo agrega
+    );
   };
 
   return (
@@ -46,29 +55,55 @@ const Configuration = ({ onClose }) => {
         <div className="topics-section">
           <label className="topics-label">Topics</label>
 
-          <ToggleButtonGroup type="checkbox" defaultValue={[1, 3]} className="buttonGroup">
+          <ToggleButtonGroup
+            type="checkbox"
+            className="buttonGroup"
+          >
             <div className="first-row">
-              <ToggleButton id="history" value={1} className="toggle-btn-history">
-              {t("history-configuration")}
+              <ToggleButton
+                id="history"
+                value={1}
+                className={`toggle-btn-history ${selectedButtons.includes(1) ? "selected" : ""}`}
+                onClick={() => handleButtonClick(1)}
+              >
+                {t("history-configuration")}
               </ToggleButton>
-              <ToggleButton id="science" value={2} className="toggle-btn-science">
-              {t("science-configuration")}
+              <ToggleButton
+                id="science"
+                value={2}
+                className={`toggle-btn-science ${selectedButtons.includes(2) ? "selected" : ""}`}
+                onClick={() => handleButtonClick(2)}
+              >
+                {t("science-configuration")}
               </ToggleButton>
-              <ToggleButton id="art" value={3} className="toggle-btn-art">
-              {t("art-configuration")}
+              <ToggleButton
+                id="art"
+                value={3}
+                className={`toggle-btn-art ${selectedButtons.includes(3) ? "selected" : ""}`}
+                onClick={() => handleButtonClick(3)}
+              >
+                {t("art-configuration")}
               </ToggleButton>
             </div>
             <div className="second-row">
-              <ToggleButton id="sport" value={4} className="toggle-btn-sport">
-              {t("sport-configuration")}
+              <ToggleButton
+                id="sport"
+                value={4}
+                className={`toggle-btn-sport ${selectedButtons.includes(4) ? "selected" : ""}`}
+                onClick={() => handleButtonClick(4)}
+              >
+                {t("sport-configuration")}
               </ToggleButton>
-              <ToggleButton id="geography" value={5} className="toggle-btn-geography">
-              {t("geography-configuration")}
+              <ToggleButton
+                id="geography"
+                value={5}
+                className={`toggle-btn-geography ${selectedButtons.includes(5) ? "selected" : ""}`}
+                onClick={() => handleButtonClick(5)}
+              >
+                {t("geography-configuration")}
               </ToggleButton>
             </div>
           </ToggleButtonGroup>
-
-
         </div>
         <Button className="play-button">{t("play-configuration")}</Button>
       </div>
