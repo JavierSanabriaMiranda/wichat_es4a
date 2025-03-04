@@ -47,23 +47,27 @@ const Configuration = ({ onClose }) => {
           <label className="topics-label">Topics</label>
 
           <ToggleButtonGroup type="checkbox" defaultValue={[1, 3]} className="buttonGroup">
-          <ToggleButton id="history" value={1} className="toggle-btn-history">
-            Historia
-          </ToggleButton>
-          <ToggleButton id="science" value={2} className="toggle-btn-science">
-            Ciencia
-          </ToggleButton>
-          <ToggleButton id="art" value={3} className="toggle-btn-art">
-            Arte
-          </ToggleButton>
-          <br />
-          <ToggleButton id="sport" value={1} className="toggle-btn-sport">
-            Deportes
-          </ToggleButton>
-          <ToggleButton id="geography" value={2} className="toggle-btn-geography">
-            Geografía
-          </ToggleButton>
+            <div className="first-row">
+              <ToggleButton id="history" value={1} className="toggle-btn-history">
+              {t("history-configuration")}
+              </ToggleButton>
+              <ToggleButton id="science" value={2} className="toggle-btn-science">
+              {t("science-configuration")}
+              </ToggleButton>
+              <ToggleButton id="art" value={3} className="toggle-btn-art">
+              {t("art-configuration")}
+              </ToggleButton>
+            </div>
+            <div className="second-row">
+              <ToggleButton id="sport" value={4} className="toggle-btn-sport">
+              {t("sport-configuration")}
+              </ToggleButton>
+              <ToggleButton id="geography" value={5} className="toggle-btn-geography">
+              {t("geography-configuration")}
+              </ToggleButton>
+            </div>
           </ToggleButtonGroup>
+
 
         </div>
         <Button className="play-button">{t("play-configuration")}</Button>

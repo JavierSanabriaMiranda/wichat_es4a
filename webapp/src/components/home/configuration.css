@@ -50,39 +50,64 @@ h2 {
     color: white;
     border: none;
 }
+
 .toggle-btn-science {
     background-color: #2ecc71 !important;
     color: white;
     border: none;
 }
+
 .toggle-btn-art {
     background-color: #e74c3c !important;
     color: white;
     border: none;
 }
+
 .toggle-btn-sport {
     background-color: #FEB06A !important;
     color: white;
     border: none;
 }
+
 .toggle-btn-geography {
     background-color: blue !important;
     color: white;
     border: none;
 }
 
+.toggle-btn-history:hover,
+.toggle-btn-science:hover,
+.toggle-btn-art:hover, 
+.toggle-btn-sport:hover, 
+.toggle-btn-geography:hover {
+    background-color: #36D6E7 !important;
+
+}
+
+
 .buttonGroup {
     display: flex;
+    flex-direction: column;
+    align-items: center; 
+  }
+  
+  .buttonGroup > div {
+    display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-}
-
-.toggle-btn-history, .toggle-btn-science, .toggle-btn-art, .toggle-btn-sport, .toggle-btn-geography {
-    margin: 2%;
-    width:30%;
-}
-
-
+    gap: 10px; 
+    width: 100%;
+  }
+  
+  .first-row {
+    justify-content: flex-start; 
+  }
+  
+  .second-row {
+    justify-content: center; 
+    margin-top: 15px; 
+    margin-bottom: 15px;
+  }
+  
 
 .play-button {
     width: 100%;
@@ -94,3 +119,4 @@ h2 {
 .play-button:hover {
     background-color: #36D6E7;
 }
+
