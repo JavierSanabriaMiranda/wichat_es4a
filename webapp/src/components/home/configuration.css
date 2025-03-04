@@ -1,4 +1,4 @@
-h2{
+h2 {
     font-size: 33px;
 }
 
@@ -13,7 +13,7 @@ h2{
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
 }
-  
+
 .config-container {
     background: white;
     padding: 20px;
@@ -23,76 +23,74 @@ h2{
     position: relative;
     width: 325px;
 }
-  
+
 .close-icon {
     position: absolute;
-    top: 10px; 
+    top: 10px;
     left: 8px;
     color: red;
     font-size: 28px;
     cursor: pointer;
 }
-  
+
 .title {
     margin-bottom: 15px;
 }
-  
+
 .config-option {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 15px;
 }
-  
-.topics-section {
-    margin-bottom: 15px;
+
+
+.toggle-btn-history {
+    background-color: #9b59b6 !important;
+    color: white;
+    border: none;
 }
-  
-.topics-label {
-    display: block;
-    margin-bottom: 5px;
+.toggle-btn-science {
+    background-color: #2ecc71 !important;
+    color: white;
+    border: none;
 }
-  
-.topics-container {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    justify-content: center;
-    gap: 8px;
+.toggle-btn-art {
+    background-color: #e74c3c !important;
+    color: white;
+    border: none;
 }
-  
-.topics-container div {
-    grid-column: span 3;
+.toggle-btn-sport {
+    background-color: #FEB06A !important;
+    color: white;
+    border: none;
+}
+.toggle-btn-geography {
+    background-color: blue !important;
+    color: white;
+    border: none;
+}
+
+.buttonGroup {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    flex-wrap: wrap;
 }
-  
-.topic-button {
-    padding: 5px 10px;
-    font-size: 0.8rem;
-    border: none;
-    color: white;
-    transition: background-color 0.3s;
+
+.toggle-btn-history, .toggle-btn-science, .toggle-btn-art, .toggle-btn-sport, .toggle-btn-geography {
+    margin: 2%;
+    width:30%;
 }
-  
-.topic-button:hover, .topic-button:active {
-    background-color: #36D6E7;
-}
-  
-.purple { background-color: purple; }
-.green { background-color: green; }
-.red { background-color: red; }
-.orange { background-color: orange; }
-.blue { background-color: blue; }
-  
+
+
+
 .play-button {
     width: 100%;
-    background-color: #5D6C89 ;
+    background-color: #5D6C89;
     border: none;
     transition: background-color 0.3s;
 }
-  
-.play-button:hover, .play-button:active {
+
+.play-button:hover {
     background-color: #36D6E7;
 }
-  

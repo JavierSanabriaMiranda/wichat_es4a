@@ -4,6 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
 import "./configuration.css";
+import ToggleButton from 'react-bootstrap/ToggleButton';
+import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
@@ -43,15 +45,26 @@ const Configuration = ({ onClose }) => {
         </div>
         <div className="topics-section">
           <label className="topics-label">Topics</label>
-          <div className="topics-container">
-            <button className="topic-button purple">{t("history-configuration")}</button>
-            <button className="topic-button green">{t("science-configuration")}</button>
-            <button className="topic-button red">{t("art-configuration")}</button>
-            <div>
-              <button className="topic-button orange">{t("sport-configuration")}</button>
-              <button className="topic-button blue">{t("geography-configuration")}</button>
-            </div>
-          </div>
+
+          <ToggleButtonGroup type="checkbox" defaultValue={[1, 3]} className="buttonGroup">
+          <ToggleButton id="history" value={1} className="toggle-btn-history">
+            Historia
+          </ToggleButton>
+          <ToggleButton id="science" value={2} className="toggle-btn-science">
+            Ciencia
+          </ToggleButton>
+          <ToggleButton id="art" value={3} className="toggle-btn-art">
+            Arte
+          </ToggleButton>
+          <br />
+          <ToggleButton id="sport" value={1} className="toggle-btn-sport">
+            Deportes
+          </ToggleButton>
+          <ToggleButton id="geography" value={2} className="toggle-btn-geography">
+            Geografía
+          </ToggleButton>
+          </ToggleButtonGroup>
+
         </div>
         <Button className="play-button">{t("play-configuration")}</Button>
       </div>
