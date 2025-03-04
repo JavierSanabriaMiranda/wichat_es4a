@@ -8,7 +8,6 @@ const url = "https://query.wikidata.org/sparql";
 function loadQuestionTemplates() {
   // Construimos la ruta de manera explícita
   const filePath = path.resolve('question', 'question_template.json');
-  
   // Mostramos la ruta para depurar
   console.log("Ruta al archivo JSON:", filePath);
 
@@ -80,4 +79,4 @@ async function main(topic) {
   }
 }
 
-main("history").catch(console.error);
+main("art").catch(console.error);
