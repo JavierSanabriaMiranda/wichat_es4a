@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
-import { VscAccount, VscArrowRight } from "react-icons/vsc";
+import { VscAccount } from "react-icons/vsc";
+import { GoSignOut } from "react-icons/go";
 import i18n from "../i18n/i18next";
 import { useTranslation } from "react-i18next";
 import "./nav.css";
@@ -33,7 +34,7 @@ const NavBar = () => {
 
           <Nav.Link href="#" className="rules-menu">{t("rules-menu")}</Nav.Link>
           <Nav.Link href="#" className="icon-menu"><VscAccount size={30} /></Nav.Link>
-          <Nav.Link href="#" className="icon-menu"><VscArrowRight size={30} /></Nav.Link>
+          <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
         </Nav>
       </Container>
     </Navbar>
