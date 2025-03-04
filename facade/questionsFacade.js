@@ -1,5 +1,5 @@
 import { executeFullFlow } from '../question/wikidata.js';
-import { getTopicsFromDatabase } from '../database/partidaRepository.js'; // Suponiendo que esta función obtiene los topics
+//import { getTopicsFromDatabase } from '../database/partidaRepository.js'; // Suponiendo que esta función obtiene los topics
 
 class QuestionService {
   constructor() {
@@ -9,28 +9,28 @@ class QuestionService {
     this.imagen = "";
     this.topics = [];
   }
-
-  // ✅ Método para obtener los temas desde la base de datos
+/*
+  // Método para obtener los temas desde la base de datos
   async obtenerTopics() {
     try {
       this.topics = await getTopicsFromDatabase(); // Obtiene los topics desde la BD
-      console.log("Topics obtenidos de la BD:", this.topics);
+      console.log("Topics obtenidos de la BD:", ["history", "geography", "science", "sports"]);
       return this.topics;
     } catch (error) {
       console.error("Error al obtener los topics:", error);
       return { error: "No se pudieron obtener los topics." };
     }
-  }
+  }*/
 
-  // ✅ Método para pedir una pregunta con las respuestas mezcladas
+  // Método para pedir una pregunta con las respuestas mezcladas
   async pedirPregunta() {
     try {
       // Asegurar que hay topics disponibles antes de pedir una pregunta
-      if (this.topics.length === 0) {
+     /* if (this.topics.length === 0) {
         await this.obtenerTopics();
-      }
+      }*/
 
-      const resultado = await executeFullFlow(); // Pide la pregunta con los topics
+      const resultado = await executeFullFlow(["history", "geography", "science", "sports"]); // Pide la pregunta con los topics
 
       console.log("Resultados finales recibidos:", resultado); // Debugging
 
@@ -59,7 +59,7 @@ class QuestionService {
     }
   }
 
-  // ✅ Método para verificar si una respuesta es correcta
+  // Método para verificar si una respuesta es correcta
   esCorrecta(respuestaUsuario) {
     return respuestaUsuario === this.respuestaCorrecta;
   }
@@ -69,9 +69,8 @@ class QuestionService {
 (async () => {
   const questionService = new QuestionService();
 
-  await questionService.obtenerTopics(); // Obtener los topics primero
   const pregunta = await questionService.pedirPregunta();
   console.log("Pregunta obtenida:", pregunta);
 
-  console.log("Verificación de respuesta:", questionService.esCorrecta("TSG 1899 Hoffenheim")); // Ejemplo de validación
+  console.log("Verificación de respuesta:", questionService.esCorrecta("TSG 1899 Hoffenheim")); 
 })();
