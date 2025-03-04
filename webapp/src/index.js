@@ -2,13 +2,43 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
 import i18n from './i18n/i18next.js';
+import { UserPofile } from './components/userMenu/UserProfile';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const answers = [
+  {
+    text: "React",
+    isCorrect: true
+  },
+  {
+    text: "Angular",
+    isCorrect: false
+  },
+  {
+    text: "Vue",
+    isCorrect: false
+  },
+  {
+    text: "Svelte",
+    isCorrect: false
+  }
+];
+
+const question = {
+  text: "¿Qué librería web es esta?",
+  image: "/logo512.png"
+};
+
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App /> 
+    {/*<UserPofile userName={"uo294420"}/> */}
   </React.StrictMode>
 );
 
