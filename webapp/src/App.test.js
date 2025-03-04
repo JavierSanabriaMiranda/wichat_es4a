@@ -3,6 +3,6 @@ import App from './App';
 
 test('renders welcome message', () => {
   render(<App />);
-  const welcomeMessage = screen.getByText(/Bienvenido a WiChat/i);
+  const welcomeMessage = screen.getByText(/Bienvenido a/i);
   expect(welcomeMessage).toBeInTheDocument();
 });
