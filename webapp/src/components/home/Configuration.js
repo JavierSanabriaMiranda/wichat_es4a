@@ -11,7 +11,7 @@ const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
   const [time, setTime] = useState(120);
   const { t } = useTranslation();
-  const [selectedButtons, setSelectedButtons] = useState([]); // Estado para controlar los botones seleccionados
+  const [selectedButtons, setSelectedButtons] = useState([]); 
 
   const handleClose = () => {
     onClose();
@@ -20,8 +20,8 @@ const Configuration = ({ onClose }) => {
   const handleButtonClick = (value) => {
     setSelectedButtons((prevSelected) =>
       prevSelected.includes(value)
-        ? prevSelected.filter((item) => item !== value) // Si ya está, lo quita
-        : [...prevSelected, value] // Si no está, lo agrega
+        ? prevSelected.filter((item) => item !== value) 
+        : [...prevSelected, value] 
     );
   };
 

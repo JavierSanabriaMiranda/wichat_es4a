@@ -74,12 +74,10 @@ h2 {
     border: none;
 }
 
-/* 🔹 Cuando un botón es seleccionado, se cambia permanentemente a #36D6E7 */
 .selected {
     background-color: #36D6E7 !important;
 }
 
-/* Efecto hover para todos los botones */
 .toggle-btn-history:hover,
 .toggle-btn-science:hover,
 .toggle-btn-art:hover, 
