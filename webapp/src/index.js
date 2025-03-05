@@ -6,6 +6,7 @@ import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
 import { UserPofile } from './components/userMenu/UserProfile';
+import { GameResults } from './components/game/GameResults.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -38,7 +39,8 @@ const question = {
 root.render(
   <React.StrictMode>
     {/*<App /> */}
-    <UserPofile userName={"uo294420"}/>
+    {/* <UserPofile userName={"uo294420"}/>*/}
+    <GameResults questions={[question]} points={100} numOfCorrectAnswers={12} numOfWrongAnswers={3} numOfNotAnswered={6} />
   </React.StrictMode>
 );
 

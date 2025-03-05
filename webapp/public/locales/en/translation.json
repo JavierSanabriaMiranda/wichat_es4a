@@ -21,5 +21,7 @@
     "exit-confirm-msg-title": "Are you sure you want to exit?",
     "exit-confirm-msg-body": "You will lose your progress in this game.",
     "exit-confirm-msg-exit": "Exit",
-    "exit-confirm-msg-close": "Close"
+    "exit-confirm-msg-close": "Close",
+    "play-again-button-text": "Play again",
+    "go-back-to-menu": "Go back to menu"
 }
