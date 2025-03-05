@@ -32,7 +32,9 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
             </Badge>
             <span className="d-flex align-items-center">
                 <Calendar size={20} className="me-2 text-muted" />
-                {new Date(date).toLocaleDateString()}
+                {date && !isNaN(new Date(date).getTime()) 
+                ? new Date(date).toLocaleDateString() 
+                : t('invalid-game-date')}
             </span>
         </Button>
     );
