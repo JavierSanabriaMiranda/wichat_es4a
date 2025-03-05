@@ -70,17 +70,22 @@ export const UserProfile = ({ userName, gameHistory }) => {
                                         <>
                                             <h5 className="mt-4">{t('game-details-text')}</h5>
                                             <QuestionAccordion questions={selectedGame.questions}  />
-                                            {/* Botón para volver a la lista de partidas */}
-                                            <Button
+                                            
+                                        </>
+                                    )}
+                                </div>
+                                {selectedGame ? (
+                                    <>
+                                        {/* Botón para volver a la lista de partidas */}
+                                        <Button
                                                 className="mt-3"
                                                 style={{ backgroundColor: '#FEB06A', color: '#5D6C89' , borderColor: '#FEB06A' }}
                                                 onClick={() => setSelectedGame(null)}
                                             >
                                                 {t('back-button-text')}
-                                            </Button>
-                                        </>
-                                    )}
-                                </div>
+                                        </Button>
+                                    </>
+                                ) : null}
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>
