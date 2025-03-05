@@ -1,8 +1,19 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+/**
+ * React component that represents a pie chart with the results of a game.
+ * 
+ * @param {Int} correctAnswers represents the number of correct answers.
+ * @param {Int} wrongAnswers represents the number of wrong answers.
+ * @param {Int} notAnswered represents the number of not answered questions. 
+ * @returns the pie chart with the results of the game.
+ */
 export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered }) => {
 
+    /**
+     * Constant that represents the data of the pie chart.
+     */
     const data = [
         { name: "Correctas", value: correctAnswers },
         { name: "Incorrectas", value: wrongAnswers },
@@ -11,6 +22,9 @@ export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered })
 
     const COLORS = ["#00C49F", "#f13e3e", "#FFBB28"];
 
+    /**
+     * Function to render the number of every data inside the pie chart in white.
+     */
     const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }) => {
         const RADIAN = Math.PI / 180;
         const x = cx + (innerRadius + (outerRadius - innerRadius) / 2) * Math.cos(-midAngle * RADIAN);

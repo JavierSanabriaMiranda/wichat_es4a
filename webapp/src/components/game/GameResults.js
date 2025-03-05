@@ -9,6 +9,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ResultSectorChart } from './ResultSectorChart';
 import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
 
+/**
+ * 
+ * @param {Array} questions - The array of questions with the topic, imageUrl and answers.
+ * @param {Int} points - The points obtained in the game.
+ * @param {Int} numOfCorrectAnswers - The number of correct answers.
+ * @param {Int} numOfWrongAnswers - The number of wrong answers.
+ * @param {Int} numOfNotAnswered - The number of not answered questions. 
+ * @returns 
+ */
 export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered }) => {
 
     const { t } = useTranslation();
