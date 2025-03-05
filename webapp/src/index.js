@@ -84,12 +84,34 @@ const gameHistory = [
   }
 ];
 
+const questions = [
+  {
+    "topic": "Tecnología",
+    "imageUrl": "/logo512.png",
+    "answers": [
+      { "text": "Respuesta 1", "isCorrect": false },
+      { "text": "Respuesta 2", "isCorrect": true },
+      { "text": "Respuesta 3", "isCorrect": false },
+      { "text": "Respuesta 4", "isCorrect": false }
+    ]
+  },
+  {
+    "topic": "Tecnología",
+    "imageUrl": "/logo512.png",
+    "answers": [
+      { "text": "Respuesta A", "isCorrect": false },
+      { "text": "Respuesta B", "isCorrect": false },
+      { "text": "Respuesta C", "isCorrect": true },
+      { "text": "Respuesta D", "isCorrect": false }
+    ]
+  }
+]
 
 root.render(
   <React.StrictMode>
     {/*<App /> */}
     {/* <UserPofile userName={"uo294420"}/>*/}
-    <GameResults questions={[question]} points={100} numOfCorrectAnswers={12} numOfWrongAnswers={3} numOfNotAnswered={6} />
+    <GameResults questions={questions} points={100} numOfCorrectAnswers={12} numOfWrongAnswers={3} numOfNotAnswered={6} />
   </React.StrictMode>
 );
 

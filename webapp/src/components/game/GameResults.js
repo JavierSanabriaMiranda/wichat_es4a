@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ResultSectorChart } from './ResultSectorChart';
+import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
 
 export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered }) => {
 
@@ -14,8 +15,8 @@ export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrong
 
     return (
         <Container fluid >
-            <Row className="justify-content-md-center">
-                <Col lg={1} xs={1}>
+            <Row className="justify-content-md-center text-center">
+                <Col lg={1} xs={1} className="d-flex justify-content-center">
                     <h2 className="finalPoints">{points}pts</h2>
                 </Col>
             </Row>
@@ -28,15 +29,18 @@ export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrong
                     />
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    {/* Historial de preguntas */}
+            <Row className="justify-content-md-center">
+                <Col lg={6}>
+                <h2 className="game-details-title">{t("game-details-text")}</h2>
+                <div className="game-details">
+                    <QuestionAccordion questions={questions} />
+                </div>
                 </Col>
             </Row>
             <Row className="justify-content-md-center">
                 <Col lg={2} xs={4} className="d-flex gap-2">
-                    <Button variant="primary">{t('play-again-button-text')}</Button>
-                    <Button variant="primary">{t('go-back-to-menu')}</Button>
+                    <Button className="game-results-button" variant="primary">{t('play-again-button-text')}</Button>
+                    <Button className="game-results-button" variant="primary">{t('go-back-to-menu')}</Button>
                 </Col>
             </Row>
         </Container>

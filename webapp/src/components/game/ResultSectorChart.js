@@ -8,9 +8,20 @@ export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered })
         { name: "Incorrectas", value: wrongAnswers },
         { name: "No Respondidas", value: notAnswered }
     ];
-    
 
     const COLORS = ["#00C49F", "#f13e3e", "#FFBB28"];
+
+    const renderCustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, value }) => {
+        const RADIAN = Math.PI / 180;
+        const x = cx + (innerRadius + (outerRadius - innerRadius) / 2) * Math.cos(-midAngle * RADIAN);
+        const y = cy + (innerRadius + (outerRadius - innerRadius) / 2) * Math.sin(-midAngle * RADIAN);
+
+        return (
+            <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={16} fontWeight="bold">
+                {value != 0 ? value : ""}
+            </text>
+        );
+    };
 
     return (
         <ResponsiveContainer width="100%" height={300}>
@@ -20,7 +31,7 @@ export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered })
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={true}
+                    label={renderCustomLabel}
                     outerRadius={85}
                     fill="#8884d8"
                     dataKey="value"
