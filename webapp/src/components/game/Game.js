@@ -24,11 +24,48 @@ const Game = ({ questionTime, answers, question }) => {
     const [points, setPoints] = useState(0);
     const [gameKey, setGameKey] = useState(0);
     const [pointsToAdd, setPointsToAdd] = useState(0);
+    const [correctAnswers, setCorrectAnswers] = useState(0);
+    const [wrongAnswers, setWrongAnswers] = useState(0);
+    const [notAnswered, setNotAnswered] = useState(0);
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
     const [showModal, setShowModal] = useState(false);
+    // State that stores the results of the questions with json format
+    // with attributes: topic, imageUrl, wasUserCorrect and answers (an array of objects with text and isCorrect)
+    const [questionResults, setQuestionResults] = useState([]);
 
     const onTimeUp = () => {
         // TODO
+    }
+
+    /**
+     * Function that handles the user answer to the question.
+     * 
+     * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
+     */
+    const answerQuestion = (wasUserCorrect) => {
+        if (wasUserCorrect) {
+            addPoints(100);
+            setCorrectAnswers(correctAnswers + 1);
+        }
+        else {
+            setWrongAnswers(wrongAnswers + 1);
+        }
+        addQuestionResult(wasUserCorrect);
+        prepareUIForNextQuestion();
+    }
+
+    /**
+     * Function that adds the result of the question to the questionResults state.
+     * 
+     * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
+     */
+    const addQuestionResult = (wasUserCorrect) => {
+        setQuestionResults([...questionResults, {
+            "topic": question.topic,
+            "imageUrl": question.imageUrl,
+            "wasUserCorrect": wasUserCorrect,
+            "answers": answers.map(answer => ({ "text": answer.text, "isCorrect": answer.isCorrect }))
+        }]);
     }
 
     /**
@@ -100,16 +137,17 @@ const Game = ({ questionTime, answers, question }) => {
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
-                    { /* Create the answerButtons */ }
+                    { /* Create the answerButtons */}
                     { /* Uses key to help React renderizing */}
                     {answers.map((answer, index) => (
                         <AnswerButton
-                            key={index} 
+                            key={index}
                             answerText={answer.text}
                             isCorrectAnswer={answer.isCorrect}
+                            answerAction={answerQuestion}
                         />
                     ))}
-                    
+
                 </div>
             </section>
             <aside className='llm-chat-aside'>
