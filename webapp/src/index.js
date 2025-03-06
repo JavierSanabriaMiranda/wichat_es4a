@@ -1,11 +1,13 @@
 import React from 'react';
-import i18n from './i18n/i18next.js';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
-import { UserProfile } from './components/userMenu/UserProfile';
+import Home from './components/home/Home'; 
+import i18n from './i18n/i18next.js';
+import { UserPofile } from './components/userMenu/UserProfile';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -86,8 +88,13 @@ const gameHistory = [
 
 root.render(
   <React.StrictMode>
-    {/*<App /> */}
-    <UserProfile userName={"uo294420"} gameHistory= {gameHistory}/>
+
+    <App /> 
+
+    <Home/> 
+
+    {/*<UserProfile userName={"uo294420"} gameHistory= {gameHistory}/> */}
+
   </React.StrictMode>
 );
 

@@ -1,0 +1,86 @@
+.navbar-custom {
+  background-color: #5D6C89;
+}
+
+.dropdown-language, .rules-menu {
+  font-size: 20px;
+  color: #FBF6F3;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.dropdown-language:hover, .rules-menu:hover {
+  color: #FEB06A;
+}
+
+.dropdown-language:active, .rules-menu:active {
+  color: #FEB06A;
+}
+
+.icon-menu {
+  font-size: 20px;
+  color: #FBF6F3;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.icon-menu:hover {
+  color: #FEB06A;
+}
+
+.language-options:active, 
+.language-options:hover, 
+.language-options:focus {
+  background-color: #FEB06A;
+  color: #FBF6F3;
+}
+
+#dropdown-language {
+  color: #FBF6F3;
+  transition: color 0.3s ease-in-out;
+}
+
+#dropdown-language:hover {
+  color: #FEB06A;
+}
+
+#dropdown-language.show {
+  color: #FEB06A;
+}
+
+#dropdown-language:not(.show):not(:hover) {
+  color: #FBF6F3;
+}
+
+.rules-menu:focus, .icon-menu:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.icon-menu svg {
+  fill: #FBF6F3 !important;
+  transition: fill 0.3s ease-in-out;
+}
+
+.icon-menu:hover svg {
+  fill: #FEB06A !important;
+}
+
+.rules-menu {
+  color: #FBF6F3 !important; 
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.rules-menu:hover {
+  color: #FEB06A !important; 
+}
+
+.rules-menu:focus {
+  outline: none !important; 
+  box-shadow: none !important;
+}
+
+.rules-menu:active {
+  color: #FEB06A !important; 
+}

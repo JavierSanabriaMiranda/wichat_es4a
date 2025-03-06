@@ -1,4 +1,21 @@
 {
+    "rules-menu": "Rules",
+    "language-menu": "Language",
+    "spanish-menu": "Spanish",
+    "english-menu": "English",
+    "welcome-home": "Welcome to",
+    "hello-home": "Hellooo",
+    "quickGame-home": "Quick Game",
+    "chaosMode-home": "Chaos Mode",
+    "title-configuration": "Configuration of the game",
+    "numberQuestions-configuration": "Number of questions:",
+    "time-configuration": "Time:",
+    "play-configuration": "Play",
+    "history-configuration":"History",
+    "science-configuration":"Science",
+    "art-configuration":"Art",
+    "sport-configuration":"Sport",
+    "geography-configuration":"Geography",
     "welcome-message": "Welcome ",
     "edit-profile": "Edit Profile",
     "game-history": "Game History",
@@ -31,3 +48,4 @@
     "password-error-no-spaces": "Password must not contain spaces.",
     "invalid-game-date": "Date not available"
 }
+
