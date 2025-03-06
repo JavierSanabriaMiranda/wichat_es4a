@@ -8,6 +8,7 @@ import Home from './components/home/Home';
 import i18n from './i18n/i18next.js';
 import { UserPofile } from './components/userMenu/UserProfile';
 
+import { GameResults } from './components/game/GameResults.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -85,15 +86,39 @@ const gameHistory = [
   }
 ];
 
+const questions = [
+  {
+    "topic": "Tecnología",
+    "imageUrl": "/logo512.png",
+    "answers": [
+      { "text": "Respuesta 1", "isCorrect": false },
+      { "text": "Respuesta 2", "isCorrect": true },
+      { "text": "Respuesta 3", "isCorrect": false },
+      { "text": "Respuesta 4", "isCorrect": false }
+    ]
+  },
+  {
+    "topic": "Tecnología",
+    "imageUrl": "/logo512.png",
+    "answers": [
+      { "text": "Respuesta A", "isCorrect": false },
+      { "text": "Respuesta B", "isCorrect": false },
+      { "text": "Respuesta C", "isCorrect": true },
+      { "text": "Respuesta D", "isCorrect": false }
+    ]
+  }
+]
 
 root.render(
   <React.StrictMode>
 
-    <App /> 
+    {/*<App />*/}
 
-    <Home/> 
+    {/*<Home/>*/} 
 
     {/*<UserProfile userName={"uo294420"} gameHistory= {gameHistory}/> */}
+
+    <GameResults questions={questions} points={1450} numOfCorrectAnswers={18} numOfWrongAnswers={12} numOfNotAnswered={5} />
 
   </React.StrictMode>
 );

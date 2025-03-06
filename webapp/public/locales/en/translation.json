@@ -39,6 +39,8 @@
     "exit-confirm-msg-body": "You will lose your progress in this game.",
     "exit-confirm-msg-exit": "Exit",
     "exit-confirm-msg-close": "Close",
+    "play-again-button-text": "Play again",
+    "go-back-to-menu": "Go back to menu",
     "back-button-text": "Back",
     "recent-games-text": "Recent Games",
     "game-details-text": "Game Details",
