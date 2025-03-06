@@ -33,8 +33,17 @@ const NavBar = () => {
           </Dropdown>
 
           <Nav.Link href="#" className="rules-menu">{t("rules-menu")}</Nav.Link>
-          <Nav.Link href="#" className="icon-menu"><VscAccount size={30} /></Nav.Link>
-          <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
+          {sessionStorage.getItem("token") != null ?
+            (<>
+              <Nav.Link href="/user" className="icon-menu"><VscAccount size={30} /></Nav.Link>
+              <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
+            </>) 
+            : 
+            (<>
+              <Nav.Link href="/login" className="icon-menu">LogIn</Nav.Link>
+              <Nav.Link href="/addUser" className="icon-menu">Sign Up</Nav.Link>
+            </>)}
+
         </Nav>
       </Container>
     </Navbar>

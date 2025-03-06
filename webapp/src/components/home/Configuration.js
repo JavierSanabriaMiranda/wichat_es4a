@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
+import { useNavigate } from "react-router-dom";
 
 const Configuration = ({ onClose }) => {
   const [questions, setQuestions] = useState(30);
@@ -16,6 +17,8 @@ const Configuration = ({ onClose }) => {
   const handleClose = () => {
     onClose();
   };
+
+  const navigate = useNavigate();
 
   const handleButtonClick = (value) => {
     setSelectedButtons((prevSelected) =>
@@ -105,7 +108,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button className="play-button">{t("play-configuration")}</Button>
+        <Button className="play-button" onClick={() => navigate("/game")}>{t("play-configuration")}</Button>
       </div>
     </div>
   );
