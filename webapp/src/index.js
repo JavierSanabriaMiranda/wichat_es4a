@@ -1,11 +1,13 @@
 import React from 'react';
-import i18n from './i18n/i18next.js';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Game from './components/game/Game.js';
 import reportWebVitals from './reportWebVitals';
-import { UserProfile } from './components/userMenu/UserProfile';
+import Home from './components/home/Home'; 
+import i18n from './i18n/i18next.js';
+import { UserPofile } from './components/userMenu/UserProfile';
+
 import { GameResults } from './components/game/GameResults.js';
 
 
@@ -109,9 +111,15 @@ const questions = [
 
 root.render(
   <React.StrictMode>
-    {/*<App /> */}
-    {/* <UserPofile userName={"uo294420"}/>*/}
-    <GameResults questions={questions} points={100} numOfCorrectAnswers={12} numOfWrongAnswers={3} numOfNotAnswered={6} />
+
+    {/*<App />*/}
+
+    {/*<Home/>*/} 
+
+    {/*<UserProfile userName={"uo294420"} gameHistory= {gameHistory}/> */}
+
+    <GameResults questions={questions} points={1450} numOfCorrectAnswers={18} numOfWrongAnswers={12} numOfNotAnswered={5} />
+
   </React.StrictMode>
 );
 
