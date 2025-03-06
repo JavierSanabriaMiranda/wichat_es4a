@@ -30,6 +30,12 @@ const gamePlayedSchema = new Schema({
       type: ObjectId,
       ref: "Question"
     }
+  ],
+    isActive: [
+      {
+      type: Boolean,
+      default: false 
+    }
   ]
 });
 

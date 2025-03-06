@@ -35,12 +35,7 @@ export async function getTopicsFromDatabase() {
  */
 export async function startNewGame(userId, topics, modality) {
   try {
-    // Primero, desactivar cualquier partida activa anterior
-    await GamePlayed.updateOne(
-      { user: userId, isActive: true },
-      { $set: { isActive: false } } // Marcar la partida previa como inactiva
-    );
-
+   
     // Crear una nueva partida activa
     const newGame = new GamePlayed({
       user: userId,

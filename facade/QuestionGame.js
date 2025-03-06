@@ -130,7 +130,7 @@ class QuestionService {
     return respuestaUsuario === this.respuestaCorrecta;
   }
 }
-
+export default QuestionService; 
 // 🔹 Prueba la clase
 (async () => {
   const questionService = new QuestionService();
