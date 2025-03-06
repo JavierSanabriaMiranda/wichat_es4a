@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import NavBar from "../NavBar";
 import './home.css';
 
-const Home = () => {
+export const Home = () => {
   const [showConfig, setShowConfig] = useState(false);
   const { t } = useTranslation();
 
@@ -32,5 +32,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;

@@ -17,7 +17,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * @param {Object} question - The object with the question and the image.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
-const Game = ({ questionTime, answers, question }) => {
+export const Game = ({ questionTime, answers, question }) => {
 
     const { t } = useTranslation();
 
@@ -174,5 +174,3 @@ const Game = ({ questionTime, answers, question }) => {
         </main>
     )
 }
-
-export default Game;
