@@ -9,7 +9,7 @@ function App() {
       <CssBaseline />
 
       {/* Mostramos directamente el componente Home */}
-      <Home />
+      
     </Container>
   );
 }

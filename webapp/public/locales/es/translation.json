@@ -38,5 +38,13 @@
     "exit-confirm-msg-title": "¿Estás seguro que deseas salir?",
     "exit-confirm-msg-body": "Si sales perderás el progreso de la partida en curso",
     "exit-confirm-msg-exit": "Salir",
-    "exit-confirm-msg-close": "Cerrar"
+    "exit-confirm-msg-close": "Cerrar",
+    "back-button-text": "Atrás",
+    "recent-games-text": "Partidas Recientes",
+    "game-details-text": "Detalles de la Partida",
+    "password-error-min-length": "La contraseña debe tener al menos 8 caracteres.",
+    "password-error-uppercase": "La contraseña debe contener al menos una letra mayúscula.",
+    "password-error-number": "La contraseña debe contener al menos un número.",
+    "password-error-no-spaces": "La contraseña no debe contener espacios.",
+    "invalid-game-date": "Fecha no disponible"
 }
