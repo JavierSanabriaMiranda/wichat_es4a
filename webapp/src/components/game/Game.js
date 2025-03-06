@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
@@ -47,6 +47,53 @@ export const Game = ({ answers, question }) => {
     }
 
     /**
+     * Handles the popstate event to prevent the user from navigating back
+     */
+    useEffect(() => {
+        const handlePopState = (event) => {
+            handleBeforeNavigate(event);
+        };
+
+        // Hears the popstate event to detect history changes
+        window.addEventListener('popstate', handlePopState);
+
+        // Update the history state to prevent the user from navigating back
+        window.history.pushState(null, document.title);
+
+        return () => {
+            // Clean up the event listener when the component is unmounted
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
+
+    /**
+     * Function that handles the beforenavigate event to show the confirmation dialog when the user tries to leave the page
+     */
+    const handleBeforeNavigate = (event) => {
+        event.preventDefault(); // Prevents the user from navigating back
+        setShowModal(true); // Shows the confirmation dialog
+    };
+
+    /**
+     * Adds an event listener to the beforeunload event to show the confirmation dialog when the user tries to leave or reload the page
+     */
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // Clean up the event listener when the component is unmounted
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
+
+    // Handles the beforeunload event to show the confirmation dialog when the user tries to leave the page
+    const handleBeforeUnload = (event) => {
+        event.preventDefault();
+        event.returnValue = '';  // Shows the confirmation dialog
+    };
+
+    /**
      * Function that handles the user answer to the question.
      * 
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
@@ -62,7 +109,7 @@ export const Game = ({ answers, question }) => {
         addQuestionResult(wasUserCorrect, selectedAnswer);
         blockAnswerButtons();
         setTimeout(() => {
-            prepareUIForNextQuestion() 
+            prepareUIForNextQuestion()
             unblockAnswerButtons()
         }, 2000); // Wait 2 second before showing the next question
     }
