@@ -17,7 +17,7 @@ const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
         : "answer-button-not-answered";
 
     const handleClick = () => {
-        answerAction(isCorrectAnswer);
+        answerAction(isCorrectAnswer, answerText);
         setWasSelected(true);
         console.log(`${buttonClassName}`);
     }

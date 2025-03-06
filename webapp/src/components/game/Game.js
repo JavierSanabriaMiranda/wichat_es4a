@@ -30,11 +30,14 @@ export const Game = ({ questionTime, answers, question }) => {
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
     const [showModal, setShowModal] = useState(false);
     // State that stores the results of the questions with json format
-    // with attributes: topic, imageUrl, wasUserCorrect and answers (an array of objects with text and isCorrect)
+    // with attributes: topic, imageUrl, wasUserCorrect, selectedAnswer (text of the answer selected) 
+    // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
 
     const onTimeUp = () => {
-        // TODO
+        setNotAnswered(notAnswered + 1);
+        addQuestionResult(false, null);
+        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
     /**
@@ -42,7 +45,7 @@ export const Game = ({ questionTime, answers, question }) => {
      * 
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
-    const answerQuestion = (wasUserCorrect) => {
+    const answerQuestion = (wasUserCorrect, selectedAnswer) => {
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
@@ -50,8 +53,8 @@ export const Game = ({ questionTime, answers, question }) => {
         else {
             setWrongAnswers(wrongAnswers + 1);
         }
-        addQuestionResult(wasUserCorrect);
-        prepareUIForNextQuestion();
+        addQuestionResult(wasUserCorrect, selectedAnswer);
+        setTimeout(() => prepareUIForNextQuestion(), 2000); // Wait 2 second before showing the next question
     }
 
     /**
@@ -59,11 +62,12 @@ export const Game = ({ questionTime, answers, question }) => {
      * 
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
-    const addQuestionResult = (wasUserCorrect) => {
+    const addQuestionResult = (wasUserCorrect, selectedAnswer) => {
         setQuestionResults([...questionResults, {
             "topic": question.topic,
             "imageUrl": question.imageUrl,
             "wasUserCorrect": wasUserCorrect,
+            "selectedAnswer": selectedAnswer,
             "answers": answers.map(answer => ({ "text": answer.text, "isCorrect": answer.isCorrect }))
         }]);
     }
@@ -80,7 +84,9 @@ export const Game = ({ questionTime, answers, question }) => {
     }
 
     const passQuestion = () => {
-        prepareUIForNextQuestion();
+        setNotAnswered(notAnswered + 1);
+        addQuestionResult(false, null);
+        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
     /**
