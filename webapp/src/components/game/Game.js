@@ -5,6 +5,8 @@ import Timer from './Timer';
 import LLMChat from './LLMChat';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -17,9 +19,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * @param {Object} question - The object with the question and the image.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
-export const Game = ({ questionTime, answers, question }) => {
+export const Game = ({ answers, question }) => {
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
 
     const [points, setPoints] = useState(0);
     const [gameKey, setGameKey] = useState(0);
@@ -129,7 +135,7 @@ export const Game = ({ questionTime, answers, question }) => {
      * Function that exits the game without saving the progress.
      */
     const exitFromGame = () => {
-        // TODO
+        navigate('/');
     }
 
     return (
