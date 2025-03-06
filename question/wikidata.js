@@ -101,8 +101,9 @@ async function getOptionsForTopics(topics) {
     return [];
   }
 
-export async function executeFullFlow(topics) {
+export async function executeFullFlow(topics,lang) {
     try {
+      console.log(lang);
       const options = await getOptionsForTopics(topics);
       return options;  // Retorna el resultado final
     } catch (error) {

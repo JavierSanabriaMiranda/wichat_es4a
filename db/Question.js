@@ -1,6 +1,11 @@
 //libreria para trabajar con MongoDB
-const { Schema, model, Types } = require("mongoose");
+// Importar mongoose
+import mongoose from "mongoose";
+
+const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
+
+
 
 //esquema para bd de pregunta
 const questionSchema = new Schema({
@@ -21,5 +26,5 @@ const questionSchema = new Schema({
 const Question = model("Question", questionSchema);
 
 //sirve para representar lo que se exportará desde el archivo actual -> el modelo de Pregunta
-module.exports = Question;
-
+// Exportación en ES Module
+export default Question;
