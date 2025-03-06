@@ -20,7 +20,7 @@ export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered })
         { name: "No Respondidas", value: notAnswered }
     ];
 
-    const COLORS = ["#00C49F", "#f13e3e", "#FFBB28"];
+    const COLORS = ["#00C49F", "#f13e3e", "#f7ab08"];
 
     /**
      * Function to render the number of every data inside the pie chart in white.
