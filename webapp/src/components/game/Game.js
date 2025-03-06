@@ -54,7 +54,11 @@ export const Game = ({ questionTime, answers, question }) => {
             setWrongAnswers(wrongAnswers + 1);
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
-        setTimeout(() => prepareUIForNextQuestion(), 2000); // Wait 2 second before showing the next question
+        blockAnswerButtons();
+        setTimeout(() => {
+            prepareUIForNextQuestion() 
+            unblockAnswerButtons()
+        }, 2000); // Wait 2 second before showing the next question
     }
 
     /**
@@ -95,6 +99,16 @@ export const Game = ({ questionTime, answers, question }) => {
     const prepareUIForNextQuestion = () => {
         // Increment the key to force rerender
         setGameKey(prevKey => prevKey + 1);
+    }
+
+    const blockAnswerButtons = () => {
+        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = true);
+        document.querySelector(".pass-button").disabled = true;
+    }
+
+    const unblockAnswerButtons = () => {
+        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = false);
+        document.querySelector(".pass-button").disabled = false;
     }
 
     /**
