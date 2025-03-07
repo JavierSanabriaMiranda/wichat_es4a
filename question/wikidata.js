@@ -88,6 +88,29 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
     options
   };
 }
+async function getOptionsForTopics(topics) {
+    const templates = loadQuestionTemplatesWithTopic(topics);
+    const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+  
+    const query = randomTemplate.query;
+    const results = await executeQuery(query);
+  
+    if (results.length > 0) {
+      return allInfo(results, "label", "image", randomTemplate);
+    }
+    return [];
+  }
+
+export async function executeFullFlow(topics,lang) {
+    try {
+      console.log(lang);
+      const options = await getOptionsForTopics(topics);
+      return options;  // Retorna el resultado final
+    } catch (error) {
+      console.error("Error en el flujo completo:", error);
+      throw error;
+    }
+}
 
 takeOptions(["geography", "history"])
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
