@@ -5,6 +5,8 @@ import { GoSignOut } from "react-icons/go";
 import i18n from "../i18n/i18next";
 import { useTranslation } from "react-i18next";
 import "./nav.css";
+import logo from "../images/logo.png";
+
 
 
 const NavBar = () => {
@@ -15,7 +17,8 @@ const NavBar = () => {
   };
 
   return (
-    <Navbar expand="lg" fixed="top" className="navbar-custom w-100">
+    <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
+      <img src={logo} alt="Logo" className="navbar-logo" />
       <Container>
         <Nav className="ms-auto">
           <Dropdown align="end">

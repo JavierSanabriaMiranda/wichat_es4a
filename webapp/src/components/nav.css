@@ -1,6 +1,16 @@
 .navbar-custom {
+  height: 90px; 
+  padding: 10px 20px; 
   background-color: #5D6C89;
 }
+
+
+.navbar-logo {
+  height: 80px;
+  width: auto;
+  margin-left: 20px;
+}
+
 
 .dropdown-language, .rules-menu {
   font-size: 20px;
