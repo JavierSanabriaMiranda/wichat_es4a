@@ -3,7 +3,8 @@ import fs from 'fs';  // Requerimos el módulo fs para leer archivos JSON
 import path from 'path';
 
 const url = "https://query.wikidata.org/sparql";
-
+//pre internacionalizacion(se podria borrar, lo dejo porque es la beta aun)
+/*
 function loadQuestionTemplatesWithTopic(topics) {
   const filePath = path.resolve('question', 'question_template.json');
 
@@ -17,6 +18,7 @@ function loadQuestionTemplatesWithTopic(topics) {
   );
   return filteredTemplates; 
 }
+  */
 
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
   const filePath = path.resolve('question', 'question_template.json');
@@ -106,6 +108,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["geography", "history"], "en")
+takeOptions(["geography", "history", "sports"], "en")
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
