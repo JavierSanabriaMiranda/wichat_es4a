@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
 import LLMChat from './LLMChat';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -17,9 +19,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * @param {Object} question - The object with the question and the image.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
-export const Game = ({ questionTime, answers, question }) => {
+export const Game = ({ answers, question }) => {
 
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
 
     const [points, setPoints] = useState(0);
     const [gameKey, setGameKey] = useState(0);
@@ -30,19 +36,69 @@ export const Game = ({ questionTime, answers, question }) => {
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
     const [showModal, setShowModal] = useState(false);
     // State that stores the results of the questions with json format
-    // with attributes: topic, imageUrl, wasUserCorrect and answers (an array of objects with text and isCorrect)
+    // with attributes: topic, imageUrl, wasUserCorrect, selectedAnswer (text of the answer selected) 
+    // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
 
     const onTimeUp = () => {
-        // TODO
+        setNotAnswered(notAnswered + 1);
+        addQuestionResult(false, null);
+        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
+
+    /**
+     * Handles the popstate event to prevent the user from navigating back
+     */
+    useEffect(() => {
+        const handlePopState = (event) => {
+            handleBeforeNavigate(event);
+        };
+
+        // Hears the popstate event to detect history changes
+        window.addEventListener('popstate', handlePopState);
+
+        // Update the history state to prevent the user from navigating back
+        window.history.pushState(null, document.title);
+
+        return () => {
+            // Clean up the event listener when the component is unmounted
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [navigate]);
+
+    /**
+     * Function that handles the beforenavigate event to show the confirmation dialog when the user tries to leave the page
+     */
+    const handleBeforeNavigate = (event) => {
+        event.preventDefault(); // Prevents the user from navigating back
+        setShowModal(true); // Shows the confirmation dialog
+    };
+
+    /**
+     * Adds an event listener to the beforeunload event to show the confirmation dialog when the user tries to leave or reload the page
+     */
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // Clean up the event listener when the component is unmounted
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
+
+    // Handles the beforeunload event to show the confirmation dialog when the user tries to leave the page
+    const handleBeforeUnload = (event) => {
+        event.preventDefault();
+        event.returnValue = '';  // Shows the confirmation dialog
+    };
 
     /**
      * Function that handles the user answer to the question.
      * 
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
-    const answerQuestion = (wasUserCorrect) => {
+    const answerQuestion = (wasUserCorrect, selectedAnswer) => {
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
@@ -50,8 +106,12 @@ export const Game = ({ questionTime, answers, question }) => {
         else {
             setWrongAnswers(wrongAnswers + 1);
         }
-        addQuestionResult(wasUserCorrect);
-        prepareUIForNextQuestion();
+        addQuestionResult(wasUserCorrect, selectedAnswer);
+        blockAnswerButtons();
+        setTimeout(() => {
+            prepareUIForNextQuestion()
+            unblockAnswerButtons()
+        }, 2000); // Wait 2 second before showing the next question
     }
 
     /**
@@ -59,11 +119,12 @@ export const Game = ({ questionTime, answers, question }) => {
      * 
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
-    const addQuestionResult = (wasUserCorrect) => {
+    const addQuestionResult = (wasUserCorrect, selectedAnswer) => {
         setQuestionResults([...questionResults, {
             "topic": question.topic,
             "imageUrl": question.imageUrl,
             "wasUserCorrect": wasUserCorrect,
+            "selectedAnswer": selectedAnswer,
             "answers": answers.map(answer => ({ "text": answer.text, "isCorrect": answer.isCorrect }))
         }]);
     }
@@ -80,7 +141,9 @@ export const Game = ({ questionTime, answers, question }) => {
     }
 
     const passQuestion = () => {
-        prepareUIForNextQuestion();
+        setNotAnswered(notAnswered + 1);
+        addQuestionResult(false, null);
+        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
     /**
@@ -89,6 +152,16 @@ export const Game = ({ questionTime, answers, question }) => {
     const prepareUIForNextQuestion = () => {
         // Increment the key to force rerender
         setGameKey(prevKey => prevKey + 1);
+    }
+
+    const blockAnswerButtons = () => {
+        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = true);
+        document.querySelector(".pass-button").disabled = true;
+    }
+
+    const unblockAnswerButtons = () => {
+        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = false);
+        document.querySelector(".pass-button").disabled = false;
     }
 
     /**
@@ -109,7 +182,7 @@ export const Game = ({ questionTime, answers, question }) => {
      * Function that exits the game without saving the progress.
      */
     const exitFromGame = () => {
-        // TODO
+        navigate('/');
     }
 
     return (

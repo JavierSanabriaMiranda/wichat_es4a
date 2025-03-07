@@ -28,6 +28,10 @@ const Configuration = ({ onClose }) => {
     );
   };
 
+  const startGame = () => {
+    navigate('/game', { state: { questionTime: time }})
+  }
+
   return (
     <div className="overlay">
       <div className="config-container">
@@ -108,7 +112,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button className="play-button" onClick={() => navigate("/game")}>{t("play-configuration")}</Button>
+        <Button className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
       </div>
     </div>
   );
