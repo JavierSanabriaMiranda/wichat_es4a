@@ -1,0 +1,27 @@
+{
+  "name": "wichat_es4a",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/arquisoft/wichat_es4a/workflows/CI%20for%20wichat_es4a/badge.svg)](https://github.com/arquisoft/wichat_es4a/actions)\r [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es4a&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es4a)\r [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es4a&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es4a)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "mongodb-memory-server": "^10.1.4",
+    "mongoose": "^8.12.1"
+  }
+  "dependencies": {
+    "mongodb-memory-server": "^10.1.4",
+    "mongoose": "^8.12.0",
+    "node-fetch": "^3.3.2"
+  },
+  "type": "module"
+}
