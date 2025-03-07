@@ -51,7 +51,7 @@ function filterUnique(results, label, limit) {
   }
   return uniqueResults;
 }
-
+//intercambiar por la de andrea y meter lo del lang para que admita los idiomas
 async function takeOptions(topics) {
   const templates = loadQuestionTemplatesWithTopic(topics);
   const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
@@ -89,6 +89,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["history", "geography", "science", "sports"])
+takeOptions(["art"])
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
