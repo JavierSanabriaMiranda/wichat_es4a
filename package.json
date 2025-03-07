@@ -18,4 +18,10 @@
     "mongodb-memory-server": "^10.1.4",
     "mongoose": "^8.12.1"
   }
+  "dependencies": {
+    "mongodb-memory-server": "^10.1.4",
+    "mongoose": "^8.12.0",
+    "node-fetch": "^3.3.2"
+  },
+  "type": "module"
 }
