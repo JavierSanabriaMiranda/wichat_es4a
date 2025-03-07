@@ -110,7 +110,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/game',
-        element: <Game questionTime={15} answers={answers} question={question}/>
+        element: <Game />
     },
     {
         path: '/user',

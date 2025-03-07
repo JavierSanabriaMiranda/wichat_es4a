@@ -5,6 +5,9 @@ import QuestionService from './QuestionGame.js';
 import GamePlayed from '../db/game_played.js';
 
 class GameSession {
+
+  apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+
   constructor(userId, topics, modality) {
     this.userId = userId;
     this.topics = topics;
@@ -31,11 +34,10 @@ class GameSession {
           console.error("Error al obtener la pregunta:", pregunta.error);
           return;
         }
-
         console.log(`Pregunta ${i + 1}:`, pregunta.pregunta);
-
-        await this.addQuestionToGame(pregunta);
         this.numQuestions++;
+
+        return pregunta;
       }
       await this.endGame();
     } catch (error) {

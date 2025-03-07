@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from 'axios';
 
 /**
  * React component that represents a wichat game with his timer, question, image, 
@@ -16,10 +17,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * 
  * @param {Number} questionTime - The initial time in seconds to answer the question.
  * @param {Array} answers - The array of answers with the text and if it is the correct answer.
- * @param {Object} question - The object with the question and the image.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
-export const Game = ({ answers, question }) => {
+export const Game = () => {
+
+    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -27,6 +29,8 @@ export const Game = ({ answers, question }) => {
 
     const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
 
+    const [answers, setAnswers] = useState([]);
+    const [question, setQuestion] = useState({});
     const [points, setPoints] = useState(0);
     const [gameKey, setGameKey] = useState(0);
     const [pointsToAdd, setPointsToAdd] = useState(0);
@@ -45,6 +49,15 @@ export const Game = ({ answers, question }) => {
         addQuestionResult(false, null);
         setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
+
+    const fetchQuestion = async () => {
+        try {
+            const response = await axios.post({apiEndpoint} + '/api/questions');
+            console.log("Pregunta obtenida:", response.data);
+        } catch (error) {
+            console.error("Error al obtener la pregunta:", error);
+        }
+    };
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -244,6 +257,7 @@ export const Game = ({ answers, question }) => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <button onClick={() => fetchQuestion()}></button>
         </main>
     )
 }
