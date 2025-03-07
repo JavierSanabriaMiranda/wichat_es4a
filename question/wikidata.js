@@ -18,6 +18,23 @@ function loadQuestionTemplatesWithTopic(topics) {
   return filteredTemplates; 
 }
 
+function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
+  const filePath = path.resolve('question', 'question_template.json');
+
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const templates = JSON.parse(data);
+
+  const topicsArray = Array.isArray(topics) ? topics : [topics];
+
+  const filteredTemplates = templates.filter(template =>
+    topicsArray.some(topic => template.topics.includes(topic))
+  );
+
+  const filteredTemplatesLanguage = filteredTemplates.filter(template => template.lang === lang);
+
+  return filteredTemplatesLanguage; 
+}
+
 
 async function executeQuery(query) {
   const offset = Math.floor(Math.random() * 100);
@@ -52,8 +69,8 @@ function filterUnique(results, label, limit) {
   return uniqueResults;
 }
 //intercambiar por la de andrea y meter lo del lang para que admita los idiomas
-async function takeOptions(topics) {
-  const templates = loadQuestionTemplatesWithTopic(topics);
+async function takeOptions(topics, lang) {
+  const templates = loadQuestionTemplatesWithTopicLanguage(topics, lang);
   const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
   
   const query = randomTemplate.query;
@@ -89,6 +106,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["geography", "history"])
+takeOptions(["geography", "history"], "en")
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
