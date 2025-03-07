@@ -89,6 +89,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["art"])
+takeOptions(["geography", "history"])
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
