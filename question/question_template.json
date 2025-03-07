@@ -8,7 +8,7 @@
         "lang": "es"
     },
     {
-        "question": "Select the country of this flag",
+        "question": "To which country does this flag belong?",
         "selector": "<input>",
         "topics": ["geographyy"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
@@ -26,7 +26,7 @@
         "lang": "es"
     },
     {
-        "question": "Select the country of this contour",
+        "question": "To which country does this contour belong?",
         "selector": "<input>",
         "topics": ["geography"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
@@ -44,7 +44,7 @@
         "lang": "es"
     },
     {
-        "question": "Select the capital of this country",
+        "question": "What is the capital of this country?",
         "selector": "<input>",
         "topics": ["geography"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
@@ -134,7 +134,7 @@
         "lang": "es"
     },
     {
-        "question": "What is the name of this animal?",
+        "question": "What is the name of the animal?",
         "selector": "<input>",
         "topics": ["science"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P171 ?taxon. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
@@ -152,7 +152,7 @@
         "lang": "es"
     },
     {
-        "question": "What is the name of this plant?",
+        "question": "What is the name of the plant?",
         "selector": "<input>",
         "topics": ["science"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P18 ?image. ?entity wdt:P5037 ?value. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
@@ -206,7 +206,7 @@
         "lang": "es"
     },
     {
-        "question": "Who is this football player?",
+        "question": "Who is the football player in this picture?",
         "selector": "<input>",
         "topics": ["sports"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5; wdt:P106 wd:Q937857. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
@@ -224,7 +224,7 @@
         "lang": "es"
     },
     {
-        "question": "At what stadium was this image taken?",
+        "question": "In which sports stadium was this image taken?",
         "selector": "<input>",
         "topics": ["sports"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q483110. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
@@ -238,34 +238,86 @@
         "selector": "<input>",
         "topics": ["literature"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q571. ?entity wdt:P50 ?author. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>"
+        "imageurl": "<output>",
+        "lang": "es"
     },
+    {
+        "question": "Who is the author of this book?",
+        "selector": "<input>",
+        "topics": ["literature"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q571. ?entity wdt:P50 ?author. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
+        "imageurl": "<output>",
+        "lang": "en"
+    },
+
+
     {
         "question": "¿Cuál es el género literario del libro?",
         "selector": "<input>",
         "topics": ["literature"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q571. ?entity wdt:P136 ?genre. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>"
+        "imageurl": "<output>",
+        "lang": "es"
     },
+    {
+        "question": "What is the literary genre of the book?",
+        "selector": "<input>",
+        "topics": ["literature"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q571. ?entity wdt:P136 ?genre. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
+        "imageurl": "<output>",
+        "lang": "en"
+    },
+
     {
         "question": "¿Cuál es el nombre del cuadro?",
         "selector": "<input>",
         "topics": ["art"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>"
+        "imageurl": "<output>",
+        "lang": "es"
     },
+    {
+        "question": "What is the name of the painting?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
+        "imageurl": "<output>",
+        "lang": "en"
+    },
+
+
     {
         "question": "¿Cuál es el nombre del pintor?",
         "selector": "<input>",
         "topics": ["art"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P170 ?painter. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>"
+        "imageurl": "<output>",
+        "lang": "es"
     },
+    {
+        "question": "What is the name of the painter?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P170 ?painter. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
+        "imageurl": "<output>",
+        "lang": "en"
+    },
+
+
     {
         "question": "¿Cuál es el estilo artístico del cuadro?",
         "selector": "<input>",
         "topics": ["art"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P149 ?style. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>"
+        "imageurl": "<output>",
+        "lang": "es"
+    },
+    {
+        "question": "What is the artistic style of the painting?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213. ?entity wdt:P149 ?style. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
+        "imageurl": "<output>",
+        "lang": "en"
     }
 ]
