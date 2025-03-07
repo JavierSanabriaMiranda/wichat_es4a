@@ -129,6 +129,18 @@ class QuestionService {
   esCorrecta(respuestaUsuario) {
     return respuestaUsuario === this.respuestaCorrecta;
   }
+  /**
+   * Método adicional para obtener la pregunta y sus detalles.
+   * Llama a `pedirPregunta` y devuelve los valores obtenidos de la pregunta.
+   * 
+   * @param {string} lang - El idioma en el que se debe generar la pregunta (por ejemplo, "es" para español).
+   * @returns {Object} Retorna un objeto con la pregunta, las respuestas mezcladas y la imagen asociada.
+   */
+  async obtenerPreguntaConDetalles(lang) {
+    const preguntaDetalles = await this.pedirPregunta(lang);
+    return preguntaDetalles;
+  }
+
 }
 export default QuestionService; 
 // 🔹 Prueba la clase

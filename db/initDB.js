@@ -9,22 +9,39 @@ const initializeDB = async () => {
   try {
     // Verifica si hay preguntas en la colección
     const existingQuestions = await Question.find();
-    if (existingQuestions.length === 0) {
-      console.log("📌 No hay preguntas, insertando datos iniciales...");
+    let questionId = null;
+
 
       // Insertar una pregunta de prueba
-      await Question.create({
+      const question = await Question.create({
         question: "¿Cuál es la capital de Francia?",
-        topics: [], // Deberías enlazarlo con un Topic si tienes esa colección
+        topics: [],
         answer: "París",
         options: ["Madrid", "Berlín", "París", "Londres"],
         imageUrl: "https://example.com/paris.jpg",
         correct: true
       });
 
+      questionId = question._id;
       console.log("✅ Pregunta de prueba insertada.");
+    
+        // Verifica si hay partidas activas en la colección
+    const existingGames = await GamePlayed.find({ isActive: true });
+    if (existingGames.length === 0) {
+      console.log("📌 No hay partidas activas, creando una partida inicial...");
+
+      await GamePlayed.create({
+        user: new mongoose.Types.ObjectId(), // Sustituir con un usuario válido si es necesario
+        modality: "Single Player",
+        score: 0,
+        topics: ["Geografía"],
+        questionsPlayed: [questionId], // ✅ Ahora siempre tiene un valor
+        isActive: true
+      });
+      
+      console.log("✅ Partida inicial creada.");
     } else {
-      console.log("📌 Las preguntas ya existen en la base de datos.");
+      console.log("📌 Ya existen partidas activas en la base de datos.");
     }
 
     // Cierra la conexión

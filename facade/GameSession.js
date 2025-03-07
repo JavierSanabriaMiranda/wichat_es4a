@@ -1,6 +1,8 @@
 // src/controllers/gameSession.js
+import Question from '../db/Question.js';
 import { startNewGame, endGame } from './gameController.js';
 import QuestionService from './QuestionGame.js';
+import GamePlayed from '../db/game_played.js';
 
 class GameSession {
   constructor(userId, topics, modality) {
@@ -43,20 +45,30 @@ class GameSession {
 
   async addQuestionToGame(pregunta) {
     try {
+      pregunta = await this.questionService.obtenerPreguntaConDetalles("es");
+      // Crear la pregunta en la base de datos
+      const newQuestion = await Question.create({
+        question: pregunta.pregunta,        // Pregunta obtenida
+        answer:  pregunta.respuestas[0], // Respuesta correcta
+        options: pregunta.respuestas,       // Respuestas mezcladas
+        imageUrl: pregunta.imagen || "",    // Imagen asociada (si existe)
+        correct: pregunta.respuestaCorrecta // Indicador de la respuesta correcta
+      });
+  
+      // Asociar la pregunta recién creada con la partida actual
       const gameId = this.game._id;
-      const questionId = pregunta.id;
-
       this.game = await GamePlayed.findByIdAndUpdate(
         gameId,
-        { $push: { questionsPlayed: questionId } },
-        { new: true }
+        { $push: { questionsPlayed: newQuestion._id } },  // Añadir el ID de la pregunta a la partida
+        { new: true } // Obtener la partida actualizada
       );
-
+  
       console.log("Pregunta añadida a la partida:", this.game);
     } catch (error) {
       console.error("Error al agregar la pregunta a la partida:", error);
     }
   }
+  
 
   async endGame() {
     try {
