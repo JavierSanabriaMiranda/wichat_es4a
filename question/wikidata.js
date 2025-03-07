@@ -4,45 +4,24 @@ import path from 'path';
 
 const url = "https://query.wikidata.org/sparql";
 
-// Función para cargar el archivo JSON de plantillas
-function loadQuestionTemplates() {
-  // Construimos la ruta de manera explícita
-  const filePath = path.resolve('question', 'question_template.json');
-  // Mostramos la ruta para depurar
-  console.log("Ruta al archivo JSON:", filePath);
-
-  try {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error al leer el archivo JSON:", error);
-    throw error;
-  }
-}
-
-function loadQuestionTemplatesWithTopic(topic) {
-  // Construimos la ruta de manera explícita
+function loadQuestionTemplatesWithTopic(topics) {
   const filePath = path.resolve('question', 'question_template.json');
 
-  // Mostramos la ruta para depurar
-  console.log("Ruta al archivo JSON:", filePath);
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const templates = JSON.parse(data);
 
-  try {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const templates = JSON.parse(data);
+  const topicsArray = Array.isArray(topics) ? topics : [topics];
 
-    // Filtrar las plantillas que contienen el topic proporcionado
-    const filteredTemplates = templates.filter(template => template.topics.includes(topic));
-    return filteredTemplates; 
-  } catch (error) {
-    console.error("Error al leer el archivo JSON:", error);
-    throw error;
-  }
+  const filteredTemplates = templates.filter(template =>
+    topicsArray.some(topic => template.topics.includes(topic))
+  );
+  return filteredTemplates; 
 }
+
 
 async function executeQuery(query) {
   const offset = Math.floor(Math.random() * 100);
-  query += offset;
+  const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`;
 
   const response = await fetch(url, {
     method: "POST",
@@ -50,33 +29,66 @@ async function executeQuery(query) {
       "Content-Type": "application/sparql-query",
       "Accept": "application/json"
     },
-    body: query
+    body: finalQuery
   });
 
-  if (!response.ok) {
-    throw new Error(`Error en la consulta SPARQL: ${response.statusText}`);
-  }
-
   const data = await response.json();
-  return data.results.bindings;
+  //label representa los resultados que van a aparecer en las opciones -> no puede ser iguales
+  //filtro para asegurarme que no se repitan bajo ninguna circunstancia
+  return filterUnique(data.results.bindings, "label", 4);
 }
 
-async function main(topic) {
-  try {
-    const templates = loadQuestionTemplatesWithTopic(topic) //cogemos solo las plantillas que pasen por el filtrado de topic
+function filterUnique(results, label, limit) {
+  const uniqueResults = [];
+  const seenValues = new Set();
 
-    const randomTemplate = templates[Math.floor(Math.random() * templates.length)]; //seleccionamos una plantilla aleatoria
-    console.log(`Plantilla seleccionada: ${randomTemplate.question}`);
-
-    const query = randomTemplate.query;  //obtenemos la consulta SPARQL de la plantilla seleccionada
-
-    const results = await executeQuery(query);
-    results.forEach((item) => {
-      console.log(`Datos obtenidos: ${JSON.stringify(item, null, 2)}`);
-    });
-  } catch (error) {
-    console.error("Error ejecutando el script:", error);
+  for (const result of results) {
+    if (result[label]?.value && !seenValues.has(result[label].value)) {
+      seenValues.add(result[label].value);
+      uniqueResults.push(result);
+    }
+    if (uniqueResults.length === limit) break;
   }
+  return uniqueResults;
+}
+//intercambiar por la de andrea y meter lo del lang para que admita los idiomas
+async function takeOptions(topics) {
+  const templates = loadQuestionTemplatesWithTopic(topics);
+  const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+  
+  const query = randomTemplate.query;
+  const results = await executeQuery(query);
+
+  if (results.length > 0) {
+
+    const filteredResults = allInfo(results, "label", "image", randomTemplate);
+    console.log("Resultados finales:");
+    console.log(JSON.stringify(filteredResults, null, 2));
+
+    return filteredResults;
+  }
+  //para evitar errores en tiempo de ejecucion -> quitarlo en un futuro
+  return [];
 }
 
-main("art").catch(console.error);
+function allInfo(results, labelKey, imageKey, randomTemplate) {
+  const specialIndex = Math.floor(Math.random() * results.length);
+
+  const question = randomTemplate.question;
+  const correct = results[specialIndex][labelKey]?.value || null;
+  const image = results[specialIndex][imageKey]?.value || null;
+  const options = results
+    .map(result => result[labelKey]?.value || null)
+    .filter((option, index) => index !== specialIndex);
+
+  return {
+    question,
+    correct,
+    image,
+    options
+  };
+}
+
+takeOptions(["geography", "history"])
+  .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
+  .catch(console.error);
