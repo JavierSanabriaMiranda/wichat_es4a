@@ -1,13 +1,13 @@
 .navbar-custom {
-  height: 90px; 
-  padding: 10px 20px; 
+  height: 110px; 
+  padding: 10px 30px; 
   background-color: #5D6C89;
 }
 
 
 .navbar-logo {
-  height: 80px;
-  width: auto;
+  height: 105px;
+  width: 115px;
   margin-left: 20px;
 }
 
