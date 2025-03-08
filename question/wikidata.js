@@ -1,11 +1,15 @@
 import fetch from 'node-fetch';
 import fs from 'fs';  // Requerimos el módulo fs para leer archivos JSON
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const url = "https://query.wikidata.org/sparql";
 
 function loadQuestionTemplatesWithTopic(topics) {
-  const filePath = path.resolve(path.dirname(new URL(import.meta.url).pathname).slice(1), 'question_template.json');
+  const filePath = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    'question_template.json'
+);
 
 // Verifica la ruta generada para asegurarte de que sea correcta
 console.log('Ruta del archivo:', filePath);

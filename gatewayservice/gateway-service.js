@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const promBundle = require('express-prom-bundle');
-const GameSession = require('../facade/GameSession.js');
+const GameSession = require('../facade/GameSession');
 
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
@@ -15,8 +15,6 @@ const port = 8000;
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
-
-
 
 app.use(cors());
 app.use(express.json());
@@ -63,7 +61,9 @@ app.post('/askllm', async (req, res) => {
 
 // Endpoint to get a question from the Wikidata service
 app.get('/api/questions', async (req, res) => {
-  const question = await GameSession.playQuestions();
+  const gameSession = new GameSession.default("user123", ["geography", "history"], "easy");
+
+  const question = await gameSession.playQuestions();
   if (question) {
       res.json(question);
   } else {

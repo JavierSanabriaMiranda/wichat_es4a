@@ -52,8 +52,9 @@ export const Game = () => {
 
     const fetchQuestion = async () => {
         try {
-            const response = await axios.post({apiEndpoint} + '/api/questions');
+            const response = await axios.get(apiEndpoint + '/api/questions');
             console.log("Pregunta obtenida:", response.data);
+            
         } catch (error) {
             console.error("Error al obtener la pregunta:", error);
         }
