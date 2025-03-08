@@ -212,6 +212,8 @@ export const Game = () => {
         navigate('/');
     }
 
+    const correctAnswer = answers.find(answer => answer.isCorrect)?.text || '';
+
     return (
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
@@ -251,7 +253,7 @@ export const Game = () => {
                 </div>
             </section>
             <aside className='llm-chat-aside'>
-                <LLMChat />
+                <LLMChat defaultName={correctAnswer} />
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
