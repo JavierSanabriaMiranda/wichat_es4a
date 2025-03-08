@@ -3,7 +3,7 @@
  * @module QuestionService
  */
 import { executeFullFlow } from '../question/wikidata.js';
-import { getTopicsFromDatabase } from './gameController.js'; 
+import { getTopicsFromDatabase } from './GameController.js'; 
 
 /**
  * Clase que maneja la lógica relacionada con la obtención de preguntas, respuestas y verificación de respuestas.
@@ -20,25 +20,25 @@ class QuestionService {
      * Contiene la pregunta obtenida.
      * @type {string}
      */
-    this.pregunta = "";
+    this.question = "";
 
     /**
      * Respuesta correcta de la pregunta.
      * @type {string}
      */
-    this.respuestaCorrecta = "";
+    this.correctAnswer = "";
 
     /**
      * Respuestas falsas asociadas a la pregunta.
      * @type {Array<string>}
      */
-    this.respuestasFalsas = [];
+    this.wrongAnswers = [];
 
     /**
      * Imagen asociada a la pregunta (si existe).
      * @type {string|null}
      */
-    this.imagen = "";
+    this.img = "";
 
     /**
      * Lista de topics disponibles para las preguntas.
@@ -54,7 +54,7 @@ class QuestionService {
    * 
    * @returns {Array|string} Retorna un array de topics o un mensaje de error en caso de fallo.
    */
-  async obtenerTopics() {
+  async getTopicsGame() {
     try {
       this.topics = await getTopicsFromDatabase(); // Obtiene los topics desde la BD
       console.log("Topics obtenidos de la BD:", this.topics);
@@ -71,7 +71,7 @@ class QuestionService {
    * 
    * @param {Array<string>} topics - Lista de topics que se asignarán a la instancia.
    */
-  async obtenerTopic(topics) {
+  async getTopics(topics) {
     this.topics = topics;
   }
 
@@ -83,35 +83,55 @@ class QuestionService {
    * @returns {Object} Retorna un objeto con la pregunta, las respuestas mezcladas y la imagen asociada.
    * @throws {Error} Si los datos obtenidos no tienen el formato esperado o si ocurre un error durante la solicitud.
    */
-  async pedirPregunta(lang) {
+  async askQuestion(lang) {
     try {
       // Si no se han definido topics, asignamos valores predeterminados.
+      this.getTopicsGame();
       if (this.topics.length == 0) {
         this.topics = ["geography", "history", "science", "sports"];
       }
 
-      const resultado = await executeFullFlow(this.topics, lang); // Pide la pregunta con los topics
+      const result = await executeFullFlow(this.topics, lang); // Pide la pregunta con los topics
 
       console.log("Resultados finales recibidos:", resultado); // Debugging
 
       // Validar el formato de los resultados obtenidos
-      if (!resultado || typeof resultado !== "object" || !resultado.question || !resultado.correct || !Array.isArray(resultado.options)) {
+      if (!result || typeof result !== "object" || !result.question || !result.correct || !Array.isArray(result.options)) {
         throw new Error("Los datos obtenidos no tienen el formato esperado.");
       }
 
       // Guardamos los datos de la pregunta
-      this.pregunta = resultado.question;
-      this.respuestaCorrecta = resultado.correct;
-      this.respuestasFalsas = resultado.options;
-      this.imagen = resultado.image || null;
+      this.question = result.question;
+      this.correctAnswer = result.correct;
+      this.wrongAnswers = result.options;
+      this.img = result.image;
+
+      const listAnswer = [
+        {
+          result: result.correct,
+          correct: true
+        },
+        {
+          result: result.options[0],
+          correct: false
+        },
+        {
+          result: result.options[1],
+          correct: false
+        },
+        {
+          result: result.options[2],
+          correc: false
+        }
+      ]
 
       // Mezclamos las respuestas (correcta + falsas)
-      const respuestasMezcladas = [resultado.correct, ...resultado.options].sort(() => Math.random() - 0.5);
+      const mixAnswer = listAnswer.sort(() => Math.random() - 0.5);
 
       return {
-        pregunta: this.pregunta,
-        respuestas: respuestasMezcladas,
-        imagen: this.imagen
+        question: this.question,
+        answer: mixAnswer,
+        img: this.img
       };
 
     } catch (error) {
@@ -126,8 +146,8 @@ class QuestionService {
    * @param {string} respuestaUsuario - La respuesta del usuario para la pregunta actual.
    * @returns {boolean} `true` si la respuesta es correcta, `false` si es incorrecta.
    */
-  esCorrecta(respuestaUsuario) {
-    return respuestaUsuario === this.respuestaCorrecta;
+  isCorrect(userAnswer) {
+    return userAnswer === this.correctAnswer;
   }
   /**
    * Método adicional para obtener la pregunta y sus detalles.
@@ -136,9 +156,9 @@ class QuestionService {
    * @param {string} lang - El idioma en el que se debe generar la pregunta (por ejemplo, "es" para español).
    * @returns {Object} Retorna un objeto con la pregunta, las respuestas mezcladas y la imagen asociada.
    */
-  async obtenerPreguntaConDetalles(lang) {
-    const preguntaDetalles = await this.pedirPregunta(lang);
-    return preguntaDetalles;
+  async getQuestionDetails(lang) {
+    const questionDetail = await this.askQuestion(lang);
+    return questionDetail;
   }
 
 }

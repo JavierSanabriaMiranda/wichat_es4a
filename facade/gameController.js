@@ -1,12 +1,5 @@
-// src/controllers/gameController.js
 import GamePlayed from '../db/game_played.js';
 
-/**
- * Obtiene los topics de la base de datos.
- * Este método consulta los temas de las partidas jugadas para obtener una lista de temas utilizados.
- * 
- * @returns {Array|Object} Lista de topics o un objeto de error si la consulta falla.
- */
 export async function getTopicsFromDatabase() {
     try {
       // Obtenemos los topics únicos de todas las partidas jugadas
@@ -25,18 +18,9 @@ export async function getTopicsFromDatabase() {
       return { error: "No se pudieron obtener los topics." };
     }
   }
-/**
- * Inicia una nueva partida para un usuario, marcando la anterior como inactiva.
- * 
- * @param {ObjectId} userId - El ID del usuario que inicia la partida.
- * @param {Array} topics - Los topics que se utilizarán en la partida.
- * @param {string} modality - La modalidad del juego.
- * @returns {Object} Retorna el documento de la partida creada.
- */
+  
 export async function startNewGame(userId, topics, modality) {
   try {
-   
-    // Crear una nueva partida activa
     const newGame = new GamePlayed({
       user: userId,
       topics: topics,
@@ -45,7 +29,6 @@ export async function startNewGame(userId, topics, modality) {
     });
 
     await newGame.save();
-
     console.log("Nueva partida iniciada:", newGame);
     return newGame;
   } catch (error) {
@@ -54,18 +37,12 @@ export async function startNewGame(userId, topics, modality) {
   }
 }
 
-/**
- * Finaliza la partida activa del usuario.
- * 
- * @param {ObjectId} userId - El ID del usuario cuyo juego se desea finalizar.
- * @returns {Object} El documento de la partida finalizada.
- */
 export async function endGame(userId) {
   try {
     const game = await GamePlayed.findOneAndUpdate(
       { user: userId, isActive: true },
       { $set: { isActive: false } },
-      { new: true } // Retorna el documento actualizado
+      { new: true }
     );
 
     if (!game) {
