@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import axios from 'axios';
+import { getNextQuestion } from '../../services/GameService';
 
 /**
  * React component that represents a wichat game with his timer, question, image, 
@@ -21,15 +21,15 @@ import axios from 'axios';
  */
 export const Game = () => {
 
-    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-
     const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
 
     const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
 
+    // State that stores the answers of the current question with the text and if it is the correct answer
     const [answers, setAnswers] = useState([]);
+    // State that stores the current question with the text, image and topic
     const [question, setQuestion] = useState({});
     const [points, setPoints] = useState(0);
     const [gameKey, setGameKey] = useState(0);
@@ -50,15 +50,26 @@ export const Game = () => {
         setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
-    const fetchQuestion = async () => {
-        try {
-            const response = await axios.get(apiEndpoint + '/api/questions');
-            console.log("Pregunta obtenida:", response.data);
-            
-        } catch (error) {
-            console.error("Error al obtener la pregunta:", error);
+    const askForNextQuestion = () => {
+        getNextQuestion().then((questionInfo) => {
+            setQuestion(questionInfo.question);
+            setAnswers(questionInfo.answers);
         }
-    };
+        );
+    }
+
+    // UseEffect to call getNextQuestion on initial render
+    useEffect(() => {
+        askForNextQuestion();
+    }, []); // Empty dependency array means this effect runs only once on mount
+
+    useEffect(() => {
+        console.log("Pregunta actualizada:", question);
+    }, [question]); // Ver el valor de 'question' cuando cambia
+
+    useEffect(() => {
+        console.log("Respuestas actualizadas:", answers);
+    }, [answers]); // Ver el valor de 'answers' cuando cambia
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -122,10 +133,12 @@ export const Game = () => {
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
         blockAnswerButtons();
+        
         setTimeout(() => {
             prepareUIForNextQuestion()
             unblockAnswerButtons()
         }, 2000); // Wait 2 second before showing the next question
+
     }
 
     /**
@@ -258,7 +271,6 @@ export const Game = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <button onClick={() => fetchQuestion()}></button>
         </main>
     )
 }
