@@ -2,7 +2,12 @@ import QuestionService from './QuestionService.js';  // El nombre de la clase de
 import GamePlayed from '../db/game_played.js';
 import { startNewGame, endGame } from './GameController.js';
 
+
 class GameSessionController {
+
+
+  apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+
   constructor(userId, topics, modality) {
     this.userId = userId;
     this.topics = topics;
@@ -32,8 +37,9 @@ class GameSessionController {
 
         console.log(`Pregunta ${i + 1}:`, pregunta.question.text);
 
-        await this.addQuestionToGame(pregunta);
         this.numQuestions++;
+
+        return pregunta;
       }
       await this.endGame();  // Finaliza la partida después de las preguntas
     } catch (error) {

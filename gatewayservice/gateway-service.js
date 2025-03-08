@@ -2,6 +2,8 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const promBundle = require('express-prom-bundle');
+const GameSession = require('../facade/GameSession');
+
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
 const fs = require("fs")
@@ -40,6 +42,7 @@ app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
     const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
+    console.log(userResponse)
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -56,8 +59,20 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
+// Endpoint to get a question from the Wikidata service
+app.get('/api/questions', async (req, res) => {
+  const gameSession = new GameSession.default("user123", ["geography", "history"], "easy");
+  const question = await gameSession.playQuestions();
+  console.log("Respuestas:", question)
+  if (question) {
+      res.json(question);
+  } else {
+      res.status(500).json({ error: "No se pudo obtener la pregunta" });
+  }
+});
+
 // Read the OpenAPI YAML file synchronously
-openapiPath='./openapi.yaml'
+const openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 

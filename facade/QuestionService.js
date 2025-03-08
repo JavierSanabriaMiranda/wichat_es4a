@@ -125,8 +125,11 @@ class QuestionService {
         }
       ]
 
+     
+
       // Mezclamos las respuestas (correcta + falsas)
       const mixAnswer = listAnswer.sort(() => Math.random() - 0.5);
+
 
       return {
         question: this.question,
