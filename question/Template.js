@@ -18,3 +18,4 @@ const Template = model("Template", questionSchema);
 
 //sirve para representar lo que se exportará desde el archivo actual -> el modelo de Pregunta
 module.exports = Template;
+
