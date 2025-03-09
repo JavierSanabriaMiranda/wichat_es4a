@@ -74,14 +74,6 @@ export const Game = () => {
         askForNextQuestion();
     }, []); // Empty dependency array means this effect runs only once on mount
 
-    useEffect(() => {
-        console.log("Pregunta actualizada:", question);
-    }, [question]); // Ver el valor de 'question' cuando cambia
-
-    useEffect(() => {
-        console.log("Respuestas actualizadas:", answers);
-    }, [answers]); // Ver el valor de 'answers' cuando cambia
-
     /**
      * Handles the popstate event to prevent the user from navigating back
      */
