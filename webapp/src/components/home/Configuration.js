@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { GoXCircle } from "react-icons/go";
@@ -7,29 +7,59 @@ import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { useNavigate } from "react-router-dom";
+import { useConfig } from "../game/GameConfigProvider";
 
 const Configuration = ({ onClose }) => {
+
+  // Constant to store the configuration of the game
+  const { config, setConfig, resetConfig } = useConfig();
+
   const [questions, setQuestions] = useState(30);
   const [time, setTime] = useState(120);
   const { t } = useTranslation();
-  const [selectedButtons, setSelectedButtons] = useState([]); 
+  const [selectedButtons, setSelectedButtons] = useState([]);
+  const [topics, setTopics] = useState([]);
+
+  const topicList = ["history", "science", "art", "sport", "geography"];
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
+    resetConfig();
     onClose();
   };
 
-  const navigate = useNavigate();
+  // Function to update the numberOfQuestionsSelected
+  const handleQuestionsChange = (value) => {
+    setQuestions(value);
+    setConfig((prevConfig) => ({ ...prevConfig, questions: value }));
+  };
+
+  // Function to update the timePerRound
+  const handleTimeChange = (value) => {
+    setTime(value);
+    setConfig((prevConfig) => ({ ...prevConfig, timePerRound: value }));
+  };
 
   const handleButtonClick = (value) => {
     setSelectedButtons((prevSelected) =>
       prevSelected.includes(value)
-        ? prevSelected.filter((item) => item !== value) 
-        : [...prevSelected, value] 
+        ? prevSelected.filter((item) => item !== value)
+        : [...prevSelected, value]
     );
+    const topic = topicList[value - 1];
+
+    // Adds or removes the topic from the list of topics
+    const updatedTopics = selectedButtons.includes(value)
+      ? topics.filter((item) => item !== topic) // If value is in topics, remove it
+      : [...topics, topic]; // If value is not in topics, add it
+
+    setTopics(updatedTopics);
+    setConfig((prevConfig) => ({ ...prevConfig, topics: updatedTopics }));
   };
 
   const startGame = () => {
-    navigate('/game', { state: { questionTime: time }})
+    navigate('/game', { state: { questionTime: time } })
   }
 
   return (
@@ -39,7 +69,7 @@ const Configuration = ({ onClose }) => {
         <h2 className="title">{t("title-configuration")}</h2>
         <div className="config-option">
           <label>{t("numberQuestions-configuration")}</label>
-          <Dropdown onSelect={(value) => setQuestions(Number(value))}>
+          <Dropdown onSelect={(value) => handleQuestionsChange(Number(value))}>
             <Dropdown.Toggle variant="light">{questions}</Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item eventKey={10}>10</Dropdown.Item>
@@ -50,7 +80,7 @@ const Configuration = ({ onClose }) => {
         </div>
         <div className="config-option">
           <label>{t("time-configuration")}</label>
-          <Dropdown onSelect={(value) => setTime(Number(value))}>
+          <Dropdown onSelect={(value) => handleTimeChange(Number(value))}>
             <Dropdown.Toggle variant="light">{time}s</Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item eventKey={60}>60s</Dropdown.Item>
