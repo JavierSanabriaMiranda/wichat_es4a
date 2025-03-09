@@ -62,7 +62,6 @@ app.post('/askllm', async (req, res) => {
 // Endpoint to get a question from the Wikidata service
 app.get('/api/questions', async (req, res) => {
   const gameSession = new GameSession.default("user123", ["geography", "history"], "easy");
-
   const question = await gameSession.playQuestions();
   if (question) {
       res.json(question);

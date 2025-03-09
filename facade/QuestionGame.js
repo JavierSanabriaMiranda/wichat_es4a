@@ -105,8 +105,27 @@ class QuestionService {
       this.respuestasFalsas = resultado.options;
       this.imagen = resultado.image || null;
 
+      const listaRespuestas = [
+        {
+          respuesta: resultado.correct,
+          correcta: true
+        },
+        {
+          respuesta: resultado.options[0],
+          correcta: false
+        },
+        {
+          respuesta: resultado.options[1],
+          correcta: false
+        },
+        {
+          respuesta: resultado.options[2],
+          correcta: false
+        }
+      ]
+
       // Mezclamos las respuestas (correcta + falsas)
-      const respuestasMezcladas = [resultado.correct, ...resultado.options].sort(() => Math.random() - 0.5);
+      const respuestasMezcladas = listaRespuestas.sort(() => Math.random() - 0.5);
 
       return {
         pregunta: this.pregunta,
