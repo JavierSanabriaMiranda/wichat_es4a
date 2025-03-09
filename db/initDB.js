@@ -23,7 +23,6 @@ const initializeDB = async () => {
       });
 
       questionId = question._id;
-      console.log("✅ Pregunta de prueba insertada.");
     
         // Verifica si hay partidas activas en la colección
     const existingGames = await GamePlayed.find({ isActive: true });

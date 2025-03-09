@@ -89,7 +89,6 @@ export async function startNewGame(userId, topics, modality) {
 
         await newGame.save();
 
-        console.log("New game session started:", newGame);
         return newGame;
     } catch (error) {
         console.error("Error starting a new game session:", error);

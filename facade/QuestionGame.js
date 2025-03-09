@@ -59,7 +59,6 @@ class QuestionService {
   async getTopicsGame() {
     try {
       this.topics = await getTopicsFromDatabase(); // Obtiene los topics desde la BD
-      console.log("Topics obtenidos de la BD:", this.topics);
       return this.topics;
     } catch (error) {
       console.error("Error al obtener los topics:", error);
@@ -95,7 +94,6 @@ class QuestionService {
 
       const result = await executeFullFlow(this.topics, lang); // Pide la pregunta con los topics
 
-      console.log("Resultados finales recibidos:", result); // Debugging
 
       if (!result || typeof result !== "object" || !result.question || !result.correct || !Array.isArray(result.options)) {
         throw new Error("Los datos obtenidos no tienen el formato esperado.");
@@ -170,9 +168,4 @@ export default QuestionService;
 
   // Request a question
   const question = await questionService.requestQuestion("es");
-  console.log("Retrieved question: ", question);
-
-  // Check answers
-  console.log("Correct answer verification: ", questionService.isCorrect("test")); // Expected: false
-  console.log("Incorrect answer verification: ", questionService.isCorrect("wrongTestAnswer")); // Expected: false
 })();

@@ -65,7 +65,6 @@ class GameSession {
   async startGame() {
     try {
       this.game = await GameRepository.startNewGame(this.userId, this.topics, this.modality);
-      console.log("Game started:", this.game);
     } catch (error) {
       console.error("Error starting the game:", error);
     }
@@ -82,7 +81,6 @@ class GameSession {
         console.error("Error fetching the question:", question.error);
         return;
       }
-      console.log("Question:", question.pregunta);
       this.numQuestions++;
 
       return question;
@@ -103,7 +101,6 @@ class GameSession {
       // Associate the question with the current game session
       this.game = await GameRepository.addQuestionToGameSession(this.game._id, newQuestion._id);
 
-      console.log("Question added to the game:", this.game);
     } catch (error) {
       console.error("Error adding the question to the game session:", error);
     }
@@ -116,7 +113,6 @@ class GameSession {
   async endGame() {
     try {
       const gameEnded = await GameRepository.endGame(this.userId);
-      console.log("Game ended:", gameEnded);
     } catch (error) {
       console.error("Error ending the game:", error);
     }
