@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useTranslation } from 'react-i18next';
 import { askClue } from '../../services/LLMService';
+import { Typewriter } from "react-simple-typewriter";
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
@@ -41,13 +42,21 @@ const LLMChat = ({ name }) => {
         setLoading(true);
         
         try {
-            console.log("El idioma es: " + i18n.language);
             const response = await askClue({ 
                 name: name, 
                 userQuestion: inputValue, 
                 language: i18n.language 
             });
-            const llmMsg = <p className="llm-message" key={`llm-${messages.length}`}>{response.data.answer}</p>;
+            console.log("Respuesta del LLM:", response.data.answer);
+            const llmMsg = (
+                <p className="llm-message" key={`llm-${messages.length}`}>
+                    <Typewriter
+                        words={[response.data.answer]}
+                        delaySpeed={100}
+                        typeSpeed={50}
+                    />
+                </p>
+            );
             setMessages(prevMessages => [...prevMessages, llmMsg]);
         } catch (error) {
             console.error("Error enviando mensaje:", error);
@@ -87,7 +96,11 @@ const LLMChat = ({ name }) => {
                     {messages.map((msg, index) => (
                         <div key={index}>{msg}</div>
                     ))}
-                    {loading && <p className="llm-message loading">Cargando respuesta...</p>}
+                    {loading && (
+                        <p className="llm-message loading">
+                            <span className="question-loading">Cargando respuesta...</span>
+                        </p>
+                    )}
                 </div>
             </Scrollbars>
             <form className="llm-chat-form" onSubmit={handleSubmit}>
