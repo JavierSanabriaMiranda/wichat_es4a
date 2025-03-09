@@ -66,7 +66,6 @@ app.post('/askllm', async (req, res) => {
 app.get('/api/questions', async (req, res) => {
   const gameSession = new GameSession.default("user123", ["geography", "history"], "easy");
   const question = await gameSession.playQuestions();
-  console.log("Respuestas:", question)
   if (question) {
       res.json(question);
   } else {
