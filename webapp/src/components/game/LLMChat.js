@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { askClue } from '../../services/LLMService';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
  * @returns a chat with the LLM to ask for clues.
  */
-const LLMChat = ({ defaultName }) => {
+const LLMChat = ({ name }) => {
     const { t } = useTranslation();
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-    const defaultLanguage = "es";
+    const language = "es";
 
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
@@ -43,10 +43,10 @@ const LLMChat = ({ defaultName }) => {
         setLoading(true);
         
         try {
-            const response = await axios.post(`${apiEndpoint}/askllm/clue`, { 
-                name: defaultName, 
+            const response = await askClue({ 
+                name: name, 
                 userQuestion: inputValue, 
-                language: defaultLanguage 
+                language: language 
             });
             const llmMsg = <p className="llm-message" key={`llm-${messages.length}`}>{response.data.answer}</p>;
             setMessages(prevMessages => [...prevMessages, llmMsg]);

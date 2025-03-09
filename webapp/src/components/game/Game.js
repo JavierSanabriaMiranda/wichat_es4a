@@ -268,7 +268,7 @@ export const Game = () => {
                 </div>
             </section>
             <aside className='llm-chat-aside'>
-                <LLMChat defaultName={correctAnswer} />
+                <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
