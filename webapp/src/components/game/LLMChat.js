@@ -54,7 +54,7 @@ const LLMChat = ({ defaultName }) => {
             console.error("Error enviando mensaje:", error);
             const errorMsg = (
                 <p className="llm-message error" key={`error-${messages.length}`}>
-                    {t('llm-chat-error-msg') || "Error obteniendo respuesta"}
+                    {t('llm-chat-error-msg')}
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, errorMsg]);
