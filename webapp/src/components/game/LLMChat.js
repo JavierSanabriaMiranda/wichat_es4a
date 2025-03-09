@@ -8,9 +8,7 @@ import { askClue } from '../../services/LLMService';
  * @returns a chat with the LLM to ask for clues.
  */
 const LLMChat = ({ name }) => {
-    const { t } = useTranslation();
-    const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-    const language = "es";
+    const { t, i18n } = useTranslation();
 
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
@@ -43,10 +41,11 @@ const LLMChat = ({ name }) => {
         setLoading(true);
         
         try {
+            console.log("El idioma es: " + i18n.language);
             const response = await askClue({ 
                 name: name, 
                 userQuestion: inputValue, 
-                language: language 
+                language: i18n.language 
             });
             const llmMsg = <p className="llm-message" key={`llm-${messages.length}`}>{response.data.answer}</p>;
             setMessages(prevMessages => [...prevMessages, llmMsg]);
