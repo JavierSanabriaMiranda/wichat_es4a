@@ -3,7 +3,8 @@ import fs from 'fs';  // Requerimos el módulo fs para leer archivos JSON
 import path from 'path';
 
 const url = "https://query.wikidata.org/sparql";
-
+//pre internacionalizacion(se podria borrar, lo dejo porque es la beta aun)
+/*
 function loadQuestionTemplatesWithTopic(topics) {
   const filePath = path.resolve('question', 'question_template.json');
 
@@ -16,6 +17,24 @@ function loadQuestionTemplatesWithTopic(topics) {
     topicsArray.some(topic => template.topics.includes(topic))
   );
   return filteredTemplates; 
+}
+  */
+
+function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
+  const filePath = path.resolve('question', 'question_template.json');
+
+  const data = fs.readFileSync(filePath, 'utf-8');
+  const templates = JSON.parse(data);
+
+  const topicsArray = Array.isArray(topics) ? topics : [topics];
+
+  const filteredTemplates = templates.filter(template =>
+    topicsArray.some(topic => template.topics.includes(topic))
+  );
+
+  const filteredTemplatesLanguage = filteredTemplates.filter(template => template.lang === lang);
+
+  return filteredTemplatesLanguage; 
 }
 
 
@@ -52,8 +71,8 @@ function filterUnique(results, label, limit) {
   return uniqueResults;
 }
 //intercambiar por la de andrea y meter lo del lang para que admita los idiomas
-async function takeOptions(topics) {
-  const templates = loadQuestionTemplatesWithTopic(topics);
+async function takeOptions(topics, lang) {
+  const templates = loadQuestionTemplatesWithTopicLanguage(topics, lang);
   const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
   
   const query = randomTemplate.query;
@@ -112,6 +131,6 @@ export async function executeFullFlow(topics,lang) {
     }
 }
 
-takeOptions(["geography", "history"])
+takeOptions(["geography", "history", "sports"], "en")
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
