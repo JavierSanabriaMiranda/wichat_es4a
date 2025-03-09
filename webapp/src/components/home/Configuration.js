@@ -22,6 +22,8 @@ const Configuration = ({ onClose }) => {
 
   const topicList = ["history", "science", "art", "sport", "geography"];
 
+  const navigate = useNavigate();
+
   const handleClose = () => {
     resetConfig();
     onClose();
@@ -39,8 +41,6 @@ const Configuration = ({ onClose }) => {
     setConfig((prevConfig) => ({ ...prevConfig, timePerRound: value }));
   };
 
-  const navigate = useNavigate();
-
   const handleButtonClick = (value) => {
     setSelectedButtons((prevSelected) =>
       prevSelected.includes(value)
@@ -57,10 +57,6 @@ const Configuration = ({ onClose }) => {
     setTopics(updatedTopics);
     setConfig((prevConfig) => ({ ...prevConfig, topics: updatedTopics }));
   };
-
-  useEffect(() => {
-    console.log(config);
-  }, [config]);
 
   const startGame = () => {
     navigate('/game', { state: { questionTime: time } })

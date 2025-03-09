@@ -12,6 +12,7 @@ const defaultConfig = { questions: 30, timePerRound: 120, topics: [] };
  * @returns 
  */
 export const GameConfigProvider = ({ children }) => {
+    
     // State to store the configuration
     // its initial value is the value stored in the local storage
     const [config, setConfig] = useState(() => {
@@ -24,6 +25,7 @@ export const GameConfigProvider = ({ children }) => {
         localStorage.setItem("gameConfig", JSON.stringify(config));
     }, [config]);
 
+    // Function to reset the configuration to the default values
     const resetConfig = () => {
         setConfig(defaultConfig);
         localStorage.setItem("gameConfig", JSON.stringify(defaultConfig));
@@ -36,4 +38,6 @@ export const GameConfigProvider = ({ children }) => {
     );
 };
 
-export const useConfig = () => useContext(ConfigContext);
+export const useConfig = () => {
+    return useContext(ConfigContext);
+};
