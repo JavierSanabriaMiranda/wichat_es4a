@@ -97,7 +97,9 @@ app.post('/askllm/clue', async (req, res) => {
       const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
       const normalizedName = normalizeString(name.toLowerCase());
 
-      if (!normalizedAnswer.includes(normalizedName)) {
+      const nameWords = normalizedName.split(/[\s-]+/);
+
+      if (!nameWords.some(word => normalizedAnswer.includes(word))) {
         answer = llmResponse;
         break;
       }
