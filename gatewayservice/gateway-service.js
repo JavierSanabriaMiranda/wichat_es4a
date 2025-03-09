@@ -9,6 +9,9 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require("fs")
 const YAML = require('yaml')
 
+// Utils
+const { getLanguage, normalizeString } = require('./gateway-service-utils');
+
 const app = express();
 const port = 8000;
 
@@ -71,6 +74,7 @@ app.get('/api/questions', async (req, res) => {
   }
 });
 
+// Endpoint to get a clue from the LLM service
 app.post('/askllm/clue', async (req, res) => {
   try {
     const { name, userQuestion, language } = req.body;
@@ -79,11 +83,22 @@ app.post('/askllm/clue', async (req, res) => {
     let attempts = 0;
     let answer = "idk";
 
-    while (attempts < 5) {
+    while (attempts < 10) {
+      /**
+       * Generates a question prompt for a user to guess a name without revealing it.
+       *
+       * @param {string} name - The name that the user needs to guess.
+       * @param {string} userQuestion - The question asked by the user.
+       * @param {string} language - The language in which the response should be given.
+       * @returns {string} - A prompt for the user to guess the name without revealing it, in the specified language.
+       */
       let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
       let llmResponse = await axios.post(llmServiceUrl+'/ask', { question, model });
 
-      if (!llmResponse.data.answer.toLowerCase().includes(name.toLowerCase())) {
+      const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
+      const normalizedName = normalizeString(name.toLowerCase());
+
+      if (!normalizedAnswer.includes(normalizedName)) {
         answer = llmResponse;
         break;
       }
@@ -92,6 +107,11 @@ app.post('/askllm/clue', async (req, res) => {
     }
 
     if (answer === "idk") {
+      /**
+       * @description Generates a fallback question in the specified language.
+       * @param {string} language - The language code to determine the language of the fallback question.
+       * @returns {string} A fallback question prompting the user to respond briefly in the specified language.
+       */
       let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
       let fallbackResponse = await axios.post(llmServiceUrl+'/ask', { question: fallbackQuestion, model });
       answer = fallbackResponse;
@@ -102,23 +122,6 @@ app.post('/askllm/clue', async (req, res) => {
     res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
-
-function getLanguage(language) {
-  switch(language) {
-    case "es":
-      return "español";
-    case "en":
-      return "inglés";
-    case "fr":
-      return "francés";
-    case "de":
-      return "alemán";
-    case "it":
-      return "italiano";
-    default:
-      return "español";
-  }
-}
 
 // Read the OpenAPI YAML file synchronously
 const openapiPath='./openapi.yaml'

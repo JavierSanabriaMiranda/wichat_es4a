@@ -212,6 +212,13 @@ export const Game = () => {
         navigate('/');
     }
 
+    /**
+     * Finds the correct answer from a list of answers.
+     * @param {Array} answers - The array of answer objects.
+     * @param {boolean} answers[].isCorrect - Indicates if the answer is correct.
+     * @param {string} answers[].text - The text of the answer.
+     * @returns {string} The text of the correct answer, or an empty string if no correct answer is found.
+     */
     const correctAnswer = answers.find(answer => answer.isCorrect)?.text || '';
 
     return (
