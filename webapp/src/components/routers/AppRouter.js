@@ -6,6 +6,7 @@ import { Login } from '../Login';
 import { AddUser } from '../AddUser';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { AuthRoute } from './AuthRoute';
+import { GameConfigProvider } from '../game/GameConfigProvider';
 
 const answers = [
     {
