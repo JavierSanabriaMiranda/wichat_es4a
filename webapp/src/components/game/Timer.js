@@ -11,16 +11,21 @@ import React, { useState, useEffect } from 'react';
 const Timer = ({ initialTime, onTimeUp, stopTime }) => {
 
     const [timeLeft, setTimeLeft] = useState(initialTime);
+    const [timeUp, setTimeUp] = useState(false);
     const className = timeLeft <= 5 ? "game-timer-warning-minus-5" : (timeLeft <= 10 ? "game-timer-warning-minus-10" : "game-timer");
 
     useEffect(() => {
         //console.log(`Time left: ${timeLeft}`);
 
-        if (timeLeft <= 0) {
+        if (timeLeft <= 0 && !timeUp) {
             if (onTimeUp) onTimeUp(); // Execute the callback function when the time reaches 0
+            setTimeUp(true);
+            return;
+        } else if (timeLeft <= 0) {
             return;
         }
-
+    
+        setTimeUp(false);
         const timer = setInterval(() => {
             if (!stopTime)
                 setTimeLeft((prevTime) => prevTime - 1);
