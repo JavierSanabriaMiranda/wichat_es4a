@@ -50,6 +50,7 @@
     "password-error-uppercase": "Password must contain at least one uppercase letter.",
     "password-error-number": "Password must contain at least one number.",
     "password-error-no-spaces": "Password must not contain spaces.",
-    "invalid-game-date": "Date not available"
+    "invalid-game-date": "Date not available",
+    "question-generation-message": "Generating question..."
 }
 

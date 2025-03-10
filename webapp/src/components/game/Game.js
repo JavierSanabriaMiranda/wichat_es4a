@@ -184,7 +184,7 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: "Generando Pregunta...", image: ""});
+        setQuestion({text: t('question-generation-message'), image: ""});
         setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
         setStopTimer(true);
     }
