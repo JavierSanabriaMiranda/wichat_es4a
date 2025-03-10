@@ -1,37 +1,76 @@
 import React, { useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useTranslation } from 'react-i18next';
+import { askClue } from '../../services/LLMService';
+import { Typewriter } from "react-simple-typewriter";
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
  * @returns a chat with the LLM to ask for clues.
  */
-const LLMChat = () => {
-
-    const { t } = useTranslation();
+const LLMChat = ({ name }) => {
+    const { t, i18n } = useTranslation();
 
     const [messages, setMessages] = useState([
-        <p className="llm-message">{t('llm-chat-welcome-msg')}</p>
+        <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
     const [inputValue, setInputValue] = useState('');
+    const [loading, setLoading] = useState(false);
 
     /**
      * This function handles the submit of a message, sending it to the chat.
      * 
      * @param {Event} e - The event of the form submission. 
      */
-    const handleSubmit = (e) => {
+    /**
+     * Handles the form submission event, sending the user's message to the server
+     * and updating the chat with the response.
+     *
+     * @param {Event} e - The form submission event.
+     * @returns {Promise<void>} - A promise that resolves when the message handling is complete.
+     */
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // Adding the new message to the chat
-        if (inputValue.trim()) {
-            setMessages(prevMessages => [
-                ...prevMessages,
-                <p className="user-message">{inputValue}</p> // Mensaje del usuario
-            ]);
-            setInputValue(''); // Cleaning the input field
+        if (!inputValue.trim()) return;
 
+        // Agrega el mensaje del usuario al chat
+        const userMsg = <p className="user-message" key={`user-${messages.length}`}>{inputValue}</p>;
+        setMessages(prevMessages => [...prevMessages, userMsg]);
+
+        // Activa estado de carga para deshabilitar la entrada mientras se espera la respuesta
+        setLoading(true);
+        
+        try {
+            const response = await askClue({ 
+                name: name, 
+                userQuestion: inputValue, 
+                language: i18n.language 
+            });
+            console.log("Respuesta del LLM:", response.data.answer);
+            const llmMsg = (
+                <p className="llm-message" key={`llm-${messages.length}`}>
+                    <Typewriter
+                        words={[response.data.answer]}
+                        delaySpeed={100}
+                        typeSpeed={50}
+                    />
+                </p>
+            );
+            setMessages(prevMessages => [...prevMessages, llmMsg]);
+        } catch (error) {
+            console.error("Error enviando mensaje:", error);
+            const errorMsg = (
+                <p className="llm-message error" key={`error-${messages.length}`}>
+                    {t('llm-chat-error-msg')}
+                </p>
+            );
+            setMessages(prevMessages => [...prevMessages, errorMsg]);
+        } finally {
+            setLoading(false);
         }
-        console.log("Mensaje enviado:", inputValue);
+        
+        setInputValue(''); // Cleaning the input field
     };
 
     const handleInputChange = (e) => {
@@ -53,25 +92,33 @@ const LLMChat = () => {
                     <div {...props} style={{ display: 'none' }} /> // Hide horizontal scrollbar
                 )}
             >
-                <div className="llm-chat-messages"> 
+                <div className="llm-chat-messages">
                     {messages.map((msg, index) => (
                         <div key={index}>{msg}</div>
                     ))}
+                    {loading && (
+                        <p className="llm-message loading">
+                            <span className="question-loading">{t('llm-chat-loading-msg')}</span>
+                        </p>
+                    )}
                 </div>
             </Scrollbars>
             <form className="llm-chat-form" onSubmit={handleSubmit}>
                 <input
                     type="text"
-                    name='prompt'
+                    name="prompt"
                     className="llm-chat-input"
                     placeholder={t('llm-chat-placeholder')}
                     value={inputValue}
                     onChange={handleInputChange}
+                    disabled={loading}
                 />
-                <button type="submit" className='send-prompt-button'><img src="/send-message.png"></img></button>
+                <button type="submit" className="send-prompt-button" disabled={loading}>
+                    <img src="/send-message.png" alt="Enviar" />
+                </button>
             </form>
         </div>
-    )
-}
+    );
+};
 
 export default LLMChat;
