@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState , useEffect} from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,6 +8,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ResultSectorChart } from './ResultSectorChart';
 import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
+import { useLocation, useNavigate} from 'react-router-dom';
+import { GameConfigProvider } from '../game/GameConfigProvider';
+import Configuration  from '../home/Configuration';
+import { use } from "i18next";
+
 
 /**
  * 
@@ -18,9 +23,28 @@ import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
  * @param {Int} numOfNotAnswered - The number of not answered questions. 
  * @returns 
  */
-export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered }) => {
+export const GameResults = () => {
 
     const { t } = useTranslation();
+    const storedResults = JSON.parse(localStorage.getItem("gameResults"));
+    const navigate = useNavigate();
+    const [showConfig, setShowConfig] = useState(false);
+
+    const { questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered } = storedResults;  
+
+    useEffect(() => {
+        console.log("Resultado obtenidos",storedResults);
+    }, [storedResults]);
+
+    useEffect(() => {
+        console.log("Preguntas",questions);
+    }, [ questions]);
+
+    if (!storedResults) return <p>No game data</p>;
+
+    
+
+    
 
     return (
         <Container fluid >
@@ -48,10 +72,18 @@ export const GameResults = ({ questions, points, numOfCorrectAnswers, numOfWrong
             </Row>
             <Row className="justify-content-md-center">
                 <Col lg={2} xs={4} className="d-flex gap-2">
-                    <Button className="game-results-button" variant="primary">{t('play-again-button-text')}</Button>
-                    <Button className="game-results-button" variant="primary">{t('go-back-to-menu')}</Button>
+                    <Button className="game-results-button" variant="primary" onClick={() => setShowConfig(true)}>{t('play-again-button-text')}</Button>
+                    <Button className="game-results-button" variant="primary" onClick={() => navigate('/')}>{t('go-back-to-menu')}</Button>
                 </Col>
             </Row>
+
+            {showConfig &&
+                <GameConfigProvider key={Date.now()}> {/* Key to force re-render and configurate again */}
+                    <Configuration onClose={() => setShowConfig(false)} />
+                </GameConfigProvider>
+            }
         </Container>
+
+        
     );
 }

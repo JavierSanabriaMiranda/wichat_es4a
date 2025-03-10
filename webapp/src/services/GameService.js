@@ -14,7 +14,7 @@ import axios from 'axios';
             const fullStructure =    {
                 question: {
                     text: response.data.pregunta,
-                    image: response.data.imagen,
+                    imageUrl: response.data.imagen,
                     topic: ""
                 },
                 answers : [
