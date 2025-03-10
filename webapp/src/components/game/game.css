@@ -293,7 +293,7 @@ button:not(:disabled):active {
 /* ===================== GAME OVER STYLE ===================== */
 
 .finalPoints {
-    font-size: 5em;
+    font-size: 4em;
     color: #f88c2e;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -317,7 +317,7 @@ button:not(:disabled):active {
 }
 
 .game-details {
-    max-height: 40vh;
+    max-height: 35vh;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;

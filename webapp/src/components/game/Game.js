@@ -7,27 +7,28 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
+import { useConfig } from './GameConfigProvider';
 
 
 /**
  * React component that represents a wichat game with his timer, question, image, 
  * answers and chat with the LLM to ask for clues.
  * 
- * @param {Number} questionTime - The initial time in seconds to answer the question.
- * @param {Array} answers - The array of answers with the text and if it is the correct answer.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
 export const Game = () => {
 
+    // Game configuration
+    const { config } = useConfig();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
+    const questionTime = config.timePerRound; // Get the question time from the configuration
+    const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
+    const topics = config.topics; // Get the topics from the configuration
 
     // State that stores the answers of the current question with the text and if it is the correct answer
     const [answers, setAnswers] = useState([]);
@@ -47,6 +48,7 @@ export const Game = () => {
     // with attributes: topic, imageUrl, wasUserCorrect, selectedAnswer (text of the answer selected) 
     // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
+    const [numberOfQuestionsAnswered, setNumberOfQuestionsAnswered] = useState(0);
 
     const onTimeUp = () => {
         blockAnswerButtons();
@@ -55,9 +57,32 @@ export const Game = () => {
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
-    const askForNextQuestion = () => {
-        prepareUIForNextQuestion();
+    //This useEffect will be triggered when the questionResults state changes. 
+    //It will check if the number of questions answered is equal to the number of questions and if so, 
+    // it will save the results in the local storage and navigate to the results screen.
+    useEffect(() => {
+        if (numberOfQuestionsAnswered === numberOfQuestions) {
+            localStorage.setItem("gameResults", JSON.stringify({
+                questions: questionResults,
+                points,
+                numOfCorrectAnswers: correctAnswers,
+                numOfWrongAnswers: wrongAnswers,
+                numOfNotAnswered: notAnswered
+            }));
+    
+            setTimeout( () => {
+                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+        }
+    }, [questionResults]);  
 
+    const askForNextQuestion = async () => {
+        prepareUIForNextQuestion();
+        if (numberOfQuestionsAnswered === numberOfQuestions) {
+            return;
+        }
+        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
+
+       
         getNextQuestion().then((questionInfo) => {
             setIsLoading(false);
             setQuestion(questionInfo.question);
@@ -184,7 +209,7 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: t('question-generation-message'), image: ""});
+        setQuestion({text: t('question-generation-message'), imageUrl: ""});
         setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
         setStopTimer(true);
     }
@@ -250,7 +275,7 @@ export const Game = () => {
                 <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
             </div>
             <div className='div-question-img'>
-                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.image} />}
+                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
