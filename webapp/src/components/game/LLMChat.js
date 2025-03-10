@@ -98,7 +98,7 @@ const LLMChat = ({ name }) => {
                     ))}
                     {loading && (
                         <p className="llm-message loading">
-                            <span className="question-loading">Cargando respuesta...</span>
+                            <span className="question-loading">{t('llm-chat-loading-msg')}</span>
                         </p>
                     )}
                 </div>

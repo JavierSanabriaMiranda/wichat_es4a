@@ -36,6 +36,7 @@
     "llm-chat-welcome-msg": "¡Hola! Soy Wichat, ¿en qué puedo ayudarte?",
     "llm-chat-placeholder": "¡Pídeme una pista!",
     "llm-chat-error-msg": "Lo siento, no tengo pistas disponibles.",
+    "llm-chat-loading-msg": "Cargando respuesta...",
     "exit-confirm-msg-title": "¿Estás seguro que deseas salir?",
     "exit-confirm-msg-body": "Si sales perderás el progreso de la partida en curso",
     "exit-confirm-msg-exit": "Salir",
