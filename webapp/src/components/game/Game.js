@@ -5,27 +5,30 @@ import Timer from './Timer';
 import LLMChat from './LLMChat';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
+import { useConfig } from './GameConfigProvider';
+
 
 /**
  * React component that represents a wichat game with his timer, question, image, 
  * answers and chat with the LLM to ask for clues.
  * 
- * @param {Number} questionTime - The initial time in seconds to answer the question.
- * @param {Array} answers - The array of answers with the text and if it is the correct answer.
  * @returns the hole game screen with the timer, question, image, answers and chat with the LLM.
  */
 export const Game = () => {
 
+    // Game configuration
+    const { config } = useConfig();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const location = useLocation();
 
-    const questionTime = location.state?.questionTime || 120; // Get the question time from the location state or set it to 120 seconds by default
+    const questionTime = config.timePerRound; // Get the question time from the configuration
+    const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
+    const topics = config.topics; // Get the topics from the configuration
 
     // State that stores the answers of the current question with the text and if it is the correct answer
     const [answers, setAnswers] = useState([]);
@@ -39,37 +42,44 @@ export const Game = () => {
     const [notAnswered, setNotAnswered] = useState(0);
     const [exitIcon, setExitIcon] = useState("/exit-icon.png");
     const [showModal, setShowModal] = useState(false);
+    const [stopTimer, setStopTimer] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     // State that stores the results of the questions with json format
     // with attributes: topic, imageUrl, wasUserCorrect, selectedAnswer (text of the answer selected) 
     // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
+    const [numberOfQuestionsAnswered, setNumberOfQuestionsAnswered] = useState(0);
 
     const onTimeUp = () => {
+        blockAnswerButtons();
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
-        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
+        setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
     const askForNextQuestion = () => {
+        prepareUIForNextQuestion();
+        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
+
+        if (numberOfQuestionsAnswered === numberOfQuestions) {
+            navigate('/game-results'); // TODO: Send game info to the results page
+            return;
+        }
         getNextQuestion().then((questionInfo) => {
+            setIsLoading(false);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
+            setStopTimer(false);
+            unblockAnswerButtons();
         }
         );
+        
     }
 
     // UseEffect to call getNextQuestion on initial render
     useEffect(() => {
         askForNextQuestion();
     }, []); // Empty dependency array means this effect runs only once on mount
-
-    useEffect(() => {
-        console.log("Pregunta actualizada:", question);
-    }, [question]); // Ver el valor de 'question' cuando cambia
-
-    useEffect(() => {
-        console.log("Respuestas actualizadas:", answers);
-    }, [answers]); // Ver el valor de 'answers' cuando cambia
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -124,6 +134,7 @@ export const Game = () => {
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
     const answerQuestion = (wasUserCorrect, selectedAnswer) => {
+        blockAnswerButtons();
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
@@ -132,11 +143,11 @@ export const Game = () => {
             setWrongAnswers(wrongAnswers + 1);
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
-        blockAnswerButtons();
         
+        setStopTimer(true);
+
         setTimeout(() => {
-            prepareUIForNextQuestion()
-            unblockAnswerButtons()
+            askForNextQuestion()
         }, 2000); // Wait 2 second before showing the next question
 
     }
@@ -168,17 +179,21 @@ export const Game = () => {
     }
 
     const passQuestion = () => {
+        blockAnswerButtons()
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
-        setTimeout(() => prepareUIForNextQuestion(), 1000); // Wait 1 second before showing the next question
+        setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
     /**
      * Function that prepares the UI for the next question resetting the timer and the answer buttons.
      */
     const prepareUIForNextQuestion = () => {
-        // Increment the key to force rerender
-        setGameKey(prevKey => prevKey + 1);
+        setGameKey(gameKey + 1);
+        setIsLoading(true);
+        setQuestion({text: "Generando Pregunta...", image: ""});
+        setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
+        setStopTimer(true);
     }
 
     const blockAnswerButtons = () => {
@@ -215,7 +230,7 @@ export const Game = () => {
     return (
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
-                <Timer initialTime={questionTime} onTimeUp={onTimeUp} />
+                <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
@@ -230,10 +245,10 @@ export const Game = () => {
                 </button>
             </div>
             <div className='game-question'>
-                <p>{question.text}</p>
+                <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
             </div>
             <div className='div-question-img'>
-                <img className="question-img" src={question.image} ></img>
+                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.image} />}
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">

@@ -2,10 +2,14 @@ import axios from 'axios';
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
+    /**
+     * Function to calll the API endpoint to get the next question
+     * 
+     * @returns {Promise<{question: {text: string, image: string, topic: string}, answers: {text: string, isCorrect: boolean}[]>}
+     */
     const getNextQuestion = async () => {
         try {
             const response = await axios.get(apiEndpoint + '/api/questions');
-            console.log("Respuesta obtenida: ", response.data);
 
             const fullStructure =    {
                 question: {

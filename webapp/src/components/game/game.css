@@ -7,6 +7,18 @@
     width: 100vw;
 }
 
+/* ===================== QUESTION STYLE ===================== */
+
+@keyframes loadingAnimation {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.question-loading {
+    animation: loadingAnimation 1s infinite;
+}
+
 /* ===================== ANSWER BUTTONS STYLE ===================== */
 
 #game-answer-buttons-section {
@@ -56,6 +68,10 @@
     width: 10%;
     height: auto;
     right: 5%;
+}
+
+button:not(:disabled):active {
+    transform: scale(0.98); /* Slightly scale down the button to give a pressed effect */
 }
 
 /* ===================== TIMER STYLE ===================== */
@@ -214,6 +230,7 @@
 
 .question-img {
     max-width: 20vw;
+    max-height: 50vh;
     height: auto;
 }
 
@@ -221,6 +238,7 @@
     grid-column: 1/4;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 /* ===================== QUESTION STYLE ===================== */
