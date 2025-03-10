@@ -59,12 +59,13 @@ export const Game = () => {
 
     const askForNextQuestion = () => {
         prepareUIForNextQuestion();
-        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
 
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             navigate('/game-results'); // TODO: Send game info to the results page
             return;
         }
+        setNumberOfQuestionsAnswered(prev => prev + 1);
+        
         getNextQuestion().then((questionInfo) => {
             setIsLoading(false);
             setQuestion(questionInfo.question);
@@ -80,6 +81,11 @@ export const Game = () => {
     useEffect(() => {
         askForNextQuestion();
     }, []); // Empty dependency array means this effect runs only once on mount
+
+    useEffect(() => {
+        console.log(numberOfQuestionsAnswered);
+    }
+    , [numberOfQuestionsAnswered]);
 
     /**
      * Handles the popstate event to prevent the user from navigating back
