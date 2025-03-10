@@ -32,14 +32,6 @@ export const GameResults = () => {
 
     const { questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered } = storedResults;  
 
-    useEffect(() => {
-        console.log("Resultado obtenidos",storedResults);
-    }, [storedResults]);
-
-    useEffect(() => {
-        console.log("Preguntas",questions);
-    }, [ questions]);
-
     if (!storedResults) return <p>No game data</p>;
 
     
