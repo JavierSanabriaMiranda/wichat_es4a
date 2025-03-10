@@ -56,8 +56,57 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
+app.post('/askllm/clue', async (req, res) => {
+  try {
+    const { name, userQuestion, language } = req.body;
+
+    let model = "empathy";
+    let attempts = 0;
+    let answer = "idk";
+
+    while (attempts < 5) {
+      let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
+      let llmResponse = await axios.post(llmServiceUrl+'/ask', { question, model });
+
+      if (!llmResponse.data.answer.toLowerCase().includes(name.toLowerCase())) {
+        answer = llmResponse;
+        break;
+      }
+
+      attempts += 1;
+    }
+
+    if (answer === "idk") {
+      let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
+      let fallbackResponse = await axios.post(llmServiceUrl+'/ask', { question: fallbackQuestion, model });
+      answer = fallbackResponse;
+    }
+
+    res.json(answer.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
+function getLanguage(language) {
+  switch(language) {
+    case "es":
+      return "español";
+    case "en":
+      return "inglés";
+    case "fr":
+      return "francés";
+    case "de":
+      return "alemán";
+    case "it":
+      return "italiano";
+    default:
+      return "español";
+  }
+}
+
 // Read the OpenAPI YAML file synchronously
-openapiPath='./openapi.yaml'
+const openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 
