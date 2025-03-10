@@ -57,14 +57,32 @@ export const Game = () => {
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
-    const askForNextQuestion = () => {
-        prepareUIForNextQuestion();
-        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
-
+    //This useEffect will be triggered when the questionResults state changes. 
+    //It will check if the number of questions answered is equal to the number of questions and if so, 
+    // it will save the results in the local storage and navigate to the results screen.
+    useEffect(() => {
         if (numberOfQuestionsAnswered === numberOfQuestions) {
-            navigate('/game-results'); // TODO: Send game info to the results page
+            localStorage.setItem("gameResults", JSON.stringify({
+                questions: questionResults,
+                points,
+                numOfCorrectAnswers: correctAnswers,
+                numOfWrongAnswers: wrongAnswers,
+                numOfNotAnswered: notAnswered
+            }));
+    
+            setTimeout( () => {
+                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+        }
+    }, [questionResults]);  
+
+    const askForNextQuestion = async () => {
+        prepareUIForNextQuestion();
+        if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
         }
+        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
+
+       
         getNextQuestion().then((questionInfo) => {
             setIsLoading(false);
             setQuestion(questionInfo.question);
@@ -191,7 +209,7 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: "Generando Pregunta...", image: ""});
+        setQuestion({text: "Generando Pregunta...", imageUrl: ""});
         setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
         setStopTimer(true);
     }
@@ -248,7 +266,7 @@ export const Game = () => {
                 <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
             </div>
             <div className='div-question-img'>
-                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.image} />}
+                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
