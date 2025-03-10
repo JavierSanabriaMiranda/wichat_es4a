@@ -191,7 +191,7 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: "Generando Pregunta...", image: ""});
+        setQuestion({text: t('question-generation-message'), image: ""});
         setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
         setStopTimer(true);
     }
@@ -226,6 +226,15 @@ export const Game = () => {
     const exitFromGame = () => {
         navigate('/');
     }
+
+    /**
+     * Finds the correct answer from a list of answers.
+     * @param {Array} answers - The array of answer objects.
+     * @param {boolean} answers[].isCorrect - Indicates if the answer is correct.
+     * @param {string} answers[].text - The text of the answer.
+     * @returns {string} The text of the correct answer, or an empty string if no correct answer is found.
+     */
+    const correctAnswer = answers.find(answer => answer.isCorrect)?.text || '';
 
     return (
         <main className='game-screen' key={gameKey}>
@@ -266,7 +275,7 @@ export const Game = () => {
                 </div>
             </section>
             <aside className='llm-chat-aside'>
-                <LLMChat />
+                <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
