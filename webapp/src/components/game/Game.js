@@ -27,7 +27,7 @@ export const Game = () => {
     const navigate = useNavigate();
 
     const questionTime = config.timePerRound; // Get the question time from the configuration
-    const numberOfQuestions = 2; // Get the number of questions from tge configuration
+    const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
     const topics = config.topics; // Get the topics from the configuration
 
     // State that stores the answers of the current question with the text and if it is the correct answer
