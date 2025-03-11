@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { Typewriter } from "react-simple-typewriter";
 
-const Login = () => {
+export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -25,7 +25,10 @@ const Login = () => {
       const message = await axios.post(`${apiEndpoint}/askllm`, { question, model })
       setMessage(message.data.answer);
       // Extract data from the response
-      const { createdAt: userCreatedAt } = response.data;
+      const { createdAt: userCreatedAt, token } = response.data;
+
+      // Store the token in the session storage
+      sessionStorage.setItem('token', token);
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
@@ -86,5 +89,3 @@ const Login = () => {
     </Container>
   );
 };
-
-export default Login;

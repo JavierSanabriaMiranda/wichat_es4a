@@ -5,7 +5,7 @@ import { Container, Typography, TextField, Button, Snackbar } from '@mui/materia
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-const AddUser = () => {
+export const AddUser = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -56,5 +56,3 @@ const AddUser = () => {
     </Container>
   );
 };
-
-export default AddUser;
