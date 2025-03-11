@@ -18,7 +18,9 @@ const NavBar = () => {
 
   return (
     <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
-      <img src={logo} alt="Logo" className="navbar-logo" />
+      <Nav.Link href="/" className="navbar-logo">
+        <img src={logo} alt="Logo" className="navbar-logo" />
+      </Nav.Link>
       <Container>
         <Nav className="ms-auto">
           <Dropdown align="end">

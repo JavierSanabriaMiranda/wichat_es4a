@@ -47,7 +47,7 @@ h2 {
 .toggle-btn-history {
     background-color: #9b59b6 !important;
     color: white;
-    border: none;
+
 }
 
 .toggle-btn-science {
@@ -75,16 +75,10 @@ h2 {
 }
 
 .selected {
-    background-color: #36D6E7 !important;
+    background-color: #5D6C89 !important;
 }
 
-.toggle-btn-history:hover,
-.toggle-btn-science:hover,
-.toggle-btn-art:hover, 
-.toggle-btn-sport:hover, 
-.toggle-btn-geography:hover {
-    background-color: #36D6E7 !important;
-}
+
 
 
 
