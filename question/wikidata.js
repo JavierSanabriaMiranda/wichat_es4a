@@ -108,6 +108,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["geography", "history", "sports"], "en")
+takeOptions(["hobbies"], "es")
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
