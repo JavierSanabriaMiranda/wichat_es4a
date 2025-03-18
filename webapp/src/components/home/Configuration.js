@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CloseButton from "react-bootstrap/CloseButton";
 import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
 import "./configuration.css";
@@ -28,7 +29,7 @@ const Configuration = ({ onClose }) => {
   return (
     <div className="overlay">
       <div className="config-container">
-        <GoXCircle onClick={handleClose} className="close-icon" />
+        <CloseButton onClick={handleClose} className="close-icon" />
         <h2 className="title">{t("title-configuration")}</h2>
         <div className="config-option">
           <label>{t("numberQuestions-configuration")}</label>

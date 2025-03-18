@@ -6,6 +6,7 @@ body {
 
 .home-heading, .home-subheading, .app-name {
   font-family: 'Roboto', sans-serif;
+  font-size: 40px;
 }
 
 .home-container {
@@ -27,7 +28,6 @@ body {
   font-weight: bold;
   margin-top: 2rem;
   color: #5D6C89;
-  font-size: 2.5rem;
   letter-spacing: 1px;
   animation: fadeIn 2s ease-out; 
 }

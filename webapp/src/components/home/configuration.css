@@ -29,7 +29,7 @@ h2 {
     top: 10px;
     left: 8px;
     color: red;
-    font-size: 28px;
+    font-size: 80%;
     cursor: pointer;
 }
 
@@ -45,38 +45,56 @@ h2 {
 }
 
 .toggle-btn-history {
-    background-color: #9b59b6 !important;
+    background-color: #5D6C89 !important;
     color: white;
 
 }
 
 .toggle-btn-science {
-    background-color: #2ecc71 !important;
+    background-color: #5D6C89 !important;
     color: white;
     border: none;
 }
 
 .toggle-btn-art {
-    background-color: #e74c3c !important;
+    background-color:  #5D6C89 !important;
     color: white;
     border: none;
 }
 
 .toggle-btn-sport {
-    background-color: #FEB06A !important;
+    background-color:  #5D6C89 !important;
     color: white;
     border: none;
 }
 
 .toggle-btn-geography {
-    background-color: blue !important;
+    background-color: #5D6C89 !important;
     color: white;
     border: none;
 }
 
-.selected {
-    background-color: #5D6C89 !important;
+
+.toggle-btn-art.selected {
+    background-color: #e74c3c !important;
 }
+
+.toggle-btn-geography.selected {
+    background-color: blue !important;
+}
+
+.toggle-btn-sport.selected {
+    background-color: #FEB06A !important;
+}
+
+.toggle-btn-science.selected {
+    background-color: #2ecc71 !important;
+}
+
+.toggle-btn-history.selected {
+    background-color: #9b59b6 !important;
+}
+
 
 
 

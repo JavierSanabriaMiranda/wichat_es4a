@@ -15,6 +15,7 @@ const NavBar = () => {
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
   };
+  
 
   return (
     <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
@@ -37,7 +38,7 @@ const NavBar = () => {
             </Dropdown.Menu>
           </Dropdown>
 
-          <Nav.Link href="#" className="rules-menu">{t("rules-menu")}</Nav.Link>
+          <Nav.Link href="#" className="rules-menu" onClick={() => changeLanguage("es")}>{t("rules-menu")}</Nav.Link>
           <Nav.Link href="#" className="icon-menu"><VscAccount size={30} /></Nav.Link>
           <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
         </Nav>
