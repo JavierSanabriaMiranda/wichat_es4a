@@ -236,7 +236,7 @@
     {
         "question": "¿Quién es este presidente de Estados Unidos?",
         "selector": "<input>",
-        "topics": ["character"],
+        "topics": ["characterr"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5; wdt:P39 wd:Q11696; wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
         "imageurl": "<output>",
         "lang": "es"
@@ -272,7 +272,7 @@
     {
         "question": "¿Cuál es el nombre del pintor?",
         "selector": "<input>",
-        "topics": ["artt"],
+        "topics": ["art"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q1028181; wdt:P569 ?birthdate. FILTER(YEAR(?birthdate) >= 1500) ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
         "imageurl": "<output>",
         "lang": "es"

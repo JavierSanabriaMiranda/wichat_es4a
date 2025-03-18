@@ -1,24 +1,17 @@
 import fetch from 'node-fetch';
-import fs from 'fs';  // Requerimos el módulo fs para leer archivos JSON
+import fs from 'fs';
 import path from 'path';
+import express from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+const port = 8007;
+
+app.use(express.json());
 
 const url = "https://query.wikidata.org/sparql";
-//pre internacionalizacion(se podria borrar, lo dejo porque es la beta aun)
-/*
-function loadQuestionTemplatesWithTopic(topics) {
-  const filePath = path.resolve('question', 'question_template.json');
-
-  const data = fs.readFileSync(filePath, 'utf-8');
-  const templates = JSON.parse(data);
-
-  const topicsArray = Array.isArray(topics) ? topics : [topics];
-
-  const filteredTemplates = templates.filter(template =>
-    topicsArray.some(topic => template.topics.includes(topic))
-  );
-  return filteredTemplates; 
-}
-  */
 
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
   const filePath = path.resolve('question', 'question_template.json');
@@ -108,6 +101,8 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["entertainmentt"], "es")
-  .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
-  .catch(console.error);
+const server = app.listen(port, () => {
+  console.log(`question Service listening at http://localhost:${port}`);
+});
+  
+export default server;
