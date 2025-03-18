@@ -306,13 +306,38 @@
 
 
     {
-        "question": "¿Qué Pokémon es este?",
+        "question": "¿Cuál es el género de este videojuego?",
         "selector": "<input>",
-        "topics": ["hobbies"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P1441 wd:Q864; wdt:P1685 ?index. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "topics": ["entertainment"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
         "imageurl": "<output>",
         "lang": "es"
-      }
+    },
+    {
+        "question": "What is the genre of this video game?",
+        "selector": "<input>",
+        "topics": ["entertainment"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "imageurl": "<output>",
+        "lang": "en"
+    },
+
+    {
+        "question": "¿En qué país fue desarrollado este videojuego?",
+        "selector": "<input>",
+        "topics": ["entertainmentt"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "imageurl": "<output>",
+        "lang": "es"
+    },
+    {
+        "question": "¿En qué país fue desarrollado este videojuego?",
+        "selector": "<input>",
+        "topics": ["entertainmentt"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "imageurl": "<output>",
+        "lang": "en"
+    }
 
     
 ]

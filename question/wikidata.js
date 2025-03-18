@@ -108,6 +108,6 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-takeOptions(["hobbies"], "es")
+takeOptions(["entertainmentt"], "es")
   .then(filteredResults => console.log("Resultados finales procesados:", filteredResults))
   .catch(console.error);
