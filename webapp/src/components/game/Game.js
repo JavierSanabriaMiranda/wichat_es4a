@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
-import { useConfig } from './GameConfigProvider';
+import { useConfig } from '../contextProviders/GameConfigProvider';
 
 
 /**
