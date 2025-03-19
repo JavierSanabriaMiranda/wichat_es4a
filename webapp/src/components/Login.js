@@ -29,6 +29,8 @@ export const Login = () => {
 
       // Store the token in the session storage
       sessionStorage.setItem('token', token);
+      // Store the username in the session storage for welcome message
+      sessionStorage.setItem('username', username);
 
       setCreatedAt(userCreatedAt);
       setLoginSuccess(true);
