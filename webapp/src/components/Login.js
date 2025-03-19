@@ -1,20 +1,21 @@
 // src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Typography, TextField, Button, Snackbar } from '@mui/material';
 import { Typewriter } from "react-simple-typewriter";
 import AuthContext from './contextProviders/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const { login, error } = useContext(AuthContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [loginSuccess, setLoginSuccess] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   const loginUser = async () => {
@@ -24,8 +25,12 @@ export const Login = () => {
       setErrorMsg(error);
       return;
     }
-    setLoginSuccess(true);
     setOpenSnackbar(true);
+
+    setTimeout(() => {
+      navigate('/');;
+    }
+    , 1000);
   };
 
   const handleCloseSnackbar = () => {
@@ -34,16 +39,6 @@ export const Login = () => {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ marginTop: 4 }}>
-      {loginSuccess ? (
-        <div>
-          <Typewriter
-            words={[message]} // Pass your message as an array of strings
-            cursor
-            cursorStyle="|"
-            typeSpeed={50} // Typing speed in ms
-          />
-        </div>
-      ) : (
         <div>
           <Typography component="h1" variant="h5">
             Login
@@ -71,7 +66,6 @@ export const Login = () => {
             <Snackbar open={!!errorMsg} autoHideDuration={6000} onClose={() => setErrorMsg('')} message={`Error: ${errorMsg}`} />
           )}
         </div>
-      )}
     </Container>
   );
 };

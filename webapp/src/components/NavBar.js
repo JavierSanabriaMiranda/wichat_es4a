@@ -1,14 +1,18 @@
 import React from "react";
+import { useContext } from "react";
 import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
 import { VscAccount } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
 import i18n from "../i18n/i18next";
 import { useTranslation } from "react-i18next";
 import "./nav.css";
+import AuthContext from "./contextProviders/AuthContext";
 
 
 const NavBar = () => {
   const { t } = useTranslation();
+
+  const { token } = useContext(AuthContext);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -33,7 +37,7 @@ const NavBar = () => {
           </Dropdown>
 
           <Nav.Link href="#" className="rules-menu">{t("rules-menu")}</Nav.Link>
-          {sessionStorage.getItem("token") != null ?
+          {token ?
             (<>
               <Nav.Link href="/user" className="icon-menu"><VscAccount size={30} /></Nav.Link>
               <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
