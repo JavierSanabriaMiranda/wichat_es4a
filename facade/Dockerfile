@@ -1,20 +1,20 @@
-# Use an official Node.js runtime as a parent image
-FROM node:22
+# Usar una imagen base de Node.js
+FROM node:14
 
-# Set the working directory in the container
-WORKDIR /usr/src/gameSession
+# Establecer el directorio de trabajo
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
+# Copiar los archivos de la aplicación
 COPY package*.json ./
 
-# Install app dependencies
+# Instalar dependencias
 RUN npm install
 
-# Copy the app source code to the working directory
+# Copiar el resto de los archivos
 COPY . .
 
-# Expose the port the app runs on
+# Exponer el puerto donde la aplicación estará escuchando
 EXPOSE 8040
 
-# Define the command to run your app
-CMD ["node", "llm-service.js"]
+# Comando para ejecutar la aplicación
+CMD ["npm", "start"]

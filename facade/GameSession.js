@@ -1,7 +1,5 @@
-import Question from '../../db/Question.js';
-import QuestionService from './QuestionGame.js';
-import GamePlayed from '../../db/game_played.js';
-import GameRepository from '../../repository/gameRepository.js';
+import QuestionService from './QuestionService.js';
+import GameRepository from './GameRepository.js';
 
 /**
  * Represents a game session for a user.

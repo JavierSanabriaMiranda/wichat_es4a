@@ -5,8 +5,8 @@
  * It uses predefined topics or fetches them from the database to generate questions.
  */
 
-import { executeFullFlow } from '../../question/wikidata.js';
-import { getTopicsFromDatabase } from '../../repository/gameRepository.js';
+import { executeFullFlow } from '../question/wikidata.js';
+import { getTopicsFromDatabase } from './GameRepository.js';
 /**
  * Class that handles the logic for managing questions and answers.
  */
@@ -160,12 +160,3 @@ class QuestionService {
 
 }
 export default QuestionService; 
-/**
- * Test the class
- */
-(async () => {
-  const questionService = new QuestionService();
-
-  // Request a question
-  const question = await questionService.requestQuestion("es");
-})();

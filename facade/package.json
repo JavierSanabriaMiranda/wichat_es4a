@@ -1,12 +1,17 @@
 {
   "name": "facade",
   "version": "1.0.0",
-  "main": "GameSession.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node GameSerssionService.js",  
+    "dev": "nodemon GameSerssionService.js"  
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "dependencies": {
+    "express": "^4.17.1",
+    "axios": "^0.21.1",
+    "swagger-ui-express": "^4.1.6",
+    "fs": "0.0.1-security",
+    "yaml": "^1.10.2",
+    "prometheus-client": "^1.0.2",
+    "cors": "^2.8.5"
+  }
 }
