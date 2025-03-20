@@ -8,29 +8,6 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { AuthRoute } from './AuthRoute';
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 
-const answers = [
-  {
-    text: "React",
-    isCorrect: true
-  },
-  {
-    text: "Angular",
-    isCorrect: false
-  },
-  {
-    text: "Vue",
-    isCorrect: false
-  },
-  {
-    text: "Svelte",
-    isCorrect: false
-  }
-];
-
-const question = {
-  text: "¿Qué librería web es esta?",
-  image: "/logo512.png"
-};
 
 const gameHistory = [
   {
@@ -119,7 +96,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/game/results',
-    element: <GameResults questions={questions} points={1450} numOfCorrectAnswers={18} numOfWrongAnswers={12} numOfNotAnswered={5} />
+    element: <GameResults />
   },
   {
     path: '/login',
