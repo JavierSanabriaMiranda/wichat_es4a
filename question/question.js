@@ -1,15 +1,19 @@
-import fetch from 'node-fetch';
-import fs from 'fs';
-import path from 'path';
-import express from 'express';
-import dotenv from 'dotenv';
+// External libs
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const fetch = require('node-fetch');
 
-dotenv.config();
+// Swagger for API documentation
+const swaggerUi = require('swagger-ui-express');
+const fs = require("fs");
+const YAML = require('yaml');
 
+// My own libs
+const db = require("./db/mongo/config");
+
+const port = 8002;
 const app = express();
-const port = 8007;
-
-app.use(express.json());
 
 const url = "https://query.wikidata.org/sparql";
 
@@ -101,8 +105,25 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
+// API Endpoint
+app.post('/api/questions/generate', async (req, res) => {
+  try {
+    const lang = "es";
+    const hardcodedTopics = ["geography"];
+
+    const questionData = await takeOptions(hardcodedTopics, lang);
+    if (!questionData) {
+      return res.status(404).json({ error: "No valid question generated" });
+    }
+    res.status(200).json(questionData);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to generate question" });
+  }
+});
+
+
 const server = app.listen(port, () => {
   console.log(`question Service listening at http://localhost:${port}`);
 });
-  
-export default server;
+
+module.exports = server;
