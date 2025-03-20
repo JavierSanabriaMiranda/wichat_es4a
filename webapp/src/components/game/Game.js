@@ -69,11 +69,12 @@ export const Game = () => {
                 numOfWrongAnswers: wrongAnswers,
                 numOfNotAnswered: notAnswered
             }));
-    
-            setTimeout( () => {
-                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+
+            setTimeout(() => {
+                navigate('/game/results')
+            }, 2000); // Wait 2 seconds before navigating to the results screen
         }
-    }, [questionResults]);  
+    }, [questionResults]);
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
@@ -83,7 +84,7 @@ export const Game = () => {
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
 
-       
+
         getNextQuestion().then((questionInfo) => {
             setIsLoading(false);
             setQuestion(questionInfo.question);
@@ -92,7 +93,7 @@ export const Game = () => {
             unblockAnswerButtons();
         }
         );
-        
+
     }
 
     // UseEffect to call getNextQuestion on initial render
@@ -103,7 +104,7 @@ export const Game = () => {
     useEffect(() => {
         console.log(numberOfQuestionsAnswered);
     }
-    , [numberOfQuestionsAnswered]);
+        , [numberOfQuestionsAnswered]);
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -167,7 +168,7 @@ export const Game = () => {
             setWrongAnswers(wrongAnswers + 1);
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
-        
+
         setStopTimer(true);
 
         setTimeout(() => {
@@ -215,8 +216,8 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: t('question-generation-message'), imageUrl: ""});
-        setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
+        setQuestion({ text: t('question-generation-message'), imageUrl: "" });
+        setAnswers([{ text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }]);
         setStopTimer(true);
     }
 
@@ -264,6 +265,9 @@ export const Game = () => {
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
                 <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
+            </div>
+            <div className='game-questions-answered'>
+                <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}

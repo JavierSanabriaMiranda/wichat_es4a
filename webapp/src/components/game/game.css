@@ -108,6 +108,19 @@ button:not(:disabled):active {
     color: red;
 }
 
+/* ===================== QUESTION NUMBER STYLE ===================== */
+
+.game-questions-answered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-column: 0;
+}
+
+.question-number {
+    font-size: 4vw;
+}
+
 /* ===================== LLM CHAT STYLE ===================== */
 
 .llm-chat-aside {
