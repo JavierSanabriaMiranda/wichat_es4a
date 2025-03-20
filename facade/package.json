@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node GameSessionService.js",  
-    "dev": "nodemon GameSessionService.js"  
+    "start": "node GameSession.js",  
+    "dev": "nodemon GameSession.js"  
   },
   "dependencies": {
     "express": "^4.17.1",
@@ -12,7 +12,6 @@
     "swagger-ui-express": "^4.1.6",
     "fs": "0.0.1-security",
     "yaml": "^1.10.2",
-    "prometheus-client": "^1.0.2",
     "cors": "^2.8.5"
   }
 }

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { Game, Question, SettingsGameMode } = require("../models");
+const { GamePlayed, Question, SettingsGameMode } = require("../models");
 const shuffle = require("./arrayShuffle");
 const { validate, getCurrentQuestion } = require("./verification");
 const { loadQuestion } = require("../services/questionsService");
@@ -19,7 +19,7 @@ const newGame = async (req, res) => {
             settings = await SettingsGameMode.create({ user_id: userId });
         }
 
-        await Game.create({
+        await GamePlayed.create({
             user_id: userId,
             tags: tags,
             numberOfQuestions: settings.numberOfQuestions,
