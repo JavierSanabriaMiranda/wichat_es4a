@@ -321,11 +321,20 @@ button:not(:disabled):active {
 
 .game-results-button {
     margin: 2% 0%;
+    background-color:#475a80;
+}
+
+.game-results-button:hover {
+    background-color: #5d6c89;
 }
 
 .game-details {
-    max-height: 35vh;
+    max-height: 70vh;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
+}
+
+.pie-chart-container {
+    height: 50vh;
 }
