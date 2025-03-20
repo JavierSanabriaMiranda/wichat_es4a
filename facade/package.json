@@ -1,9 +1,10 @@
 {
   "name": "facade",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "start": "node GameSerssionService.js",  
-    "dev": "nodemon GameSerssionService.js"  
+    "start": "node GameSessionService.js",  
+    "dev": "nodemon GameSessionService.js"  
   },
   "dependencies": {
     "express": "^4.17.1",

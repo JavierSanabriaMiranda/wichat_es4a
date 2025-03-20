@@ -1,5 +1,5 @@
 // gameSessionService.js
-import GameSession from './GameSession'; // Asegúrate de que la ruta es correcta.
+import GameSession from './GameSession.js'; // Asegúrate de que la ruta es correcta.
 
 class GameSessionService {
   constructor() {
