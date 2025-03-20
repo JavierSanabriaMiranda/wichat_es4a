@@ -126,19 +126,14 @@ button:not(:disabled):active {
 }
 
 .llm-chat-messages {
-    display: flex;
-    flex-direction: column;
     max-height: 60vh;
-    width: 20vw; 
     padding: 2%;
-    box-sizing: border-box;
 }
 
 .llm-message, .user-message {
     margin: 2% 0;
     padding: 1em;
     border-radius: 15px; 
-    max-width: 70%;
     word-wrap: break-word;
 }
 
@@ -175,12 +170,8 @@ button:not(:disabled):active {
 }
 
 .llm-icon {
-    position: absolute;
-    width: 20%;
-    top: 10px;
-    right: 10px;
+    width: 140%;
     height: auto;
-    z-index: 10; 
     border-radius: 50%;
     background-color: white;
 }
@@ -188,7 +179,6 @@ button:not(:disabled):active {
 .llm-chat-form {
     display: flex;
     justify-content: space-between;
-    border-style: solid;
 }
 
 .llm-chat-form, .llm-chat {
