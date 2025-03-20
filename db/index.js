@@ -1,8 +1,7 @@
-import connect from "./Connection.js"; // Usa extensión .js al importar en ESM
+import connect from "./Connection.js";
+import Question from "./Question.js"
+import GamePlayed from "./game_played.js";
+import User from "./user.js";
+import Crud from "./crud.js";
 
-const start = async () => {
-    await connect();
-    console.log("🚀 Conexión establecida con MongoDB");
-};
-
-start();
+export { connect, Question, GamePlayed, User, Crud };

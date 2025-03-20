@@ -1,4 +1,4 @@
-import {connect, disconnect} from './Connection.js';
+import connect from "./Connection.js";
 import User from './user.js';
 // Y los demás imports necesarios
 
@@ -86,7 +86,8 @@ connect()
     console.error("Error:", error);
   })
   .finally(() => {
-    disconnect();
+    console.log("Cerrando conexión");
+  
   });
 
 export default Crud;

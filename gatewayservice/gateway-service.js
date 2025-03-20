@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 const promBundle = require('express-prom-bundle');
-const GameSession = require('../facade/GameSession');
+const GameSession = require('../facade/src/GameSession');
 
 //libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
@@ -70,6 +70,23 @@ app.get('/api/questions', async (req, res) => {
       res.json(question);
   } else {
       res.status(500).json({ error: "No se pudo obtener la pregunta" });
+  }
+});
+
+app.post('/topics', async (req, res) => {
+  try {
+    const { topics } = req.body;  // Recibe los topics como un array
+
+    if (!Array.isArray(topics)) {
+      return res.status(400).json({ error: 'Topics debe ser un array' });
+    }
+
+    // Guarda los topics en la instancia de QuestionService
+    await questionService.saveTopics(topics);
+
+    res.json({ message: 'Topics guardados correctamente', topics: questionService.topics });
+  } catch (error) {
+    res.status(500).json({ error: error.message || 'Ocurrió un error al guardar los topics' });
   }
 });
 
