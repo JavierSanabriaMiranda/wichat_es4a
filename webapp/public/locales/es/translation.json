@@ -48,5 +48,11 @@
     "password-error-uppercase": "La contraseña debe contener al menos una letra mayúscula.",
     "password-error-number": "La contraseña debe contener al menos un número.",
     "password-error-no-spaces": "La contraseña no debe contener espacios.",
-    "invalid-game-date": "Fecha no disponible"
+    "invalid-game-date": "Fecha no disponible",
+    "password-message": "Contraseña",
+    "username-message": "Nombre de Usuario",
+    "user-added": "Usuario añadido correctamente.",
+    "user-not-added": "No se ha podido añadir el usuario: ",
+    "add-user-title": "Añadir Usuario",
+    "signup-message-sponsor": "¡Demuestra cuánto sabes! Únete a Wichat y compite respondiendo preguntas de diferentes categorías. ¿Listo para el reto?"
 }

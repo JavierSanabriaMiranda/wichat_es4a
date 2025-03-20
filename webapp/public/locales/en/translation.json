@@ -48,6 +48,12 @@
     "password-error-uppercase": "Password must contain at least one uppercase letter.",
     "password-error-number": "Password must contain at least one number.",
     "password-error-no-spaces": "Password must not contain spaces.",
-    "invalid-game-date": "Date not available"
+    "invalid-game-date": "Date not available",
+    "password-message": "Password",
+    "username-message": "Username",
+    "user-added": "User added successfully.",
+    "user-not-added": "User could not be added: ",
+    "add-user-title": "Add User",
+    "signup-message-sponsor": "Show off your knowledge! Join Wichat and compete by answering questions from different categories. Ready for the challenge?"
 }
 
