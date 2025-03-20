@@ -130,11 +130,15 @@ button:not(:disabled):active {
     padding: 2%;
 }
 
-.llm-message, .user-message {
+.llm-message, .user-message, .llm-message-loading {
     margin: 2% 0;
     padding: 1em;
     border-radius: 15px; 
     word-wrap: break-word;
+}
+
+.llm-message-loading {
+    animation: loadingAnimation 1s infinite;
 }
 
 .llm-message {

@@ -14,10 +14,9 @@ import Col from 'react-bootstrap/Col';
 const LLMChat = ({ name }) => {
     const { t, i18n } = useTranslation();
 
-    const [llmMessages, setLlmMessages] = useState([
+    const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
-    const [userMessages, setUserMessages] = useState([]);
 
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
@@ -41,7 +40,7 @@ const LLMChat = ({ name }) => {
 
         // Agrega el mensaje del usuario al chat
         const userMsg = <p className="user-message" key={`user-${messages.length}`}>{inputValue}</p>;
-        setUserMessages(prevMessages => [...prevMessages, userMsg]);
+        setMessages(prevMessages => [...prevMessages, userMsg]);
 
         // Activa estado de carga para deshabilitar la entrada mientras se espera la respuesta
         setLoading(true);
@@ -62,7 +61,7 @@ const LLMChat = ({ name }) => {
                     />
                 </p>
             );
-            setLlmMessages(prevMessages => [...prevMessages, llmMsg]);
+            setMessages(prevMessages => [...prevMessages, llmMsg]);
         } catch (error) {
             console.error("Error enviando mensaje:", error);
             const errorMsg = (
@@ -70,7 +69,7 @@ const LLMChat = ({ name }) => {
                     {t('llm-chat-error-msg')}
                 </p>
             );
-            setLlmMessages(prevMessages => [...prevMessages, errorMsg]);
+            setMessages(prevMessages => [...prevMessages, errorMsg]);
         } finally {
             setLoading(false);
         }
@@ -97,34 +96,41 @@ const LLMChat = ({ name }) => {
                 )}
             >
                 <div className="llm-chat-messages">
-                    <div className="llm-chat-llm-messages">
-                        {llmMessages.map((msg, index) => (
-                            <Row>
-                                <Col md={2}>
-                                    <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
-                                </Col>
-                                <Col md={8}>
-                                    {msg}
-                                    {loading && (
-                                        <p className="llm-message loading">
-                                            <span className="question-loading">{t('llm-chat-loading-msg')}</span>
-                                        </p>
-                                    )}
-                                </Col>
-                            </Row>
-                        ))}
-                    </div>
-                    <div className="llm-chat-user-messages">
-                        {userMessages.map((msg, index) => (
-                            <Row>
-                                <Col md={4}>
-                                </Col>
-                                <Col md={8}>
-                                    {msg}
-                                </Col>
-                            </Row>
-                        ))}
-                    </div>
+                    {messages.map((msg, index) => (
+                        <Row>
+                            {msg.props.className === "llm-message" ? (
+                                <>
+                                    <Col md={2}>
+                                        <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                                    </Col>
+                                    <Col md={8}>
+                                        {msg}
+                                    </Col>
+                                </>
+                            ) : (
+                                <>
+                                    <Col md={4}>
+                                    </Col>
+                                    <Col md={8}>
+                                        {msg}
+                                    </Col>
+
+                                </>
+                            )}
+                        </Row>
+                    ))}
+                    {loading && (
+                        <Row>
+                            <Col md={2}>
+                                <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                            </Col>
+                            <Col md={8}>
+                                <p className="llm-message loading">
+                                    <span className="question-loading">{t('llm-chat-loading-msg')}</span>
+                                </p>
+                            </Col>
+                        </Row>
+                    )}
                 </div>
             </Scrollbars>
             <form className="llm-chat-form" onSubmit={handleSubmit}>
