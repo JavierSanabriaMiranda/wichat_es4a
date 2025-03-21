@@ -1,24 +1,30 @@
-// External libs
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const fetch = require('node-fetch');
-
-// Swagger for API documentation
-const swaggerUi = require('swagger-ui-express');
-const fs = require("fs");
-const YAML = require('yaml');
-
-// My own libs
-const db = require("./db/mongo/config");
+import fetch from 'node-fetch';  // We use fetch to make HTTP requests to external APIs
+import fs from 'fs';  // We need the fs module to read JSON files
+import path from 'path';  // We use path to handle file and directory paths
+import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
+import express from 'express';  // We use express to create and manage the API server
 
 const port = 8002;
 const app = express();
-
 const url = "https://query.wikidata.org/sparql";
 
+/**
+ * Loads and filters question templates based on the specified topics and language.
+ * This function reads the 'question_template.json' file, parses its content, 
+ * and then filters the templates according to the provided topics and language.
+ * 
+ * @param {Array|String} topics - An array of topics or a single topic string to filter the templates. 
+ * @param {String} lang - The language code ("es" for Spanish and "en" for English) to filter the templates.
+ * @returns {Array} - An array of question templates that match the specified topics and language.
+ * 
+ * @example
+ * const templates = loadQuestionTemplatesWithTopicLanguage(["geography"], "es");
+ * This would return all the templates related to "geography" in Spanish.
+ */
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
-  const filePath = path.resolve('question', 'question_template.json');
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const filePath = path.resolve(__dirname, 'question_template.json');
 
   const data = fs.readFileSync(filePath, 'utf-8');
   const templates = JSON.parse(data);
@@ -26,7 +32,7 @@ function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
   const topicsArray = Array.isArray(topics) ? topics : [topics];
 
   const filteredTemplates = templates.filter(template =>
-    topicsArray.some(topic => template.topics.includes(topic))
+  topicsArray.some(topic => template.topics.includes(topic))
   );
 
   const filteredTemplatesLanguage = filteredTemplates.filter(template => template.lang === lang);
@@ -35,25 +41,17 @@ function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
 }
 
 
-async function executeQuery(query) {
-  const offset = Math.floor(Math.random() * 100);
-  const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`;
-
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/sparql-query",
-      "Accept": "application/json"
-    },
-    body: finalQuery
-  });
-
-  const data = await response.json();
-  //label representa los resultados que van a aparecer en las opciones -> no puede ser iguales
-  //filtro para asegurarme que no se repitan bajo ninguna circunstancia
-  return filterUnique(data.results.bindings, "label", 4);
-}
-
+/**
+ * Filters the results to get only unique entities based on their labels and limits the number of results.
+ * This function checks that no two entities with the same label appear in the results.
+ * It stops once the specified limit of unique results is reached.
+ *
+ * @param {Array} results - The list of results obtained from a SPARQL query. Each result contains a label (entity name).
+ * @param {String} label - The field in each result object representing the entity name
+ * @param {Number} limit - The maximum number of unique results (unique entity names) to return.
+ * @returns {Array} - A list of up to 'limit' unique results based on the entity label.
+ * 
+ */
 function filterUnique(results, label, limit) {
   const uniqueResults = [];
   const seenValues = new Set();
@@ -67,27 +65,86 @@ function filterUnique(results, label, limit) {
   }
   return uniqueResults;
 }
-//intercambiar por la de andrea y meter lo del lang para que admita los idiomas
-async function takeOptions(topics, lang) {
+
+
+/**
+ * Executes a SPARQL query to fetch data from the Wikidata endpoint.
+ * It adds a random offset to the query to ensure different sets of results are returned each time.
+ * The results are then filtered to return only unique entities based on their labels, 
+ * and the number of results is limited to 4.
+ * 
+ * @param {string} query - The SPARQL query to fetch data from Wikidata. It should return results containing labels and images.
+ * @returns {Array} - An array of up to 4 unique results based on the entity labels, including the corresponding images.
+ * 
+ */
+async function executeQuery(query) {
+  const offset = Math.floor(Math.random() * 100); // Generate a random offset between 0 and 99
+  const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
+  
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/sparql-query",
+      "Accept": "application/json"
+    },
+    body: finalQuery
+  });
+
+  const data = await response.json(); // Parse the response from the API
+
+  // Filter and return 4 unique results by their labels
+  return filterUnique(data.results.bindings, "label", 4);
+}
+
+
+/**
+ * This function selects a random question template based on the provided topics and language,
+ * runs a query to fetch the relevant data, and then returns the question along with options,
+ * making sure the results are unique.
+ * 
+ * @param {Array|String} topics - A topic or a list of topics to filter the question templates.
+ * @param {String} lang - The language you want the question
+ * @returns {Array} - An array with the question, correct answer, url of the image, and options.
+ * 
+ * @example
+ * const question = await generateQuestion(["geography"], "es");
+ * This will return a random geography question in Spanish, run the query, and return 
+ * the options with the correct answer and image.
+ */
+async function generateQuestion(topics, lang) {
   const templates = loadQuestionTemplatesWithTopicLanguage(topics, lang);
   const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
-  
+
+  // Get the SPARQL query from the selected template
   const query = randomTemplate.query;
+  // Run the query to get the data
   const results = await executeQuery(query);
 
+  // If there are results, generate the question with its options(correct and false ones)
   if (results.length > 0) {
-
-    const filteredResults = allInfo(results, "label", "image", randomTemplate);
-    console.log("Resultados finales:");
+    const filteredResults = generateQuestionWithOptions(results, "label", "image", randomTemplate);
+    console.log("Final Results:");
     console.log(JSON.stringify(filteredResults, null, 2));
 
     return filteredResults;
   }
-  //para evitar errores en tiempo de ejecucion -> quitarlo en un futuro
+  // If no results found, return an empty array to avoid errors
   return [];
 }
 
-function allInfo(results, labelKey, imageKey, randomTemplate) {
+
+/**
+ * Randomly selects a result as the correct answer and the rest are considered incorrect options.
+ * It uses this result to create the final question structure, including the question text, correct answer, image, and options.
+ * 
+ * @param {Array} results - The query results to be processed, each containing a label (question options) and an image URL.
+ * @param {String} labelKey - The key that represents the label (question options) in the results.
+ * @param {String} imageKey - The key that represents the image URL in the results.
+ * @param {Object} randomTemplate - The template containing the question format.
+ * @returns {Object} - The generated question with the correct answer, image, and a set of incorrect options.
+ * 
+ */
+function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate) {
   const specialIndex = Math.floor(Math.random() * results.length);
 
   const question = randomTemplate.question;
@@ -105,13 +162,30 @@ function allInfo(results, labelKey, imageKey, randomTemplate) {
   };
 }
 
-// API Endpoint
+
+/**
+ * Endpoint to generate a random question based on the provided topics and language
+ * to allow users to specify topics and language.
+ * 
+ * The function will generate a question based on the selected topic(s) and language, fetch relevant data,
+ * and return the generated question as a response.
+ * 
+ * @route POST /api/questions/generate
+ * @async
+ * @function
+ * 
+ * @param {Object} req - The request object, containing user input in the body (supports topic/language).
+ * @param {Object} res - The response object, used to send the response back to the client.
+ * 
+ * @returns {Object} - A JSON response with the generated question and options if successful, or an error message if not
+ */
 app.post('/api/questions/generate', async (req, res) => {
   try {
     const lang = "es";
-    const hardcodedTopics = ["geography"];
+    const hardcodedTopics = ["geography", "character"];
+    //const { lang, topics } = req.body;
 
-    const questionData = await takeOptions(hardcodedTopics, lang);
+    const questionData = await generateQuestion(hardcodedTopics, lang);
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });
     }
@@ -122,8 +196,29 @@ app.post('/api/questions/generate', async (req, res) => {
 });
 
 
-const server = app.listen(port, () => {
-  console.log(`question Service listening at http://localhost:${port}`);
+/**
+ * Starts the server and listens on the specified port
+ *
+ * @param {number} port - The port the server will listen on.
+ */
+const server = app.listen(port, async () => {
+  console.log(`Question Service listening at http://localhost:${port}`);
+
+  //Test (temporary)
+  try {
+    const testUrl = `http://localhost:${port}/api/questions/generate`;
+    const response = await fetch(testUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.json();
+    console.log('Test API Response:', result);
+  } catch (error) {
+    console.error("Error haciendo la solicitud a la API:", error);
+  }
+
 });
 
-module.exports = server;
+export default server;
