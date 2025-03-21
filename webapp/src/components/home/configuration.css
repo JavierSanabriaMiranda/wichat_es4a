@@ -26,8 +26,8 @@ h2 {
 
 .close-icon {
     position: absolute;
-    top: 50px;
-    left: 8px;
+    top: 7%;
+    left: 6px;
     color: red;
     font-size: 20px;
     cursor: pointer;

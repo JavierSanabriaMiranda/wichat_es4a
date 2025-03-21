@@ -16,13 +16,14 @@ const NavBar = () => {
     i18n.changeLanguage(lang);
   };
 
+
   const handleLogout = () => {
-    sessionStorage.removeItem("token");  // Eliminar token de sessionStorage
-    window.location.href = "/"; // Redirigir al home
+    sessionStorage.removeItem("token");  //Eliminar token de sessionStorage
+    window.location.href = "/"; //Redirigir al home
   };
 
   return (
-    <div>
+    <>
       <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
         <Nav.Link href="/" className="navbar-logo">
           <img src={logo} alt="Logo" className="navbar-logo" />
@@ -53,24 +54,25 @@ const NavBar = () => {
 
             {/* Mostrar opciones según si hay un token en sessionStorage */}
             {sessionStorage.getItem("token") != null ? (
-              <div>
+              <>
                 <Nav.Link href="/user" className="icon-menu"><VscAccount size={30} /></Nav.Link>
                 <Nav.Link href="#" className="icon-menu" onClick={handleLogout}><GoSignOut size={30} /></Nav.Link>
-              </div>
+              </>
             ) : (
-              <div>
+              <>
                 <Nav.Link href="/login" className="icon-menu">LogIn</Nav.Link>
                 <Nav.Link href="/addUser" className="icon-menu">Sign Up</Nav.Link>
-              </div>
+              </>
             )}
           </Nav>
         </Container>
       </Navbar>
 
-      {/* Modal de reglas */}
       <Rules show={showRules} handleClose={() => setShowRules(false)} />
-    </div>
+    </>
   );
 };
 
 export default NavBar;
+
+
