@@ -16,6 +16,12 @@ const NavBar = () => {
     i18n.changeLanguage(lang);
   };
 
+  // Función para cerrar sesión
+  const handleLogout = () => {
+    sessionStorage.removeItem("token");  // Eliminar token de sessionStorage
+    window.location.href = "/"; // Redirigir al home o página principal
+  };
+
   return (
     <>
       <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
@@ -45,17 +51,28 @@ const NavBar = () => {
             <Nav.Link href="#" className="rules-menu" onClick={() => setShowRules(true)}>
               {t("rules-menu")}
             </Nav.Link>
-            <Nav.Link href="#" className="icon-menu"><VscAccount size={30} /></Nav.Link>
-            <Nav.Link href="#" className="icon-menu"><GoSignOut size={30} /></Nav.Link>
+
+            {/* Mostrar opciones según si hay un token en sessionStorage */}
+            {sessionStorage.getItem("token") != null ? (
+              <>
+                <Nav.Link href="/user" className="icon-menu"><VscAccount size={30} /></Nav.Link>
+                <Nav.Link href="#" className="icon-menu" onClick={handleLogout}><GoSignOut size={30} /></Nav.Link>
+              </>
+            ) : (
+              <>
+                <Nav.Link href="/login" className="icon-menu">LogIn</Nav.Link>
+                <Nav.Link href="/addUser" className="icon-menu">Sign Up</Nav.Link>
+              </>
+            )}
           </Nav>
         </Container>
       </Navbar>
 
-      {/* Modal de reglas */}
       <Rules show={showRules} handleClose={() => setShowRules(false)} />
     </>
   );
 };
 
 export default NavBar;
+
 

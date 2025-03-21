@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18next.js';
 import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
+import NavBar from '../NavBar.js';
 
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
@@ -22,11 +23,11 @@ export const UserProfile = ({ userName, gameHistory }) => {
 
     return (
         <main>
+            <NavBar />
             {/* Cabecera */}
-            <div className="w-95vw text-center p-3" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
+            <div className="w-95vw text-center p-3 mt-5" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
                 <h2>{t('welcome-message')} <span className="fw-bold">{userName}</span></h2>
             </div>
-
             {/* Contenedor principal con sidebar y contenido */}
             <Tab.Container id="main-container" defaultActiveKey="edit">
                 <Row className="border mt-3 mx-0">

@@ -3,11 +3,13 @@ import Button from "react-bootstrap/Button";
 import Configuration from "./Configuration";
 import { useTranslation } from "react-i18next";
 import NavBar from "../NavBar";
+import { GameConfigProvider } from '../game/GameConfigProvider';
 import './home.css';
 
-const Home = () => {
+export const Home = () => {
   const [showConfig, setShowConfig] = useState(false);
   const { t } = useTranslation();
+
 
   return (
     <div className="home-container">
@@ -28,9 +30,11 @@ const Home = () => {
         </Button>
       </div>
 
-      {showConfig && <Configuration onClose={() => setShowConfig(false)} />}
+      {showConfig &&
+        <GameConfigProvider key={Date.now()}> {/* Key to force re-render and configurate again */}
+          <Configuration onClose={() => setShowConfig(false)} />
+        </GameConfigProvider>
+      }
     </div>
   );
 };
-
-export default Home;

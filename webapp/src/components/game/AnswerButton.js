@@ -4,9 +4,11 @@ import React, { useState } from 'react';
  * React component to represent an answer in the game that can be wrong or correct.
  * @param {String} answerText - The text of the answer.
  * @param {Boolean} isCorrectAnswer - A flag to indicate if the answer is correct or not.
+ * @param {Function} answerAction - The function to execute when the answer is clicked.
+ * 
  * @returns A button with the answer text that changes its style when it is clicked.
  */
-const AnswerButton = ({answerText, isCorrectAnswer}) => {
+const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
 
     const [wasSelected, setWasSelected] = useState(false);
 
@@ -15,6 +17,7 @@ const AnswerButton = ({answerText, isCorrectAnswer}) => {
         : "answer-button-not-answered";
 
     const handleClick = () => {
+        answerAction(isCorrectAnswer, answerText);
         setWasSelected(true);
         console.log(`${buttonClassName}`);
     }

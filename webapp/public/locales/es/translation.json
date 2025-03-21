@@ -35,10 +35,14 @@
     "pass-button-text": "Siguiente",
     "llm-chat-welcome-msg": "¡Hola! Soy Wichat, ¿en qué puedo ayudarte?",
     "llm-chat-placeholder": "¡Pídeme una pista!",
+    "llm-chat-error-msg": "Lo siento, no tengo pistas disponibles.",
+    "llm-chat-loading-msg": "Cargando respuesta...",
     "exit-confirm-msg-title": "¿Estás seguro que deseas salir?",
     "exit-confirm-msg-body": "Si sales perderás el progreso de la partida en curso",
     "exit-confirm-msg-exit": "Salir",
     "exit-confirm-msg-close": "Cerrar",
+    "play-again-button-text": "Jugar de nuevo",
+    "go-back-to-menu": "Volver al menú",
     "back-button-text": "Atrás",
     "recent-games-text": "Partidas Recientes",
     "game-details-text": "Detalles de la Partida",
@@ -50,5 +54,6 @@
     "rules-title": "Reglas del juego",
     "rules-content-1" : "1. WiChat es un juego de preguntas en el que debes responder correctamente dentro de un tiempo limitado, que eliges tú mismo.",
     "rules-content-2": "2. Según el tema o temas seleccionados, cada pregunta tendrá una imagen relacionada y cuatro opciones, una de ellas correcta.",
-    "rules-content-3": "3. Puedes saltarte algunas preguntas si lo deseas."
+    "rules-content-3": "3. Puedes saltarte algunas preguntas si lo deseas.",
+    "question-generation-message": "Generando pregunta..."
 }
