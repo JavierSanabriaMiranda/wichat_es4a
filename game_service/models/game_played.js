@@ -1,5 +1,5 @@
 // Importar mongoose
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
@@ -43,4 +43,4 @@ const gamePlayedSchema = new Schema({
 const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
 // Exportación en ES Module
-export default GamePlayed;
+module.exports =  GamePlayed;

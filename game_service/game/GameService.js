@@ -1,8 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { GamePlayed, Question, SettingsGameMode } = require("../models");
-const shuffle = require("./arrayShuffle");
-const { validate, getCurrentQuestion } = require("./verification");
-const { loadQuestion } = require("../services/questionsService");
+const { GamePlayed, Question, User } = require("../models");
+const { validate, getCurrentQuestion } = require("./QuestionAsk");
+const { loadQuestion } = require("./questionService");
 
 const privateKey = process.env.JWT_SECRET || "ChangeMePlease!!!!";
 
@@ -14,9 +13,9 @@ const newGame = async (req, res) => {
         const userId = jwt.verify(req.body.token, privateKey).user_id;
         const tags = req.body.tags ?? "";
         
-        let settings = await SettingsGameMode.findOne({ where: { user_id: userId } });
+        let settings = await User.findOne({ where: { user_id: userId } });
         if (!settings) {
-            settings = await SettingsGameMode.create({ user_id: userId });
+            settings = await User.create({ user_id: userId });
         }
 
         await GamePlayed.create({
@@ -43,34 +42,36 @@ const next = async (req, res) => {
 
         if (!game) return;
 
-        let settings = await SettingsGameMode.findOne({ where: { user_id: userId } });
+        let settings = await User.findOne({ where: { user_id: userId } });
         if (!settings) {
-            settings = await SettingsGameMode.create({ user_id: userId });
+            settings = await User.create({ user_id: userId });
         }
 
         const questionRaw = await loadQuestion(game.tags.split(",").filter(s => s.length > 0), req.body.lang);
 
+        // Asegurarse de que la respuesta esté en el formato correcto
         const question = await Question.create({
-            title: questionRaw.title,
-            imageUrl: questionRaw.imageUrl || "",
-            answer: questionRaw.answer,
-            fake: questionRaw.fakes,
+            title: questionRaw.question, // 'question' -> 'title'
+            imageUrl: questionRaw.image || "",  // 'image' -> 'imageUrl'
+            answer: questionRaw.correct,  // 'correct' -> 'answer'
+            fake: questionRaw.options.filter(opt => opt !== questionRaw.correct),  // 'options' -> 'fake' (fake answers)
             duration: settings.durationQuestion,
             gameId: game.id,
-            lang: questionRaw.lang
+            lang: req.body.lang
         });
 
         res.status(200).json({
             title: question.title,
             lang: question.lang,
             imageUrl: question.imageUrl,
-            answers: shuffle([question.answer, ...question.fake])
+            answers: [question.answer, ...question.fake]
         });
     } catch (error) {
         console.error("Error getting next question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 /**
  * Registra la respuesta de un usuario en una pregunta.
@@ -116,7 +117,7 @@ const update = async (req, res) => {
         res.status(200).json({
             title: question.title,
             imageUrl: question.imageUrl || "",
-            answers: shuffle([question.answer, ...question.fake]),
+            answers: [question.answer, ...question.fake],
             created: String(question.createdAt.getTime()),
             duration: String(question.duration),
             numberOfQuestions: (await question.getGame()).numberOfQuestions,
@@ -135,7 +136,7 @@ const getHistory = async (req, res) => {
     try {
         const userId = jwt.verify(req.body.token, privateKey).user_id;
 
-        const games = await Game.findAll({
+        const games = await GamePlayed.findAll({
             where: { user_id: userId },
             include: [{ model: Question, as: 'Questions' }]
         });
@@ -158,7 +159,7 @@ const getHistoryByUser = async (req, res) => {
             return res.status(400).json({ error: 'User ID not valid' });
         }
 
-        const games = await Game.findAll({
+        const games = await GamePlayed.findAll({
             where: { user_id: userId },
             include: [{ model: Question, as: 'Questions' }]
         });
@@ -205,7 +206,7 @@ const getCurrentGame = async (req, res) => {
     try {
         const userId = jwt.verify(req.body.token, privateKey).user_id;
 
-        const games = await Game.findAll({ where: { user_id: userId } });
+        const games = await GamePlayed.findAll({ where: { user_id: userId } });
 
         if (!games || games.length < 1) {
             res.status(400).send();

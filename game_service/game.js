@@ -6,76 +6,106 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const mongodb = require('./db/mongo/Connection');
 
-//libraries required for OpenAPI-Swagger
+// Libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express'); 
-const fs = require("fs")
-const YAML = require('yaml')
+const fs = require("fs");
+const YAML = require('yaml');
 
 // My own libs
-const { newGame, next, awnser, update, getGameSettingsByUser, getHistory, getHistoryByUser, setGameSettingsByUser, getNumberOfQuestions,
-  getQuestion
-} = require("./game/GameService");
-const { saveQuestionsInDB, deleteOlderQuestions, loadInitialQuestions } = require('./services/questionsService');
+const { newGame, next, answer, update, getGameSettingsByUser, getHistory, getHistoryByUser, setGameSettingsByUser, getNumberOfQuestions, getQuestion } = require("./game/GameService");
+const { saveQuestionsInDB, deleteOlderQuestions, loadInitialQuestions } = require('./game/questionService');
 
 const port = 8003;
 const app = express();
 
-//Prometheus configuration
+// Prometheus configuration
 const promBundle = require('express-prom-bundle');
-const {getCurrentQuestion} = require("./game/verification");
-const metricsMiddleware = promBundle({includeMethod: true});
+const { getCurrentQuestion } = require("./game/QuestionAsk");
+const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
 
 // Middleware 
-app.use(bodyParser.json()); // Parse the request into json
-app.use(cors()) // This api is listening on a different port from the frontend
-app.use('/api/*',authMiddleware); // Auth middleware for the questions API
+app.use(bodyParser.json()); // Parse the request into JSON
+app.use(cors()); // This API is listening on a different port from the frontend
 
-// Api endpoints
-app.post('/api/game/new', newGame);
-app.post('/api/game/next', next);
-app.post('/api/game/awnser', awnser);
-app.post('/api/game/update', update);
-app.post('/api/game/settings', getGameSettingsByUser);
-app.post('/api/game/updatesettings', setGameSettingsByUser);
-app.post('/api/game/getHistory', getHistory);
-app.post('/api/game/getHistoryByUser', getHistoryByUser);
-app.post('/api/game/numberofquestions', getNumberOfQuestions);
-app.post('/api/game/currentquestion', getQuestion);
+// API endpoints
+app.post('/api/game/new', (req, res) => {
+  console.log('Iniciando un nuevo juego...');
+  newGame(req, res); // Ejecutar la función cuando se haga la solicitud
+});
 
-// Read the OpenAPI YAML file synchronously
-openapiPath='./openapi.yaml'
+app.post('/api/game/next', (req, res) => {
+  console.log('Obteniendo la siguiente pregunta...');
+  next(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/answer', (req, res) => {
+  console.log('Respondiendo a la pregunta...');
+  answer(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/update', (req, res) => {
+  console.log('Actualizando el juego...');
+  update(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/getHistory', (req, res) => {
+  console.log('Obteniendo el historial...');
+  getHistory(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/getHistoryByUser', (req, res) => {
+  console.log('Obteniendo el historial por usuario...');
+  getHistoryByUser(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/numberofquestions', (req, res) => {
+  console.log('Obteniendo el número de preguntas...');
+  getNumberOfQuestions(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+app.post('/api/game/currentquestion', (req, res) => {
+  console.log('Obteniendo la pregunta actual...');
+  getQuestion(req, res); // Ejecutar la función cuando se haga la solicitud
+});
+
+// Leer el archivo OpenAPI YAML de forma síncrona
+const openapiPath = './openapi.yaml';
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 
-  // Parse the YAML content into a JavaScript object representing the Swagger document
+  // Parsear el contenido YAML a un objeto JavaScript que represente el documento Swagger
   const swaggerDocument = YAML.parse(file);
 
-  // Serve the Swagger UI documentation at the '/api-doc' endpoint
-  // This middleware serves the Swagger UI files and sets up the Swagger UI page
-  // It takes the parsed Swagger document as input
+  // Servir la documentación Swagger UI en el endpoint '/api-doc'
   app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 } else {
-  console.log("Not configuring OpenAPI. Configuration file not present.")
+  console.log("No se ha configurado OpenAPI. El archivo de configuración no está presente.");
 }
 
-// Connect with mongodb
-mongodb();
+// Conectar con MongoDB cuando se haga la primera solicitud (y no antes)
+app.post('/api/connectMongo', (req, res) => {
+  mongodb(); // Conexión a MongoDB solo cuando se hace esta solicitud
+  res.status(200).send('Conexión a MongoDB establecida.');
+});
 
-// Save questions for each 24 hours
-loadInitialQuestions();
+// Función para guardar las preguntas en la base de datos, solo cuando se llame explícitamente
+app.post('/api/game/save-questions', async (req, res) => {
+  console.log('Guardando preguntas...');
+  await saveQuestionsInDB(); // Solo se ejecuta cuando se hace la solicitud
+  res.status(200).send('Preguntas guardadas');
+});
 
-//We dont want to do this in a test enviroment
+// Función para eliminar preguntas antiguas, solo cuando se llame explícitamente
+app.post('/api/game/delete-old-questions', async (req, res) => {
+  console.log('Eliminando preguntas antiguas...');
+  await deleteOlderQuestions(); // Solo se ejecuta cuando se hace la solicitud
+  res.status(200).send('Preguntas antiguas eliminadas');
+});
 
-setInterval( async () => {
-  await deleteOlderQuestions();
-  await saveQuestionsInDB();
-}, 24 * 60 * 60 * 1000);
-
-// Start the server
+// Empezar el servidor
 const server = app.listen(port, () => {
   console.log(`Game service listening at http://localhost:${port}`);
 });
 
-
-module.exports = server
+module.exports = server;

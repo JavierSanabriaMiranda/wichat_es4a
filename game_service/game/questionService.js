@@ -33,14 +33,14 @@ const saveQuestion = async() =>
     const res = await requestQuestion();
 
     const question = new Question({
-        title: res.title,
-        answer: res.answer,
-        fakes: [res.fake[0], res.fake[1], res.fake[2]],
-        imageUrl: res.imgurl,
-        tags: res.tags,
-        lang: res.lang
+        question: res.question,
+        answer: res.correct,
+        options: res.options,
+        imageUrl: res.imageUrl,
+        correct: res.correct,
+        topics: res.topics || []  // Asegúrate de que `topics` esté presente
     });
-
+ 
     await question.save();
 }
 
@@ -70,4 +70,4 @@ const deleteOlderQuestions = async () =>
     await Question.deleteMany({ _id: {$in: questionsToRemove} });
 }
 
-module.exports = { loadQuestion, loadInitialQuestions, saveQuestionsInDB, deleteOlderQuestions };
+module.exports = { loadQuestion, saveQuestionsInDB, loadInitialQuestions, deleteOlderQuestions };

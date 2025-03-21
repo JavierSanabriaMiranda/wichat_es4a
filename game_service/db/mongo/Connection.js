@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -20,5 +20,4 @@ const connect = async () => {
   }
 };
 
-// Asegúrate de exportar la función 'connect' correctamente
-export default connect; // Cambiar a exportación por defecto
+module.exports = connect; // ✅ Exportar correctamente
