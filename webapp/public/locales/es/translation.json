@@ -46,5 +46,9 @@
     "password-error-uppercase": "La contraseña debe contener al menos una letra mayúscula.",
     "password-error-number": "La contraseña debe contener al menos un número.",
     "password-error-no-spaces": "La contraseña no debe contener espacios.",
-    "invalid-game-date": "Fecha no disponible"
+    "invalid-game-date": "Fecha no disponible",
+    "rules-title": "Reglas del juego",
+    "rules-content-1" : "1. WiChat es un juego de preguntas en el que debes responder correctamente dentro de un tiempo limitado, que eliges tú mismo.",
+    "rules-content-2": "2. Según el tema o temas seleccionados, cada pregunta tendrá una imagen relacionada y cuatro opciones, una de ellas correcta.",
+    "rules-content-3": "3. Puedes saltarte algunas preguntas si lo deseas."
 }
