@@ -1,81 +1,120 @@
-// src/controllers/gameSession.js
 import Question from '../db/Question.js';
-import { startNewGame, endGame } from './gameController.js';
 import QuestionService from './QuestionGame.js';
 import GamePlayed from '../db/game_played.js';
+import GameRepository from '../repository/gameRepository.js';
 
+/**
+ * Represents a game session for a user.
+ */
 class GameSession {
+
+  /**
+   * The API endpoint URL.
+   * @type {string}
+   */
+  apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+
+  /**
+   * Creates a new game session.
+   * @param {string} userId - The ID of the user.
+   * @param {Array<string>} topics - The topics for the game session.
+   * @param {string} modality - The modality of the game.
+   */
   constructor(userId, topics, modality) {
+    /**
+     * The user ID.
+     * @type {string}
+     */
     this.userId = userId;
+
+    /**
+     * The selected topics for the game.
+     * @type {Array<string>}
+     */
     this.topics = topics;
+
+    /**
+     * The game modality.
+     * @type {string}
+     */
     this.modality = modality;
+
+    /**
+     * The current game instance.
+     * @type {Object|null}
+     */
     this.game = null;
+
+    /**
+     * Service for handling game questions.
+     * @type {QuestionService}
+     */
     this.questionService = new QuestionService();
+
+    /**
+     * Number of questions played.
+     * @type {number}
+     */
     this.numQuestions = 0;
   }
 
+  /**
+   * Starts a new game session.
+   * @returns {Promise<void>}
+   */
   async startGame() {
     try {
-      this.game = await startNewGame(this.userId, this.topics, this.modality);
-      console.log("Partida iniciada:", this.game);
+      this.game = await GameRepository.startNewGame(this.userId, this.topics, this.modality);
     } catch (error) {
-      console.error("Error al iniciar la partida:", error);
+      console.error("Error starting the game:", error);
     }
   }
 
+  /**
+   * Plays a new question in the game session.
+   * @returns {Promise<Object|void>} The question object or undefined if an error occurs.
+   */
   async playQuestions() {
     try {
-      for (let i = 0; i < 3; i++) {
-        const pregunta = await this.questionService.pedirPregunta("es");
-        if (pregunta.error) {
-          console.error("Error al obtener la pregunta:", pregunta.error);
-          return;
-        }
-
-        console.log(`Pregunta ${i + 1}:`, pregunta.pregunta);
-
-        await this.addQuestionToGame(pregunta);
-        this.numQuestions++;
+      const question = await this.questionService.requestQuestion("es");
+      if (question.error) {
+        console.error("Error fetching the question:", question.error);
+        return;
       }
-      await this.endGame();
+      this.numQuestions++;
+
+      return question;
     } catch (error) {
-      console.error("Error al jugar las preguntas:", error);
+      console.error("Error playing questions:", error);
     }
   }
 
-  async addQuestionToGame(pregunta) {
+  /**
+   * Adds a new question to the current game session.
+   * @returns {Promise<void>}
+   */
+  async addQuestionToGame() {
     try {
-      pregunta = await this.questionService.obtenerPreguntaConDetalles("es");
-      // Crear la pregunta en la base de datos
-      const newQuestion = await Question.create({
-        question: pregunta.pregunta,        // Pregunta obtenida
-        answer:  pregunta.respuestas[0], // Respuesta correcta
-        options: pregunta.respuestas,       // Respuestas mezcladas
-        imageUrl: pregunta.imagen || "",    // Imagen asociada (si existe)
-        correct: pregunta.respuestaCorrecta // Indicador de la respuesta correcta
-      });
-  
-      // Asociar la pregunta recién creada con la partida actual
-      const gameId = this.game._id;
-      this.game = await GamePlayed.findByIdAndUpdate(
-        gameId,
-        { $push: { questionsPlayed: newQuestion._id } },  // Añadir el ID de la pregunta a la partida
-        { new: true } // Obtener la partida actualizada
-      );
-  
-      console.log("Pregunta añadida a la partida:", this.game);
+      // Save the question in the database
+      const newQuestion = await GameRepository.saveQuestionToDatabase(pregunta);
+
+      // Associate the question with the current game session
+      this.game = await GameRepository.addQuestionToGameSession(this.game._id, newQuestion._id);
+
     } catch (error) {
-      console.error("Error al agregar la pregunta a la partida:", error);
+      console.error("Error adding the question to the game session:", error);
     }
   }
-  
 
+  /**
+   * Ends the current game session.
+   * @returns {Promise<void>}
+   */
   async endGame() {
     try {
-      const gameEnded = await endGame(this.userId);
-      console.log("Partida finalizada:", gameEnded);
+      const gameEnded = await GameRepository.endGame(this.userId);
     } catch (error) {
-      console.error("Error al finalizar la partida:", error);
+      console.error("Error ending the game:", error);
     }
   }
 }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import GameSession from './gameSession.js';
+import GameSession from './GameSession.js';
 
 async function testGameFlow() {
   try {

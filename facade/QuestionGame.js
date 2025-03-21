@@ -1,44 +1,46 @@
 /**
- * Importa las funciones necesarias para obtener datos y temas desde las bases de datos.
  * @module QuestionService
+ * 
+ * Handles the logic related to retrieving questions, answers, and verifying responses.
+ * It uses predefined topics or fetches them from the database to generate questions.
  */
-import { executeFullFlow } from '../question/wikidata.js';
-import { getTopicsFromDatabase } from './gameController.js'; 
 
+import { executeFullFlow } from '../question/wikidata.js';
+import { getTopicsFromDatabase } from '../repository/gameRepository.js';
 /**
- * Clase que maneja la lógica relacionada con la obtención de preguntas, respuestas y verificación de respuestas.
- * Utiliza una serie de temas predefinidos o extraídos de la base de datos para generar preguntas.
+ * Class that handles the logic for managing questions and answers.
  */
 class QuestionService {
   
-  /**
-   * Crea una instancia de la clase QuestionService.
-   * Inicializa las propiedades de la pregunta, respuesta correcta, respuestas falsas, imagen y topics.
+ /**
+   * Creates an instance of the `QuestionService` class.
+   * Initializes properties for the question, correct answer, wrong answers, image, and topics.
    */
   constructor() {
     /**
-     * Contiene la pregunta obtenida.
+     * The question obtained from the database or generated.
      * @type {string}
      */
-    this.pregunta = "";
+    this.question = "";
+   
 
     /**
-     * Respuesta correcta de la pregunta.
+     * The correct answer for the question.
      * @type {string}
      */
-    this.respuestaCorrecta = "";
+    this.correctAnswer = "";
 
     /**
-     * Respuestas falsas asociadas a la pregunta.
+     * Incorrect answers associated with the question.
      * @type {Array<string>}
      */
-    this.respuestasFalsas = [];
+    this.worngAnswer = [];
 
     /**
-     * Imagen asociada a la pregunta (si existe).
-     * @type {string|null}
+     * List of available topics for the questions.
+     * @type {Array<string>}
      */
-    this.imagen = "";
+    this.img = "";
 
     /**
      * Lista de topics disponibles para las preguntas.
@@ -47,17 +49,16 @@ class QuestionService {
     this.topics = [];
   }
 
-  /**
-   * Obtiene los temas desde la base de datos.
-   * Este método llama a la función `getTopicsFromDatabase` para obtener los temas disponibles.
-   * Si hay un error durante la obtención de los temas, devuelve un mensaje de error.
+   /**
+   * Retrieves the topics from the database.
+   * Calls `getTopicsFromDatabase` to fetch the available topics.
+   * If an error occurs, it returns an error message.
    * 
-   * @returns {Array|string} Retorna un array de topics o un mensaje de error en caso de fallo.
+   * @returns {Promise<Array|string>} Returns an array of topics or an error message if failed.
    */
-  async obtenerTopics() {
+  async getTopicsGame() {
     try {
       this.topics = await getTopicsFromDatabase(); // Obtiene los topics desde la BD
-      console.log("Topics obtenidos de la BD:", this.topics);
       return this.topics;
     } catch (error) {
       console.error("Error al obtener los topics:", error);
@@ -65,53 +66,69 @@ class QuestionService {
     }
   }
 
-  /**
-   * Asigna un conjunto de topics a la instancia de la clase.
-   * Este método permite asignar manualmente los topics que se usarán para la obtención de preguntas.
+ /**
+   * Manually assigns topics to the instance.
+   * This method allows defining which topics to use for fetching questions.
    * 
-   * @param {Array<string>} topics - Lista de topics que se asignarán a la instancia.
+   * @param {Array<string>} topics - List of topics to assign.
    */
-  async obtenerTopic(topics) {
+  async saveTopics(topics) {
     this.topics = topics;
   }
 
-  /**
-   * Solicita una pregunta con las respuestas mezcladas. Utiliza la función `executeFullFlow`
-   * para obtener los datos de la pregunta, y mezcla las respuestas (correcta + incorrectas).
+  
+ /**
+   * Requests a question with shuffled answers.
+   * Uses `executeFullFlow` to get the question data and shuffle the answers (correct and incorrect).
    * 
-   * @param {string} lang - El idioma en el que se debe generar la pregunta (por ejemplo, "es" para español).
-   * @returns {Object} Retorna un objeto con la pregunta, las respuestas mezcladas y la imagen asociada.
-   * @throws {Error} Si los datos obtenidos no tienen el formato esperado o si ocurre un error durante la solicitud.
+   * @param {string} lang - The language in which the question should be generated (e.g., "es" for Spanish).
+   * @returns {Promise<Object>} Returns an object with the question, shuffled answers, and associated image.
+   * @throws {Error} If the retrieved data is not in the expected format or if an error occurs during the request.
    */
-  async pedirPregunta(lang) {
+  async requestQuestion(lang) {
     try {
-      // Si no se han definido topics, asignamos valores predeterminados.
+     // getTopicsFromDatabase();
       if (this.topics.length == 0) {
         this.topics = ["geography", "history", "science", "sports"];
       }
 
-      const resultado = await executeFullFlow(this.topics, lang); // Pide la pregunta con los topics
+      const result = await executeFullFlow(this.topics, lang); // Pide la pregunta con los topics
 
-      console.log("Resultados finales recibidos:", resultado); // Debugging
 
-      // Validar el formato de los resultados obtenidos
-      if (!resultado || typeof resultado !== "object" || !resultado.question || !resultado.correct || !Array.isArray(resultado.options)) {
+      if (!result || typeof result !== "object" || !result.question || !result.correct || !Array.isArray(result.options)) {
         throw new Error("Los datos obtenidos no tienen el formato esperado.");
       }
 
-      // Guardamos los datos de la pregunta
-      this.pregunta = resultado.question;
-      this.respuestaCorrecta = resultado.correct;
-      this.respuestasFalsas = resultado.options;
-      this.imagen = resultado.image || null;
+      this.question = result.question;
+      this.correctAnswer = result.correct;
+      this.worngAnswer = result.options;
+      this.img = result.image || null;
 
-      // Mezclamos las respuestas (correcta + falsas)
-      const respuestasMezcladas = [resultado.correct, ...resultado.options].sort(() => Math.random() - 0.5);
+      const listaRespuestas = [
+        {
+          respuesta: result.correct,
+          correcta: true
+        },
+        {
+          respuesta: result.options[0],
+          correcta: false
+        },
+        {
+          respuesta: result.options[1],
+          correcta: false
+        },
+        {
+          respuesta: result.options[2],
+          correcta: false
+        }
+      ]
+
+      const respuestasMezcladas = listaRespuestas.sort(() => Math.random() - 0.5);
 
       return {
-        pregunta: this.pregunta,
+        pregunta: this.question,
         respuestas: respuestasMezcladas,
-        imagen: this.imagen
+        imagen: this.img
       };
 
     } catch (error) {
@@ -121,37 +138,34 @@ class QuestionService {
   }
 
   /**
-   * Verifica si la respuesta proporcionada por el usuario es correcta.
+   * Verifies whether the user's provided answer is correct.
    * 
-   * @param {string} respuestaUsuario - La respuesta del usuario para la pregunta actual.
-   * @returns {boolean} `true` si la respuesta es correcta, `false` si es incorrecta.
+   * @param {string} userAnswer - The user's selected answer for the current question.
+   * @returns {boolean} `true` if the answer is correct, `false` if it is incorrect.
    */
-  esCorrecta(respuestaUsuario) {
-    return respuestaUsuario === this.respuestaCorrecta;
+  isCorrect(userAnswer) {
+    return userAnswer === this.correctAnswer;
   }
-  /**
-   * Método adicional para obtener la pregunta y sus detalles.
-   * Llama a `pedirPregunta` y devuelve los valores obtenidos de la pregunta.
+   /**
+   * Additional method to retrieve the question and its details.
+   * Calls `requestQuestion` and returns the values obtained from the question.
    * 
-   * @param {string} lang - El idioma en el que se debe generar la pregunta (por ejemplo, "es" para español).
-   * @returns {Object} Retorna un objeto con la pregunta, las respuestas mezcladas y la imagen asociada.
+   * @param {string} lang - The language in which the question should be generated (e.g., "es" for Spanish).
+   * @returns {Promise<Object>} Returns an object with the question, shuffled answers, and associated image.
    */
-  async obtenerPreguntaConDetalles(lang) {
-    const preguntaDetalles = await this.pedirPregunta(lang);
-    return preguntaDetalles;
+  async getAnswerDetails(lang) {
+    const answerDetail = await this.requestQuestion(lang);
+    return answerDetail;
   }
 
 }
 export default QuestionService; 
-// 🔹 Prueba la clase
+/**
+ * Test the class
+ */
 (async () => {
   const questionService = new QuestionService();
 
-  // Solicitar una pregunta
-  const pregunta = await questionService.pedirPregunta("es");
-  console.log("Pregunta obtenida: ", pregunta);
-
-  // Verificar respuestas
-  console.log("Verificación de respuesta correcta: ", questionService.esCorrecta("prueba")); // Debería ser false
-  console.log("Verificación de respuesta incorrecta: ", questionService.esCorrecta("pruebaMalRespuesta")); // Debería ser false
+  // Request a question
+  const question = await questionService.requestQuestion("es");
 })();

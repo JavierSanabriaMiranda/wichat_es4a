@@ -1,14 +1,21 @@
 import fetch from 'node-fetch';
 import fs from 'fs';  // Requerimos el módulo fs para leer archivos JSON
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const url = "https://query.wikidata.org/sparql";
 //pre internacionalizacion(se podria borrar, lo dejo porque es la beta aun)
 /*
 function loadQuestionTemplatesWithTopic(topics) {
-  const filePath = path.resolve('question', 'question_template.json');
+  const filePath = path.resolve(
+    path.dirname(fileURLToPath(import.meta.url)),
+    'question_template.json'
+);
 
+// Verifica la ruta generada para asegurarte de que sea correcta
+console.log('Ruta del archivo:', filePath);
   const data = fs.readFileSync(filePath, 'utf-8');
+
   const templates = JSON.parse(data);
 
   const topicsArray = Array.isArray(topics) ? topics : [topics];
@@ -120,14 +127,15 @@ async function getOptionsForTopics(topics) {
     return [];
   }
 
-export async function executeFullFlow(topics,lang) {
+  export async function executeFullFlow(topics, lang) {
     try {
-      console.log(lang);
-      const options = await getOptionsForTopics(topics);
-      return options;  // Retorna el resultado final
+        console.log(`Ejecutando flujo completo para temas: ${topics} con idioma: ${lang}`);
+        const options = await getOptionsForTopics(topics);
+        console.log("Opciones obtenidas:", options);  // Verifica que las opciones estén siendo devueltas correctamente
+        return options;  // Retorna el resultado final
     } catch (error) {
-      console.error("Error en el flujo completo:", error);
-      throw error;
+        console.error("Error en el flujo completo:", error);  // Mostrar el error si algo falla
+        throw error;
     }
 }
 
