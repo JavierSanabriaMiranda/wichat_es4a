@@ -20,7 +20,7 @@ const {  newGame,
   endGame } = require("./game/GameService");
 const { saveQuestionsInDB, deleteOlderQuestions, loadInitialQuestions } = require('./game/questionService');
 
-const port = 8003;
+const port = 8040;
 const app = express();
 
 // Prometheus configuration
