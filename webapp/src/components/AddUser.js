@@ -37,7 +37,7 @@ export const AddUser = () => {
         <Row className="align-items-center">
           <Col lg={6} className="text-center text-lg-start mb-4 mb-lg-0">
             <img src={"/images/logo.png"} alt="Wichat Logo" style={{ width: '10em' }} className="mb-3" />
-            <h1 className="display-4 fw-bold" style={{ color: '#5D6C89' }}>Wichat</h1>
+            <h1 className="display-4 fw-bold" style={{ color: '#5D6C89' }}>WiChat</h1>
             <p style={{ color: '#7A859A' }}>
               {t('signup-message-sponsor')}
             </p>
