@@ -18,7 +18,12 @@ const questionSchema = new Schema({
     answer: { type: String, required: true }, 
     options: { type: [String], required: true },
     imageUrl: { type: String, required: true },
-    correct: { type: Boolean, required: false }
+    questionAnswered: { type: Boolean, required: false },
+    useranswer: { type: String, required: false },
+    time :{
+        type: Number,
+        required: false
+    }
 });
 
 

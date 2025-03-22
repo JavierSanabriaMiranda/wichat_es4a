@@ -31,12 +31,12 @@ const gamePlayedSchema = new Schema({
       ref: "Question"
     }
   ],
-    isActive: [
+    isActive: 
       {
       type: Boolean,
       default: false 
     }
-  ]
+  
 });
 
 // Crear modelo

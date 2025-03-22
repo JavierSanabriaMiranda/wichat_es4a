@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const mongodb = require('./db/mongo/Connection');
 
@@ -12,7 +11,13 @@ const fs = require("fs");
 const YAML = require('yaml');
 
 // My own libs
-const { newGame, next, answer, update, getGameSettingsByUser, getHistory, getHistoryByUser, setGameSettingsByUser, getNumberOfQuestions, getQuestion } = require("./game/GameService");
+const {  newGame,
+  next,
+  answer,
+  getNumberOfQuestionsPlayed,
+  getQuestion,
+  getCurrentGame,
+  endGame } = require("./game/GameService");
 const { saveQuestionsInDB, deleteOlderQuestions, loadInitialQuestions } = require('./game/questionService');
 
 const port = 8003;
@@ -44,31 +49,10 @@ app.post('/api/game/answer', (req, res) => {
   answer(req, res); // Ejecutar la función cuando se haga la solicitud
 });
 
-app.post('/api/game/update', (req, res) => {
-  console.log('Actualizando el juego...');
-  update(req, res); // Ejecutar la función cuando se haga la solicitud
-});
-
-app.post('/api/game/getHistory', (req, res) => {
-  console.log('Obteniendo el historial...');
-  getHistory(req, res); // Ejecutar la función cuando se haga la solicitud
-});
-
-app.post('/api/game/getHistoryByUser', (req, res) => {
-  console.log('Obteniendo el historial por usuario...');
-  getHistoryByUser(req, res); // Ejecutar la función cuando se haga la solicitud
-});
-
-app.post('/api/game/numberofquestions', (req, res) => {
-  console.log('Obteniendo el número de preguntas...');
-  getNumberOfQuestions(req, res); // Ejecutar la función cuando se haga la solicitud
-});
-
-app.post('/api/game/currentquestion', (req, res) => {
+app.post('/api/game/endGame', (req, res) => {
   console.log('Obteniendo la pregunta actual...');
-  getQuestion(req, res); // Ejecutar la función cuando se haga la solicitud
+  endGame(req, res); // Ejecutar la función cuando se haga la solicitud
 });
-
 // Leer el archivo OpenAPI YAML de forma síncrona
 const openapiPath = './openapi.yaml';
 if (fs.existsSync(openapiPath)) {

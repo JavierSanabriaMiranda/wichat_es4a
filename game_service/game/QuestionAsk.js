@@ -76,7 +76,6 @@ const requestQuestion = async () => {
             answer: 'Sri Lanka',
             imageUrl: 'http://commons.wikimedia.org/wiki/Special:FilePath/Topography%20Sri%20Lanka.jpg',
             options: ['Catar', 'México', 'Kenia'],
-            correct: true,
             topics: ["Geografia"]  // Asignar un topic válido (Array de ObjectId)
         };
     }
