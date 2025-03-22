@@ -40,7 +40,7 @@ export const Login = () => {
 
 
   return (
-    <section className="d-flex align-items-center" style={{ minHeight: '100vh', backgroundColor: '#F4F5F7' }}>
+    <section className="d-flex align-items-center" style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #F3F4F6, #B8C6D8)' }}>
         <Container>
         <Row className="align-items-center">
           <Col lg={6} className="text-center text-lg-start mb-4 mb-lg-0">
