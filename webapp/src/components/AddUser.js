@@ -4,12 +4,14 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Card, Form, Button, Alert , Row, Col} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const AddUser = () => {
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -21,8 +23,9 @@ export const AddUser = () => {
     try {
       await axios.post(`${apiEndpoint}/adduser`, { username, password });
       setSuccess(true);
-      setUsername('');
-      setPassword('');
+      setTimeout(() => {
+        navigate('/login');
+      }, 1000);
     } catch (error) {
       setError(error.response?.data?.error);
       setSuccess(false);
