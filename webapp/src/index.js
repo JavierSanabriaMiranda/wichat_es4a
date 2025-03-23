@@ -12,6 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
+    {/* <React.StrictMode> makes Game.js to mount twice, so it asks for a question twice */}
     <App />
   </React.StrictMode>
 );
