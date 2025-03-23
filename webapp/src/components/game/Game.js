@@ -177,7 +177,7 @@ export const Game = () => {
      */
     const addQuestionResult = (wasUserCorrect, selectedAnswer) => {
         setQuestionResults([...questionResults, {
-            "topic": question.topic,
+            "text": question.text,
             "imageUrl": question.imageUrl,
             "wasUserCorrect": wasUserCorrect,
             "selectedAnswer": selectedAnswer,
