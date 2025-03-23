@@ -82,7 +82,7 @@ const LLMChat = ({ name }) => {
     };
 
     return (
-        <Card className="llm-chat">
+        <Card className="llm-chat" bg={'light'}>
             <Scrollbars
                 style={{ width: '100%', height: '100%' }}
                 autoHide // Oculta el scroll cuando no se usa

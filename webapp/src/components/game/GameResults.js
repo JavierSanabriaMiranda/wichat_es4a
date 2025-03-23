@@ -35,7 +35,7 @@ export const GameResults = () => {
     if (!storedResults) return <p>No game data</p>;
 
     return (
-        <Container fluid>
+        <Container fluid className="game-results-container">
             <Row className="justify-content-md-center text-center">
                 <Col lg={5} xs={5} className="d-flex justify-content-center align-items-center">
                     <h2 className="finalPoints">{points}pts</h2>
