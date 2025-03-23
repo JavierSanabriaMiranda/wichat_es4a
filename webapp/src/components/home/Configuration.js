@@ -8,7 +8,7 @@ import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { useNavigate } from "react-router-dom";
-import { useConfig } from "../game/GameConfigProvider";
+import { useConfig } from "../contextProviders/GameConfigProvider";
 
 const Configuration = ({ onClose }) => {
 

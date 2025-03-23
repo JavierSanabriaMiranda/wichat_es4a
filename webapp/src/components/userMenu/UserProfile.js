@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
@@ -13,12 +13,13 @@ import i18n from '../../i18n/i18next.js';
 import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
-
+import AuthContext from '../contextProviders/AuthContext.js';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserProfile = ({ userName, gameHistory }) => {
+export const UserProfile = ({ gameHistory }) => {
     const { t } = useTranslation();
+    const { user } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
 
     return (
@@ -26,7 +27,7 @@ export const UserProfile = ({ userName, gameHistory }) => {
             <NavBar />
             {/* Cabecera */}
             <div className="w-95vw text-center p-3 mt-5" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
-                <h2>{t('welcome-message')} <span className="fw-bold">{userName}</span></h2>
+                <h2>{t('welcome-message')} <span className="fw-bold">{user?.username || ''}</span></h2>
             </div>
             {/* Contenedor principal con sidebar y contenido */}
             <Tab.Container id="main-container" defaultActiveKey="edit">
@@ -47,7 +48,7 @@ export const UserProfile = ({ userName, gameHistory }) => {
                     <Col sm={9} className="p-3 d-flex flex-column h-100">
                         <Tab.Content className='flex-grow-1 overflow-auto'>
                             <Tab.Pane eventKey="edit" className="w-100 h-100">
-                                <EditUser userName={userName} />
+                                <EditUser userName={user?.username || ''} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="history">
                             <div style={{ maxHeight: '70vh', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>

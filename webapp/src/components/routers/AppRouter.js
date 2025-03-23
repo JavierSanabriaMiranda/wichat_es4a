@@ -6,7 +6,7 @@ import { Login } from '../Login';
 import { AddUser } from '../AddUser';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { AuthRoute } from './AuthRoute';
-import { GameConfigProvider } from '../game/GameConfigProvider';
+import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 
 
 const gameHistory = [
@@ -91,7 +91,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/user',
-    element: <UserProfile userName={"Test"} gameHistory={gameHistory} />
+    element: <UserProfile gameHistory={gameHistory} />
   },
   {
     path: '/game/results',
