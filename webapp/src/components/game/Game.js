@@ -57,11 +57,28 @@ export const Game = () => {
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
     }
 
-    const askForNextQuestion = () => {
+    //This useEffect will be triggered when the questionResults state changes. 
+    //It will check if the number of questions answered is equal to the number of questions and if so, 
+    // it will save the results in the local storage and navigate to the results screen.
+    useEffect(() => {
+        if (numberOfQuestionsAnswered === numberOfQuestions) {
+            localStorage.setItem("gameResults", JSON.stringify({
+                questions: questionResults,
+                points,
+                numOfCorrectAnswers: correctAnswers,
+                numOfWrongAnswers: wrongAnswers,
+                numOfNotAnswered: notAnswered
+            }));
+    
+            setTimeout( () => {
+                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+        }
+    }, [questionResults]);  
+
+    const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
 
         if (numberOfQuestionsAnswered === numberOfQuestions) {
-            navigate('/game-results'); // TODO: Send game info to the results page
             return;
         }
         setNumberOfQuestionsAnswered(prev => prev + 1);
@@ -197,7 +214,7 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: "Generando Pregunta...", image: ""});
+        setQuestion({text: t('question-generation-message'), imageUrl: ""});
         setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
         setStopTimer(true);
     }
@@ -233,6 +250,15 @@ export const Game = () => {
         navigate('/');
     }
 
+    /**
+     * Finds the correct answer from a list of answers.
+     * @param {Array} answers - The array of answer objects.
+     * @param {boolean} answers[].isCorrect - Indicates if the answer is correct.
+     * @param {string} answers[].text - The text of the answer.
+     * @returns {string} The text of the correct answer, or an empty string if no correct answer is found.
+     */
+    const correctAnswer = answers.find(answer => answer.isCorrect)?.text || '';
+
     return (
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
@@ -254,7 +280,7 @@ export const Game = () => {
                 <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
             </div>
             <div className='div-question-img'>
-                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.image} />}
+                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
             </div>
             <section id="question-answers-section">
                 <div id="game-answer-buttons-section">
@@ -272,7 +298,7 @@ export const Game = () => {
                 </div>
             </section>
             <aside className='llm-chat-aside'>
-                <LLMChat />
+                <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
                 <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
