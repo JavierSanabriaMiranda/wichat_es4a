@@ -66,6 +66,8 @@
     "signup-message-sponsor": "Show off your knowledge! Join WiChat and compete by answering questions from different categories. Ready for the challenge?",
     "login-title": "Login",
     "login-message-sponsor": "Welcome back to WiChat! Log in to continue enjoying. We're glad to see you again!",
-    "login-failure": "Your username or password is incorrect."
+    "login-failure": "Your username or password is incorrect.",
+    "enter-username-placeholder": "Enter your username",
+    "enter-password-placeholder": "Enter your password"
 }
 

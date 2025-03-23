@@ -66,5 +66,7 @@
     "rules-content-3": "3. Puedes saltarte algunas preguntas si lo deseas.",
     "question-generation-message": "Generando pregunta...",
     "auth-error-bad-credentials": "Credenciales incorrectas",
-    "login-success": "Se ha iniciado sesión correctamente"
+    "login-success": "Se ha iniciado sesión correctamente",
+    "enter-username-placeholder": "Introduzca su nombre de usuario",
+    "enter-password-placeholder": "Introduzca su contraseña"
 }

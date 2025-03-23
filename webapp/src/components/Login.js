@@ -1,5 +1,5 @@
 // src/components/Login.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { Container, Card, Form, Button, Alert , Row, Col} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -20,20 +20,19 @@ export const Login = () => {
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [createdAt, setCreatedAt] = useState('');
 
-  const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
-  
-
-  const loginUser = async () => {
+  const loginUser = async (event) => {
+    event.preventDefault();
     await login(username, password);
 
     if (error) {
       setErrorMsg(error);
       return;
     }
-    setOpenSnackbar(true);
 
+    setLoginSuccess(true);
+    console.log("Login success ", loginSuccess);
     setTimeout(() => {
-      navigate('/');;
+      navigate('/');
     }
     , 1000);
   };
@@ -55,20 +54,20 @@ export const Login = () => {
               <h2 className="text-center mb-4" style={{ color: '#5D6C89' }}>{t('login-title')}</h2>
               <Form onSubmit={loginUser}>
                 <Form.Group className="mb-3" controlId="formUsername">
-                  <Form.Label style={{ color: '#5D6C89' }}>{t('username-message')}</Form.Label>
+                  <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('username-message')}</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter username"
+                    placeholder={t('enter-username-placeholder')}
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label style={{ color: '#5D6C89' }}>{t('password-message')}</Form.Label>
+                  <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-message')}</Form.Label>
                   <Form.Control
                     type="password"
-                    placeholder="Enter password"
+                    placeholder={t('enter-password-placeholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
