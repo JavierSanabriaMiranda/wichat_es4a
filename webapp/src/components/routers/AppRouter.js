@@ -57,29 +57,6 @@ const gameHistory = [
 ];
 
 
-const questions = [
-  {
-    "topic": "Tecnología",
-    "imageUrl": "/logo512.png",
-    "answers": [
-      { "text": "Respuesta 1", "isCorrect": false, "wasSelected": false },
-      { "text": "Respuesta 2", "isCorrect": true, "wasSelected": true },
-      { "text": "Respuesta 3", "isCorrect": false, "wasSelected": false },
-      { "text": "Respuesta 4", "isCorrect": false, "wasSelected": false }
-    ]
-  },
-  {
-    "topic": "Tecnología",
-    "imageUrl": "/logo512.png",
-    "answers": [
-      { "text": "Respuesta A", "isCorrect": false },
-      { "text": "Respuesta B", "isCorrect": false },
-      { "text": "Respuesta C", "isCorrect": true },
-      { "text": "Respuesta D", "isCorrect": false }
-    ]
-  }
-]
-
 const router = createBrowserRouter([
   {
     path: '/',
