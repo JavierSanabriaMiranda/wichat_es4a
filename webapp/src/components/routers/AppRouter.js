@@ -92,7 +92,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/user',
-    element: <UserProfile userName={"Test"} gameHistory={gameHistory} />
+    element: <UserProfile gameHistory={gameHistory} />
   },
   {
     path: '/game/results',

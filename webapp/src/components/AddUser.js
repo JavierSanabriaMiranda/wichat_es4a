@@ -47,7 +47,7 @@ export const AddUser = () => {
               <h2 className="text-center mb-4" style={{ color: '#5D6C89' }}>{t('add-user-title')}</h2>
               <Form onSubmit={addUser}>
                 <Form.Group className="mb-3" controlId="formUsername">
-                  <Form.Label style={{ color: '#5D6C89', 'font-weight': 'bold' }}>{t('username-message')}</Form.Label>
+                  <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('username-message')}</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder={t('enter-username-placeholder')}
@@ -57,7 +57,7 @@ export const AddUser = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label style={{ color: '#5D6C89', 'font-weight': 'bold' }}>{t('password-message')}</Form.Label>
+                  <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-message')}</Form.Label>
                   <Form.Control
                     type="password"
                     placeholder={t('enter-password-placeholder')}
