@@ -11,6 +11,7 @@ import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
+import { use } from 'react';
 
 
 /**
@@ -49,6 +50,9 @@ export const Game = () => {
     // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
     const [numberOfQuestionsAnswered, setNumberOfQuestionsAnswered] = useState(0);
+    // State that stores if the user requested to exit the game. It is used to avoid errors that happen when the user
+    // tries to exit the game while other actions are being performed in the background.
+    const [exitRequested, setExitRequested] = useState(false);
 
     const onTimeUp = () => {
         blockAnswerButtons();
@@ -86,11 +90,11 @@ export const Game = () => {
 
 
         getNextQuestion().then((questionInfo) => {
-            setIsLoading(false);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
             unblockAnswerButtons();
+            setIsLoading(false);
         }
         );
 
@@ -249,8 +253,17 @@ export const Game = () => {
      * Function that exits the game without saving the progress.
      */
     const exitFromGame = () => {
-        navigate('/');
+        if (!isLoading)
+            navigate('/');
+        else
+            setExitRequested(true);
     }
+
+    useEffect(() => {
+        if (exitRequested && !isLoading) {
+            navigate('/');
+        }
+    }, [exitRequested, isLoading]);
 
     /**
      * Finds the correct answer from a list of answers.
