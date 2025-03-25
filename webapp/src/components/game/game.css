@@ -37,23 +37,27 @@
     width: 90%;
     height: 3em;
     font-size: 1.2em;
-    border-radius: 3%;
-    background-color: #5d6c89;
-    color: #fbf6f3;
+    
+    background-color: #5d6c89 !important;
+    color: #fbf6f3 !important;
     cursor: pointer;
 }
 
+.answer-button-not-answered:disabled, .answer-button-correct-answer:disabled, .answer-button-wrong-answer:disabled {
+    opacity: 100%;
+}
+
 .answer-button-not-answered:hover {
-    background-color: #475a80;
+    background-color: #475a80 !important;
 }
 
 .answer-button-correct-answer {
-    background-color: #4CAF50;
+    background-color: #2dc032 !important;
     color: white;
 }
 
-.answer-button-wrong-answer {
-    background-color: #f44336;
+.answer-button-wrong-answer, .answer-button-wrong-answer:active {
+    background-color: #f71e0e !important; 
     color: white;
 }
 
@@ -72,7 +76,7 @@
 }
 
 button:not(:disabled):active {
-    transform: scale(0.98); /* Slightly scale down the button to give a pressed effect */
+    transform: scale(0.98) !important; /* Slightly scale down the button to give a pressed effect */
 }
 
 /* ===================== TIMER STYLE ===================== */
@@ -271,16 +275,19 @@ button:not(:disabled):active {
     grid-column: 4;
     width: 40%;
     height: 30%;
-    padding: 1.3%;
-    background-color: #5d6c89;
+    background-color: #5d6c89 !important;
     color: white;
     text-decoration: none;
-    border-radius: 25px;
+    border-radius: 15px;
     cursor: pointer;
 }
 
+.pass-button:disabled {
+    opacity: 100% !important;
+}
+
 .pass-button:hover {
-    background-color: #475a80;
+    background-color: #475a80 !important;
 }
 
 .exit-button {

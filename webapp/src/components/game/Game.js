@@ -82,12 +82,12 @@ export const Game = () => {
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
+        blockAnswerButtons();
 
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
-
 
         getNextQuestion().then((questionInfo) => {
             setQuestion(questionInfo.question);
@@ -223,6 +223,7 @@ export const Game = () => {
         setQuestion({ text: t('question-generation-message'), imageUrl: "" });
         setAnswers([{ text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }]);
         setStopTimer(true);
+        blockAnswerButtons();
     }
 
     const blockAnswerButtons = () => {
@@ -319,7 +320,7 @@ export const Game = () => {
                 <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
-                <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
+                <Button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</Button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
