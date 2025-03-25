@@ -143,7 +143,11 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
+        <Button
+          className="play-button"
+          onClick={startGame}
+          disabled={topics.length === 0} 
+        >{t("play-configuration")}</Button>
       </div>
     </div>
   );
