@@ -21,7 +21,7 @@ const Configuration = ({ onClose }) => {
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [topics, setTopics] = useState([]);
 
-  const topicList = ["history", "science", "art", "sport", "geography"];
+  const topicList = ["history", "entertainment", "art", "sport", "geography"];
 
   const navigate = useNavigate();
 
@@ -107,12 +107,12 @@ const Configuration = ({ onClose }) => {
                 {t("history-configuration")}
               </ToggleButton>
               <ToggleButton
-                id="science"
+                id="entertainment"
                 value={2}
-                className={`toggle-btn-science ${selectedButtons.includes(2) ? "selected" : ""}`}
+                className={`toggle-btn-entertainment ${selectedButtons.includes(2) ? "selected" : ""}`}
                 onClick={() => handleButtonClick(2)}
               >
-                {t("science-configuration")}
+                {t("entertainment-configuration")}
               </ToggleButton>
               <ToggleButton
                 id="art"
