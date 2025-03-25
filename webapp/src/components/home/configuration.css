@@ -50,7 +50,7 @@ h2 {
 
 }
 
-.toggle-btn-science {
+.toggle-btn-entertainment {
     background-color: #5D6C89 !important;
     color: white;
     border: none;
@@ -87,16 +87,13 @@ h2 {
     background-color: #FEB06A !important;
 }
 
-.toggle-btn-science.selected {
-    background-color: #2ecc71 !important;
+.toggle-btn-entertainment.selected {
+    background-color: #e40b5e !important;
 }
 
 .toggle-btn-history.selected {
     background-color: #9b59b6 !important;
 }
-
-
-
 
 
 
@@ -125,11 +122,12 @@ h2 {
 
 .play-button {
     width: 100%;
-    background-color: #5D6C89;
+    background-color: #36D6E7;
     border: none;
     transition: background-color 0.3s;
 }
 
-.play-button:hover {
-    background-color: #36D6E7;
-}
+.play-button:disabled {
+    background-color: #5D6C89;
+    cursor: not-allowed;
+  }
