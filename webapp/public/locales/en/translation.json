@@ -47,9 +47,6 @@
     "recent-games-text": "Recent Games",
     "game-details-text": "Game Details",
     "password-error-min-length": "Password must be at least 8 characters long.",
-    "password-error-uppercase": "Password must contain at least one uppercase letter.",
-    "password-error-number": "Password must contain at least one number.",
-    "password-error-no-spaces": "Password must not contain spaces.",
     "invalid-game-date": "Date not available",
     "auth-error-bad-credentials": "Bad credentials",
     "login-success": "Logged in successfully",
@@ -68,6 +65,7 @@
     "login-message-sponsor": "Welcome back to WiChat! Log in to continue enjoying. We're glad to see you again!",
     "login-failure": "Your username or password is incorrect.",
     "enter-username-placeholder": "Enter your username",
-    "enter-password-placeholder": "Enter your password"
+    "enter-password-placeholder": "Enter your password",
+    "password-error-content": "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and no spaces."
 }
 
