@@ -13,7 +13,7 @@ const YAML = require('yaml');
 // My own libs
 const {  newGame,
   next,
-  answer,
+  endAndSaveGame,
   getNumberOfQuestionsPlayed,
   getQuestion,
   getCurrentGame,
@@ -44,15 +44,12 @@ app.post('/api/game/next', (req, res) => {
   next(req, res); // Ejecutar la función cuando se haga la solicitud
 });
 
-app.post('/api/game/answer', (req, res) => {
+app.post('/api/game/endAndSaveGame', (req, res) => {
   console.log('Respondiendo a la pregunta...');
-  answer(req, res); // Ejecutar la función cuando se haga la solicitud
+  endAndSaveGame(req, res); // Ejecutar la función cuando se haga la solicitud
 });
 
-app.post('/api/game/endGame', (req, res) => {
-  console.log('Obteniendo la pregunta actual...');
-  endGame(req, res); // Ejecutar la función cuando se haga la solicitud
-});
+
 // Leer el archivo OpenAPI YAML de forma síncrona
 const openapiPath = './openapi.yaml';
 if (fs.existsSync(openapiPath)) {
