@@ -32,21 +32,7 @@ endif::arc42help[]
 
 === Contexto de Negocio
 
-[plantuml,png]
-----
-  actor Usuario
-  artifact WiChatApplication {
-    database Pod as "Base de Datos"
-    Usuario --> (WIChat): Interactúa
-    WIChat --> (Wikidata): Solicita datos
-    Wikidata --> (WIChat): Devuelve imágenes y respuestas
-    WIChat --> (LLM_API): Envía consultas
-    LLM_API --> (WIChat): Devuelve respuestas
-    WIChat --> (Pod): Inicia sesión y registra resultados de partidas
-    Pod --> WIChat: Devuelve datos registrados del usuario
-  }
-  
-----
+image::../images/contexto-de-negocio.png[Contexto de Negocio]
 
 
 [options="header",cols="1,2"]
