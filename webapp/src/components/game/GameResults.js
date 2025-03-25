@@ -9,7 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { ResultSectorChart } from './ResultSectorChart';
 import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
 import { useLocation, useNavigate} from 'react-router-dom';
-import { GameConfigProvider } from '../game/GameConfigProvider';
+import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import Configuration  from '../home/Configuration';
 import { use } from "i18next";
 

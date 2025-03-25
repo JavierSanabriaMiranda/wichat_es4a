@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
-import { useConfig } from './GameConfigProvider';
+import { useConfig } from '../contextProviders/GameConfigProvider';
 
 
 /**
@@ -77,12 +77,12 @@ export const Game = () => {
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
+
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
         }
-        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
-
-       
+        setNumberOfQuestionsAnswered(prev => prev + 1);
+        
         getNextQuestion().then((questionInfo) => {
             setIsLoading(false);
             setQuestion(questionInfo.question);
@@ -98,6 +98,11 @@ export const Game = () => {
     useEffect(() => {
         askForNextQuestion();
     }, []); // Empty dependency array means this effect runs only once on mount
+
+    useEffect(() => {
+        console.log(numberOfQuestionsAnswered);
+    }
+    , [numberOfQuestionsAnswered]);
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -177,7 +182,7 @@ export const Game = () => {
      */
     const addQuestionResult = (wasUserCorrect, selectedAnswer) => {
         setQuestionResults([...questionResults, {
-            "topic": question.topic,
+            "text": question.text,
             "imageUrl": question.imageUrl,
             "wasUserCorrect": wasUserCorrect,
             "selectedAnswer": selectedAnswer,
