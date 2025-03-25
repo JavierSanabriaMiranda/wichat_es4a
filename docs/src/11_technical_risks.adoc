@@ -31,8 +31,21 @@ endif::arc42help[]
 [cols="e,2e" options="header"]
 |===
 | Riesgo | Descripción
-| Inexperiencia del equipo en diseño arquitectónico y sistemas modulares | El equipo de desarrollo cuenta con experiencia limitada en el diseño de arquitecturas de software y en la implementación de sistemas de gran escala con múltiples módulos interconectados, como los basados en microservicios
-| Inexperiencia en el uso de Node.js | El equipo de desarrollo cuenta con experiencia limitada en Node.js, lo que puede derivar en dificultades para aplicar buenas prácticas en la arquitectura y seguridad del backend. Esto podría afectar la estabilidad, escalabilidad y mantenimiento del sistema.
-| Lagunas del LLM | El LLM en ocasiones tiene lagunas y proporciona outputs con información errónea a preguntas largas
-| Inexperiencia en el uso de Docker y tecnologías de contenedorización | El equipo de desarrollo tiene experiencia limitada en el uso de Docker y tecnologías de contenedorización. Esto puede derivar en configuraciones ineficientes, dificultades en la gestión de contenedores y errores en el despliegue del sistema, afectando la estabilidad y la portabilidad del proyecto.
+
+| **Inexperiencia del equipo en diseño arquitectónico y sistemas modulares** 
+| El equipo de desarrollo cuenta con experiencia limitada en el diseño de arquitecturas de software y en 
+la implementación de sistemas de gran escala con múltiples módulos interconectados, como los basados en microservicios
+
+| **Inexperiencia en el uso de Node.js**
+| El equipo de desarrollo cuenta con experiencia limitada en Node.js, lo que puede derivar en dificultades 
+para aplicar buenas prácticas en la arquitectura y seguridad del backend. Esto podría afectar la estabilidad, 
+escalabilidad y mantenimiento del sistema.
+
+| **Lagunas del LLM**
+| El LLM en ocasiones tiene lagunas y proporciona outputs con información errónea a preguntas largas
+
+| **Inexperiencia en el uso de Docker y tecnologías de contenedorización**
+| El equipo de desarrollo tiene experiencia limitada en el uso de Docker y tecnologías de contenedorización. 
+Esto puede derivar en configuraciones ineficientes, dificultades en la gestión de contenedores y errores en el 
+despliegue del sistema, afectando la estabilidad y la portabilidad del proyecto.
 |===
