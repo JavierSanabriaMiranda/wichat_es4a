@@ -41,14 +41,8 @@ export const EditUser = ({ userName }) => {
         const hasNumber = /[0-9]/.test(password);
         const hasNoSpaces = !/\s/.test(password);
 
-        if (!hasUpperCase) {
-            return t('password-error-uppercase');
-        }
-        if (!hasNumber) {
-            return t('password-error-number');
-        }
-        if (!hasNoSpaces) {
-            return t('password-error-no-spaces');
+        if (!hasUpperCase || !hasNumber || !hasNoSpaces) {
+            return t('password-error-content');
         }
 
         return ''; 
