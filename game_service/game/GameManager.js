@@ -1,6 +1,5 @@
-const { GamePlayed, Question, User } = require("../models");
+const { GamePlayed, Question, User } = require("../models/Index");
 const { validate, getCurrentQuestion } = require("./QuestionAsk");
-const { loadQuestion } = require("./questionService");
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { requestQuestion } = require("./QuestionAsk");
@@ -115,9 +114,6 @@ const endAndSaveGame = async (req, res) => {
 };
 
 
-
-
-
 /**
  * Obtiene el número de preguntas jugadas en el juego actual.
  */
@@ -199,8 +195,6 @@ const getCurrentGame = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
-
-
 
 module.exports = {
     newGame,

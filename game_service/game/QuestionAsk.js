@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Game } = require("../models");
+const { Game } = require("../models/Index");
 
 // Valida que el request tenga los campos requeridos en el cuerpo
 const validate = (req, requiredFields) => {
