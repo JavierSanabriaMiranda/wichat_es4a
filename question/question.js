@@ -4,9 +4,11 @@ import path from 'path';  // We use path to handle file and directory paths
 import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
 import express from 'express';  // We use express to create and manage the API server
 
-const port = 8002;
+const port = 8009;
 const app = express();
 const url = "https://query.wikidata.org/sparql";
+app.use(express.json());  // Middleware para leer JSON en las solicitudes
+
 
 /**
  * Loads and filters question templates based on the specified topics and language.
@@ -181,8 +183,10 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  */
 app.post('/api/questions/generate', async (req, res) => {
   try {
-    const lang = "es";
-    const hardcodedTopics = ["geography", "character"];
+    const lang =  req.body.lang;
+    console.log("Lang:", lang);
+    const hardcodedTopics = req.body.topics;
+    console.log("Topics:", hardcodedTopics);
     //const { lang, topics } = req.body;
 
     const questionData = await generateQuestion(hardcodedTopics, lang);

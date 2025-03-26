@@ -36,11 +36,14 @@ const getCurrentQuestion = async (userId) => {
 };
 
 const requestQuestion = async () => {
-    let url = "http://localhost:8002/api/questions/generate";
+    let url = "http://localhost:8009/api/questions/generate";
 
     try {
+        const requestData = { lang, topics };
+
+        // Realiza la solicitud POST a la API con los datos en el body
+        const res = await axios.post(url, requestData);
         // Realiza la solicitud a la API externa
-        const res = await axios.post(url);
         const { question, correct, image, options } = res.data;
 
         // Validamos que la estructura de la respuesta es correcta
