@@ -76,4 +76,19 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 .Form
 Tabular or free form text.
 ****
+|Id |Escenario
+
+|Esc1
+|Un gran número de usuarios accede a la aplicación simultáneamente. El sistema debe mantener en pocos segundos el tiempo de respuesta.
+|Esc2
+|Crecimiento delnúmero de usuarios en los primeros meses de lanzamiento de la aplicación. El sistema escala sin
+sin afectar al rendimiento. Los tiempos de respuesta siguen siendo lo más cortos posibles
+|Esc3
+|Un usuario malintencionado quiere acceder a datos privados usando un ataque de fuerza bruta en la autenticación.
+|Tras intentarlo varias veces se le prohibe acceder a la aplicación tras varios intentos
+|Esc4
+|El equipo de desarrollo tiene que añadir una nueva funcionalidad a la aplicación. La funcionalidad debe implementarse sin afectar negativamente a otras áreas del sistema.
+|Esc5
+|Un usuario nuevo entra en la aplicación. Es inglés y no habla español. Además es la primera vez que accede al sistema por tanto debe haber un apartado de reglas en su idioma para que entienda que puede hacer en la aplicación.
+
 endif::arc42help[]
