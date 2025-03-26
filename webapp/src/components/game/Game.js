@@ -11,6 +11,7 @@ import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
+import { use } from 'react';
 
 
 /**
@@ -49,6 +50,9 @@ export const Game = () => {
     // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
     const [numberOfQuestionsAnswered, setNumberOfQuestionsAnswered] = useState(0);
+    // State that stores if the user requested to exit the game. It is used to avoid errors that happen when the user
+    // tries to exit the game while other actions are being performed in the background.
+    const [exitRequested, setExitRequested] = useState(false);
 
     const onTimeUp = () => {
         blockAnswerButtons();
@@ -69,29 +73,31 @@ export const Game = () => {
                 numOfWrongAnswers: wrongAnswers,
                 numOfNotAnswered: notAnswered
             }));
-    
-            setTimeout( () => {
-                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+
+            setTimeout(() => {
+                navigate('/game/results')
+            }, 2000); // Wait 2 seconds before navigating to the results screen
         }
-    }, [questionResults]);  
+    }, [questionResults]);
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
+        blockAnswerButtons();
 
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
         }
-        setNumberOfQuestionsAnswered(prev => prev + 1);
-        
+        setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
+
         getNextQuestion().then((questionInfo) => {
-            setIsLoading(false);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
             unblockAnswerButtons();
+            setIsLoading(false);
         }
         );
-        
+
     }
 
     // UseEffect to call getNextQuestion on initial render
@@ -102,7 +108,7 @@ export const Game = () => {
     useEffect(() => {
         console.log(numberOfQuestionsAnswered);
     }
-    , [numberOfQuestionsAnswered]);
+        , [numberOfQuestionsAnswered]);
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -166,7 +172,7 @@ export const Game = () => {
             setWrongAnswers(wrongAnswers + 1);
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
-        
+
         setStopTimer(true);
 
         setTimeout(() => {
@@ -214,9 +220,10 @@ export const Game = () => {
     const prepareUIForNextQuestion = () => {
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: t('question-generation-message'), imageUrl: ""});
-        setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
+        setQuestion({ text: t('question-generation-message'), imageUrl: "" });
+        setAnswers([{ text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }]);
         setStopTimer(true);
+        blockAnswerButtons();
     }
 
     const blockAnswerButtons = () => {
@@ -247,8 +254,17 @@ export const Game = () => {
      * Function that exits the game without saving the progress.
      */
     const exitFromGame = () => {
-        navigate('/');
+        if (!isLoading)
+            navigate('/');
+        else
+            setExitRequested(true);
     }
+
+    useEffect(() => {
+        if (exitRequested && !isLoading) {
+            navigate('/');
+        }
+    }, [exitRequested, isLoading]);
 
     /**
      * Finds the correct answer from a list of answers.
@@ -263,6 +279,9 @@ export const Game = () => {
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
                 <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
+            </div>
+            <div className='game-questions-answered'>
+                <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
@@ -301,7 +320,7 @@ export const Game = () => {
                 <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
-                <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
+                <Button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</Button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>

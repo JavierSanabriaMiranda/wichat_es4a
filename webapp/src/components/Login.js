@@ -1,14 +1,14 @@
 // src/components/Login.js
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
-import { Container, Card, Form, Button, Alert , Row, Col} from 'react-bootstrap';
+import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from './contextProviders/AuthContext';
 
 
 export const Login = () => {
-  
+
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -22,25 +22,28 @@ export const Login = () => {
 
   const loginUser = async (event) => {
     event.preventDefault();
-    await login(username, password);
+    setErrorMsg('')
 
-    if (error) {
-      setErrorMsg(error);
-      return;
-    }
+    login(username, password, (result) => {
+      if (!result.success) {
+        setErrorMsg(result.error);
+        return;
+      }
 
-    setLoginSuccess(true);
-    console.log("Login success ", loginSuccess);
-    setTimeout(() => {
-      navigate('/');
-    }
-    , 1000);
+      setLoginSuccess(true);
+      setErrorMsg('');
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+    });
+
+
   };
 
 
   return (
     <section className="d-flex align-items-center" style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #F3F4F6, #B8C6D8)' }}>
-        <Container>
+      <Container>
         <Row className="align-items-center">
           <Col lg={6} className="text-center text-lg-start mb-4 mb-lg-0">
             <img src={"/images/logo.png"} alt="Wichat Logo" style={{ width: '10em' }} className="mb-3" />
@@ -83,6 +86,6 @@ export const Login = () => {
           </Col>
         </Row>
       </Container>
-   </section>
+    </section>
   );
 };
