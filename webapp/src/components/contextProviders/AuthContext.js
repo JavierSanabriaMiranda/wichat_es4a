@@ -36,8 +36,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username, password, callback) => {
         try {
-            const res = await axios.post(apiEndpoint + "/login", {username, password});
-
+            const res = await axios.post(apiEndpoint + "/login", { username, password });
             const { token, id } = res.data;
             setUser({ username, id });
             setToken(token);
@@ -46,10 +45,18 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem("user", JSON.stringify({ username, id }));
             sessionStorage.setItem("token", token);
 
-            callback({success: true})
+            callback({ success: true })
+
+
         } catch (error) {
-            setError(t('auth-error-bad-credentials'));
-            callback({success:false, error:t('auth-error-bad-credentials')})
+            if (error.response && error.response.status === 401) {
+                setError(t('auth-error-bad-credentials'));
+                callback({ success: false, error: t('auth-error-bad-credentials') })
+            }
+            else if (error.response && error.response.status === 429) {
+                setError(t('auth-error-too-many-attempts'));
+                callback({ success: false, error: t('auth-error-too-many-attempts') })
+            }
         }
     };
 

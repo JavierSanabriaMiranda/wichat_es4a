@@ -68,6 +68,7 @@
     "login-message-sponsor": "Welcome back to WiChat! Log in to continue enjoying. We're glad to see you again!",
     "login-failure": "Your username or password is incorrect.",
     "enter-username-placeholder": "Enter your username",
-    "enter-password-placeholder": "Enter your password"
+    "enter-password-placeholder": "Enter your password",
+    "auth-error-too-many-attempts": "Too many attempts. Try again later."
 }
 

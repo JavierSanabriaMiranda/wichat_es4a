@@ -68,5 +68,6 @@
     "auth-error-bad-credentials": "Credenciales incorrectas",
     "login-success": "Se ha iniciado sesión correctamente",
     "enter-username-placeholder": "Introduzca su nombre de usuario",
-    "enter-password-placeholder": "Introduzca su contraseña"
+    "enter-password-placeholder": "Introduzca su contraseña",
+    "auth-error-too-many-attempts": "Demasiadas intentos. Inténtelo de nuevo más tarde."
 }
