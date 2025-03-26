@@ -66,6 +66,9 @@
     "login-failure": "Your username or password is incorrect.",
     "enter-username-placeholder": "Enter your username",
     "enter-password-placeholder": "Enter your password",
-    "password-error-content": "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and no spaces."
+    "password-error-content": "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and no spaces.",
+    "confirm-logout": "Are you sure you want to log out?",
+    "logout-message": "Logout",
+    "cancel-button": "Cancel",
+    "confirm-button": "Confirm"
 }
-
