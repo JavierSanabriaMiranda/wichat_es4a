@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Navbar, Nav, Container, Dropdown } from "react-bootstrap";
+import { Navbar, Nav, Container, Dropdown , Modal, Button} from "react-bootstrap";
 import { VscAccount } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
 import i18n from "../i18n/i18next";
@@ -16,15 +16,19 @@ const NavBar = () => {
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showRules, setShowRules] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
   };
 
+  const confirmLogout = () => {
+    sessionStorage.removeItem("token");
+    window.location.href = "/";
+  };
 
   const handleLogout = () => {
-    sessionStorage.removeItem("token");  //Eliminar token de sessionStorage
-    window.location.href = "/"; //Redirigir al home
+    setShowLogoutModal(true);
   };
 
   return (
@@ -74,6 +78,17 @@ const NavBar = () => {
       </Navbar>
 
       <Rules show={showRules} handleClose={() => setShowRules(false)} />
+        
+      <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("logout-message")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{t("confirm-logout")}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>{t("cancel-button")}</Button>
+          <Button variant="danger" onClick={confirmLogout}>{t("confirm-button")}</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

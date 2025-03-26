@@ -47,9 +47,6 @@
     "recent-games-text": "Recent Games",
     "game-details-text": "Game Details",
     "password-error-min-length": "Password must be at least 8 characters long.",
-    "password-error-uppercase": "Password must contain at least one uppercase letter.",
-    "password-error-number": "Password must contain at least one number.",
-    "password-error-no-spaces": "Password must not contain spaces.",
     "invalid-game-date": "Date not available",
     "question-generation-message": "Generating question...",
     "auth-error-bad-credentials": "Bad credentials",
@@ -69,6 +66,10 @@
     "login-failure": "Your username or password is incorrect.",
     "enter-username-placeholder": "Enter your username",
     "enter-password-placeholder": "Enter your password",
-    "auth-error-too-many-attempts": "Too many attempts. Try again later."
+    "auth-error-too-many-attempts": "Too many attempts. Try again later.",
+    "password-error-content": "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and no spaces.",
+    "confirm-logout": "Are you sure you want to log out?",
+    "logout-message": "Logout",
+    "cancel-button": "Cancel",
+    "confirm-button": "Confirm"
 }
-
