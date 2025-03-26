@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Game } = require("../models");
+const { Game } = require("../models/Index");
 
 // Valida que el request tenga los campos requeridos en el cuerpo
 const validate = (req, requiredFields) => {
@@ -35,12 +35,16 @@ const getCurrentQuestion = async (userId) => {
     return questions[0]; // Retorna la primera pregunta del juego
 };
 
-const requestQuestion = async () => {
-    let url = "http://localhost:8002/api/questions/generate";
-
+const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
+    let url = "http://localhost:8009/api/questions/generate";
+    console.log("Que me llega", topics);
+    console.log("Que me llega", lang);
     try {
+        const requestData = { lang, topics };
+
+        // Realiza la solicitud POST a la API con los datos en el body
+        const res = await axios.post(url, { lang, topics });  // Enviamos los parámetros en el body
         // Realiza la solicitud a la API externa
-        const res = await axios.post(url);
         const { question, correct, image, options } = res.data;
 
         // Validamos que la estructura de la respuesta es correcta
@@ -67,6 +71,7 @@ const requestQuestion = async () => {
 
     } catch (error) {
         console.error("Error al obtener la pregunta desde el servicio externo, usando pregunta simulada.");
+        console.error(error);
 
         // Pregunta de respaldo en caso de fallo
         return {

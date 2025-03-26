@@ -13,12 +13,11 @@ const YAML = require('yaml');
 // My own libs
 const {  newGame,
   next,
-  answer,
+  endAndSaveGame,
   getNumberOfQuestionsPlayed,
   getQuestion,
   getCurrentGame,
-  endGame } = require("./game/GameService");
-const { saveQuestionsInDB, deleteOlderQuestions, loadInitialQuestions } = require('./game/questionService');
+  endGame } = require("./game/GameManager");
 
 const port = 8040;
 const app = express();
@@ -44,15 +43,12 @@ app.post('/api/game/next', (req, res) => {
   next(req, res); // Ejecutar la función cuando se haga la solicitud
 });
 
-app.post('/api/game/answer', (req, res) => {
+app.post('/api/game/endAndSaveGame', (req, res) => {
   console.log('Respondiendo a la pregunta...');
-  answer(req, res); // Ejecutar la función cuando se haga la solicitud
+  endAndSaveGame(req, res); // Ejecutar la función cuando se haga la solicitud
 });
 
-app.post('/api/game/endGame', (req, res) => {
-  console.log('Obteniendo la pregunta actual...');
-  endGame(req, res); // Ejecutar la función cuando se haga la solicitud
-});
+
 // Leer el archivo OpenAPI YAML de forma síncrona
 const openapiPath = './openapi.yaml';
 if (fs.existsSync(openapiPath)) {
@@ -71,20 +67,6 @@ if (fs.existsSync(openapiPath)) {
 app.post('/api/connectMongo', (req, res) => {
   mongodb(); // Conexión a MongoDB solo cuando se hace esta solicitud
   res.status(200).send('Conexión a MongoDB establecida.');
-});
-
-// Función para guardar las preguntas en la base de datos, solo cuando se llame explícitamente
-app.post('/api/game/save-questions', async (req, res) => {
-  console.log('Guardando preguntas...');
-  await saveQuestionsInDB(); // Solo se ejecuta cuando se hace la solicitud
-  res.status(200).send('Preguntas guardadas');
-});
-
-// Función para eliminar preguntas antiguas, solo cuando se llame explícitamente
-app.post('/api/game/delete-old-questions', async (req, res) => {
-  console.log('Eliminando preguntas antiguas...');
-  await deleteOlderQuestions(); // Solo se ejecuta cuando se hace la solicitud
-  res.status(200).send('Preguntas antiguas eliminadas');
 });
 
 // Empezar el servidor

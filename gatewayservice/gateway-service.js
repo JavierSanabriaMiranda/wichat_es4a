@@ -18,7 +18,8 @@ const port = 8000;
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
-const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8004';
+const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8040';
+
 
 app.use(cors());
 app.use(express.json());
@@ -63,50 +64,43 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
-
-// Iniciar una nueva partida
-app.get('/api/game/start', async (req, res) => {
-  console.log("voy");
+// **Iniciar una nueva partida**
+app.post('/api/game/start', async (req, res) => {
   try {
-   
+    console.log("Iniciando una nueva partida...");
+    const initBd = await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
     const gameResponse = await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
     res.json(gameResponse.data);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error starting game' });
+    console.error("Error al iniciar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error iniciando juego' });
   }
 });
 
-// Obtener la siguiente pregunta de la partida actual
-   
-app.get('/api/game/question', async (req, res) => { 
-  console.log("Pido pregunta");   
-
+// **Obtener la siguiente pregunta de la partida**
+app.post('/api/game/question', async (req, res) => {
   try {
-   
-    const { userId } = req.query;
-    
-    if (!userId) {
-      return res.status(400).json({ error: 'User ID is required' });
-    }
-
-    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/currentquestion`, { userId });
+    console.log("Solicitando la siguiente pregunta...");
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
     res.json(questionResponse.data);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error retrieving question' });
+    console.error("Error al obtener la siguiente pregunta:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error obteniendo la pregunta' });
   }
 });
 
-// Enviar respuesta del usuario
-app.get('/api/game/answer', async (req, res) => {
-  console.log("quieres respuesta");
+// **Finalizar el juego y guardar los datos**
+app.post('/api/game/end', async (req, res) => {
   try {
-    
-    const answerResponse = await axios.post(`${gameServiceUrl}/api/game/awnser`, req.body);
-    res.json(answerResponse.data);
+    console.log("Finalizando y guardando el juego...");
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body);
+    res.json(endResponse.data);
   } catch (error) {
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error submitting answer' });
+    console.error("Error al finalizar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error finalizando el juego' });
   }
 });
+
 
 
 // Endpoint to get a clue from the LLM service
