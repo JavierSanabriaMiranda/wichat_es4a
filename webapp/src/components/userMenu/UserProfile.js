@@ -14,6 +14,7 @@ import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
+import { useNavigate } from 'react-router-dom';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -21,6 +22,7 @@ export const UserProfile = ({ gameHistory }) => {
     const { t } = useTranslation();
     const { user } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
+    const navigate = useNavigate();
 
     return (
         <main>
@@ -99,6 +101,7 @@ export const UserProfile = ({ gameHistory }) => {
                 size="lg"
                 className="position-absolute bottom-0 end-0 m-3"
                 style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}
+                onClick={() => navigate("/")}
             >
                 {t('menu-button-text')}
             </Button>

@@ -25,10 +25,24 @@ function validateRequiredFields(req, requiredFields) {
     }
 }
 
+// Function to validate the password
+function validatePassword(password) {
+  const minLength = 8;
+  const hasUpperCase = /[A-Z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasNoSpaces = !/\s/.test(password);
+  if(!hasUpperCase || !hasNumber || !hasNoSpaces || password.length < minLength){
+    throw new Error(`Password error content: ${password}`);
+  }
+}
+
 app.post('/adduser', async (req, res) => {
     try {
         // Check if required fields are present in the request body
         validateRequiredFields(req, ['username', 'password']);
+
+        // Validación de la contraseña
+        validatePassword(req.body.password);
 
         // Encrypt the password before saving it
         const hashedPassword = await bcrypt.hash(req.body.password, 10);

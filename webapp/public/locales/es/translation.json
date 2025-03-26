@@ -47,9 +47,6 @@
     "recent-games-text": "Partidas Recientes",
     "game-details-text": "Detalles de la Partida",
     "password-error-min-length": "La contraseña debe tener al menos 8 caracteres.",
-    "password-error-uppercase": "La contraseña debe contener al menos una letra mayúscula.",
-    "password-error-number": "La contraseña debe contener al menos un número.",
-    "password-error-no-spaces": "La contraseña no debe contener espacios.",
     "password-message": "Contraseña",
     "username-message": "Nombre de Usuario",
     "user-added": "Usuario añadido correctamente.",
@@ -68,5 +65,10 @@
     "auth-error-bad-credentials": "Credenciales incorrectas",
     "login-success": "Se ha iniciado sesión correctamente",
     "enter-username-placeholder": "Introduzca su nombre de usuario",
-    "enter-password-placeholder": "Introduzca su contraseña"
+    "enter-password-placeholder": "Introduzca su contraseña",
+    "password-error-content": "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, un número y no contener espacios.",
+    "confirm-logout": "¿Estás seguro de que deseas cerrar sesión?",
+    "logout-message": "Cerrar Sesión",
+    "cancel-button": "Cancelar",
+    "confirm-button": "Aceptar"
 }
