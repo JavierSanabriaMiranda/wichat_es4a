@@ -37,7 +37,7 @@ resource "aws_security_group" "allow_ssh" {
 
 resource "aws_instance" "my_instance" {
     ami               = "ami-0a94c8e4ca2674d5a"
-    instance_type     = "t2.micro"
+    instance_type     = "t3.medium"
     key_name          = "wichat-es4a"
     security_groups   = [aws_security_group.allow_ssh.name]
 
