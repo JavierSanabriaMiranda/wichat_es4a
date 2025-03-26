@@ -185,11 +185,10 @@ app.post('/api/questions/generate', async (req, res) => {
   try {
     const lang =  req.body.lang;
     console.log("Lang:", lang);
-    const hardcodedTopics = req.body.topics;
-    console.log("Topics:", hardcodedTopics);
-    //const { lang, topics } = req.body;
+    const topics = req.body.topics;
+    console.log("Topics:", topics);
 
-    const questionData = await generateQuestion(hardcodedTopics, lang);
+    const questionData = await generateQuestion(topics, lang);
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });
     }
@@ -207,22 +206,6 @@ app.post('/api/questions/generate', async (req, res) => {
  */
 const server = app.listen(port, async () => {
   console.log(`Question Service listening at http://localhost:${port}`);
-
-  //Test (temporary)
-  try {
-    const testUrl = `http://localhost:${port}/api/questions/generate`;
-    const response = await fetch(testUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const result = await response.json();
-    console.log('Test API Response:', result);
-  } catch (error) {
-    console.error("Error haciendo la solicitud a la API:", error);
-  }
-
 });
 
 export default server;

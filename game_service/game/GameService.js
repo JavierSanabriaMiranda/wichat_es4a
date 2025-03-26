@@ -31,8 +31,9 @@ const newGame = async (req, res) => {
  * Obtiene la siguiente pregunta en el juego actual sin guardar nada en la base de datos.
  */
 const next = async (req, res) => {
+    console.log("Request body recibido:", req.body.userId);
     try {
-        const userId = req.body.userId;
+        let userId = req.body.userId;
         console.log("Getting next question for user:", userId);
 
         // Obtener valores desde caché
@@ -49,7 +50,7 @@ const next = async (req, res) => {
             question: questionRaw.question,
             topics: questionRaw.topics,
             answer: questionRaw.answer,
-            options: [questionRaw.answer, ...questionRaw.options],
+            options: questionRaw.options,
             imageUrl: questionRaw.imageUrl || ""
         });
     } catch (error) {
