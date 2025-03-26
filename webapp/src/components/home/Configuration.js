@@ -21,7 +21,7 @@ const Configuration = ({ onClose }) => {
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [topics, setTopics] = useState([]);
 
-  const topicList = ["history", "entertainment", "art", "sport", "geography"];
+  const topicList = ["history", "science", "art", "sport", "geography"];
 
   const navigate = useNavigate();
 
@@ -107,12 +107,12 @@ const Configuration = ({ onClose }) => {
                 {t("history-configuration")}
               </ToggleButton>
               <ToggleButton
-                id="entertainment"
+                id="science"
                 value={2}
-                className={`toggle-btn-entertainment ${selectedButtons.includes(2) ? "selected" : ""}`}
+                className={`toggle-btn-science ${selectedButtons.includes(2) ? "selected" : ""}`}
                 onClick={() => handleButtonClick(2)}
               >
-                {t("entertainment-configuration")}
+                {t("science-configuration")}
               </ToggleButton>
               <ToggleButton
                 id="art"
@@ -143,11 +143,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button
-          className="play-button"
-          onClick={startGame}
-          disabled={topics.length === 0} 
-        >{t("play-configuration")}</Button>
+        <Button className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
       </div>
     </div>
   );
