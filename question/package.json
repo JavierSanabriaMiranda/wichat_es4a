@@ -1,19 +1,29 @@
 {
-  "type": "module",
   "name": "question",
   "version": "1.0.0",
-  "main": "connection.js",
+  "type": "module",
   "scripts": {
-    "start": "node connection.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+      "start": "node question.js",
+      "type": "module",
+      "test": "jest"
   },
-  "keywords": [],
-  "author": "Ana",
+  "author": "",
   "license": "ISC",
   "description": "",
+  "homepage": "https://github.com/arquisoft/wichat_es4a#readme",
   "dependencies": {
-    "mongodb-memory-server": "^10.1.4",
-    "mongoose": "^8.12.1",
-    "node-fetch": "^3.3.2"
+      "axios": "^1.7.9",
+      "cors": "^2.8.5",
+      "dotenv": "^16.4.7",
+      "express": "^4.21.2",
+      "mongodb-memory-server": "^10.1.4",
+      "mongoose": "^8.12.1",
+      "node-fetch": "^3.3.2",
+      "swagger-ui-express": "^5.0.1",
+      "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+      "jest": "^29.7.0",
+      "supertest": "^7.0.0"
   }
 }
