@@ -39,7 +39,9 @@ See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== <Runtime Scenario 1>
+=== Un usuario se registra en el sistema
+
+=== Un usuario juega al juego de las preguntas
 
 
 * _<insert runtime diagram or textual description of the scenario>_
@@ -60,8 +62,8 @@ Alice -> Bob: Another authentication Request
 Alice <-- Bob: another authentication Response
 ----
 
-=== <Runtime Scenario 2>
+=== Se genera una nueva pregunta
 
-=== ...
+=== Se pide una pista al LLM
 
-=== <Runtime Scenario n>
+=== El usuario quiere ver su historial de la partida
