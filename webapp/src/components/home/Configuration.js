@@ -63,6 +63,13 @@ const Configuration = ({ onClose }) => {
     navigate('/game', { state: { questionTime: time } })
   }
 
+  /**
+   * Effect to reset the configuration when the component is mounted
+   */
+  useEffect(() => {
+    resetConfig();
+  }, []);
+
   return (
     <div className="overlay">
       <div className="config-container">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 /**
  * React component to represent an answer in the game that can be wrong or correct.
@@ -23,7 +24,7 @@ const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
     }
 
     return (
-        <button onClick={handleClick} className={buttonClassName} >
+        <Button onClick={handleClick} className={buttonClassName} variant="none">
             <div className="answer-button-content">
             {answerText}
             {wasSelected && (
@@ -34,7 +35,7 @@ const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
                 />
             )}
             </div>
-        </button>
+        </Button>
     )
 }
 

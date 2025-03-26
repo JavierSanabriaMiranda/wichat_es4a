@@ -11,10 +11,8 @@ import { GameResults } from './components/game/GameResults.js';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <React.StrictMode>
-    {/* <React.StrictMode> makes Game.js to mount twice, so it asks for a question twice */}
+  
     <App />
-  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
