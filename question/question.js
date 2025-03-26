@@ -4,7 +4,7 @@ import path from 'path';  // We use path to handle file and directory paths
 import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
 import express from 'express';  // We use express to create and manage the API server
 
-const port = 8009;
+const port = 8004;
 const app = express();
 const url = "https://query.wikidata.org/sparql";
 app.use(express.json());  // Middleware para leer JSON en las solicitudes
