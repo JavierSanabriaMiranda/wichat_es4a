@@ -34,19 +34,22 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    const login = async (username, password) => {
+    const login = async (username, password, callback) => {
         try {
             const res = await axios.post(apiEndpoint + "/login", {username, password});
 
             const { token, id } = res.data;
             setUser({ username, id });
             setToken(token);
+            setError(null);
 
             localStorage.setItem("user", JSON.stringify({ username, id }));
             sessionStorage.setItem("token", token);
+
+            callback({success: true})
         } catch (error) {
             setError(t('auth-error-bad-credentials'));
-            console.error("Error en el login:", error.response?.data || error.message);
+            callback({success:false, error:t('auth-error-bad-credentials')})
         }
     };
 
