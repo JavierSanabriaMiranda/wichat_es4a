@@ -1,28 +1,29 @@
-//libreria para trabajar con MongoDB
-// Importar mongoose
-const mongoose = require("mongoose");
-const { Schema, model, Types } = mongoose;
-const { ObjectId } = Types;
+// Importing the GamePlayed, Question, and User models
+const GamePlayed = require("./Game_played");
+const Question = require("./Question");
+const User = require("./User");
 
+/**
+ * @module Models
+ * 
+ * This module imports and exports three Mongoose models that interact with collections in a MongoDB database:
+ * 
+ * - **GamePlayed**: A model representing a game played by a user. It includes information such as score, topics, 
+ *   and the questions answered during the game.
+ * - **Question**: A model representing a question used in the quiz game. It contains details like the question text, 
+ *   the options, and the correct answer.
+ * - **User**: A model representing a user of the game platform. It contains user-specific information like username, 
+ *   email, and other credentials.
+ * 
+ * These models are used for CRUD (Create, Read, Update, Delete) operations on their respective collections.
+ * 
+ * @example
+ * const { GamePlayed, Question, User } = require("./models");
+ * 
+ * // Example usage:
+ * GamePlayed.findById(gameId).then(game => console.log(game));
+ * Question.findById(questionId).then(question => console.log(question));
+ * User.findById(userId).then(user => console.log(user));
+ */
 
-
-//esquema para bd de pregunta
-const questionSchema = new Schema({
-    text: { type: String, required: true }, // Enunciado de la pregunta
-    imageUrl: { type: String, required: true }, // URL de la imagen asociada a la pregunta
-    wasUserCorrect: { type: Boolean, required: true }, // Indica si el usuario respondió correctamente
-    selectedAnswer: { type: String, required: true }, // Respuesta seleccionada por el usuario
-    answers: [
-        {
-            text: { type: String, required: true }, // Texto de la opción de respuesta
-            isCorrect: { type: Boolean, required: true } // Indica si es la respuesta correcta
-        }
-    ]
-});
-
-//se crea el modelo a partir del esquema que se definió previamente
-const Question = model("Question", questionSchema);
-
-//sirve para representar lo que se exportará desde el archivo actual -> el modelo de Pregunta
-// Exportación en ES Module
-module.exports =  Question;
+module.exports = { GamePlayed, Question, User };
