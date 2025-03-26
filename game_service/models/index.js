@@ -1,5 +1,5 @@
-const GamePlayed = require("./Game_played");
+const GamePlayed = require("./game_played");
 const Question = require("./Question");
-const User = require("./User");
+const User = require("./user");
 
 module.exports = { GamePlayed, Question, User };

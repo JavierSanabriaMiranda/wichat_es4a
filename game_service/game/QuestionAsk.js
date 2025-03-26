@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Game } = require("../models/Index");
+const { Game } = require("../models/index");
 
 // Valida que el request tenga los campos requeridos en el cuerpo
 const validate = (req, requiredFields) => {
@@ -36,7 +36,7 @@ const getCurrentQuestion = async (userId) => {
 };
 
 const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
-    let url = "http://localhost:8009/api/questions/generate";
+    let url = "http://localhost:8004/api/questions/generate";
     console.log("Que me llega", topics);
     console.log("Que me llega", lang);
     try {
