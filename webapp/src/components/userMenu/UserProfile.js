@@ -15,14 +15,32 @@ import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { getUserHistory } from '../../services/UserProfileService.js';
+import { get } from 'mongoose';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserProfile = ({ gameHistory }) => {
+export const UserProfile = ({gameHistory}) => { // TODO - Eliminar gameHistory de los parámetros de entrada
+    
     const { t } = useTranslation();
     const { user } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
+    const [gameHistory, setGameHistory] = useState(null);
     const navigate = useNavigate();
+
+    // UseEffect to call getUserHistory on initial render
+    useEffect(() => {
+        getUserHistory();
+    }, []);
+
+    // Function to get the user's game history
+    const getUserHistory = async () => {
+        getUserHistory().then((response) => {
+            setGameHistory(response);
+            console.log(response);
+        }
+    )};
+
 
     return (
         <main>
