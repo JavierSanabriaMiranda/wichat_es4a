@@ -49,3 +49,18 @@ escalabilidad y mantenimiento del sistema.
 Esto puede derivar en configuraciones ineficientes, dificultades en la gestión de contenedores y errores en el 
 despliegue del sistema, afectando la estabilidad y la portabilidad del proyecto.
 |===
+
+[cols="e,2e" options="header"]
+|===
+| Deuda Técnica | Descripción
+
+| **Servicio de Autenticación y de Usuarios Comparten Base de Datos** 
+| Los microservicios ```authservice``` y ```userservice``` comparten la misma base de datos pues ambos tienen que acceder a los
+datos de los usuarios. 
+
+Esto implica que los microservicios están más acoplados entre sí, ya que comparten el acceso a 
+la base de datos. Debido a esto, podrían volverse más difíciles de escalar a medida que la aplicación crece.
+
+Para evitar problemas en este aspecto trataremos de mantener una clara separación de responsabilidades entre los servicios, 
+asegurándonos de que cada servicio solo modifique los datos que le corresponden
+|===
