@@ -74,6 +74,9 @@ services:
       - "8005:8005"
     networks:
       - mynetwork
+    environment:
+      QUESTION_SERVICE_URL: http://questionservice:8004
+      MONGODB_URI: mongodb://mongodb:27017/gamebd
 
   gatewayservice:
     container_name: gatewayservice-wichat_es4a
@@ -85,8 +88,8 @@ services:
       - userservice
       - authservice
       - llmservice
-      - questionservice
       - gameservice
+      - questionservice
     ports:
       - "8000:8000"
     networks:

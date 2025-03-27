@@ -5,7 +5,7 @@ dotenv.config();
 
 const connect = async () => {
   try {
-    const dbUrl = process.env.DB_URL || "mongodb://127.0.0.1:27017/bd";
+    const dbUrl = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/gamebd";
     console.log("🚀 Conectando a MongoDB en:", dbUrl);
 
     await mongoose.connect(dbUrl, {

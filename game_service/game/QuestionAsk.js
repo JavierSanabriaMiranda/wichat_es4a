@@ -36,14 +36,14 @@ const getCurrentQuestion = async (userId) => {
 };
 
 const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
-    let url = "http://localhost:8004/api/questions/generate";
+    let questionServiceurl = process.env.QUESTION_SERVICE_URL || "http://localhost:8004";
     console.log("Que me llega", topics);
     console.log("Que me llega", lang);
     try {
         const requestData = { lang, topics };
 
         // Realiza la solicitud POST a la API con los datos en el body
-        const res = await axios.post(url, { lang, topics });  // Enviamos los parámetros en el body
+        const res = await axios.post(`${questionServiceurl}/api/questions/generate`, { lang, topics });  // Enviamos los parámetros en el body
         // Realiza la solicitud a la API externa
         const { question, correct, image, options } = res.data;
 
