@@ -85,7 +85,7 @@ Asignación de artefactos de software a la infraestructura::
 * Base de Datos MongoDB: Desplegada en un contenedor propio dentro de AWS.
 
 
-=== Infrastructure Level 2
+=== Infraestructura Nivel 2
 
 ifdef::arc42help[]
 [role="arc42help"]
