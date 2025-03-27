@@ -82,6 +82,7 @@ Características de Calidad y Rendimiento::
 Asignación de artefactos de software a la infraestructura::
 * Microservicios: Desplegados como contenedores Docker dentro de AWS.
 * Frontend (Web Browser): Ejecutado en el dispositivo del usuario, interactuando con la API del backend alojada en AWS.
+* Base de Datos MongoDB: Desplegada en un contenedor propio dentro de AWS.
 
 
 === Infrastructure Level 2
@@ -95,16 +96,16 @@ Please copy the structure from level 1 for each selected element.
 ****
 endif::arc42help[]
 
-==== _<Infrastructure Element 1>_
+image::../images/vista-de-despliegue-nivel-2.png[Vista de Despliegue Nivel 2]
 
-_<diagram + explanation>_
+Microservicios::
+* WebApp: Servicio que sirve la aplicación frontend y se comunica con el GatewayService.
+* GatewayService: Actúa como punto de entrada único para el frontend, enrutando solicitudes a los microservicios adecuados.
+* Question Service: Gestiona las llamadas a Wikidata para conseguir las preguntas.
+* UserService: Maneja las operaciones con los usuarios.
+* AuthService: Gestiona la autenticación y autorización de usuarios.
+* Game_Service: Controla la lógica de la aplicación (modelo de dominio, conexión con la base de datos).
+* LlmService: Se conecta con la API de Empathy y gestiona el funcionamiento del LLM.
+* Base de Datos: Almacena información de usuarios, partidas y preguntas.
 
-==== _<Infrastructure Element 2>_
 
-_<diagram + explanation>_
-
-...
-
-==== _<Infrastructure Element n>_
-
-_<diagram + explanation>_
