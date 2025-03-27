@@ -77,7 +77,7 @@ Interfaces técnicas (canales y medios de transmisión) que juntan el sistema co
 .Motivación
 Muchos stakeholders toman decisiones arquitectónicas basadas en las interfaces técnicas entre el sistema y su contexto. En especial, los diseñadores de hardware o infraestructura deciden estas interfaces técnicas.
 
-.Forma
+.Formato
 E.g. Diagrama UML de despliegue describiendo canales con los sistemas vecinos,
 junto a una tabla de mapeo mostrando las relaciones entre canales y la entrada/salida.
 
