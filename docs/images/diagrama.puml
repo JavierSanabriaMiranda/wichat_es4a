@@ -1,7 +1,10 @@
 actor Usuario
 participant "Juego" as J
-participant "LLM" as LLM
-Usuario -> J: Solicitar pista
-J -> LLM: Generar pista basada en pregunta
-LLM --> J: Retornar pista
-J --> Usuario: Mostrar pista
+participant "Base de datos" as DB
+Usuario -> J: Iniciar juego
+J -> DB: Obtener pregunta
+DB --> J: Retornar pregunta
+J --> Usuario: Mostrar pregunta
+Usuario -> J: Enviar respuesta
+J -> J: Validar respuesta
+J --> Usuario: Mostrar resultado

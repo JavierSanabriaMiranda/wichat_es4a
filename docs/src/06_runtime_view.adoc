@@ -61,8 +61,7 @@ J -> DB: Obtener pregunta
 DB --> J: Retornar pregunta
 J --> Usuario: Mostrar pregunta
 Usuario -> J: Enviar respuesta
-J -> DB: Validar respuesta
-DB --> J: Confirmación
+J -> J: Validar respuesta
 J --> Usuario: Mostrar resultado
 ----
 
