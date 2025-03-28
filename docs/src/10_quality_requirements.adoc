@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-quality-scenarios]]
-== Quality Requirements
+== Requisitos de calidad
 
 
 ifdef::arc42help[]
@@ -51,23 +51,23 @@ In any case the tree should include links to the scenarios of the following sect
 endif::arc42help[]
 
 |===
-|Escenario |Requisito |Descripción
+|Escenario |Requisito |Objetivo
 
 |Esc1
 |Rendimiento
-|
+|Mantener el tiempo de respuesta en pocos segundos.
 |Esc2
 |Escalabilidad
-|
+|El sistema debe escalar sin afectar el rendimiento.
 |Esc3
 |Seguridad
-|
+|Bloquear acceso tras cinco intentos fallidos.
 |Esc4
 |Mantenibilidad
-|
+|Modularidad y facilidad de integración.
 |Esc5
 |Usabilidad
-|
+|Debe haber reglas y guías en otro idioma para comprender el sistema, además de una interfaz amigable para el usuario.
 |===
 
 === Quality Scenarios
@@ -80,11 +80,11 @@ endif::arc42help[]
 |Esc2
 |Crecimiento del número de usuarios en los primeros meses de lanzamiento de la aplicación. El sistema escala sin afectar al rendimiento. Los tiempos de respuesta siguen siendo lo más cortos posibles.
 |Esc3
-|Un usuario malintencionado quiere acceder a datos privados usando un ataque de fuerza bruta en la autenticación. Tras intentarlo varias veces se le prohíbe acceder a la aplicación.
+|Un usuario malintencionado quiere acceder a datos privados usando un ataque de fuerza bruta en la autenticación. Tras intentarlo cinco veces se le prohíbe acceder a la aplicación.
 |Esc4
 |El equipo de desarrollo tiene que añadir una nueva funcionalidad a la aplicación. La funcionalidad debe implementarse sin afectar negativamente a otras áreas del sistema.
 |Esc5
-|Un usuario nuevo entra en la aplicación. Es inglés y no habla español. Además es la primera vez que accede al sistema, por tanto debe haber un apartado de reglas en su idioma.
+|Un usuario nuevo entra en la aplicación. Este usuario no habla español. Además es la primera vez que accede al sistema, por tanto debe haber un apartado de reglas en su idioma para que entienda que puede hacer en la aplicación.
 |===
 
 
