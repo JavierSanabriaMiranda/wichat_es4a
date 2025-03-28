@@ -49,44 +49,33 @@ S -> S: Crear cuenta en la base de datos
 S --> Usuario: Confirmación de registro
 ----
 
-=== Un usuario juega al juego de las preguntas
+=== Un usuario juega al juego de las preguntas y solicita pistas
 
-[plantuml,"Question Game Sequence",png]
+[plantuml,"Question Game with Hint Sequence",png]
 ----
 actor Usuario
 participant "Juego" as J
 participant "Base de datos" as DB
+participant "LLM" as LLM
+
 Usuario -> J: Iniciar juego
 J -> DB: Obtener pregunta
 DB --> J: Retornar pregunta
 J --> Usuario: Mostrar pregunta
-Usuario -> J: Enviar respuesta
-J -> J: Validar respuesta
-J --> Usuario: Mostrar resultado
-----
 
-=== Se genera una nueva pregunta
-
-[plantuml,"Generate New Question Sequence",png]
-----
-participant "Juego" as J
-participant "Base de datos" as DB
-J -> DB: Solicitar nueva pregunta
-DB --> J: Retornar nueva pregunta
-J --> Usuario: Mostrar nueva pregunta
-----
-
-=== Se pide una pista al LLM
-
-[plantuml,"Hint Request Sequence",png]
-----
-actor Usuario
-participant "Juego" as J
-participant "LLM" as LLM
 Usuario -> J: Solicitar pista
 J -> LLM: Generar pista basada en pregunta
 LLM --> J: Retornar pista
 J --> Usuario: Mostrar pista
+
+Usuario -> J: Enviar respuesta
+J -> J: Validar respuesta
+J --> Usuario: Mostrar resultado
+
+Usuario -> J: Solicitar nueva pregunta
+J -> DB: Obtener nueva pregunta
+DB --> J: Retornar nueva pregunta
+J --> Usuario: Mostrar nueva pregunta
 ----
 
 === El usuario quiere ver su historial de la partida
@@ -101,4 +90,3 @@ J -> DB: Recuperar historial
 DB --> J: Retornar historial
 J --> Usuario: Mostrar historial
 ----
-
