@@ -1,8 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-runtime-view]]
-== Runtime View
-
+== Vista en tiempo de ejecución
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -31,7 +30,6 @@ There are many notations for describing scenarios, e.g.
 * state machines
 * ...
 
-
 .Further Information
 
 See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
@@ -41,29 +39,67 @@ endif::arc42help[]
 
 === Un usuario se registra en el sistema
 
+[plantuml,"User Registration Sequence",png]
+----
+actor Usuario
+participant "Sistema" as S
+Usuario -> S: Enviar datos de registro
+S -> S: Validar datos
+S -> S: Crear cuenta en la base de datos
+S --> Usuario: Confirmación de registro
+----
+
 === Un usuario juega al juego de las preguntas
 
-
-* _<insert runtime diagram or textual description of the scenario>_
-* _<insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.>_
-
-It is possible to use a sequence diagram:
-
-[plantuml,"Sequence diagram",png]
+[plantuml,"Question Game Sequence",png]
 ----
-actor Alice
-actor Bob
-database Pod as "Bob's Pod"
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice  --> Pod: Store route
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+actor Usuario
+participant "Juego" as J
+participant "Base de datos" as DB
+Usuario -> J: Iniciar juego
+J -> DB: Obtener pregunta
+DB --> J: Retornar pregunta
+J --> Usuario: Mostrar pregunta
+Usuario -> J: Enviar respuesta
+J -> DB: Validar respuesta
+DB --> J: Confirmación
+J --> Usuario: Mostrar resultado
 ----
 
 === Se genera una nueva pregunta
 
+[plantuml,"Generate New Question Sequence",png]
+----
+participant "Juego" as J
+participant "Base de datos" as DB
+J -> DB: Solicitar nueva pregunta
+DB --> J: Retornar nueva pregunta
+J --> Usuario: Mostrar nueva pregunta
+----
+
 === Se pide una pista al LLM
 
+[plantuml,"Hint Request Sequence",png]
+----
+actor Usuario
+participant "Juego" as J
+participant "LLM" as LLM
+Usuario -> J: Solicitar pista
+J -> LLM: Generar pista basada en pregunta
+LLM --> J: Retornar pista
+J --> Usuario: Mostrar pista
+----
+
 === El usuario quiere ver su historial de la partida
+
+[plantuml,"Game History Sequence",png]
+----
+actor Usuario
+participant "Juego" as J
+participant "Base de datos" as DB
+Usuario -> J: Solicitar historial de partidas
+J -> DB: Recuperar historial
+DB --> J: Retornar historial
+J --> Usuario: Mostrar historial
+----
+
