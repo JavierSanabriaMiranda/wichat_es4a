@@ -27,7 +27,7 @@ See https://docs.arc42.org/section-10/[Quality Requirements] in the arc42 docume
 ****
 endif::arc42help[]
 
-=== Quality Tree
+=== Árbol de calidad
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -70,7 +70,7 @@ endif::arc42help[]
 |Debe haber reglas y guías en otro idioma para comprender el sistema, además de una interfaz amigable para el usuario.
 |===
 
-=== Quality Scenarios
+=== Escenarios de calidad
 
 |===
 |Id |Escenario
