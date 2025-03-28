@@ -2,9 +2,47 @@ provider "aws" {
     region = "eu-west-2"
 }
 
+# Define la nube virtual privada principal (VPC)
+resource "aws_vpc" "main" {
+    cidr_block = "10.0.0.0/16"
+}
+
+# Crea una subred pública dentro de la VPC
+resource "aws_subnet" "public_subnet" {
+    vpc_id                  = aws_vpc.main.id
+    cidr_block              = "10.0.1.0/24"
+    availability_zone       = "eu-west-2a"
+    map_public_ip_on_launch = true
+}
+
+# Adjuntar una puerta de enlace, con salida a Internet, a la VPC
+resource "aws_internet_gateway" "main" {
+    vpc_id = aws_vpc.main.id
+}
+
+# Crea una tabla de rutas para la VPC
+resource "aws_route_table" "main" {
+    vpc_id = aws_vpc.main.id
+}
+
+# Agrega una ruta a la puerta de enlace de Internet en la tabla de rutas
+resource "aws_route" "route_to_igw" {
+    route_table_id         = aws_route_table.main.id
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id             = aws_internet_gateway.main.id
+}
+
+# Asocia la subred pública con la tabla de rutas
+resource "aws_route_table_association" "public_association" {
+    subnet_id      = aws_subnet.public_subnet.id
+    route_table_id = aws_route_table.main.id
+}
+
+# Define un grupo de seguridad para permitir puertos SSH y los utilizados en WiChat
 resource "aws_security_group" "allow_ssh" {
     name        = "allow_ssh"
-    description = "Allow SSH and WiChat ports"
+    description = "Permitir puertos SSH y WiChat"
+    vpc_id      = aws_vpc.main.id
 
     ingress {
         from_port   = 22
@@ -35,33 +73,36 @@ resource "aws_security_group" "allow_ssh" {
     }
 }
 
+# Lanza una instancia EC2 con Docker instalado
 resource "aws_instance" "my_instance" {
-    ami               = "ami-0a94c8e4ca2674d5a"
-    instance_type     = "t3.medium"
-    key_name          = "wichat-es4a"
-    security_groups   = [aws_security_group.allow_ssh.name]
+    ami                    = "ami-0a94c8e4ca2674d5a"
+    instance_type          = "t3.medium"
+    key_name               = "wichat-es4a"
+    subnet_id              = aws_subnet.public_subnet.id
+    vpc_security_group_ids = [aws_security_group.allow_ssh.id]
 
     user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update
-              sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-              sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-              sudo apt update
-              sudo apt install docker-ce -y
-              sudo usermod -aG docker ubuntu
-              EOF
+        #!/bin/bash
+        sudo apt update
+        sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+        sudo apt update
+        sudo apt install docker-ce -y
+        sudo usermod -aG docker ubuntu
+    EOF
 
     tags = {
         Name = "WiChat_Instance"
     }
 }
 
+# Asigna una IP elástica y la asocia con la instancia EC2
 resource "aws_eip" "my_eip" {
-    instance  = aws_instance.my_instance.id
     domain    = "vpc"
+    instance = aws_instance.my_instance.id
 
     lifecycle {
-        prevent_destroy = true
+      prevent_destroy = true
     }
 }
