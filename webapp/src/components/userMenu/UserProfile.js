@@ -15,31 +15,40 @@ import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
-import { getUserHistory } from '../../services/UserProfileService.js';
+import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
 import { get } from 'mongoose';
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserProfile = ({gameHistory}) => { // TODO - Eliminar gameHistory de los parámetros de entrada
+export const UserProfile = () => { 
     
     const { t } = useTranslation();
-    const { user } = useContext(AuthContext);
+    const { user, token } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
-    const [gameHistory, setGameHistory] = useState(null);
+    const [gamesHistoryList, setGamesHistoryList] = useState(null);
+    const [questions, setQuestions] = useState(null);
     const navigate = useNavigate();
 
     // UseEffect to call getUserHistory on initial render
     useEffect(() => {
-        getUserHistory();
+        getUserHistoryList();
     }, []);
 
-    // Function to get the user's game history
-    const getUserHistory = async () => {
-        getUserHistory().then((response) => {
-            setGameHistory(response);
+    // Function to get the user's game history list by the user ID
+    const getUserHistoryList = async () => {
+        getUserHistory(token).then((response) => {
+            setGamesHistoryList(response);
             console.log(response);
         }
     )};
+
+    const getGameQuestionsByGameId = async (game) => {
+        setSelectedGame(game);
+        getQuestionsById(game.gameId).then((response) => {
+            setQuestions(response);
+            console.log(response);
+        });
+    }
 
 
     return (
@@ -76,14 +85,15 @@ export const UserProfile = ({gameHistory}) => { // TODO - Eliminar gameHistory d
                                         //Mostrar la lista de partidas si NO hay partida seleccionada
                                         <>
                                             <h5>{t('recent-games-text')}</h5>
-                                                {gameHistory.map((game, index) => (
+                                                {gamesHistoryList.map((game, index) => (
                                                     <GameHistoryButton
                                                         key={index}
                                                         points={game.points}
-                                                        correctAnswers={game.correctAnswers}
-                                                        totalQuestions={game.totalQuestions}
+                                                        correctAnswers={game.numberOfCorrectAnswers}
+                                                        totalQuestions={game.numberOfQuestions}
                                                         date={game.date}
-                                                        onClick={() => setSelectedGame(game)}
+                                                        onClick={() => getGameQuestionsByGameId(game)}
+                                                        gameMode={game.gameMode}
                                                     />
                                                 ))}
                                         </>
@@ -91,7 +101,7 @@ export const UserProfile = ({gameHistory}) => { // TODO - Eliminar gameHistory d
                                         // Mostrar detalles de la partida si hay una partida seleccionada
                                         <>
                                             <h5 className="mt-4">{t('game-details-text')}</h5>
-                                            <QuestionAccordion questions={selectedGame.questions}  />
+                                            <QuestionAccordion questions={questions}  />
                                             
                                         </>
                                     )}
