@@ -18,7 +18,7 @@ const port = 8000;
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
-const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8040';
+const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
 
 
 app.use(cors());
@@ -108,7 +108,7 @@ app.post('/askllm/clue', async (req, res) => {
   try {
     const { name, userQuestion, language } = req.body;
 
-    let model = "empathy";
+    let model = "gemini";
     let attempts = 0;
     let answer = "idk";
 
@@ -159,7 +159,7 @@ app.post('/askllm/welcome', async (req, res) => {
   try {
     const { name, language } = req.body;
 
-    let model = "empathy";
+    let model = "gemini";
     let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
     let answer = await axios.post(llmServiceUrl+'/ask', { question, model });
 
