@@ -5,7 +5,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 
 Durante el desarrollo de la aplicación, se han tomado diversas decisiones arquitectónicas que afectan tanto a la elección de tecnologías como a la estructura general del proyecto. A continuación, se detallan las principales decisiones, sus ventajas y desventajas, así como las razones detrás de cada una de ellas.
 
-=== **1. Uso de JavaScript**
+=== **Uso de JavaScript**
 
 * **Decisión**: Utilizar **JavaScript** como lenguaje de programación principal para la aplicación.
 
@@ -17,7 +17,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Problemas de rendimiento**: Para tareas muy intensivas de CPU, JavaScript puede no ser la opción más eficiente en comparación con otros lenguajes más cercanos al hardware como C++ o Rust.
 
-=== **2. Uso de React para el Front-End**
+=== **Uso de React para el Front-End**
 
 * **Decisión**: Utilizar **React** para la construcción del front-end.
 
@@ -29,7 +29,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **No todo el equipo estaba familiarizado con React**: Algunos miembros del equipo no tenían experiencia previa con React, lo que aumentó el tiempo inicial de formación y aprendizaje.
 
-=== **3. Uso de MongoDB**
+=== **Uso de MongoDB**
 
 * **Decisión**: Utilizar **MongoDB** como base de datos NoSQL.
 
@@ -40,7 +40,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Falta de experiencia en bases de datos NoSQL**: El equipo no estaba completamente familiarizado con MongoDB, ya que su experiencia previa había sido mayormente con bases de datos relacionales.
 
-=== **4. Uso de Docker**
+=== **Uso de Docker**
 
 * **Decisión**: Utilizar **Docker** para la contenedorización de la aplicación.
 
@@ -52,7 +52,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Falta de experiencia con Docker**: Algunos miembros del equipo no tenían experiencia previa con Docker, lo que al principio requirió un tiempo adicional de aprendizaje.
 
-=== **5. Uso de Cache (Game)**
+=== **Uso de Cache (Game)**
 
 * **Decisión**: Implementar un sistema de **cache** para almacenar y gestionar los datos del juego.
 
@@ -63,7 +63,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Sincronización de la caché**: Mantener la coherencia entre los datos en la base de datos y los datos en caché puede ser complejo, especialmente cuando los datos cambian con frecuencia.
 
-=== **6. Uso de Question Templates**
+=== **Uso de Question Templates**
 
 * **Decisión**: Utilizar **templates** de preguntas para gestionar la estructura y formato de las preguntas del juego.
 
@@ -74,7 +74,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Complejidad de implementación**: La creación de un sistema dinámico de templates requiere una estructura adicional que puede aumentar la complejidad de la aplicación.
 
-=== **7. Uso de i18next para Internacionalización**
+=== **Uso de i18next para Internacionalización**
 
 * **Decisión**: Implementar **i18next** para la internacionalización (i18n) de la aplicación.
 
@@ -85,7 +85,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Mantenimiento de archivos de traducción**: Es necesario mantener actualizados los archivos de traducción y asegurarse de que se sincronicen correctamente con el desarrollo de la aplicación.
 
-=== **8. Uso de WikiData**
+=== **Uso de WikiData**
 
 * **Decisión**: Utilizar **WikiData** como fuente de datos colaborativa y libre.
 
@@ -96,7 +96,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Calidad y precisión variable**: Debido a la naturaleza colaborativa de WikiData, la fiabilidad y precisión de los datos pueden ser inconsistentes, especialmente en áreas donde los usuarios pueden editar libremente.
 
-=== **9. Uso de la Plantilla Arc42**
+=== **Uso de la Plantilla Arc42**
 
 * **Decisión**: Documentar la arquitectura utilizando la **Plantilla Arc42**.
 
@@ -107,7 +107,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Exceso de detalles**: En proyectos más pequeños o simples, la plantilla puede ser más detallada de lo necesario, lo que podría hacer que la documentación sea demasiado compleja y difícil de mantener.
 
-=== **10. Microservicios UserService y AuthService con la misma base de datos**
+=== **Microservicios UserService y AuthService con la misma base de datos**
 
 * **Decisión**: Utilizar la misma base de datos para los microservicios **UserService** y **AuthService**.
 
@@ -118,7 +118,7 @@ Durante el desarrollo de la aplicación, se han tomado diversas decisiones arqui
 * **Desventajas**:
   - **Posible acoplamiento**: Utilizar la misma base de datos podría generar un acoplamiento no deseado entre los microservicios, lo que podría dificultar su escalabilidad o evolución independiente en el futuro.
 
-=== **11. Decisión de empezar el proyecto desde cero**
+=== **Decisión de empezar el proyecto desde cero**
 
 * **Decisión**: Decidimos **empezar el proyecto desde cero** en lugar de reutilizar un proyecto del año pasado.
 
