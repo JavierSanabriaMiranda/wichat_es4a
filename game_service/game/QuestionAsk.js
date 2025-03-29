@@ -10,7 +10,7 @@
  * @module QuestionManager
  */
 const axios = require('axios');
-const { Game } = require("../models/index");
+const { Game } = require("../models/Index");
 
 /**
  * Validates that the request body contains the required fields.
@@ -70,21 +70,15 @@ const getCurrentQuestion = async (userId) => {
  * @returns {Object} - Returns an object with the question, correct answer, image, and options.
  * @throws {Error} - Throws an error if the external API response is not in the expected format.
  */
-const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
-
-    let url = "http://localhost:8009/api/questions/generate";
-    console.log("What is received", topics);
-    console.log("What is received", lang);
+const requestQuestion = async (topics, lang) => {
+    let gatewayServiceUrl = process.env.GATEWAY_SERVICE || "http://localhost:8000/";
+    console.log("Que me llega", topics);
+    console.log("Que me llega", lang);
     try {
-        const requestData = { lang, topics };
-
-        // Make a POST request to the external API with the topics and language in the body
-        const res = await axios.post(url, { lang, topics });
-
-        // Extract data from the API response
-
+        // Realiza la solicitud POST a la API con los datos en el body
+        const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, lang, topics);
+        // Realiza la solicitud a la API externa
         const { question, correct, image, options } = res.data;
-
         // Validate that the response has the expected structure
         if (!question || !correct || !image || !Array.isArray(options) || options.length < 1) {
             throw new Error("The question does not have the expected format.");

@@ -102,17 +102,30 @@ app.post('/api/game/end', async (req, res) => {
 });
 
 
-app.post('/api/game/history', async (req, res) => {
-  try {
-    console.log("Solicitando el historial de la partida...");
-    const historyResponse = await axios.post(`${gameServiceUrl}/api/game/history`, req.body);
-    res.json(historyResponse.data);
-  } catch (error) {
-    console.error("Error al obtener el historial de la partida:", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error obteniendo el historial de la partida' });
+//Información sobre la partida para el historial
+app.post('/api/game/history/gameList', async(req, res) => {
+  try{
+    console.log("Generando historico sobre partida");
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
+    res.json(endResponse.data);
+  }catch(error){
+    console.log("Error al generar el historico de partida: ", error.message);
+
   }
 });
 
+//Información sobre las preguntas de una partida para el historial
+app.post('/api/game/history/gameQuestions', async(req, res) => {
+  try{
+    console.log("Generando historico sobre preguntas de una partida");
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body);
+    res.json(endResponse.data);
+
+  }catch(error){
+    console.log("Error al generar el historico de preguntas: ", error.message);
+
+  }
+});
 
 // Endpoint to get a clue from the LLM service
 app.post('/askllm/clue', async (req, res) => {
