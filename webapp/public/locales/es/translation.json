@@ -70,5 +70,6 @@
     "confirm-logout": "¿Estás seguro de que deseas cerrar sesión?",
     "logout-message": "Cerrar Sesión",
     "cancel-button": "Cancelar",
-    "confirm-button": "Aceptar"
+    "confirm-button": "Aceptar",
+    "current-password": "Contraseña actual"
 }

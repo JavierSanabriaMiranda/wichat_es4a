@@ -29,4 +29,19 @@ const getQuestionsById = async (gameId) => {
     }
 }
 
-export { getUserHistory, getQuestionsById };
+const changePassword = async (token, currentPassword, newPassword) => {
+    try {
+        const response = await axios.post(`${apiEndpoint}/api/user/editUser`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            currentPassword,
+            newPassword
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error en UserProfileService - changePassword:", error);
+    }
+}
+
+export { getUserHistory, getQuestionsById , changePassword};
