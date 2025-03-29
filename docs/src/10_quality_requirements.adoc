@@ -61,7 +61,7 @@ endif::arc42help[]
 |El sistema debe escalar sin afectar el rendimiento.
 |Esc3
 |Seguridad
-|Bloquear acceso tras cinco intentos fallidos.
+|Implementar medidas de seguridad robustas, incluyendo el bloqueo de acceso tras cinco intentos fallidos, el cifrado de contraseñas y la transmisión segura de información sensible del sistema mediante tokens de sesión ocultos.
 |Esc4
 |Mantenibilidad
 |Modularidad y facilidad de integración.
