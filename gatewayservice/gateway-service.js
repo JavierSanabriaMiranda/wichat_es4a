@@ -1,11 +1,16 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const promBundle = require('express-prom-bundle');
+import express from 'express';
+import axios  from 'axios';
+import cors from  'cors';
+import promBundle  from 'express-prom-bundle';
+
+
 //libraries required for OpenAPI-Swagger
-const swaggerUi = require('swagger-ui-express'); 
-const fs = require("fs")
-const YAML = require('yaml')
+import swaggerUi from 'swagger-ui-express'; 
+import fs from "fs";
+import YAML from 'yaml';
+
+// Utils
+import { getLanguage, normalizeString } from './gateway-service-utils.js';
 
 const app = express();
 const port = 8000;
@@ -13,6 +18,8 @@ const port = 8000;
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
+const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
+
 
 app.use(cors());
 app.use(express.json());
@@ -40,6 +47,7 @@ app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
     const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
+    console.log(userResponse)
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -56,8 +64,113 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
+// **Iniciar una nueva partida**
+app.post('/api/game/start', async (req, res) => {
+  try {
+    console.log("Iniciando una nueva partida...");
+    const initBd = await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+    const gameResponse = await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
+    res.json(gameResponse.data);
+  } catch (error) {
+    console.error("Error al iniciar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error iniciando juego' });
+  }
+});
+
+// **Obtener la siguiente pregunta de la partida**
+app.post('/api/game/question', async (req, res) => {
+  try {
+    console.log("Solicitando la siguiente pregunta...");
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
+    res.json(questionResponse.data);
+  } catch (error) {
+    console.error("Error al obtener la siguiente pregunta:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error obteniendo la pregunta' });
+  }
+});
+
+// **Finalizar el juego y guardar los datos**
+app.post('/api/game/end', async (req, res) => {
+  try {
+    console.log("Finalizando y guardando el juego...");
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body);
+    res.json(endResponse.data);
+  } catch (error) {
+    console.error("Error al finalizar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error finalizando el juego' });
+  }
+});
+
+
+
+// Endpoint to get a clue from the LLM service
+app.post('/askllm/clue', async (req, res) => {
+  try {
+    const { name, userQuestion, language } = req.body;
+
+    let model = "gemini";
+    let attempts = 0;
+    let answer = "idk";
+
+    while (attempts < 10) {
+      /**
+       * Generates a question prompt for a user to guess a name without revealing it.
+       *
+       * @param {string} name - The name that the user needs to guess.
+       * @param {string} userQuestion - The question asked by the user.
+       * @param {string} language - The language in which the response should be given.
+       * @returns {string} - A prompt for the user to guess the name without revealing it, in the specified language.
+       */
+      let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
+      let llmResponse = await axios.post(llmServiceUrl+'/ask', { question, model });
+
+      const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
+      const normalizedName = normalizeString(name.toLowerCase());
+
+      const nameWords = normalizedName.split(/[\s-]+/);
+
+      if (!nameWords.some(word => normalizedAnswer.includes(word))) {
+        answer = llmResponse;
+        break;
+      }
+
+      attempts += 1;
+    }
+
+    if (answer === "idk") {
+      /**
+       * @description Generates a fallback question in the specified language.
+       * @param {string} language - The language code to determine the language of the fallback question.
+       * @returns {string} A fallback question prompting the user to respond briefly in the specified language.
+       */
+      let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
+      let fallbackResponse = await axios.post(llmServiceUrl+'/ask', { question: fallbackQuestion, model });
+      answer = fallbackResponse;
+    }
+
+    res.json(answer.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
+// Endpoint to get a welcome message from the LLM service
+app.post('/askllm/welcome', async (req, res) => {
+  try {
+    const { name, language } = req.body;
+
+    let model = "gemini";
+    let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
+    let answer = await axios.post(llmServiceUrl+'/ask', { question, model });
+
+    res.json(answer.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 // Read the OpenAPI YAML file synchronously
-openapiPath='./openapi.yaml'
+const openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 
@@ -78,4 +191,4 @@ const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
 });
 
-module.exports = server
+export default server;

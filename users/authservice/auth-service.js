@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('./auth-model')
 const { check, matchedData, validationResult } = require('express-validator');
 const app = express();
-const port = 8002; 
+const port = 8060; 
 
 // Middleware to parse JSON in request body
 app.use(express.json());
