@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
@@ -16,7 +16,7 @@ import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
 import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
-import { get } from 'mongoose';
+
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
@@ -25,8 +25,8 @@ export const UserProfile = () => {
     const { t } = useTranslation();
     const { user, token } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
-    const [gamesHistoryList, setGamesHistoryList] = useState(null);
-    const [questions, setQuestions] = useState(null);
+    const [gamesHistoryList, setGamesHistoryList] = useState([]);
+    const [questions, setQuestions] = useState([]);
     const navigate = useNavigate();
 
     // UseEffect to call getUserHistory on initial render
@@ -37,8 +37,9 @@ export const UserProfile = () => {
     // Function to get the user's game history list by the user ID
     const getUserHistoryList = async () => {
         getUserHistory(token).then((response) => {
-            setGamesHistoryList(response);
-            console.log(response);
+            console.log("Partidas jugadas por el usuario ", response);
+            setGamesHistoryList(response || []);
+            
         }
     )};
 
