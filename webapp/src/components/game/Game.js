@@ -53,9 +53,11 @@ export const Game = () => {
     // State that stores if the user requested to exit the game. It is used to avoid errors that happen when the user
     // tries to exit the game while other actions are being performed in the background.
     const [exitRequested, setExitRequested] = useState(false);
+    const [blockButtons, setBlockButtons] = useState(false);
 
+    // Function that will be called when the timer reaches 0
     const onTimeUp = () => {
-        blockAnswerButtons();
+        setBlockButtons(true);
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
@@ -82,7 +84,6 @@ export const Game = () => {
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
-        blockAnswerButtons();
 
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
@@ -93,7 +94,7 @@ export const Game = () => {
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
-            unblockAnswerButtons();
+            setBlockButtons(false);
             setIsLoading(false);
         }
         );
@@ -104,11 +105,6 @@ export const Game = () => {
     useEffect(() => {
         askForNextQuestion();
     }, []); // Empty dependency array means this effect runs only once on mount
-
-    useEffect(() => {
-        console.log(numberOfQuestionsAnswered);
-    }
-        , [numberOfQuestionsAnswered]);
 
     /**
      * Handles the popstate event to prevent the user from navigating back
@@ -163,7 +159,7 @@ export const Game = () => {
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
     const answerQuestion = (wasUserCorrect, selectedAnswer) => {
-        blockAnswerButtons();
+        setBlockButtons(true);
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
@@ -208,7 +204,7 @@ export const Game = () => {
     }
 
     const passQuestion = () => {
-        blockAnswerButtons()
+        setBlockButtons(true);
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
@@ -218,22 +214,12 @@ export const Game = () => {
      * Function that prepares the UI for the next question resetting the timer and the answer buttons.
      */
     const prepareUIForNextQuestion = () => {
+        setBlockButtons(true);
         setGameKey(gameKey + 1);
         setIsLoading(true);
         setQuestion({ text: t('question-generation-message'), imageUrl: "" });
         setAnswers([{ text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }]);
         setStopTimer(true);
-        blockAnswerButtons();
-    }
-
-    const blockAnswerButtons = () => {
-        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = true);
-        document.querySelector(".pass-button").disabled = true;
-    }
-
-    const unblockAnswerButtons = () => {
-        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = false);
-        document.querySelector(".pass-button").disabled = false;
     }
 
     /**
@@ -311,6 +297,7 @@ export const Game = () => {
                             answerText={answer.text}
                             isCorrectAnswer={answer.isCorrect}
                             answerAction={answerQuestion}
+                            isDisabled={blockButtons}
                         />
                     ))}
 
@@ -320,7 +307,7 @@ export const Game = () => {
                 <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
-                <Button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</Button>
+                <Button className="pass-button" onClick={passQuestion} disabled={blockButtons} >{t('pass-button-text')}</Button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>

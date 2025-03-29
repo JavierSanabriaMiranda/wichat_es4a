@@ -81,7 +81,7 @@ export const Login = () => {
                 </Button>
               </Form>
               {loginSuccess && <Alert variant="success" className="mt-3">{t('login-success')}</Alert>}
-              {errorMsg && <Alert variant="danger" className="mt-3">{t('login-failure') + errorMsg}</Alert>}
+              {errorMsg && <Alert variant="danger" className="mt-3">{errorMsg}</Alert>}
             </Card>
           </Col>
         </Row>

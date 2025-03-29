@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
  * @param {Number} initialTime - The initial time in seconds.
  * @param {Function} onTimeUp - A callback function to be executed when the time reaches 0.
  * @param {Boolean} stopTime - A boolean to stop the timer.
+ * @param {*} resetTime - A value to reset the timer every time it changes.
  * 
  * @returns A timer that decrements the time every second.
  */

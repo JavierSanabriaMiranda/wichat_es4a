@@ -66,6 +66,7 @@
     "login-success": "Se ha iniciado sesión correctamente",
     "enter-username-placeholder": "Introduzca su nombre de usuario",
     "enter-password-placeholder": "Introduzca su contraseña",
+    "auth-error-too-many-attempts": "Demasiadas intentos. Inténtelo de nuevo más tarde.",
     "password-error-content": "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, un número y no contener espacios.",
     "confirm-logout": "¿Estás seguro de que deseas cerrar sesión?",
     "logout-message": "Cerrar Sesión",
