@@ -1,46 +1,52 @@
-// Importar mongoose
 const mongoose = require("mongoose");
 
 const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
 
-// Esquema para Partida Jugada
 const gamePlayedSchema = new Schema({
-  user: {
+  userId: {
     type: ObjectId,
     ref: "User",
     required: true
   },
-  modality: {
+  numberOfQuestions: {
+    type: Number,
+    required: true
+  },
+  numberOfCorrectAnswers: {
+    type: Number,
+    required: true
+  },
+  gameMode: {
     type: String,
     required: true
   },
-  score: {
+  points: {
     type: Number,
     default: 0
   },
+  questions: [
+    {
+      text: { type: String, required: true },
+      imageUrl: { type: String, default: "" },
+      selectedAnswer: { type: String, required: true },
+      answers: [
+        {
+          text: { type: String, required: true },
+          isCorrect: { type: Boolean, required: true }
+        }
+      ]
+    }
+  ],
   topics: [
     {
       type: String,
-      required: true
+      required: false
     }
   ],
-  questionsPlayed: [
-    {
-      type: ObjectId,
-      ref: "Question"
-    }
-  ],
-    isActive: 
-      {
-      type: Boolean,
-      default: false 
-    }
-  
-});
+}, { timestamps: true });
 
 // Crear modelo
 const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
-// Exportación en ES Module
-module.exports =  GamePlayed;
+module.exports = GamePlayed;

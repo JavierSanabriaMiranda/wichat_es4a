@@ -16,7 +16,6 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
-
 const { GamePlayed, Question } = require("../models/Index");
 const { validate, getCurrentQuestion, requestQuestion} = require("./QuestionAsk");
 
@@ -99,20 +98,22 @@ const next = async (req, res) => {
  */
 const endAndSaveGame = async (req, res) => {
     try {
-        const { userId, game } = req.body;
+        const game = req.body;
 
         // Validate input data
-        if (!userId || !game || !game.questions || !Array.isArray(game.questions)) {
+        if (!game.userId || !game || !game.questions || !Array.isArray(game.questions)) {
             return res.status(400).send("Missing required fields or invalid data format.");
         }
 
         // Create a new game entry
         const newGame = new GamePlayed({
-            user: userId,
-            numerOfQuestion: game.numerOfQuestion,
+            userId: new mongoose.Types.ObjectId(game.userId),
+            numberOfQuestions: game.numberOfQuestions,
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers,
             gameMode: game.gameMode,
             points: game.points,
-            topics: game.questions.map(q => q.answers.map(a => a.text))          
+            questions: game.questions,
+            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
         });
 
         // Save the game to the database
@@ -152,12 +153,12 @@ const endAndSaveGame = async (req, res) => {
  */
 const getGameQuestions = async (req, res) => {
     try {
-        const { gameId } = req.body.gameId;  // Get the game ID from the URL parameters
+        const gameId = req.body.gameId;  // Get the game ID from the URL parameters
         console.log("Fetching questions for game:", gameId);
 
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
-            .populate('questionsPlayed')  // Populate the questions for this specific game
+            .populate('questions')  // Populate the questions for this specific game
             .exec();
 
         if (!game) {
@@ -165,7 +166,7 @@ const getGameQuestions = async (req, res) => {
         }
 
         // Return the questions associated with the game in JSON format
-        res.status(200).json(game.questionsPlayed);
+        res.status(200).json(game.questions);
     } catch (error) {
         console.error("Error fetching game questions:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -192,7 +193,18 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         }
 
         // Return games without associated questions in JSON format
-        res.status(200).json(games);
+        // Mapear los resultados para devolver el formato correcto
+        const formattedGames = games.map(game => ({
+            _id: game._id,
+            userId: game.user,  // En el esquema, 'user' es el ObjectId del usuario
+            numberOfQuestions: game.numberOfQuestions,
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  // Agregar número de respuestas correctas si existe
+            gameMode: game.gameMode,
+            points: game.points,
+            topics: game.topics || []  // Si topics es null/undefined, devuelve un array vacío
+        }));
+        res.status(200).json(formattedGames);   
+         
     } catch (error) {
         console.error("Error fetching user games:", error);
         res.status(500).json({ error: "Internal server error" });
