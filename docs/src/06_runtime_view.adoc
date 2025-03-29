@@ -42,11 +42,11 @@ endif::arc42help[]
 [plantuml,"User Registration Sequence",png]
 ----
 actor Usuario
-participant "Sistema" as S
-Usuario -> S: Enviar datos de registro
-S -> S: Validar datos
-S -> S: Crear cuenta en la base de datos
-S --> Usuario: Confirmación de registro
+participant "UserService" as US
+Usuario -> US: Enviar datos de registro
+US -> US: Validar datos
+US -> US: Crear cuenta en la base de datos
+US --> Usuario: Confirmación de registro
 ----
 
 === Un usuario juega al juego de las preguntas y solicita pistas
@@ -54,28 +54,27 @@ S --> Usuario: Confirmación de registro
 [plantuml,"Question Game with Hint Sequence",png]
 ----
 actor Usuario
-participant "Juego" as J
-participant "Base de datos" as DB
-participant "LLM" as LLM
+participant "WebApp" as WA
+participant "Wikidata" as WK
+participant "LLMService" as LLM
 
-Usuario -> J: Iniciar juego
-J -> DB: Obtener pregunta
-DB --> J: Retornar pregunta
-J --> Usuario: Mostrar pregunta
+Usuario -> WA: Iniciar juego
+WA -> WK: Obtener pregunta
+WK --> WA: Retornar pregunta
+WA --> Usuario: Mostrar pregunta
 
-Usuario -> J: Solicitar pista
-J -> LLM: Generar pista basada en pregunta
-LLM --> J: Retornar pista
-J --> Usuario: Mostrar pista
+Usuario -> WA: Solicitar pista
+WA -> LLM: Generar pista basada en pregunta
+LLM --> WA: Retornar pista
+WA --> Usuario: Mostrar pista
 
-Usuario -> J: Enviar respuesta
-J -> J: Validar respuesta
-J --> Usuario: Mostrar resultado
+Usuario -> WA: Enviar respuesta
+WA -> WA: Validar respuesta
+WA --> Usuario: Mostrar resultado
 
-Usuario -> J: Solicitar nueva pregunta
-J -> DB: Obtener nueva pregunta
-DB --> J: Retornar nueva pregunta
-J --> Usuario: Mostrar nueva pregunta
+WA -> WK: Obtener nueva pregunta
+WK --> WA: Retornar nueva pregunta
+WA --> Usuario: Mostrar nueva pregunta
 ----
 
 === El usuario quiere ver su historial de la partida
@@ -83,10 +82,11 @@ J --> Usuario: Mostrar nueva pregunta
 [plantuml,"Game History Sequence",png]
 ----
 actor Usuario
-participant "Juego" as J
-participant "Base de datos" as DB
-Usuario -> J: Solicitar historial de partidas
-J -> DB: Recuperar historial
-DB --> J: Retornar historial
-J --> Usuario: Mostrar historial
+participant "WebApp" as WA
+participant "GameService" as GS
+Usuario -> WA: Solicitar historial de partidas
+WA -> GS: Recuperar historial
+GS --> WA: Retornar historial
+WA --> Usuario: Mostrar historial
 ----
+
