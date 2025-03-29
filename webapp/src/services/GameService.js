@@ -65,7 +65,7 @@ import axios from 'axios';
     * @param {"normal" | "caos"} gameMode The game mode.
     * @param {Number} points The total points earned in the game.
     */
-    const saveGame = async (token, gameQuestions, numberOfQuestions, numberOfCorrectAnswers, gameMode, points) => {
+    const saveGame = (token, gameQuestions, numberOfQuestions, numberOfCorrectAnswers, gameMode, points) => {
         try {
             const gameData = {
                 "token": token,
@@ -76,11 +76,30 @@ import axios from 'axios';
                 "points": points
             };
 
-            await axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData);
+            axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData);
+        } catch (error) {
+            console.error("Error al guardar el juego:", error);
+        }
+    }
+
+    /**
+     * Sends the game configuration to the API endpoint to configure the type of questions to be asked.
+     * 
+     * @param {String[]} topics selected for the game
+     * @param {"es" | "en"} lang language selected for the game questions
+     */
+    const configureGame = async (topics, lang) => {
+        try {
+            const gameConfig = {
+                "topics": topics,
+                "lang": lang
+            };
+
+            axios.post(apiEndpoint + '/api/game/new', gameConfig);
         } catch (error) {
             console.error("Error al guardar el juego:", error);
         }
     }
 
 
-export { getNextQuestion, saveGame };
+export { getNextQuestion, saveGame, configureGame };

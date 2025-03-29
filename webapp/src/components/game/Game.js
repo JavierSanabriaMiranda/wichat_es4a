@@ -9,7 +9,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getNextQuestion, saveGame } from '../../services/GameService';
+import { getNextQuestion, saveGame, configureGame } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
 import { use } from 'react';
 import AuthContext from '../contextProviders/AuthContext';
@@ -25,7 +25,7 @@ export const Game = () => {
 
     // Game configuration
     const { config } = useConfig();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
 
@@ -78,13 +78,29 @@ export const Game = () => {
                 numOfNotAnswered: notAnswered
             }));
 
-            saveGame(token, questionResults, numberOfQuestions, correctAnswer, "normal", points)
-            .then(() => {
+            // If there's a user authenticated, the game will be saved in the database
+            if (token) {
+                saveGame(token, questionResults, numberOfQuestions, correctAnswer, "normal", points)
+                    .then(() => {
+                        setTimeout(() => {
+                            navigate('/game/results');
+                        }, 1000); // Espera 1 segundo antes de navegar
+                    })
+                    .catch(err => {
+                        console.error("Error saving game:", err)
+                        setTimeout(() => {
+                            navigate('/game/results');
+                        }, 1000); // Espera 1 segundo antes de navegar
+                    }
+                    );
+            }
+            // If there's no user authenticated, the game will not be saved in the database
+            else {
                 setTimeout(() => {
                     navigate('/game/results');
                 }, 1000); // Espera 1 segundo antes de navegar
-            })
-            .catch(err => console.error("Error saving game:", err));
+            }
+
         }
     }, [questionResults]);
 
@@ -107,9 +123,11 @@ export const Game = () => {
 
     }
 
-    // UseEffect to call getNextQuestion on initial render
+    // UseEffect to send the information to configure the game and ask for the first question
     useEffect(() => {
-        askForNextQuestion();
+        configureGame(topics, i18n.language).then(() => {
+            askForNextQuestion();
+        })
     }, []); // Empty dependency array means this effect runs only once on mount
 
     /**
