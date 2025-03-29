@@ -19,7 +19,7 @@ const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
-
+const questionServiceUrl = process.env.QUESTION_SERVICE_URL || 'http://localhost:8004';
 
 app.use(cors());
 app.use(express.json());
@@ -101,7 +101,18 @@ app.post('/api/game/end', async (req, res) => {
   }
 });
 
+// **Generar la pregunta de cara a que la use GameService**
+app.post('/api/question/new', async (req, res) => {
+  try{
+    console.log("Generando pregunta...")
+    const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
+    res.json(endResponse.data);
+  }catch (error) {
+    console.log("Error al generar la pregunta: ", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
 
+  }
+});
 
 // Endpoint to get a clue from the LLM service
 app.post('/askllm/clue', async (req, res) => {
