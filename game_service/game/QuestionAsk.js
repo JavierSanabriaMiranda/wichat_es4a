@@ -1,7 +1,24 @@
+/**
+ * Module that handles request validation, retrieval of the current user's question,
+ * and requesting questions from an external service.
+ * 
+ * Main functions:
+ * - `validate`: Validates that the required fields are present in the request body.
+ * - `getCurrentQuestion`: Retrieves the current question for a user based on their ID.
+ * - `requestQuestion`: Makes a request to an external API to retrieve a new question.
+ * 
+ * @module QuestionManager
+ */
 const axios = require('axios');
 const { Game } = require("../models/index");
 
-// Valida que el request tenga los campos requeridos en el cuerpo
+/**
+ * Validates that the request body contains the required fields.
+ * 
+ * @param {Object} req - The request object containing the request body.
+ * @param {Array} requiredFields - List of fields expected in the request body.
+ * @returns {boolean} - Returns `true` if all required fields are present, otherwise `false`.
+ */
 const validate = (req, requiredFields) => {
     for (const field of requiredFields) {
         if (!(field in req.body)) {
@@ -11,57 +28,78 @@ const validate = (req, requiredFields) => {
     return true;
 };
 
-// Obtiene la pregunta actual del usuario basado en su ID
+/**
+ * Retrieves the current question for a user based on their ID.
+ * 
+ * @param {string} userId - The user's ID for retrieving their current question.
+ * @returns {Object|null} - Returns the first question from the active game, or `null` if no question is found.
+ */
 const getCurrentQuestion = async (userId) => {
+    // Fetch the user's games from the database
     let games = await Game.findAll({
         where: {
             user_id: userId
         }
     });
 
-    // Si el usuario no tiene juegos activos, retorna null
+    // If no active games are found, return null
     if (games == null || games.length < 1) {
         return null;
     }
 
-    let game = games[0];  // Obtiene el primer juego encontrado
+    let game = games[0];  // Get the first active game found
 
+    // Fetch the questions associated with the game
     let questions = await game.getQuestions();
-    // Si no hay preguntas en el juego, retorna null
+    // If no questions are associated with the game, return null
     if (questions == null || questions.length < 1) {
         return null;
     }
 
-    return questions[0]; // Retorna la primera pregunta del juego
+    // Return the first question of the game
+    return questions[0];
 };
 
+/**
+ * Makes a request to an external API to retrieve a new question.
+ * 
+ * @param {number} questionTime - The time limit to answer the question.
+ * @param {number} numberOfQuestion - The number of the question in the game.
+ * @param {Array} topics - List of topics for the question.
+ * @param {string} lang - The language in which the question should be returned.
+ * @returns {Object} - Returns an object with the question, correct answer, image, and options.
+ * @throws {Error} - Throws an error if the external API response is not in the expected format.
+ */
 const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
-    let questionServiceurl = process.env.QUESTION_SERVICE_URL || "http://localhost:8004";
-    console.log("Que me llega", topics);
-    console.log("Que me llega", lang);
+
+    let url = "http://localhost:8009/api/questions/generate";
+    console.log("What is received", topics);
+    console.log("What is received", lang);
     try {
         const requestData = { lang, topics };
 
-        // Realiza la solicitud POST a la API con los datos en el body
-        const res = await axios.post(`${questionServiceurl}/api/questions/generate`, { lang, topics });  // Enviamos los parámetros en el body
-        // Realiza la solicitud a la API externa
+        // Make a POST request to the external API with the topics and language in the body
+        const res = await axios.post(url, { lang, topics });
+
+        // Extract data from the API response
+
         const { question, correct, image, options } = res.data;
 
-        // Validamos que la estructura de la respuesta es correcta
+        // Validate that the response has the expected structure
         if (!question || !correct || !image || !Array.isArray(options) || options.length < 1) {
-            throw new Error("La pregunta no tiene el formato esperado.");
+            throw new Error("The question does not have the expected format.");
         }
 
-        // Asegurar que la respuesta correcta esté dentro de las opciones
+        // Ensure that the correct answer is included in the options
         let allOptions = [...options];
         if (!allOptions.includes(correct)) {
             allOptions.push(correct);
         }
 
-        // Mezclar aleatoriamente las opciones
+        // Shuffle the options randomly
         allOptions.sort(() => Math.random() - 0.5);
 
-        // Retornar la pregunta en el formato adecuado
+        // Return the question in the correct format
         return {
             question: question,
             answer: correct,
@@ -70,18 +108,17 @@ const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => 
         };
 
     } catch (error) {
-        console.error("Error al obtener la pregunta desde el servicio externo, usando pregunta simulada.");
+        console.error("Error getting the question from the external service, using simulated question.");
         console.error(error);
 
-        // Pregunta de respaldo en caso de fallo
+        // Return a fallback simulated question in case of failure
         return {
-            question: '¿A qué país pertenece este contorno?',
+            question: 'Which country does this outline belong to?',
             answer: 'Sri Lanka',
             imageUrl: 'http://commons.wikimedia.org/wiki/Special:FilePath/Topography%20Sri%20Lanka.jpg',
-            options: ['Catar', 'México', 'Kenia', 'Sri Lanka']
+            options: ['Qatar', 'Mexico', 'Kenya', 'Sri Lanka']
         };
     }
 };
-
 
 module.exports = { validate, getCurrentQuestion, requestQuestion };
