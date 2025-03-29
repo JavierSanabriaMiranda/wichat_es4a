@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
@@ -9,9 +9,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getNextQuestion } from '../../services/GameService';
+import { getNextQuestion, saveGame } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
 import { use } from 'react';
+import AuthContext from '../contextProviders/AuthContext';
 
 
 /**
@@ -26,6 +27,7 @@ export const Game = () => {
     const { config } = useConfig();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
 
     const questionTime = config.timePerRound; // Get the question time from the configuration
     const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
@@ -76,9 +78,13 @@ export const Game = () => {
                 numOfNotAnswered: notAnswered
             }));
 
-            setTimeout(() => {
-                navigate('/game/results')
-            }, 2000); // Wait 2 seconds before navigating to the results screen
+            saveGame(token, questionResults, numberOfQuestions, correctAnswer, "normal", points)
+            .then(() => {
+                setTimeout(() => {
+                    navigate('/game/results');
+                }, 1000); // Espera 1 segundo antes de navegar
+            })
+            .catch(err => console.error("Error saving game:", err));
         }
     }, [questionResults]);
 
