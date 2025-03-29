@@ -10,7 +10,7 @@
  * @module QuestionManager
  */
 const axios = require('axios');
-const { Game } = require("../models/Index");
+const { Game } = require("../models/index");
 
 /**
  * Validates that the request body contains the required fields.
@@ -71,6 +71,7 @@ const getCurrentQuestion = async (userId) => {
  * @throws {Error} - Throws an error if the external API response is not in the expected format.
  */
 const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => {
+
     let url = "http://localhost:8009/api/questions/generate";
     console.log("What is received", topics);
     console.log("What is received", lang);
@@ -81,6 +82,7 @@ const requestQuestion = async (questionTime, numberOfQuestion, topics, lang) => 
         const res = await axios.post(url, { lang, topics });
 
         // Extract data from the API response
+
         const { question, correct, image, options } = res.data;
 
         // Validate that the response has the expected structure

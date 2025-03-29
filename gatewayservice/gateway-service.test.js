@@ -44,8 +44,28 @@ describe('Gateway Service', () => {
   it('should forward askllm request to the llm service', async () => {
     const response = await request(app)
       .post('/askllm')
-      .send({ question: 'question', apiKey: 'apiKey', model: 'gemini' });
+      .send({ question: 'question', model: 'gemini' });
 
+    expect(response.statusCode).toBe(200);
+    expect(response.body.answer).toBe('llmanswer');
+  });
+
+  // Test /askllm/clue endpoint
+  it('should forward askllm clue request to the llm service', async () => {
+    const response = await request(app)
+    .post('/askllm/clue')
+    .send({ name: 'name', userQuestion: 'question', language: 'es' });
+  
+    expect(response.statusCode).toBe(200);
+    expect(response.body.answer).toBe('llmanswer');
+  });
+
+  // Test /askllm/welcome endpoint
+  it('should forward askllm welcome request to the llm service', async () => {
+    const response = await request(app)
+    .post('/askllm/welcome')
+    .send({ name: 'name', language: 'es' });
+  
     expect(response.statusCode).toBe(200);
     expect(response.body.answer).toBe('llmanswer');
   });

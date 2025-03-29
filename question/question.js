@@ -4,11 +4,10 @@ import path from 'path';  // We use path to handle file and directory paths
 import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
 import express from 'express';  // We use express to create and manage the API server
 
-const port = 8009;
+const port = 8004;
 const app = express();
 const url = "https://query.wikidata.org/sparql";
 app.use(express.json());  // Middleware para leer JSON en las solicitudes
-
 
 /**
  * Loads and filters question templates based on the specified topics and language.
@@ -67,7 +66,6 @@ function filterUnique(results, label, limit) {
   }
   return uniqueResults;
 }
-
 
 /**
  * Executes a SPARQL query to fetch data from the Wikidata endpoint.
@@ -183,12 +181,11 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  */
 app.post('/api/questions/generate', async (req, res) => {
   try {
-    const lang =  req.body.lang;
-    console.log("Lang:", lang);
-    const topics = req.body.topics;
-    console.log("Topics:", topics);
+    const lang = "es";
+    const hardcodedTopics = ["geography", "character"];
+    //const { lang, topics } = req.body;
 
-    const questionData = await generateQuestion(topics, lang);
+    const questionData = await generateQuestion(hardcodedTopics, lang);
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });
     }
@@ -206,6 +203,22 @@ app.post('/api/questions/generate', async (req, res) => {
  */
 const server = app.listen(port, async () => {
   console.log(`Question Service listening at http://localhost:${port}`);
+
+  //Test (temporary)
+  try {
+    const testUrl = `http://localhost:${port}/api/questions/generate`;
+    const response = await fetch(testUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const result = await response.json();
+    console.log('Test API Response:', result);
+  } catch (error) {
+    console.error("Error haciendo la solicitud a la API:", error);
+  }
+
 });
 
 export default server;

@@ -1,3 +1,4 @@
+
 /**
  * Question and answer game management module.
  * 
@@ -18,9 +19,9 @@
 
 const { GamePlayed, Question } = require("../models/Index");
 const { validate, getCurrentQuestion } = require("./QuestionAsk");
+
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const { requestQuestion } = require("./QuestionAsk");
 const NodeCache = require("node-cache");
 const gameCache = new NodeCache();
 

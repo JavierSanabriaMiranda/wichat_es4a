@@ -2,7 +2,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const axios = require('axios');
 const mongodb = require('./db/mongo/Connection');
 
 // Libraries required for OpenAPI-Swagger
@@ -22,7 +21,7 @@ const {
   endGame 
 } = require("./game/GameManager");
 
-const port = 8040;
+const port = 8005;
 const app = express();
 
 // Prometheus configuration for metrics
