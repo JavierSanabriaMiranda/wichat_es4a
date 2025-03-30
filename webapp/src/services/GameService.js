@@ -43,5 +43,63 @@ import axios from 'axios';
         }
     };
 
+    
+    
+    /**
+    * @typedef {Object} Question
+    * @property {String} text The question text
+    * @property {String} [imageUrl] Image URL for the question
+    * @property {String} selectedAnswer The answer selected by the user
+    * @property {Object[]} answers Array of possible answers
+    * @property {String} answers.text The answer text
+    * @property {Boolean} answers.isCorrect Whether this answer is correct
+    */
 
-export { getNextQuestion };
+   /**
+    * Sends the game data to the API endpoint to save it in the database.
+    * 
+    * @param {String} token Session token that stores the user ID.
+    * @param {Question[]} gameQuestions Array of question objects.
+    * @param {Number} numberOfQuestions The total number of questions in the game.
+    * @param {Number} numberOfCorrectAnswers The number of correct answers.
+    * @param {"normal" | "caos"} gameMode The game mode.
+    * @param {Number} points The total points earned in the game.
+    */
+    const saveGame = (token, gameQuestions, numberOfQuestions, numberOfCorrectAnswers, gameMode, points) => {
+        try {
+            const gameData = {
+                "token": token,
+                "questions": gameQuestions,
+                "numberOfQuestions": numberOfQuestions,
+                "numberOfCorrectAnswers": numberOfCorrectAnswers,
+                "gameMode": gameMode,
+                "points": points
+            };
+
+            axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData);
+        } catch (error) {
+            console.error("Error al guardar el juego:", error);
+        }
+    }
+
+    /**
+     * Sends the game configuration to the API endpoint to configure the type of questions to be asked.
+     * 
+     * @param {String[]} topics selected for the game
+     * @param {"es" | "en"} lang language selected for the game questions
+     */
+    const configureGame = async (topics, lang) => {
+        try {
+            const gameConfig = {
+                "topics": topics,
+                "lang": lang
+            };
+
+            axios.post(apiEndpoint + '/api/game/new', gameConfig);
+        } catch (error) {
+            console.error("Error al guardar el juego:", error);
+        }
+    }
+
+
+export { getNextQuestion, saveGame, configureGame };
