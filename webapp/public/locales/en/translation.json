@@ -71,5 +71,6 @@
     "confirm-logout": "Are you sure you want to log out?",
     "logout-message": "Logout",
     "cancel-button": "Cancel",
-    "confirm-button": "Confirm"
+    "confirm-button": "Confirm",
+    "current-password": "Current Password"
 }

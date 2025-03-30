@@ -68,7 +68,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/user',
-    element: <UserProfile gameHistory={gameHistory} />
+    element: <UserProfile/>
   },
   {
     path: '/game/results',

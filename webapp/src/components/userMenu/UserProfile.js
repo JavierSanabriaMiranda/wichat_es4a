@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
@@ -15,14 +15,42 @@ import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import { useNavigate } from 'react-router-dom';
+import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
+
 
 const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
-export const UserProfile = ({ gameHistory }) => {
+export const UserProfile = () => { 
+    
     const { t } = useTranslation();
-    const { user } = useContext(AuthContext);
+    const { user, token } = useContext(AuthContext);
     const [selectedGame, setSelectedGame] = useState(null);
+    const [gamesHistoryList, setGamesHistoryList] = useState([]);
+    const [questions, setQuestions] = useState([]);
     const navigate = useNavigate();
+
+    // UseEffect to call getUserHistory on initial render
+    useEffect(() => {
+        getUserHistoryList();
+    }, []);
+
+    // Function to get the user's game history list by the user ID
+    const getUserHistoryList = async () => {
+        getUserHistory(token).then((response) => {
+            console.log("Partidas jugadas por el usuario ", response);
+            setGamesHistoryList(response || []);
+            
+        }
+    )};
+
+    const getGameQuestionsByGameId = async (game) => {
+        setSelectedGame(game);
+        getQuestionsById(game.gameId).then((response) => {
+            setQuestions(response);
+            console.log(response);
+        });
+    }
+
 
     return (
         <main>
@@ -58,14 +86,15 @@ export const UserProfile = ({ gameHistory }) => {
                                         //Mostrar la lista de partidas si NO hay partida seleccionada
                                         <>
                                             <h5>{t('recent-games-text')}</h5>
-                                                {gameHistory.map((game, index) => (
+                                                {gamesHistoryList.map((game, index) => (
                                                     <GameHistoryButton
                                                         key={index}
                                                         points={game.points}
-                                                        correctAnswers={game.correctAnswers}
-                                                        totalQuestions={game.totalQuestions}
+                                                        correctAnswers={game.numberOfCorrectAnswers}
+                                                        totalQuestions={game.numberOfQuestions}
                                                         date={game.date}
-                                                        onClick={() => setSelectedGame(game)}
+                                                        onClick={() => getGameQuestionsByGameId(game)}
+                                                        gameMode={game.gameMode}
                                                     />
                                                 ))}
                                         </>
@@ -73,7 +102,7 @@ export const UserProfile = ({ gameHistory }) => {
                                         // Mostrar detalles de la partida si hay una partida seleccionada
                                         <>
                                             <h5 className="mt-4">{t('game-details-text')}</h5>
-                                            <QuestionAccordion questions={selectedGame.questions}  />
+                                            <QuestionAccordion questions={questions}  />
                                             
                                         </>
                                     )}
