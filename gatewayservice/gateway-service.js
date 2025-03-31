@@ -106,7 +106,11 @@ const privateKey = "tu_clave_secreta";
 
 // Middleware para verificar el token
 const verifyToken = (req, res, next) => {
-    const token = req.headers["authorization"];
+    //const token = req.headers["authorization"];
+    const payload = { userId: "1234" }; // Puedes usar cualquier valor como userId
+    const token = jwt.sign(payload, privateKey, { expiresIn: "1h" }); // Establece el tiempo de expiración
+
+    console.log("Token generado:", token);
     
     if (!token) {
         return res.status(403).json({ message: "A token is required for authentication" });
@@ -115,6 +119,8 @@ const verifyToken = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, privateKey);
         req.user = decoded;  // Guardamos el userId en req.user
+        console.log(req.user);
+        console.log(req.user.userId);
         next();  // Continuamos con la siguiente función
     } catch (err) {
         return res.status(401).json({ message: "Invalid Token" });
