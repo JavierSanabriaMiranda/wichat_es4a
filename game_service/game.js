@@ -18,6 +18,8 @@ const {
   getQuestion,
   getCurrentGame,
   getUserGames,
+  getUserGamesWithoutQuestions,
+  getGameQuestions,
   endGame 
 } = require("./game/GameManager");
 
@@ -26,7 +28,6 @@ const app = express();
 
 // Prometheus configuration for metrics
 const promBundle = require('express-prom-bundle');
-const { getCurrentQuestion } = require("./game/QuestionAsk");
 const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
 
@@ -95,6 +96,29 @@ app.post('/api/game/history', (req, res) => {
   getUserGames(req, res); // Executes the function when the request is received
 });
 
+//Información sobre la partida para el historial
+app.post('/api/game/history/gameList', async(req, res) => {
+  try{
+    console.log("Generando historico sobre partida");
+    getUserGamesWithoutQuestions(req, res); // Executes the function when the request is received
+
+  }catch(error){
+    console.log("Error al generar el historico de partida: ", error.message);
+
+  }
+});
+
+//Información sobre las preguntas de una partida para el historial
+app.post('/api/game/history/gameQuestions', async(req, res) => {
+  try{
+    console.log("Generando historico sobre preguntas de una partida");
+    getGameQuestions(req, res); // Executes the function when the request is received
+
+  }catch(error){
+    console.log("Error al generar el historico de preguntas: ", error.message);
+
+  }
+});
 /**
  * @description OpenAPI-Swagger Documentation
  * 

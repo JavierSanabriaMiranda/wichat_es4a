@@ -16,9 +16,8 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
-
 const { GamePlayed, Question } = require("../models/Index");
-const { validate, getCurrentQuestion } = require("./QuestionAsk");
+const { validate, getCurrentQuestion, requestQuestion} = require("./QuestionAsk");
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -26,6 +25,7 @@ const NodeCache = require("node-cache");
 const gameCache = new NodeCache();
 
 const privateKey = process.env.JWT_SECRET || "ChangeMePlease!!!!";
+
 
 /**
  * Creates a new game for the user and stores the values in cache.
@@ -37,11 +37,11 @@ const privateKey = process.env.JWT_SECRET || "ChangeMePlease!!!!";
 const newGame = async (req, res) => {
     try {
         let userId = req.body.userId || new mongoose.Types.ObjectId();
-        const { questionTime, numberOfQuestion, topics, lang } = req.body;
+        const { topics, lang } = req.body;
 
         // Store values in cache
-        gameCache.set(userId.toString(), { questionTime, numberOfQuestion, topics, lang });
-        console.log(`Game data saved in cache for user ${userId}:`, { questionTime, numberOfQuestion, topics, lang });
+        gameCache.set(userId.toString(), { topics, lang });
+        console.log(`Game data saved in cache for user ${userId}:`, {topics, lang });
         res.status(200).send();
     } catch (error) {
         console.error("Error creating a new game:", error);
@@ -66,19 +66,24 @@ const next = async (req, res) => {
         const cacheData = gameCache.get(userId.toString());
         if (!cacheData) return res.status(400).json({ error: "Game settings not found." });
 
-        const { questionTime, numberOfQuestion, topics, lang } = cacheData;
+        const { topics, lang } = cacheData;
 
         // Call requestQuestion without saving anything to the database
-        const questionRaw = await requestQuestion(questionTime, numberOfQuestion, topics, lang);
+        const questionRaw = await requestQuestion(topics, lang);
         console.log("Question raw:", questionRaw);
 
-        res.status(200).json({
-            question: questionRaw.question,
-            topics: questionRaw.topics,
-            answer: questionRaw.answer,
-            options: questionRaw.options,
-            imageUrl: questionRaw.imageUrl || ""
-        });
+        // Transform the response to the required format
+        const formattedResponse = {
+            text: questionRaw.question,  // Mapea la pregunta
+            imageUrl: questionRaw.imageUrl || "",  // Usa la imagen si existe
+            selectedAnswer: "",  // No tenemos esta información aún, la dejamos vacía
+            answers: questionRaw.options.map(option => ({
+                text: option,
+                isCorrect: option === questionRaw.answer  // Marcar la respuesta correcta
+            }))
+        };
+
+        res.status(200).json(formattedResponse);
     } catch (error) {
         console.error("Error getting next question:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -94,50 +99,44 @@ const next = async (req, res) => {
  */
 const endAndSaveGame = async (req, res) => {
     try {
-        const { userId, gameHistory } = req.body;
+        const game = req.body;
 
         // Validate input data
-        if (!userId || !gameHistory || !Array.isArray(gameHistory)) {
+        if (!game.userId || !game || !game.questions || !Array.isArray(game.questions)) {
             return res.status(400).send("Missing required fields or invalid data format.");
         }
 
-        for (const gameData of gameHistory) {
-            const { points, correctAnswers, totalQuestions, date, questions } = gameData;
+        // Create a new game entry
+        const newGame = new GamePlayed({
+            userId: new mongoose.Types.ObjectId(game.userId),
+            numberOfQuestions: game.numberOfQuestions,
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers,
+            gameMode: game.gameMode,
+            points: game.points,
+            questions: game.questions,
+            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
+        });
 
-            // Convert the date to the proper format (YYYY-MM-DD) if needed
-            const formattedDate = new Date(date).toISOString().split('T')[0]; // If necessary, format the date
+        // Save the game to the database
+        const savedGame = await newGame.save();
 
-            // Create a new game entry
-            const newGame = new GamePlayed({
-                user: userId,
-                modality: 'prueba', // Modify the modality based on the game type
-                score: points,
-                topics: questions.map(q => q.topic), // Assuming each question has a topic
-                isActive: false, // The game is over
-            });
+        // Save all the questions related to this game
+        const questionsToInsert = game.questions.map(q => ({
+            text: q.text, // Question text
+            imageUrl: q.imageUrl, // Image URL
+            selectedAnswer: q.selectedAnswer, // Selected answer by the user
+            answers: q.answers.map(ans => ({
+                text: ans.text, // Option text
+                isCorrect: ans.isCorrect, // If it is the correct answer
+            })),
+        }));
 
-            // Save the game to the database
-            const savedGame = await newGame.save();
+        // Save all the questions to the database
+        const savedQuestions = await Question.insertMany(questionsToInsert);
 
-            // Save all the questions related to this game
-            const questionsToInsert = questions.map(q => ({
-                text: q.text, // Question text
-                imageUrl: q.imageUrl, // Image URL
-                wasUserCorrect: q.wasUserCorrect, // User's answer
-                selectedAnswer: q.selectedAnswer, // Selected answer by the user
-                answers: q.answers.map(ans => ({
-                    text: ans.text, // Option text
-                    isCorrect: ans.isCorrect, // If it is the correct answer
-                })),
-            }));
-
-            // Save all the questions to the database
-            const savedQuestions = await Question.insertMany(questionsToInsert);
-
-            // Update the played questions in the game
-            savedGame.questionsPlayed = savedQuestions.map(question => question._id);
-            await savedGame.save();
-        }
+        // Update the played questions in the game
+        savedGame.questionsPlayed = savedQuestions.map(question => question._id);
+        await savedGame.save();
 
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
@@ -147,33 +146,74 @@ const endAndSaveGame = async (req, res) => {
 };
 
 /**
- * Retrieves all games associated with a user, including played questions.
+ * Retrieves all questions associated with a specific game.
+ * 
+ * @param {Object} req - Request object containing the game ID.
+ * @param {Object} res - Response object to return the questions for the specified game.
+ * @returns {void}  Sends the questions associated with the specified game in JSON format.
+ */
+const getGameQuestions = async (req, res) => {
+    try {
+        const gameId = req.body.gameId;  // Get the game ID from the URL parameters
+        console.log("Fetching questions for game:", gameId);
+
+        // Find the game and populate the associated questions
+        const game = await GamePlayed.findById(gameId)
+            .populate('questions')  // Populate the questions for this specific game
+            .exec();
+
+        if (!game) {
+            return res.status(404).json({ message: 'Game not found.' });
+        }
+
+        // Return the questions associated with the game in JSON format
+        res.status(200).json(game.questions);
+    } catch (error) {
+        console.error("Error fetching game questions:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+/**
+ * Retrieves all games associated with a user, excluding the associated questions.
  * 
  * @param {Object} req - Request object containing the user ID.
  * @param {Object} res - Response object to return the user's game history.
- * @returns {void}  Sends an array of games with associated questions in JSON format.
+ * @returns {void}  Sends an array of games without associated questions in JSON format.
  */
-const getUserGames = async (req, res) => {
+const getUserGamesWithoutQuestions = async (req, res) => {
     try {
-        const userId = req.body.userId;  // Get the user ID from the request body
-        console.log("Fetching games for user:", userId);
+        const userId = req.body.userId ;  // Get the user ID from the request body
+        console.log("Request body received:", userId);
 
-        // Find all games associated with this user
-        const games = await GamePlayed.find({ user: userId })
-            .populate('questionsPlayed')  // This fills the questions with full details
-            .exec();
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const games = await GamePlayed.find({ user: objectId }).exec();
+
 
         if (!games || games.length === 0) {
             return res.status(404).json({ message: 'No games found for this user.' });
         }
 
-        // Return games and associated questions in JSON format
-        res.status(200).json(games);
+        // Return games without associated questions in JSON format
+        // Mapear los resultados para devolver el formato correcto
+        const formattedGames = games.map(game => ({
+            _id: game._id,
+            userId: game.user,  // En el esquema, 'user' es el ObjectId del usuario
+            numberOfQuestions: game.numberOfQuestions,
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  // Agregar número de respuestas correctas si existe
+            gameMode: game.gameMode,
+            points: game.points,
+            topics: game.topics || []  // Si topics es null/undefined, devuelve un array vacío
+        }));
+        res.status(200).json(formattedGames);   
+         
     } catch (error) {
         console.error("Error fetching user games:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+
 
 /**
  * Retrieves the number of questions played in the current game.
@@ -273,5 +313,5 @@ module.exports = {
     getNumberOfQuestionsPlayed,
     getQuestion,
     getCurrentGame,
-    getUserGames
-};
+    getGameQuestions,
+    getUserGamesWithoutQuestions};
