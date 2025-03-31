@@ -68,15 +68,12 @@ services:
     profiles: ["dev", "prod"]
     build: 
       context: ./game_service
-    depends_on:
-      - questionservice
     ports:
       - "8005:8005"
     networks:
       - mynetwork
     environment:
-      QUESTION_SERVICE_URL: http://questionservice:8004
-      MONGODB_URI: mongodb://mongodb:27017/gamebd
+      DB_URL: mongodb://mongodb:27017/bd
 
   gatewayservice:
     container_name: gatewayservice-wichat_es4a
