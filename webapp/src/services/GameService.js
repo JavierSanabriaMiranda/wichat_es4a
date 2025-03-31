@@ -65,10 +65,9 @@ import axios from 'axios';
     * @param {"normal" | "caos"} gameMode The game mode.
     * @param {Number} points The total points earned in the game.
     */
-    const saveGame = (token, gameQuestions, numberOfQuestions, numberOfCorrectAnswers, gameMode, points) => {
+    const saveGame = async (token, gameQuestions, numberOfQuestions, numberOfCorrectAnswers, gameMode, points) => {
         try {
             const gameData = {
-                "token": token,
                 "questions": gameQuestions,
                 "numberOfQuestions": numberOfQuestions,
                 "numberOfCorrectAnswers": numberOfCorrectAnswers,
@@ -76,7 +75,13 @@ import axios from 'axios';
                 "points": points
             };
 
-            axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData);
+            axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData,
+                {   // Options (including headers)
+                    headers: {
+                        authorization: `Bearer ${token}`
+                    }
+                }
+            );
         } catch (error) {
             console.error("Error al guardar el juego:", error);
         }

@@ -80,19 +80,15 @@ export const Game = () => {
 
             // If there's a user authenticated, the game will be saved in the database
             if (token) {
-                saveGame(token, questionResults, numberOfQuestions, correctAnswer, "normal", points)
-                    .then(() => {
-                        setTimeout(() => {
-                            navigate('/game/results');
-                        }, 1000); // Espera 1 segundo antes de navegar
-                    })
+                saveGame(token, questionResults, numberOfQuestions, correctAnswers, "normal", points)
                     .catch(err => {
                         console.error("Error saving game:", err)
+                    })
+                    .finally(() => {
                         setTimeout(() => {
                             navigate('/game/results');
                         }, 1000); // Espera 1 segundo antes de navegar
-                    }
-                    );
+                    });
             }
             // If there's no user authenticated, the game will not be saved in the database
             else {

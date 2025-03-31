@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -8,8 +7,6 @@ import Modal from 'react-bootstrap/Modal';
 import { changePassword } from '../../services/UserProfileService.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import i18n from '../../i18n/i18next.js';
-
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const EditUser = ({ userName }) => {
     const { t } = useTranslation();
@@ -71,7 +68,6 @@ export const EditUser = ({ userName }) => {
 
         try {
             const response = await changePassword(token , currentPassword, password);
-            console.log("Respuesta de la API:", response);
             if(response.success === false) {
                 setError(response.error); // Error en la actualización por causa del usuario
                 return;
@@ -162,7 +158,7 @@ export const EditUser = ({ userName }) => {
             </Form>
 
             {/* Modal de confirmación */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('modal-title-edit-profile')}</Modal.Title>
                 </Modal.Header>

@@ -26,6 +26,24 @@ app.use(express.json());
 const metricsMiddleware = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 
+const jwt = require("jsonwebtoken");
+const privateKey = "your-secret-key";
+
+// Middleware para verificar el token
+const verifyToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1]; // Obtener el token del encabezado de autorización
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+  jwt.verify(token, privateKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    req.body.user = decoded; // Guardar la información del usuario decodificada en la solicitud
+    next(); // Continuar con la siguiente función de middleware o ruta
+  });
+};
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
@@ -47,6 +65,15 @@ app.post('/adduser', async (req, res) => {
     const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
     console.log(userResponse)
     res.json(userResponse.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
+app.post('/api/user/editUser', verifyToken, async (req, res) => {
+  try {
+    const editResponse = await axios.post(userServiceUrl+'/editUser', req.body);
+    res.json(editResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
   }
