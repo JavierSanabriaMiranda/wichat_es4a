@@ -1,80 +1,135 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
-== Decisiones Arquitectónicas
+== Architecture Decisions
 
+Durante el desarrollo de la aplicación, se han tomado diversas decisiones arquitectónicas que afectan tanto a la elección de tecnologías como a la estructura general del proyecto. A continuación, se detallan las principales decisiones, sus ventajas y desventajas, así como las razones detrás de cada una de ellas.
 
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contenidos
-Decisiones arquitectónicas importantes, de riesgo, costosas o a gran escala incluyendo sus justificaciones.
-Con "decisiones" nos referimos a elegir una alternativa basada en criterios dados.
+=== **Uso de JavaScript**
 
-Por favor, usa tu juicio para decidir cuando una decisión arquitectónica debería ser documentada
-aqui en esta sección y cuando sería mejor documentarla de manera local 
-(por ejemplo, dentro de la plantilla de caja blanca de un bloque de construcción)
+* **Decisión**: Utilizar **JavaScript** como lenguaje de programación principal para la aplicación.
 
-Evitar redundancia.
-Menciona la sección 4 donde ya se han recogido las decisiones más importantes de la arquitectura
+* **Ventajas**:
+  - **Universalidad**: JavaScript es ampliamente utilizado tanto en el front-end como en el back-end (a través de Node.js), lo que facilita el trabajo con un solo lenguaje.
+  - **Popularidad**: La comunidad y recursos disponibles son vastos, lo que facilita la resolución de problemas y el aprendizaje.
+  - **Gran ecosistema**: Hay muchas bibliotecas y frameworks disponibles, lo que acelera el desarrollo.
 
-.Motivación
-Los Stakeholder de tu sistema deberían ser capaces de comprender y seguir el razonamiento detrás de tus decisiones
+* **Desventajas**:
+  - **Problemas de rendimiento**: Para tareas muy intensivas de CPU, JavaScript puede no ser la opción más eficiente en comparación con otros lenguajes más cercanos al hardware como C++ o Rust.
 
-.Formato
-Varias opciones:
+=== **Uso de React para el Front-End**
 
-* ADR (https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions[Documenting Architecture Decisions]) para cada decisión importante
-* Lista o tabla ordenada por importancia y consecuencias o:
-* mas detalle en secciones separadas por decisión
+* **Decisión**: Utilizar **React** para la construcción del front-end.
 
-.Más Información
+* **Ventajas**:
+  - **Componente reutilizable**: React promueve la creación de componentes reutilizables, lo que facilita la gestión de interfaces complejas.
+  - **Curva de aprendizaje moderada**: Comparado con otros frameworks front-end, React es relativamente sencillo de aprender y tiene una gran comunidad de desarrolladores.
+  - **Ecosistema robusto**: React tiene un vasto ecosistema de herramientas y bibliotecas (como React Router, Redux, etc.) que mejoran la productividad.
 
-Ver https://docs.arc42.org/section-9/[Architecture Decisions] en la documentación arc42.
-Ahí encontrarás links y ejemplos sobre ADR
-****
-endif::arc42help[]
+* **Desventajas**:
+  - **No todo el equipo estaba familiarizado con React**: Algunos miembros del equipo no tenían experiencia previa con React, lo que aumentó el tiempo inicial de formación y aprendizaje.
 
-===  MongoDB como SGBD
+=== **Uso de MongoDB**
 
-Fecha: 24-02-2025
+* **Decisión**: Utilizar **MongoDB** como base de datos NoSQL.
 
-==== Estado
-Aceptado
+* **Ventajas**:
+  - **Flexible y escalable**: MongoDB permite el almacenamiento de datos sin un esquema fijo, lo que facilita la escalabilidad y adaptabilidad de los datos en una estructura de aplicación cambiante.
+  - **Facilidad de uso**: El modelo de documentos en JSON es intuitivo y fácil de manejar, especialmente cuando se trata de grandes cantidades de datos no estructurados.
 
-==== Contexto
-Necesitamos un sistema de gestión de bases de datos que nos aporte facilidad y rapidez 
-para trabajar con JavaScript.
-Nuestra base de datos a priori no va a tener una estructura muy compleja 
+* **Desventajas**:
+  - **Falta de experiencia en bases de datos NoSQL**: El equipo no estaba completamente familiarizado con MongoDB, ya que su experiencia previa había sido mayormente con bases de datos relacionales.
 
-==== Decisión
-Utilizaremos MongoDB como SGDB.
+=== **Uso de Docker**
 
-MongoDB es un SGDB no relacional que tiene una fácil integración con JavaScript, sobre todo por medio de Node.js, siendo muy 
-utilizado en aplicaciones web que siguen la familia tecnológica MERN.
+* **Decisión**: Utilizar **Docker** para la contenedorización de la aplicación.
 
-Un SGDB SQL ofrecería mayor integridad referencial y transacciones ACID, lo que garantiza mayor consistencia en los datos. 
-Sin embargo, para nuestro caso de uso, priorizamos la flexibilidad de esquemas y la facilidad de escalar la base de datos 
-sin necesidad de modificaciones estructurales constantes. Además, las relaciones entre datos en nuestro modelo son relativamente simples, 
-por lo que no necesitamos la normalización estricta de un SGDB SQL
+* **Ventajas**:
+  - **Portabilidad**: Docker permite empaquetar la aplicación en contenedores que se pueden ejecutar en cualquier entorno sin preocuparse por las dependencias del sistema.
+  - **Consistencia**: Garantiza que la aplicación se ejecute de la misma manera en desarrollo, pruebas y producción.
+  - **Despliegue simplificado**: Los contenedores Docker facilitan el despliegue y escalado de la aplicación.
 
-Sumado a esto, Node.js dispone de la librería oficial Mongoose que aporta algo más de consistencia en 
-los datos (formatos, obligatoriedad...) sin llegar a imponer esquemas rígidos
+* **Desventajas**:
+  - **Falta de experiencia con Docker**: Algunos miembros del equipo no tenían experiencia previa con Docker, lo que al principio requirió un tiempo adicional de aprendizaje.
 
-Nuestra base de datos manejará información de usuarios y su historial de partidas. 
-Dado que cada partida contiene preguntas y respuestas, una estructura flexible con documentos anidados 
-(arrays de preguntas por partida) facilitará el almacenamiento y consulta de estos datos. Además, la integración 
-con Node.js nos permitirá acceder a los datos de forma sencilla y eficiente.
+=== **Uso de Cache (Game)**
 
-==== Consecuencias
+* **Decisión**: Implementar un sistema de **cache** para almacenar y gestionar los datos del juego.
 
-Al ser una base de datos NoSQL, no contamos con integridad referencial automática ni con restricciones como claves foráneas. 
-Esto puede aumentar el riesgo de inconsistencias o datos duplicados si no se aplican buenas prácticas en la capa de aplicación. 
-Sin embargo, podemos mitigar estos problemas usando Mongoose para definir validaciones y asegurarnos de que los datos cumplen 
-con ciertos criterios antes de ser almacenados
+* **Ventajas**:
+  - **Mejora el rendimiento**: La caché mejora considerablemente la velocidad de acceso a los datos más frecuentes, reduciendo la carga sobre la base de datos.
+  - **Reducción de latencia**: Permite que las respuestas del juego sean rápidas, mejorando la experiencia del usuario.
 
-Por otro lado, MondoDB nos permite poder modificar la estructura de la base
-de datos a medida que van avanzando las funcionalidades de la aplicación.
+* **Desventajas**:
+  - **Sincronización de la caché**: Mantener la coherencia entre los datos en la base de datos y los datos en caché puede ser complejo, especialmente cuando los datos cambian con frecuencia.
 
-A su vez podremos implementar la aplicación con un acceso cómodo y simple al propio SGDB gracias 
-a su buen funcionamiento con JavaScript
+=== **Uso de Question Templates**
+
+* **Decisión**: Utilizar **templates** de preguntas para gestionar la estructura y formato de las preguntas del juego.
+
+* **Ventajas**:
+  - **Flexibilidad**: Los templates permiten una gestión dinámica de las preguntas, lo que facilita la creación y modificación de preguntas sin necesidad de cambiar el código.
+  - **Reutilización**: Los templates permiten crear diferentes tipos de preguntas basadas en un formato común.
+
+* **Desventajas**:
+  - **Complejidad de implementación**: La creación de un sistema dinámico de templates requiere una estructura adicional que puede aumentar la complejidad de la aplicación.
+
+=== **Uso de i18next para Internacionalización**
+
+* **Decisión**: Implementar **i18next** para la internacionalización (i18n) de la aplicación.
+
+* **Ventajas**:
+  - **Soporte de múltiples idiomas**: Permite traducir la aplicación a diferentes idiomas sin tener que modificar el código fuente.
+  - **Facilidad de integración**: La biblioteca se integra bien con frameworks como React y tiene una buena documentación.
+
+* **Desventajas**:
+  - **Mantenimiento de archivos de traducción**: Es necesario mantener actualizados los archivos de traducción y asegurarse de que se sincronicen correctamente con el desarrollo de la aplicación.
+
+=== **Uso de WikiData**
+
+* **Decisión**: Utilizar **WikiData** como fuente de datos colaborativa y libre.
+
+* **Ventajas**:
+  - **Acceso libre a grandes cantidades de datos**: WikiData ofrece una fuente confiable y estructurada de información que puede ser utilizada en múltiples aplicaciones.
+  - **Actualización constante**: WikiData se actualiza regularmente con datos nuevos de diversas fuentes.
+
+* **Desventajas**:
+  - **Calidad y precisión variable**: Debido a la naturaleza colaborativa de WikiData, la fiabilidad y precisión de los datos pueden ser inconsistentes, especialmente en áreas donde los usuarios pueden editar libremente.
+
+=== **Uso de la Plantilla Arc42**
+
+* **Decisión**: Documentar la arquitectura utilizando la **Plantilla Arc42**.
+
+* **Ventajas**:
+  - **Estructura clara y completa**: Arc42 proporciona una estructura bien definida para documentar la arquitectura del software, facilitando la comprensión y comunicación entre los equipos.
+  - **Enfoque modular**: Ayuda a desglosar la arquitectura en partes manejables y claras.
+
+* **Desventajas**:
+  - **Exceso de detalles**: En proyectos más pequeños o simples, la plantilla puede ser más detallada de lo necesario, lo que podría hacer que la documentación sea demasiado compleja y difícil de mantener.
+
+=== **Microservicios UserService y AuthService con la misma base de datos**
+
+* **Decisión**: Utilizar la misma base de datos para los microservicios **UserService** y **AuthService**.
+
+* **Ventajas**:
+  - **Compartición de datos**: Ambos servicios manejan datos relacionados, como información de usuarios y credenciales. Usar la misma base de datos facilita la integración y sincronización entre estos servicios.
+  - **Reducción de complejidad**: Evita la duplicación de datos y facilita las operaciones de lectura/escritura, ya que no es necesario manejar múltiples bases de datos para información similar.
+
+* **Desventajas**:
+  - **Posible acoplamiento**: Utilizar la misma base de datos podría generar un acoplamiento no deseado entre los microservicios, lo que podría dificultar su escalabilidad o evolución independiente en el futuro.
+
+=== **Decisión de empezar el proyecto desde cero**
+
+* **Decisión**: Decidimos **empezar el proyecto desde cero** en lugar de reutilizar un proyecto del año pasado.
+
+* **Ventajas**:
+  - **Aprovechamiento de nuevas tecnologías**: Comenzar desde cero nos permite adoptar tecnologías más modernas y ajustadas a las necesidades actuales del proyecto.
+  - **Mejor calidad del código**: Empezar de nuevo nos permitió evitar la deuda técnica acumulada en el proyecto anterior y asegurarnos de que la calidad del código sea más alta desde el principio.
+
+* **Desventajas**:
+  - **Mayor tiempo de desarrollo**: Empezar de cero llevó más tiempo en comparación con la reutilización de partes del proyecto anterior. Sin embargo, a largo plazo, este enfoque permitirá una mayor flexibilidad y escalabilidad.
+
+=== **Conclusión**
+
+Las decisiones arquitectónicas que se tomaron a lo largo del desarrollo del proyecto han sido cuidadosamente consideradas para garantizar un sistema escalable, eficiente y fácil de mantener. A pesar de que algunos de los miembros del equipo no estaban familiarizados con ciertas tecnologías, como Docker o MongoDB, las decisiones se basaron en las necesidades actuales del proyecto y en las tendencias tecnológicas que ofrecen ventajas a largo plazo. Estas decisiones no solo buscan cumplir con los requisitos inmediatos, sino también permitir un crecimiento sostenible del sistema en el futuro.
+
