@@ -101,31 +101,61 @@ app.post('/api/game/end', async (req, res) => {
   }
 });
 
+import jwt from "jsonwebtoken";
+const privateKey = "tu_clave_secreta";
 
-//Información sobre la partida para el historial
-app.post('/api/game/history/gameList', async(req, res) => {
-  try{
-    console.log("Generando historico sobre partida");
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
-    res.json(endResponse.data);
-  }catch(error){
-    console.log("Error al generar el historico de partida: ", error.message);
+// Middleware para verificar el token
+const verifyToken = (req, res, next) => {
+    const token = req.headers["authorization"];
+    
+    if (!token) {
+        return res.status(403).json({ message: "A token is required for authentication" });
+    }
 
-  }
+    try {
+        const decoded = jwt.verify(token, privateKey);
+        req.user = decoded;  // Guardamos el userId en req.user
+        next();  // Continuamos con la siguiente función
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid Token" });
+    }
+};
+
+// Información sobre la partida para el historial (con verificación de token)
+app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
+    try {
+        console.log("Generando histórico sobre partida");
+
+        req.body.userId = req.user.userId;
+
+        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
+            headers: { Authorization: req.headers["authorization"] }
+        });
+
+        res.json(endResponse.data);
+    } catch (error) {
+        console.error("Error al generar el histórico de partida:", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
-//Información sobre las preguntas de una partida para el historial
-app.post('/api/game/history/gameQuestions', async(req, res) => {
-  try{
-    console.log("Generando historico sobre preguntas de una partida");
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body);
-    res.json(endResponse.data);
+// Información sobre las preguntas de una partida para el historial (con verificación de token)
+app.post('/api/game/history/gameQuestions', verifyToken, async (req, res) => {
+    try {
+        console.log("Generando histórico sobre preguntas de una partida");
+        req.body.userId = req.user.userId;
 
-  }catch(error){
-    console.log("Error al generar el historico de preguntas: ", error.message);
+        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body, {
+            headers: { Authorization: req.headers["authorization"] } 
+        });
 
-  }
+        res.json(endResponse.data);
+    } catch (error) {
+        console.error("Error al generar el histórico de preguntas:", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
+
 
 // Endpoint to get a clue from the LLM service
 app.post('/askllm/clue', async (req, res) => {

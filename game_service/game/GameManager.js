@@ -26,6 +26,8 @@ const gameCache = new NodeCache();
 
 const privateKey = process.env.JWT_SECRET || "ChangeMePlease!!!!";
 
+const jwt = require("jsonwebtoken");
+
 /**
  * Creates a new game for the user and stores the values in cache.
  * 
@@ -181,7 +183,9 @@ const getGameQuestions = async (req, res) => {
  */
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
-        const userId = req.body.userId;  // Get the user ID from the request body
+        //const userId = req.body.userId;  // Get the user ID from the request body
+        //con el userId PASADO POR HEADER
+        const userId = req.user.userId;
         console.log("Fetching games for user:", userId);
 
         // Find all games associated with this user without populating the questions
