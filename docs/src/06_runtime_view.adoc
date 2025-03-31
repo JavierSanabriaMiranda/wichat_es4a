@@ -1,8 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-runtime-view]]
-== Runtime View
-
+== Vista en tiempo de ejecución
 
 ifdef::arc42help[]
 [role="arc42help"]
@@ -31,7 +30,6 @@ There are many notations for describing scenarios, e.g.
 * state machines
 * ...
 
-
 .Further Information
 
 See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
@@ -39,29 +37,56 @@ See https://docs.arc42.org/section-6/[Runtime View] in the arc42 documentation.
 ****
 endif::arc42help[]
 
-=== <Runtime Scenario 1>
+=== Un usuario se registra en el sistema
 
-
-* _<insert runtime diagram or textual description of the scenario>_
-* _<insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.>_
-
-It is possible to use a sequence diagram:
-
-[plantuml,"Sequence diagram",png]
+[plantuml,"User Registration Sequence",png]
 ----
-actor Alice
-actor Bob
-database Pod as "Bob's Pod"
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice  --> Pod: Store route
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+actor Usuario
+participant "UserService" as US
+Usuario -> US: Enviar datos de registro
+US -> US: Validar datos
+US -> US: Crear cuenta en la base de datos
+US --> Usuario: Confirmación de registro
 ----
 
-=== <Runtime Scenario 2>
+=== Un usuario juega al juego de las preguntas y solicita pistas
 
-=== ...
+[plantuml,"Question Game with Hint Sequence",png]
+----
+actor Usuario
+participant "WebApp" as WA
+participant "Wikidata" as WK
+participant "LLMService" as LLM
 
-=== <Runtime Scenario n>
+Usuario -> WA: Iniciar juego
+WA -> WK: Obtener pregunta
+WK --> WA: Retornar pregunta
+WA --> Usuario: Mostrar pregunta
+
+Usuario -> WA: Solicitar pista
+WA -> LLM: Generar pista basada en pregunta
+LLM --> WA: Retornar pista
+WA --> Usuario: Mostrar pista
+
+Usuario -> WA: Enviar respuesta
+WA -> WA: Validar respuesta
+WA --> Usuario: Mostrar resultado
+
+WA -> WK: Obtener nueva pregunta
+WK --> WA: Retornar nueva pregunta
+WA --> Usuario: Mostrar nueva pregunta
+----
+
+=== El usuario quiere ver su historial de la partida
+
+[plantuml,"Game History Sequence",png]
+----
+actor Usuario
+participant "WebApp" as WA
+participant "GameService" as GS
+Usuario -> WA: Solicitar historial de partidas
+WA -> GS: Recuperar historial
+GS --> WA: Retornar historial
+WA --> Usuario: Mostrar historial
+----
+
