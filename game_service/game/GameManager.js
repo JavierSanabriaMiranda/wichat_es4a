@@ -16,7 +16,7 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
-const { GamePlayed, Question } = require("../models/Index");
+const { GamePlayed, Question } = require("../models/index");
 const { validate, getCurrentQuestion, requestQuestion} = require("./QuestionAsk");
 
 const mongoose = require('mongoose');

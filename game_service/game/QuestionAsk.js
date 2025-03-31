@@ -10,7 +10,7 @@
  * @module QuestionManager
  */
 const axios = require('axios');
-const { Game } = require("../models/Index");
+const { Game } = require("../models/index");
 
 /**
  * Validates that the request body contains the required fields.
