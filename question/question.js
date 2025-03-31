@@ -181,11 +181,12 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  */
 app.post('/api/question/generate', async (req, res) => {
   try {
-    const lang = "es";
-    const hardcodedTopics = ["geography", "character"];
-    //const { lang, topics } = req.body;
-
-    const questionData = await generateQuestion(hardcodedTopics, lang);
+    
+    const topics = req.body.topics;
+    const lang = req.body.lang;
+    console.log("Que me llega", topics);
+    console.log("Que me llega", lang);
+    const questionData = await generateQuestion(topics, lang);
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });
     }
