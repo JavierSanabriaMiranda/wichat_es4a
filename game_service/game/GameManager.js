@@ -185,8 +185,9 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         const userId = req.body.userId;  // Get the user ID from the request body
         console.log("Fetching games for user:", userId);
 
-        // Find all games associated with this user without populating the questions
-        const games = await GamePlayed.find({ user: userId }).exec();
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const games = await GamePlayed.find({ user: objectId }).exec();
+
 
         if (!games || games.length === 0) {
             return res.status(404).json({ message: 'No games found for this user.' });
