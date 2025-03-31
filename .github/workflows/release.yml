@@ -16,7 +16,6 @@ jobs:
     - run: npm --prefix users/userservice ci
     - run: npm --prefix llmservice ci
     - run: npm --prefix gatewayservice ci
-    - run: npm --prefix webapp ci -- --legacy-peer-deps
     - name: Analyze with SonarCloud
       uses: SonarSource/sonarqube-scan-action@master
       env:
@@ -33,7 +32,6 @@ jobs:
     - run: npm --prefix users/userservice install
     - run: npm --prefix llmservice install
     - run: npm --prefix gatewayservice install
-    - run: npm --prefix webapp install
   docker-push-webapp:
     name: Push webapp Docker Image to GitHub Packages
     runs-on: ubuntu-latest

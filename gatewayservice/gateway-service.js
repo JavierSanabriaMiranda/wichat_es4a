@@ -1,16 +1,19 @@
-import express from 'express';
-import axios from 'axios';
-import cors from 'cors';
-import promBundle from 'express-prom-bundle';
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const promBundle = require('express-prom-bundle');
 
-
-//libraries required for OpenAPI-Swagger
-import swaggerUi from 'swagger-ui-express';
-import fs from "fs";
-import YAML from 'yaml';
+// Libraries required for OpenAPI-Swagger
+const swaggerUi = require('swagger-ui-express');
+const fs = require('fs');
+const YAML = require('yaml');
 
 // Utils
-import { getLanguage, normalizeString } from './gateway-service-utils.js';
+const { getLanguage, normalizeString } = require('./gateway-service-utils');
+
+// Convertir "import jwt from 'jsonwebtoken'" a require
+const jwt = require('jsonwebtoken');
+const privateKey = "your-secret-key";
 
 const app = express();
 const port = 8000;
@@ -28,10 +31,6 @@ app.use(express.json());
 //Prometheus configuration
 const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
-
-import jwt from "jsonwebtoken";
-import e from 'express';
-const privateKey = "your-secret-key";
 
 // Middleware para verificar el token
 const verifyToken = (req, res, next) => {
@@ -303,4 +302,4 @@ const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
 });
 
-export default server;
+module.exports = server;
