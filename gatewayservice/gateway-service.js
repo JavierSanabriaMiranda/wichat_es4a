@@ -30,7 +30,7 @@ const metricsMiddleware = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 
 import jwt from "jsonwebtoken";
-const privateKey = "tu_clave_secreta";
+const privateKey = "your-secret-key";
 
 // Middleware para verificar el token
 const verifyToken = (req, res, next) => {

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const privateKey = "tu_clave_secreta"; // Debe coincidir con la clave del middleware
+const privateKey = "your-secret-key"; // Debe coincidir con la clave del middleware
 
 const payload = {
     userId: "60d0fe4f5311236168a109cf" // Este es el ID del usuario
