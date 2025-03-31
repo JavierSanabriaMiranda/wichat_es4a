@@ -108,7 +108,10 @@ export const Game = () => {
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
 
+        console.log("VOY A PEDIR LA SIGUIENTE PREGUNTA")
         getNextQuestion().then((questionInfo) => {
+
+            console.log("La pregunta es: " + questionInfo.question);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);

@@ -1,11 +1,11 @@
 import express from 'express';
-import axios  from 'axios';
-import cors from  'cors';
-import promBundle  from 'express-prom-bundle';
+import axios from 'axios';
+import cors from 'cors';
+import promBundle from 'express-prom-bundle';
 
 
 //libraries required for OpenAPI-Swagger
-import swaggerUi from 'swagger-ui-express'; 
+import swaggerUi from 'swagger-ui-express';
 import fs from "fs";
 import YAML from 'yaml';
 
@@ -26,26 +26,44 @@ app.use(cors());
 app.use(express.json());
 
 //Prometheus configuration
-const metricsMiddleware = promBundle({includeMethod: true});
+const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
 
 import jwt from "jsonwebtoken";
+import e from 'express';
 const privateKey = "your-secret-key";
 
 // Middleware para verificar el token
 const verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"]?.split(" ")[1]; // Obtener el token del encabezado de autorización
-  if (!token) {
-    return res.status(401).json({ message: "No token provided" });
+
+  // If there's no token provided, assign a guest user
+  if (!req.headers["authorization"]) {
+    req.body.user = { userId: "guest" + Date.now() }; // If there's no token, assign a guest user
+    next();
   }
-  jwt.verify(token, privateKey, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: "Unauthorized" });
+  // If there's a token, verify it
+  else {
+    const token = req.headers["authorization"]?.split(" ")[1]; // Obtener el token del encabezado de autorización
+    if (!token) {
+      return res.status(401).json({ message: "Token wasn't provided properly" });
     }
-    req.body.user = decoded; // Guardar la información del usuario decodificada en la solicitud
-    next(); // Continuar con la siguiente función de middleware o ruta
-  });
+    jwt.verify(token, privateKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      req.body.user = decoded; // Guardar la información del usuario decodificada en la solicitud
+      next(); // Continuar con la siguiente función de middleware o ruta
+    });
+  }
 };
+
+const generateCacheId = (req, res, next) => {
+  const min = 10 ** 15; // Número mínimo de 16 dígitos
+  const max = 10 ** 16 - 1; // Número máximo de 16 dígitos
+  
+  req.body.cacheId = Math.floor(Math.random() * (max - min + 1)) + min;
+  next();
+}
 
 
 // Health check endpoint
@@ -56,19 +74,20 @@ app.get('/health', (req, res) => {
 app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
-    const authResponse = await axios.post(authServiceUrl+'/login', req.body);
+    const authResponse = await axios.post(authServiceUrl + '/login', req.body);
     res.json(authResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
+
 // **Generar la pregunta de cara a que la use GameService**
 app.post('/api/question/new', async (req, res) => {
-  try{
+  try {
     console.log("Generando pregunta...")
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
-  }catch (error) {
+  } catch (error) {
     console.log("Error al generar la pregunta: ", error.message);
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
 
@@ -78,7 +97,7 @@ app.post('/api/question/new', async (req, res) => {
 app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
-    const userResponse = await axios.post(userServiceUrl+'/adduser', req.body);
+    const userResponse = await axios.post(userServiceUrl + '/adduser', req.body);
     console.log(userResponse)
     res.json(userResponse.data);
   } catch (error) {
@@ -88,7 +107,7 @@ app.post('/adduser', async (req, res) => {
 
 app.post('/api/user/editUser', verifyToken, async (req, res) => {
   try {
-    const editResponse = await axios.post(userServiceUrl+'/editUser', req.body);
+    const editResponse = await axios.post(userServiceUrl + '/editUser', req.body);
     res.json(editResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -98,7 +117,7 @@ app.post('/api/user/editUser', verifyToken, async (req, res) => {
 app.post('/askllm', async (req, res) => {
   try {
     // Forward the add user request to the user service
-    const llmResponse = await axios.post(llmServiceUrl+'/ask', req.body);
+    const llmResponse = await axios.post(llmServiceUrl + '/ask', req.body);
     res.json(llmResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -106,14 +125,14 @@ app.post('/askllm', async (req, res) => {
 });
 
 // **Iniciar una nueva partida**
-app.post('/api/game/start', verifyToken, async (req, res) => {
+app.post('/api/game/new', generateCacheId, async (req, res) => {
   try {
     console.log("Iniciando una nueva partida...");
-    const initBd = await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body,{
-      headers: { Authorization: req.headers["authorization"] }});
-    req.body.userId = req.user.userId;
-    const gameResponse = await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
-    res.json(gameResponse.data);
+    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+
+    await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
+
+    res.json({ cacheId: req.body.cacheId });
   } catch (error) {
     console.error("Error al iniciar el juego:", error.message);
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error iniciando juego' });
@@ -121,14 +140,10 @@ app.post('/api/game/start', verifyToken, async (req, res) => {
 });
 
 // **Obtener la siguiente pregunta de la partida**
-app.post('/api/game/question', verifyToken, async (req, res) => {
+app.post('/api/game/question', async (req, res) => {
   try {
     console.log("Solicitando la siguiente pregunta...");
-    req.body.userId = req.user.userId;
-    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body,
-      {
-        headers: { Authorization: req.headers["authorization"] }}
-    );
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
     res.json(questionResponse.data);
   } catch (error) {
     console.error("Error al obtener la siguiente pregunta:", error.message);
@@ -137,12 +152,12 @@ app.post('/api/game/question', verifyToken, async (req, res) => {
 });
 
 // **Finalizar el juego y guardar los datos**
-app.post('/api/game/end',verifyToken,  async (req, res) => {
+app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
   try {
     console.log("Finalizando y guardando el juego...");
-    req.body.userId = req.user.userId;
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body,{
-      headers: { Authorization: req.headers["authorization"] }});
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body, {
+      headers: { Authorization: req.headers["authorization"] }
+    });
     res.json(endResponse.data);
   } catch (error) {
     console.error("Error al finalizar el juego:", error.message);
@@ -154,48 +169,45 @@ app.post('/api/game/end',verifyToken,  async (req, res) => {
 
 // Información sobre la partida para el historial (con verificación de token)
 app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
-    try {
-        console.log("Generando histórico sobre partida");
+  try {
+    console.log("Generando histórico sobre partida");
+    console.log("UserId:", req.body.user.userId);
+    console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
+    console.log("Body:", req.body);
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
+      headers: { Authorization: req.headers["authorization"] }
+    });
 
-        req.body.userId = req.user.userId;
-        console.log("UserId:", req.body.userId);
-        console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
-        console.log("Body:", req.body);
-        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
-            headers: { Authorization: req.headers["authorization"] }
-        });
+    res.json(endResponse.data);
+  } catch (error) {
+    console.error("Error al generar el histórico de partida:", error.message);
+    res.status(500).json({ message: "Internal server error" });
 
-        res.json(endResponse.data);
-    } catch (error) {
-        console.error("Error al generar el histórico de partida:", error.message);
-        res.status(500).json({ message: "Internal server error" });
-        
-    }
+  }
 });
 
 // Información sobre las preguntas de una partida para el historial (con verificación de token)
 app.post('/api/game/history/gameQuestions', verifyToken, async (req, res) => {
-    try {
-        console.log("Generando histórico sobre preguntas de una partida");
-        req.body.userId = req.user.userId;
+  try {
+    console.log("Generando histórico sobre preguntas de una partida");
 
-        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body, {
-            headers: { Authorization: req.headers["authorization"] } 
-        });
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body, {
+      headers: { Authorization: req.headers["authorization"] }
+    });
 
-        res.json(endResponse.data);
-    } catch (error) {
-        console.error("Error al generar el histórico de preguntas:", error.message);
-        res.status(500).json({ message: "Internal server error" });
-    }
+    res.json(endResponse.data);
+  } catch (error) {
+    console.error("Error al generar el histórico de preguntas:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
 // **Generar la pregunta de cara a que la use GameService**
 app.post('/api/question/new', async (req, res) => {
-  try{
+  try {
     console.log("Generando pregunta...")
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
-  }catch (error) {
+  } catch (error) {
     console.log("Error al generar la pregunta: ", error.message);
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
 
@@ -221,7 +233,7 @@ app.post('/askllm/clue', async (req, res) => {
        * @returns {string} - A prompt for the user to guess the name without revealing it, in the specified language.
        */
       let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
-      let llmResponse = await axios.post(llmServiceUrl+'/ask', { question, model });
+      let llmResponse = await axios.post(llmServiceUrl + '/ask', { question, model });
 
       const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
       const normalizedName = normalizeString(name.toLowerCase());
@@ -243,7 +255,7 @@ app.post('/askllm/clue', async (req, res) => {
        * @returns {string} A fallback question prompting the user to respond briefly in the specified language.
        */
       let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
-      let fallbackResponse = await axios.post(llmServiceUrl+'/ask', { question: fallbackQuestion, model });
+      let fallbackResponse = await axios.post(llmServiceUrl + '/ask', { question: fallbackQuestion, model });
       answer = fallbackResponse;
     }
 
@@ -260,7 +272,7 @@ app.post('/askllm/welcome', async (req, res) => {
 
     let model = "gemini";
     let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
-    let answer = await axios.post(llmServiceUrl+'/ask', { question, model });
+    let answer = await axios.post(llmServiceUrl + '/ask', { question, model });
 
     res.json(answer.data);
   } catch (error) {
@@ -269,7 +281,7 @@ app.post('/askllm/welcome', async (req, res) => {
 });
 
 // Read the OpenAPI YAML file synchronously
-const openapiPath='./openapi.yaml'
+const openapiPath = './openapi.yaml'
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
 

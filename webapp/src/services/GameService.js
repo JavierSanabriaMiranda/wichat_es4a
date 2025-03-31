@@ -1,6 +1,7 @@
 import axios from 'axios';
 
     const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
+    var cacheId;
 
     /**
      * Function to calll the API endpoint to get the next question
@@ -9,34 +10,37 @@ import axios from 'axios';
      */
     const getNextQuestion = async () => {
         try {
-            const response = await axios.get(apiEndpoint + '/api/questions');
+            console.log("La cacheId es: " + cacheId);
 
-            const fullStructure =    {
+            const response = await axios.post(apiEndpoint + '/api/game/question', {"cacheId" : cacheId});
+
+            console.log("Hay este número de respuestas: " + response.data.answers.length);
+
+            const fullStructure = {
                 question: {
-                    text: response.data.pregunta,
-                    imageUrl: response.data.imagen,
+                    text: response.data.text,
+                    imageUrl: response.data.imageUrl,
                     topic: ""
                 },
                 answers : [
                     {
-                        text: response.data.respuestas[0].respuesta,
-                        isCorrect: response.data.respuestas[0].correcta
+                        text: response.data.answers[0].text,
+                        isCorrect: response.data.answers[0].isCorrect
                     },
                     {
-                        text: response.data.respuestas[1].respuesta,
-                        isCorrect: response.data.respuestas[1].correcta
+                        text: response.data.answers[1].text,
+                        isCorrect: response.data.answers[1].isCorrect
                     },
                     {
-                        text: response.data.respuestas[2].respuesta,
-                        isCorrect: response.data.respuestas[2].correcta
+                        text: response.data.answers[2].text,
+                        isCorrect: response.data.answers[2].isCorrect
                     },
                     {
-                        text: response.data.respuestas[3].respuesta,
-                        isCorrect: response.data.respuestas[3].correcta
+                        text: response.data.answers[3].text,
+                        isCorrect: response.data.answers[3].isCorrect
                     }
                 ]
             }
-
             return fullStructure;
         } catch (error) {
             console.error("Error al obtener la pregunta:", error);
@@ -95,12 +99,15 @@ import axios from 'axios';
      */
     const configureGame = async (topics, lang) => {
         try {
+            console.log("topics que llegan: " + topics);
+
             const gameConfig = {
                 "topics": topics,
                 "lang": lang
             };
 
-            axios.post(apiEndpoint + '/api/game/new', gameConfig);
+            const response = await axios.post(apiEndpoint + '/api/game/new', gameConfig);
+            cacheId = response.data.cacheId; // Store the cacheId for future requests
         } catch (error) {
             console.error("Error al guardar el juego:", error);
         }

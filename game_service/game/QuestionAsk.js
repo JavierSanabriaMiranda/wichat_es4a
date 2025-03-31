@@ -106,7 +106,7 @@ const requestQuestion = async (topics, lang) => {
             question: question,
             answer: correct,
             imageUrl: image,
-            options: options
+            options: allOptions
         };
 
     } catch (error) {
