@@ -9,6 +9,9 @@ const getUserHistory = async (token) => {
                 Authorization: `Bearer ${token}`,
             }
         });
+        
+        console.log("Response de UserProfileService - getUserHistory:", response.data);
+
         return response.data;
     } catch (error) {
         console.error("Error en UserProfileService - getUserHistory:", error);
@@ -18,11 +21,13 @@ const getUserHistory = async (token) => {
 
 const getQuestionsById = async (gameId) => {
     try {
-        const response = await axios.get(`${apiEndpoint}/api/game/history/gameQuestions`, {
-            headers: {
-                "gameId": gameId
-            }
-        });
+        const content = {
+            "gameId": gameId
+        }
+
+        console.log("Envio este gameId: ", gameId);
+
+        const response = await axios.post(`${apiEndpoint}/api/game/history/gameQuestions`, content);
         return response.data;
     } catch (error) {
         console.error("Error en UserProfileService - getGameHistoryById:", error);

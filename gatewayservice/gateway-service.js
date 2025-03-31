@@ -168,15 +168,16 @@ app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
 
 
 // Información sobre la partida para el historial (con verificación de token)
-app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
+app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
   try {
     console.log("Generando histórico sobre partida");
     console.log("UserId:", req.body.user.userId);
     console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
     console.log("Body:", req.body);
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
-      headers: { Authorization: req.headers["authorization"] }
-    });
+
+    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
 
     res.json(endResponse.data);
   } catch (error) {
@@ -187,13 +188,13 @@ app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
 });
 
 // Información sobre las preguntas de una partida para el historial (con verificación de token)
-app.post('/api/game/history/gameQuestions', verifyToken, async (req, res) => {
+app.post('/api/game/history/gameQuestions', async (req, res) => {
   try {
     console.log("Generando histórico sobre preguntas de una partida");
 
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body, {
-      headers: { Authorization: req.headers["authorization"] }
-    });
+    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body)
 
     res.json(endResponse.data);
   } catch (error) {

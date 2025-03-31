@@ -29,7 +29,7 @@ const gamePlayedSchema = new Schema({
     {
       text: { type: String, required: true },
       imageUrl: { type: String, default: "" },
-      selectedAnswer: { type: String, required: true },
+      selectedAnswer: { type: String, required: false },
       answers: [
         {
           text: { type: String, required: true },

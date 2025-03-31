@@ -45,7 +45,7 @@ export const UserProfile = () => {
 
     const getGameQuestionsByGameId = async (game) => {
         setSelectedGame(game);
-        getQuestionsById(game.gameId).then((response) => {
+        getQuestionsById(game._id).then((response) => {
             setQuestions(response);
             console.log(response);
         });

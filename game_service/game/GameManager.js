@@ -189,7 +189,7 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         console.log("Request body received:", userId);
 
         const objectId = new mongoose.Types.ObjectId(userId);
-        const games = await GamePlayed.find({ user: objectId }).exec();
+        const games = await GamePlayed.find({ userId: objectId }).exec();
 
 
         if (!games || games.length === 0) {

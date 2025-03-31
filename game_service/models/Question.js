@@ -11,7 +11,7 @@ const questionSchema = new Schema({
     text: { type: String, required: true }, // Enunciado de la pregunta
     imageUrl: { type: String, required: true }, // URL de la imagen asociada a la pregunta
     wasUserCorrect: { type: Boolean, required: false }, // Indica si el usuario respondió correctamente
-    selectedAnswer: { type: String, required: true }, // Respuesta seleccionada por el usuario
+    selectedAnswer: { type: String, required: false }, // Respuesta seleccionada por el usuario
     answers: [
         {
             text: { type: String, required: true }, // Texto de la opción de respuesta
