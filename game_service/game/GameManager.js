@@ -113,7 +113,6 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
-            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
         });
 
         // Save the game to the database
