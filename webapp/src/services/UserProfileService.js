@@ -31,13 +31,18 @@ const getQuestionsById = async (gameId) => {
 
 const changePassword = async (token, currentPassword, newPassword) => {
     try {
-        const response = await axios.post(`${apiEndpoint}/api/user/editUser`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
+        const response = await axios.post(
+            `${apiEndpoint}/api/user/editUser`,
+            {   // Request Body (data)
+                currentPassword,
+                newPassword
             },
-            currentPassword,
-            newPassword
-        });
+            {   // Options (including headers)
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            }
+        );
         return response.data;
     } catch (error) {
         console.error("Error en UserProfileService - changePassword:", error);
