@@ -106,26 +106,19 @@ const privateKey = "tu_clave_secreta";
 
 // Middleware para verificar el token
 const verifyToken = (req, res, next) => {
-    //const token = req.headers["authorization"];
-    const payload = { userId: "1234" }; // Puedes usar cualquier valor como userId
-    const token = jwt.sign(payload, privateKey, { expiresIn: "1h" }); // Establece el tiempo de expiración
-
-    console.log("Token generado:", token);
-    
-    if (!token) {
-        return res.status(403).json({ message: "A token is required for authentication" });
+  const token = req.headers["authorization"]?.split(" ")[1]; // Obtener el token del encabezado de autorización
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
+  jwt.verify(token, privateKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
-
-    try {
-        const decoded = jwt.verify(token, privateKey);
-        req.user = decoded;  // Guardamos el userId en req.user
-        console.log(req.user);
-        console.log(req.user.userId);
-        next();  // Continuamos con la siguiente función
-    } catch (err) {
-        return res.status(401).json({ message: "Invalid Token" });
-    }
+    req.user = decoded; // Guardar la información del usuario decodificada en la solicitud
+    next(); // Continuar con la siguiente función de middleware o ruta
+  });
 };
+
 
 // Información sobre la partida para el historial (con verificación de token)
 app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
@@ -133,7 +126,9 @@ app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
         console.log("Generando histórico sobre partida");
 
         req.body.userId = req.user.userId;
-
+        console.log("UserId:", req.body.userId);
+        console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
+        console.log("Body:", req.body);
         const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
             headers: { Authorization: req.headers["authorization"] }
         });
@@ -142,6 +137,7 @@ app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
     } catch (error) {
         console.error("Error al generar el histórico de partida:", error.message);
         res.status(500).json({ message: "Internal server error" });
+        
     }
 });
 
