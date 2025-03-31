@@ -158,7 +158,7 @@ export const EditUser = ({ userName }) => {
             </Form>
 
             {/* Modal de confirmación */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('modal-title-edit-profile')}</Modal.Title>
                 </Modal.Header>
