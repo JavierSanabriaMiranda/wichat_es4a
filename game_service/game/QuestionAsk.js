@@ -76,7 +76,7 @@ const requestQuestion = async (topics, lang) => {
     console.log("Que me llega", lang);
     try {
         // Realiza la solicitud POST a la API con los datos en el body
-        const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, lang, topics);
+        const res = await axios.post(`${gatewayServiceUrl}api/question/new`, lang, topics);
         // Realiza la solicitud a la API externa
         const { question, correct, image, options } = res.data;
         // Validate that the response has the expected structure
@@ -94,11 +94,15 @@ const requestQuestion = async (topics, lang) => {
         allOptions.sort(() => Math.random() - 0.5);
 
         // Return the question in the correct format
+        console.log("Pregunta", question);
+        console.log("Respuesta correcta", correct);
+        console.log("Imagen", image);
+        console.log("Opciones", options);
         return {
             question: question,
             answer: correct,
             imageUrl: image,
-            options: allOptions
+            options: options
         };
 
     } catch (error) {

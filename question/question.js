@@ -179,7 +179,7 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  * 
  * @returns {Object} - A JSON response with the generated question and options if successful, or an error message if not
  */
-app.post('/api/questions/generate', async (req, res) => {
+app.post('/api/question/generate', async (req, res) => {
   try {
     const lang = "es";
     const hardcodedTopics = ["geography", "character"];
@@ -206,7 +206,7 @@ const server = app.listen(port, async () => {
 
   //Test (temporary)
   try {
-    const testUrl = `http://localhost:${port}/api/questions/generate`;
+    const testUrl = `http://localhost:${port}/api/question/generate`;
     const response = await fetch(testUrl, {
       method: 'POST',
       headers: {
