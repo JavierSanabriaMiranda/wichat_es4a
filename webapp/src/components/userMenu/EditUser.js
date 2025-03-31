@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useContext } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
+import { changePassword } from '../../services/UserProfileService.js';
+import AuthContext from '../contextProviders/AuthContext.js';
 import i18n from '../../i18n/i18next.js';
-
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const EditUser = ({ userName }) => {
     const { t } = useTranslation();
+    const { user, token } = useContext(AuthContext);
     
     // Estados para los campos
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [currentPassword, setCurrentPassword] = useState('');
     const [error, setError] = useState('');
     const [showModal, setShowModal] = useState(false);
+    
 
     /**
      * Función para validar que las contraseñas coincidan
@@ -41,14 +43,8 @@ export const EditUser = ({ userName }) => {
         const hasNumber = /[0-9]/.test(password);
         const hasNoSpaces = !/\s/.test(password);
 
-        if (!hasUpperCase) {
-            return t('password-error-uppercase');
-        }
-        if (!hasNumber) {
-            return t('password-error-number');
-        }
-        if (!hasNoSpaces) {
-            return t('password-error-no-spaces');
+        if (!hasUpperCase || !hasNumber || !hasNoSpaces) {
+            return t('password-error-content');
         }
 
         return ''; 
@@ -71,14 +67,17 @@ export const EditUser = ({ userName }) => {
         if (!validatePasswords()) return;
 
         try {
-            
-            // TODO Petición a la API para actualizar la contraseña
+            const response = await changePassword(token , currentPassword, password);
+            if(response.success === false) {
+                setError(response.error); // Error en la actualización por causa del usuario
+                return;
+            }
 
-            setShowModal(true); // Muestra el modal de confirmación
+            setShowModal(response.success); // Muestra el modal de confirmación
             setPassword('');
             setConfirmPassword('');
         } catch (error) {
-            setError(t('password-update-failure')); // Error en la actualización
+            setError(t('password-update-failure')); // Error en la actualización por causa del servidor
         }
     };
 
@@ -118,6 +117,17 @@ export const EditUser = ({ userName }) => {
                     </Form.Text>
                 </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formCurrentPassword">
+                    <Form.Label>{t('current-password')}</Form.Label>
+                    <Form.Control 
+                        type="password" 
+                        placeholder={t('password-placeholder')} 
+                        value={currentPassword} 
+                        onChange={e => setCurrentPassword(e.target.value)}
+                        required
+                    />
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>{t('password-edit')}</Form.Label>
                     <Form.Control 
@@ -148,7 +158,7 @@ export const EditUser = ({ userName }) => {
             </Form>
 
             {/* Modal de confirmación */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{t('modal-title-edit-profile')}</Modal.Title>
                 </Modal.Header>

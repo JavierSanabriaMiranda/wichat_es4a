@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
 import Timer from './Timer';
@@ -9,8 +9,10 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useNavigate } from 'react-router-dom';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { getNextQuestion } from '../../services/GameService';
-import { useConfig } from './GameConfigProvider';
+import { getNextQuestion, saveGame, configureGame } from '../../services/GameService';
+import { useConfig } from '../contextProviders/GameConfigProvider';
+import { use } from 'react';
+import AuthContext from '../contextProviders/AuthContext';
 
 
 /**
@@ -23,8 +25,9 @@ export const Game = () => {
 
     // Game configuration
     const { config } = useConfig();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
 
     const questionTime = config.timePerRound; // Get the question time from the configuration
     const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
@@ -49,9 +52,14 @@ export const Game = () => {
     // and answers (an array of objects with text and isCorrect)
     const [questionResults, setQuestionResults] = useState([]);
     const [numberOfQuestionsAnswered, setNumberOfQuestionsAnswered] = useState(0);
+    // State that stores if the user requested to exit the game. It is used to avoid errors that happen when the user
+    // tries to exit the game while other actions are being performed in the background.
+    const [exitRequested, setExitRequested] = useState(false);
+    const [blockButtons, setBlockButtons] = useState(false);
 
+    // Function that will be called when the timer reaches 0
     const onTimeUp = () => {
-        blockAnswerButtons();
+        setBlockButtons(true);
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
@@ -69,34 +77,56 @@ export const Game = () => {
                 numOfWrongAnswers: wrongAnswers,
                 numOfNotAnswered: notAnswered
             }));
-    
-            setTimeout( () => {
-                navigate('/game/results')} , 2000); // Wait 2 seconds before navigating to the results screen
+
+            // If there's a user authenticated, the game will be saved in the database
+            if (token) {
+                saveGame(token, questionResults, numberOfQuestions, correctAnswers, "normal", points)
+                    .catch(err => {
+                        console.error("Error saving game:", err)
+                    })
+                    .finally(() => {
+                        setTimeout(() => {
+                            navigate('/game/results');
+                        }, 1000); // Espera 1 segundo antes de navegar
+                    });
+            }
+            // If there's no user authenticated, the game will not be saved in the database
+            else {
+                setTimeout(() => {
+                    navigate('/game/results');
+                }, 1000); // Espera 1 segundo antes de navegar
+            }
+
         }
-    }, [questionResults]);  
+    }, [questionResults]);
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
+
         if (numberOfQuestionsAnswered === numberOfQuestions) {
             return;
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
 
-       
+        console.log("VOY A PEDIR LA SIGUIENTE PREGUNTA")
         getNextQuestion().then((questionInfo) => {
-            setIsLoading(false);
+
+            console.log("La pregunta es: " + questionInfo.question);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
-            unblockAnswerButtons();
+            setBlockButtons(false);
+            setIsLoading(false);
         }
         );
-        
+
     }
 
-    // UseEffect to call getNextQuestion on initial render
+    // UseEffect to send the information to configure the game and ask for the first question
     useEffect(() => {
-        askForNextQuestion();
+        configureGame(topics, i18n.language).then(() => {
+            askForNextQuestion();
+        })
     }, []); // Empty dependency array means this effect runs only once on mount
 
     /**
@@ -152,7 +182,7 @@ export const Game = () => {
      * @param {boolean} wasUserCorrect - True if the user was correct, false otherwise.
      */
     const answerQuestion = (wasUserCorrect, selectedAnswer) => {
-        blockAnswerButtons();
+        setBlockButtons(true);
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
@@ -161,7 +191,7 @@ export const Game = () => {
             setWrongAnswers(wrongAnswers + 1);
         }
         addQuestionResult(wasUserCorrect, selectedAnswer);
-        
+
         setStopTimer(true);
 
         setTimeout(() => {
@@ -177,7 +207,7 @@ export const Game = () => {
      */
     const addQuestionResult = (wasUserCorrect, selectedAnswer) => {
         setQuestionResults([...questionResults, {
-            "topic": question.topic,
+            "text": question.text,
             "imageUrl": question.imageUrl,
             "wasUserCorrect": wasUserCorrect,
             "selectedAnswer": selectedAnswer,
@@ -197,7 +227,7 @@ export const Game = () => {
     }
 
     const passQuestion = () => {
-        blockAnswerButtons()
+        setBlockButtons(true);
         setNotAnswered(notAnswered + 1);
         addQuestionResult(false, null);
         setTimeout(() => askForNextQuestion(), 1000); // Wait 1 second before showing the next question
@@ -207,21 +237,12 @@ export const Game = () => {
      * Function that prepares the UI for the next question resetting the timer and the answer buttons.
      */
     const prepareUIForNextQuestion = () => {
+        setBlockButtons(true);
         setGameKey(gameKey + 1);
         setIsLoading(true);
-        setQuestion({text: t('question-generation-message'), imageUrl: ""});
-        setAnswers([{text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}, {text: "...", isCorrect: false}]);
+        setQuestion({ text: t('question-generation-message'), imageUrl: "" });
+        setAnswers([{ text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }, { text: "...", isCorrect: false }]);
         setStopTimer(true);
-    }
-
-    const blockAnswerButtons = () => {
-        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = true);
-        document.querySelector(".pass-button").disabled = true;
-    }
-
-    const unblockAnswerButtons = () => {
-        document.querySelectorAll("[class^='answer-button-']").forEach(button => button.disabled = false);
-        document.querySelector(".pass-button").disabled = false;
     }
 
     /**
@@ -242,8 +263,17 @@ export const Game = () => {
      * Function that exits the game without saving the progress.
      */
     const exitFromGame = () => {
-        navigate('/');
+        if (!isLoading)
+            navigate('/');
+        else
+            setExitRequested(true);
     }
+
+    useEffect(() => {
+        if (exitRequested && !isLoading) {
+            navigate('/');
+        }
+    }, [exitRequested, isLoading]);
 
     /**
      * Finds the correct answer from a list of answers.
@@ -258,6 +288,9 @@ export const Game = () => {
         <main className='game-screen' key={gameKey}>
             <div className='timer-div'>
                 <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
+            </div>
+            <div className='game-questions-answered'>
+                <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
@@ -287,6 +320,7 @@ export const Game = () => {
                             answerText={answer.text}
                             isCorrectAnswer={answer.isCorrect}
                             answerAction={answerQuestion}
+                            isDisabled={blockButtons}
                         />
                     ))}
 
@@ -296,7 +330,7 @@ export const Game = () => {
                 <LLMChat name={correctAnswer} />
             </aside>
             <div className="pass-button-div">
-                <button className="pass-button" onClick={passQuestion}>{t('pass-button-text')}</button>
+                <Button className="pass-button" onClick={passQuestion} disabled={blockButtons} >{t('pass-button-text')}</Button>
             </div>
             {/* Modal to ask the user if he really wants to exit the game */}
             <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>

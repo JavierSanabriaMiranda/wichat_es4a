@@ -3,12 +3,22 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./auth-model')
+const rateLimit = require('express-rate-limit');
 const { check, matchedData, validationResult } = require('express-validator');
 const app = express();
 const port = 8002; 
 
 // Middleware to parse JSON in request body
 app.use(express.json());
+
+// Middleware to limit the number of login attempts per IP
+const loginLimiter = rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 5, // Max of 5 failed attempts per IP
+  message: { error: 'Too many login attempts, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
@@ -24,7 +34,7 @@ function validateRequiredFields(req, requiredFields) {
 }
 
 // Route for user login
-app.post('/login',  [
+app.post('/login', loginLimiter,  [
   check('username').isLength({ min: 3 }).trim().escape(),
   check('password').isLength({ min: 3 }).trim().escape()
 ],async (req, res) => {
@@ -48,7 +58,7 @@ app.post('/login',  [
       // Generate a JWT token
       const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' });
       // Respond with the token and user information
-      res.json({ token: token, username: username, createdAt: user.createdAt });
+      res.json({ token: token, username: username, createdAt: user.createdAt, id: user._id });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
     }

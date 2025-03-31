@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,9 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ResultSectorChart } from './ResultSectorChart';
 import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
-import { useLocation, useNavigate} from 'react-router-dom';
-import { GameConfigProvider } from '../game/GameConfigProvider';
-import Configuration  from '../home/Configuration';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
+import Configuration from '../home/Configuration';
 import { use } from "i18next";
 
 
@@ -30,36 +30,32 @@ export const GameResults = () => {
     const navigate = useNavigate();
     const [showConfig, setShowConfig] = useState(false);
 
-    const { questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered } = storedResults;  
+    const { questions, points, numOfCorrectAnswers, numOfWrongAnswers, numOfNotAnswered } = storedResults;
 
     if (!storedResults) return <p>No game data</p>;
 
-    
-
-    
-
     return (
-        <Container fluid >
+        <Container fluid className="game-results-container">
             <Row className="justify-content-md-center text-center">
-                <Col lg={1} xs={1} className="d-flex justify-content-center">
+                <Col lg={5} xs={5} className="d-flex justify-content-center align-items-center">
                     <h2 className="finalPoints">{points}pts</h2>
                 </Col>
+                <Col lg={6} xs={6} className="d-flex align-items-center">
+                    <h2 className="game-details-title">{t("game-details-text")}</h2>
+                </Col>
             </Row>
-            <Row className="justify-content-md-center">
-                <Col lg={2}>
+            <Row className="d-flex justify-content-md-center align-items-center">
+                <Col lg={5}>
                     <ResultSectorChart
                         correctAnswers={numOfCorrectAnswers}
                         wrongAnswers={numOfWrongAnswers}
                         notAnswered={numOfNotAnswered}
                     />
                 </Col>
-            </Row>
-            <Row className="justify-content-md-center">
-                <Col lg={6}>
-                <h2 className="game-details-title">{t("game-details-text")}</h2>
-                <div className="game-details">
-                    <QuestionAccordion questions={questions} />
-                </div>
+                <Col lg={6} xs={6} >
+                    <div className="game-details">
+                        <QuestionAccordion questions={questions} />
+                    </div>
                 </Col>
             </Row>
             <Row className="justify-content-md-center">
@@ -76,6 +72,6 @@ export const GameResults = () => {
             }
         </Container>
 
-        
+
     );
 }

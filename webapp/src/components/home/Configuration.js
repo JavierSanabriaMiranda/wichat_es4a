@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CloseButton from "react-bootstrap/CloseButton";
 import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
 import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import { useNavigate } from "react-router-dom";
-import { useConfig } from "../game/GameConfigProvider";
+import { useConfig } from "../contextProviders/GameConfigProvider";
 
 const Configuration = ({ onClose }) => {
 
@@ -20,7 +21,7 @@ const Configuration = ({ onClose }) => {
   const [selectedButtons, setSelectedButtons] = useState([]);
   const [topics, setTopics] = useState([]);
 
-  const topicList = ["history", "science", "art", "sport", "geography"];
+  const topicList = ["history", "entertainment", "art", "sport", "geography"];
 
   const navigate = useNavigate();
 
@@ -62,10 +63,17 @@ const Configuration = ({ onClose }) => {
     navigate('/game', { state: { questionTime: time } })
   }
 
+  /**
+   * Effect to reset the configuration when the component is mounted
+   */
+  useEffect(() => {
+    resetConfig();
+  }, []);
+
   return (
     <div className="overlay">
       <div className="config-container">
-        <GoXCircle onClick={handleClose} className="close-icon" />
+        <CloseButton onClick={handleClose} className="close-icon" />
         <h2 className="title">{t("title-configuration")}</h2>
         <div className="config-option">
           <label>{t("numberQuestions-configuration")}</label>
@@ -106,12 +114,12 @@ const Configuration = ({ onClose }) => {
                 {t("history-configuration")}
               </ToggleButton>
               <ToggleButton
-                id="science"
+                id="entertainment"
                 value={2}
                 className={`toggle-btn-science ${selectedButtons.includes(2) ? "selected" : ""}`}
                 onClick={() => handleButtonClick(2)}
               >
-                {t("science-configuration")}
+                {t("entertainment-configuration")}
               </ToggleButton>
               <ToggleButton
                 id="art"
@@ -142,7 +150,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
+        <Button disabled={topics.length === 0} className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useTranslation } from 'react-i18next';
 import { askClue } from '../../services/LLMService';
 import { Typewriter } from "react-simple-typewriter";
+import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
@@ -14,6 +17,7 @@ const LLMChat = ({ name }) => {
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
+
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -40,12 +44,12 @@ const LLMChat = ({ name }) => {
 
         // Activa estado de carga para deshabilitar la entrada mientras se espera la respuesta
         setLoading(true);
-        
+
         try {
-            const response = await askClue({ 
-                name: name, 
-                userQuestion: inputValue, 
-                language: i18n.language 
+            const response = await askClue({
+                name: name,
+                userQuestion: inputValue,
+                language: i18n.language
             });
             console.log("Respuesta del LLM:", response.data.answer);
             const llmMsg = (
@@ -69,7 +73,7 @@ const LLMChat = ({ name }) => {
         } finally {
             setLoading(false);
         }
-        
+
         setInputValue(''); // Cleaning the input field
     };
 
@@ -78,8 +82,7 @@ const LLMChat = ({ name }) => {
     };
 
     return (
-        <div className="llm-chat">
-            <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+        <Card className="llm-chat" bg={'light'}>
             <Scrollbars
                 style={{ width: '100%', height: '100%' }}
                 autoHide // Oculta el scroll cuando no se usa
@@ -94,12 +97,39 @@ const LLMChat = ({ name }) => {
             >
                 <div className="llm-chat-messages">
                     {messages.map((msg, index) => (
-                        <div key={index}>{msg}</div>
+                        <Row>
+                            {msg.props.className === "llm-message" ? (
+                                <>
+                                    <Col md={2}>
+                                        <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                                    </Col>
+                                    <Col md={8}>
+                                        {msg}
+                                    </Col>
+                                </>
+                            ) : (
+                                <>
+                                    <Col md={4}>
+                                    </Col>
+                                    <Col md={8}>
+                                        {msg}
+                                    </Col>
+
+                                </>
+                            )}
+                        </Row>
                     ))}
                     {loading && (
-                        <p className="llm-message loading">
-                            <span className="question-loading">{t('llm-chat-loading-msg')}</span>
-                        </p>
+                        <Row>
+                            <Col md={2}>
+                                <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                            </Col>
+                            <Col md={8}>
+                                <p className="llm-message loading">
+                                    <span className="question-loading">{t('llm-chat-loading-msg')}</span>
+                                </p>
+                            </Col>
+                        </Row>
                     )}
                 </div>
             </Scrollbars>
@@ -117,8 +147,8 @@ const LLMChat = ({ name }) => {
                     <img src="/send-message.png" alt="Enviar" />
                 </button>
             </form>
-        </div>
-    );
-};
+        </Card>
+    )
+}
 
 export default LLMChat;

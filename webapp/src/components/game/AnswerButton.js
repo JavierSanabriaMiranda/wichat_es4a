@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 
 /**
  * React component to represent an answer in the game that can be wrong or correct.
  * @param {String} answerText - The text of the answer.
  * @param {Boolean} isCorrectAnswer - A flag to indicate if the answer is correct or not.
  * @param {Function} answerAction - The function to execute when the answer is clicked.
+ * @param {Boolean} isDisabled - A flag to indicate if the button is disabled or not.
  * 
  * @returns A button with the answer text that changes its style when it is clicked.
  */
-const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
+const AnswerButton = ({answerText, isCorrectAnswer, answerAction, isDisabled}) => {
 
     const [wasSelected, setWasSelected] = useState(false);
 
@@ -23,7 +25,7 @@ const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
     }
 
     return (
-        <button onClick={handleClick} className={buttonClassName} >
+        <Button onClick={handleClick} className={buttonClassName} variant="none" disabled={isDisabled}>
             <div className="answer-button-content">
             {answerText}
             {wasSelected && (
@@ -34,7 +36,7 @@ const AnswerButton = ({answerText, isCorrectAnswer, answerAction}) => {
                 />
             )}
             </div>
-        </button>
+        </Button>
     )
 }
 

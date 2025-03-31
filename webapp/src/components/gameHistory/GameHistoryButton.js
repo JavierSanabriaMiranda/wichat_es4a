@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
@@ -12,7 +12,7 @@ import { Calendar, CheckCircle } from 'lucide-react';
  * This component represents the button with the game info that appears on the user's profile.
  * Clicking on it will show the history of the game it describes.
  */
-export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date, onClick}  ) => {
+export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date, onClick, gameMode}  ) => {
 
     const { t } = useTranslation();
 

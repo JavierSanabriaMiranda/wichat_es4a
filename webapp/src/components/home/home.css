@@ -1,27 +1,71 @@
-/* Estilos para home */
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.home-heading, .home-subheading, .app-name {
+  font-family: 'Roboto', sans-serif;
+  font-size: 40px;
+}
+
 .home-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background: linear-gradient(135deg, #F3F4F6, #B8C6D8); 
+  transition: background 1s ease-in-out; 
 }
-  
+
+.home-container:hover {
+  background: linear-gradient(135deg, #B8C6D8, #F3F4F6); 
+}
+
 .home-heading {
   text-align: center;
   font-weight: bold;
   margin-top: 2rem;
   color: #5D6C89;
-}
-  
-.home-subheading {
-  color: #5D6C89; 
+  letter-spacing: 1px;
+  animation: fadeIn 2s ease-out; 
 }
 
-.app-name{
-  color: #5D6C89; 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-  
+
+.home-subheading {
+  color: #5D6C89;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeInSubheading 2s ease-out forwards 0.5s; 
+}
+
+@keyframes fadeInSubheading {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+.icon {
+  font-size: 40px; 
+  margin: 0.5rem;
+  color: #5D6C89;
+}
+
 .home-buttons {
   margin-top: 1rem;
   display: flex;
@@ -29,15 +73,27 @@
   gap: 1rem;
 }
 
-.game-options{
+.game-options {
   background-color: #5D6C89;
   color: #FBF6F3;
   border: none;
-}
-  
-.game-options:hover{
-  background-color: #36D6E7;
-  color: #FBF6F3;
-  border: none;
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  transition: all 0.3s ease-in-out; 
 }
 
+.game-options:hover {
+  background-color: #36D6E7;
+  color: #FBF6F3;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-4px); 
+  transition: all 0.3s ease-in-out;
+}
+
+.game-options:active {
+  transform: translateY(2px); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
