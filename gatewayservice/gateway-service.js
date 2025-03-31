@@ -1,16 +1,16 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const promBundle = require('express-prom-bundle');
-const GameSession = require('../facade/GameSession');
+import express from 'express';
+import axios  from 'axios';
+import cors from  'cors';
+import promBundle  from 'express-prom-bundle';
+
 
 //libraries required for OpenAPI-Swagger
-const swaggerUi = require('swagger-ui-express'); 
-const fs = require("fs")
-const YAML = require('yaml')
+import swaggerUi from 'swagger-ui-express'; 
+import fs from "fs";
+import YAML from 'yaml';
 
 // Utils
-const { getLanguage, normalizeString } = require('./gateway-service-utils');
+import { getLanguage, normalizeString } from './gateway-service-utils.js';
 
 const app = express();
 const port = 8000;
@@ -18,6 +18,9 @@ const port = 8000;
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
+const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
+const questionServiceUrl = process.env.QUESTION_SERVICE_URL || 'http://localhost:8004';
+
 
 app.use(cors());
 app.use(express.json());
@@ -26,7 +29,7 @@ app.use(express.json());
 const metricsMiddleware = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 const privateKey = "your-secret-key";
 
 // Middleware para verificar el token
@@ -44,6 +47,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
@@ -56,6 +60,18 @@ app.post('/login', async (req, res) => {
     res.json(authResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+// **Generar la pregunta de cara a que la use GameService**
+app.post('/api/question/new', async (req, res) => {
+  try{
+    console.log("Generando pregunta...")
+    const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
+    res.json(endResponse.data);
+  }catch (error) {
+    console.log("Error al generar la pregunta: ", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
+
   }
 });
 
@@ -89,14 +105,100 @@ app.post('/askllm', async (req, res) => {
   }
 });
 
-// Endpoint to get a question from the Wikidata service
-app.get('/api/questions', async (req, res) => {
-  const gameSession = new GameSession.default("user123", ["geography", "history"], "easy");
-  const question = await gameSession.playQuestions();
-  if (question) {
-      res.json(question);
-  } else {
-      res.status(500).json({ error: "No se pudo obtener la pregunta" });
+// **Iniciar una nueva partida**
+app.post('/api/game/start', verifyToken, async (req, res) => {
+  try {
+    console.log("Iniciando una nueva partida...");
+    const initBd = await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body,{
+      headers: { Authorization: req.headers["authorization"] }});
+    req.body.userId = req.user.userId;
+    const gameResponse = await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
+    res.json(gameResponse.data);
+  } catch (error) {
+    console.error("Error al iniciar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error iniciando juego' });
+  }
+});
+
+// **Obtener la siguiente pregunta de la partida**
+app.post('/api/game/question', verifyToken, async (req, res) => {
+  try {
+    console.log("Solicitando la siguiente pregunta...");
+    req.body.userId = req.user.userId;
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body,
+      {
+        headers: { Authorization: req.headers["authorization"] }}
+    );
+    res.json(questionResponse.data);
+  } catch (error) {
+    console.error("Error al obtener la siguiente pregunta:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error obteniendo la pregunta' });
+  }
+});
+
+// **Finalizar el juego y guardar los datos**
+app.post('/api/game/end',verifyToken,  async (req, res) => {
+  try {
+    console.log("Finalizando y guardando el juego...");
+    req.body.userId = req.user.userId;
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body,{
+      headers: { Authorization: req.headers["authorization"] }});
+    res.json(endResponse.data);
+  } catch (error) {
+    console.error("Error al finalizar el juego:", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error finalizando el juego' });
+  }
+});
+
+
+
+// Información sobre la partida para el historial (con verificación de token)
+app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
+    try {
+        console.log("Generando histórico sobre partida");
+
+        req.body.userId = req.user.userId;
+        console.log("UserId:", req.body.userId);
+        console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
+        console.log("Body:", req.body);
+        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body, {
+            headers: { Authorization: req.headers["authorization"] }
+        });
+
+        res.json(endResponse.data);
+    } catch (error) {
+        console.error("Error al generar el histórico de partida:", error.message);
+        res.status(500).json({ message: "Internal server error" });
+        
+    }
+});
+
+// Información sobre las preguntas de una partida para el historial (con verificación de token)
+app.post('/api/game/history/gameQuestions', verifyToken, async (req, res) => {
+    try {
+        console.log("Generando histórico sobre preguntas de una partida");
+        req.body.userId = req.user.userId;
+
+        const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body, {
+            headers: { Authorization: req.headers["authorization"] } 
+        });
+
+        res.json(endResponse.data);
+    } catch (error) {
+        console.error("Error al generar el histórico de preguntas:", error.message);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+// **Generar la pregunta de cara a que la use GameService**
+app.post('/api/question/new', async (req, res) => {
+  try{
+    console.log("Generando pregunta...")
+    const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
+    res.json(endResponse.data);
+  }catch (error) {
+    console.log("Error al generar la pregunta: ", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
+
   }
 });
 
@@ -105,7 +207,7 @@ app.post('/askllm/clue', async (req, res) => {
   try {
     const { name, userQuestion, language } = req.body;
 
-    let model = "empathy";
+    let model = "gemini";
     let attempts = 0;
     let answer = "idk";
 
@@ -151,6 +253,21 @@ app.post('/askllm/clue', async (req, res) => {
   }
 });
 
+// Endpoint to get a welcome message from the LLM service
+app.post('/askllm/welcome', async (req, res) => {
+  try {
+    const { name, language } = req.body;
+
+    let model = "gemini";
+    let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
+    let answer = await axios.post(llmServiceUrl+'/ask', { question, model });
+
+    res.json(answer.data);
+  } catch (error) {
+    res.status(error.response.status).json({ error: error.response.data.error });
+  }
+});
+
 // Read the OpenAPI YAML file synchronously
 const openapiPath='./openapi.yaml'
 if (fs.existsSync(openapiPath)) {
@@ -173,4 +290,4 @@ const server = app.listen(port, () => {
   console.log(`Gateway Service listening at http://localhost:${port}`);
 });
 
-module.exports = server
+export default server;
