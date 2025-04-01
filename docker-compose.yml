@@ -44,8 +44,7 @@ services:
     profiles: ["dev", "prod"]
     env_file:
       - .env
-    build: 
-      context: ./llmservice
+    build: ./llmservice
     ports:
       - "8003:8003"
     networks:
@@ -55,8 +54,7 @@ services:
     container_name: questionservice-wichat_es4a
     image: ghcr.io/arquisoft/wichat_es4a/question:latest
     profiles: ["dev", "prod"]
-    build: 
-      context: ./question
+    build: ./question
     ports:
       - "8004:8004"
     networks:
@@ -66,8 +64,7 @@ services:
     container_name: gameservice-wichat_es4a
     image: ghcr.io/arquisoft/wichat_es4a/game:latest
     profiles: ["dev", "prod"]
-    build: 
-      context: ./game_service
+    build: ./game_service
     ports:
       - "8005:8005"
     networks:
