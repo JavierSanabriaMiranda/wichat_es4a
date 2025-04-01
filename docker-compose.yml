@@ -107,17 +107,10 @@ services:
     profiles: ["dev", "prod"]
     build:
       context: ./webapp
-      args:
-        API_URI: "http://gatewayservice:8000"
     depends_on:
       - gatewayservice
     ports:
       - "3000:3000"
-<<<<<<< HEAD
-=======
-    environment:
-      - REACT_APP_API_ENDPOINT: http://gatewayservice:8000
->>>>>>> 47881b5f727bfdedaa7ee130f9b1f8af948dbcc5
 
   prometheus:
     image: prom/prometheus
