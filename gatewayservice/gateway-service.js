@@ -201,18 +201,6 @@ app.post('/api/game/history/gameQuestions', async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-// **Generar la pregunta de cara a que la use GameService**
-app.post('/api/question/new', async (req, res) => {
-  try {
-    console.log("Generando pregunta...")
-    const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
-    res.json(endResponse.data);
-  } catch (error) {
-    console.log("Error al generar la pregunta: ", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
-
-  }
-});
 
 // Endpoint to get a clue from the LLM service
 app.post('/askllm/clue', async (req, res) => {

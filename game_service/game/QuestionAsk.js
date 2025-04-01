@@ -71,13 +71,12 @@ const getCurrentQuestion = async (userId) => {
  * @throws {Error} - Throws an error if the external API response is not in the expected format.
  */
 const requestQuestion = async (topics, lang) => {
-    let gatewayServiceUrl = process.env.GATEWAY_SERVICE || "http://localhost:8000/";
+    let gatewayServiceUrl = process.env.GATEWAY_SERVICE || "http://localhost:8000";
     console.log("Que me llega", topics);
     console.log("Que me llega", lang);
     try {
         // Realiza la solicitud POST a la API con los datos en el body
-       
-        const res = await axios.post(`${gatewayServiceUrl}api/question/new`, {
+        const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
             topics: topics,   // Incluyendo 'topics' en el cuerpo
             lang: lang        // Incluyendo 'lang' en el cuerpo
         });
