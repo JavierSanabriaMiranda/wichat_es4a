@@ -21,7 +21,7 @@ dotenv.config();
 const connect = async () => {
   try {
     // Getting the MongoDB connection URL from the environment variable, or using a local default if not provided
-    const dbUrl = process.env.DB_URL || "mongodb://mongodb:27017/bd";
+    const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/bd";
     console.log("🚀 Conectando a MongoDB en:", dbUrl);
 
     // Attempt to connect to MongoDB with mongoose
