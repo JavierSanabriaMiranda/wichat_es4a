@@ -204,22 +204,6 @@ app.post('/api/question/generate', async (req, res) => {
  */
 const server = app.listen(port, async () => {
   console.log(`Question Service listening at http://localhost:${port}`);
-
-  //Test (temporary)
-  try {
-    const testUrl = `http://localhost:${port}/api/question/generate`;
-    const response = await fetch(testUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const result = await response.json();
-    console.log('Test API Response:', result);
-  } catch (error) {
-    console.error("Error haciendo la solicitud a la API:", error);
-  }
-
 });
 
 export default server;

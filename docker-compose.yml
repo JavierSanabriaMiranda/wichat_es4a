@@ -44,8 +44,7 @@ services:
     profiles: ["dev", "prod"]
     env_file:
       - .env
-    build: 
-      context: ./llmservice
+    build: ./llmservice
     ports:
       - "8003:8003"
     networks:
@@ -55,8 +54,7 @@ services:
     container_name: questionservice-wichat_es4a
     image: ghcr.io/arquisoft/wichat_es4a/question:latest
     profiles: ["dev", "prod"]
-    build: 
-      context: ./question
+    build: ./question
     ports:
       - "8004:8004"
     networks:
@@ -64,19 +62,15 @@ services:
 
   gameservice:
     container_name: gameservice-wichat_es4a
-    image: ghcr.io/arquisoft/wichat_es4a/game:latest
+    image: ghcr.io/arquisoft/wichat_es4a/game_service:latest
     profiles: ["dev", "prod"]
-    build: 
-      context: ./game_service
-    depends_on:
-      - questionservice
+    build: ./game_service
     ports:
       - "8005:8005"
     networks:
       - mynetwork
     environment:
-      QUESTION_SERVICE_URL: http://questionservice:8004
-      MONGODB_URI: mongodb://mongodb:27017/gamebd
+      DB_URL: mongodb://mongodb:27017/bd
 
   gatewayservice:
     container_name: gatewayservice-wichat_es4a
