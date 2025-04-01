@@ -24,8 +24,6 @@ const ObjectId = mongoose.Types.ObjectId;
 const NodeCache = require("node-cache");
 const gameCache = new NodeCache();
 
-const privateKey = process.env.JWT_SECRET || "ChangeMePlease!!!!";
-
 
 /**
  * Creates a new game for the user and stores the values in cache.
