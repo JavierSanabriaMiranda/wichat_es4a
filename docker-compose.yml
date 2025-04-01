@@ -62,7 +62,7 @@ services:
 
   gameservice:
     container_name: gameservice-wichat_es4a
-    image: ghcr.io/arquisoft/wichat_es4a/game:latest
+    image: ghcr.io/arquisoft/wichat_es4a/game_service:latest
     profiles: ["dev", "prod"]
     build: ./game_service
     ports:
