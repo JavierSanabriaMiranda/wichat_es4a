@@ -6,7 +6,7 @@ WORKDIR /app
 #Install the dependencies
 RUN npm install --omit=dev
 
-ARG API_URI="http://gatewayservice:8000"
+ARG API_URI="http://localhost:8000"
 ENV REACT_APP_API_ENDPOINT=$API_URI
 
 
