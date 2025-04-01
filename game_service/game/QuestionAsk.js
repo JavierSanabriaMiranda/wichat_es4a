@@ -71,7 +71,7 @@ const getCurrentQuestion = async (userId) => {
  * @throws {Error} - Throws an error if the external API response is not in the expected format.
  */
 const requestQuestion = async (topics, lang) => {
-    let gatewayServiceUrl = process.env.GATEWAY_SERVICE || "http://host.docker.internal:8000/";
+    let gatewayServiceUrl = process.env.GATEWAY_SERVICE || "http://localhost:8000/";
     console.log("Que me llega", topics);
     console.log("Que me llega", lang);
     try {
