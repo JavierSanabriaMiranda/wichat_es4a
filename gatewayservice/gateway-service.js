@@ -261,7 +261,8 @@ app.post('/askllm/clue', async (req, res) => {
 
     res.json(answer.data);
   } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
+    console.log("Error al generar la pista: ", error.message);
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pista' });
   }
 });
 
