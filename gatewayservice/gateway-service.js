@@ -125,10 +125,13 @@ app.post('/askllm', async (req, res) => {
 
 // **Iniciar una nueva partida**
 app.post('/api/game/new', generateCacheId, async (req, res) => {
+  console.log("Estoy en gateway-service.js");
   try {
+    console.log("Llamando a:", `${gameServiceUrl}/api/connectMongo`);
     console.log("Iniciando una nueva partida...");
     await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
 
+    console.log("Llamando a:", `${gameServiceUrl}/api/game/new`);
     await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
 
     res.json({ cacheId: req.body.cacheId });
@@ -140,6 +143,7 @@ app.post('/api/game/new', generateCacheId, async (req, res) => {
 
 // **Obtener la siguiente pregunta de la partida**
 app.post('/api/game/question', async (req, res) => {
+  console.log("Estoy en gateway-service.js y el apiEndpoint es: " + gameServiceUrl + '/api/game/question');
   try {
     console.log("Solicitando la siguiente pregunta...");
     const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);

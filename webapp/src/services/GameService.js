@@ -12,6 +12,7 @@ import axios from 'axios';
         try {
             console.log("La cacheId es: " + cacheId);
 
+            console.log("Estoy en GameService.js y el apiEndpoint es: " + apiEndpoint + '/api/game/question');
             const response = await axios.post(apiEndpoint + '/api/game/question', {"cacheId" : cacheId});
 
             console.log("Hay este número de respuestas: " + response.data.answers.length);
@@ -98,6 +99,7 @@ import axios from 'axios';
      * @param {"es" | "en"} lang language selected for the game questions
      */
     const configureGame = async (topics, lang) => {
+        console.log("Estoy en GameService.js y el apiEndpoint es: " + apiEndpoint + '/api/game/new');
         try {
             console.log("topics que llegan: " + topics);
 

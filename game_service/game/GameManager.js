@@ -33,6 +33,7 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
+    console.log("Estoy en el GameManager.js y llamo a la función newGame() de GameManager.js");
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
@@ -66,6 +67,7 @@ const next = async (req, res) => {
 
         const { topics, lang } = cacheData;
 
+        console.log("Estoy en el GameManager.js y llamo a la función requestQuestion() de QuestionAsk.js");
         // Call requestQuestion without saving anything to the database
         const questionRaw = await requestQuestion(topics, lang);
         console.log("Question raw:", questionRaw);

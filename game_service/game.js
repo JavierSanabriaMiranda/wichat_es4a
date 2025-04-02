@@ -62,6 +62,7 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS) to handle reques
  * @body {Object} req.body - Request body should include data to start a new game.
  */
 app.post('/api/game/new', (req, res) => {
+  console.log("Estoy en game.js y llamo a la función newGame() de GameManager.js");
   console.log('Iniciando un nuevo juego...');
   newGame(req, res); // Executes the function when the request is received
 });
@@ -72,6 +73,7 @@ app.post('/api/game/new', (req, res) => {
  * @body {Object} req.body - Request body should include data about the current game and player.
  */
 app.post('/api/game/next', (req, res) => {
+  console.log("Estoy en GameService.js y llamo a la función next() de GameManager.js");
   console.log('Obteniendo la siguiente pregunta...');
   next(req, res); // Executes the function when the request is received
 });

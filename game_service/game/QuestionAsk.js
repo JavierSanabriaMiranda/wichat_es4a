@@ -75,6 +75,7 @@ const requestQuestion = async (topics, lang) => {
     console.log("Que me llega", topics);
     console.log("Que me llega", lang);
     try {
+        console.log("Estoy en QuestionAsk.js y el endpoint es: " + gatewayServiceUrl + '/api/question/new');
         // Realiza la solicitud POST a la API con los datos en el body
         const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
             topics: topics,   // Incluyendo 'topics' en el cuerpo
