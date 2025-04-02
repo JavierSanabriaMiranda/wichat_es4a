@@ -80,6 +80,8 @@ function filterUnique(results, label, limit) {
 async function executeQuery(query) {
   const offset = Math.floor(Math.random() * 100); // Generate a random offset between 0 and 99
   const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
+
+  console.log("Ejecutando consulta SPARQL: ", finalQuery);
   
   const response = await fetch(url, {
     method: "POST",

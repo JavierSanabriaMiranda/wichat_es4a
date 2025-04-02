@@ -83,13 +83,16 @@ app.post('/login', async (req, res) => {
 // **Generar la pregunta de cara a que la use GameService**
 app.post('/api/question/new', async (req, res) => {
   try {
+    console.log("Estoy en gateway-service.js y el apiEndpoint es: " + questionServiceUrl + '/api/question/generate');
     console.log("Generando pregunta...")
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
   } catch (error) {
     console.log("Error al generar la pregunta: ", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pregunta' });
-
+    res.status(error.response?.status || 500).json({
+      error: error.response?.data?.error || 'Error al generar la pregunta',
+      details: error.response?.data || {}
+    });
   }
 });
 
