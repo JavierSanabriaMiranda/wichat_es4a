@@ -131,13 +131,3 @@ resource "aws_instance" "my_instance" {
         Name = "WiChat_Instance"
     }
 }
-
-# Asigna una IP elástica y la asocia con la instancia EC2
-resource "aws_eip" "my_eip" {
-    domain    = "vpc"
-    instance = aws_instance.my_instance.id
-
-    lifecycle {
-      prevent_destroy = true
-    }
-}
