@@ -74,7 +74,6 @@ services:
       - mynetwork
     environment:
       DB_URL: mongodb://mongodb:27017/bd
-      GATEWAY_SERVICE: http://gatewayservice:8000
     depends_on:
       - mongodb
       - gatewayservice
