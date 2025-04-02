@@ -124,7 +124,7 @@ export const Game = () => {
 
     // UseEffect to send the information to configure the game and ask for the first question
     useEffect(() => {
-        configureGame(topics, i18n.language).then(() => {
+        configureGame(topics, i18n.language.split('-')[0]).then(() => {
             askForNextQuestion();
         })
     }, []); // Empty dependency array means this effect runs only once on mount
