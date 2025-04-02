@@ -140,6 +140,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           workdir: game_service
+          buildargs: API_URI
 
   docker-push-gatewayservice:
     name: Push gateway service Docker Image to GitHub Packages
