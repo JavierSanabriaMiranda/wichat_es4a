@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
+ARG API_URI="http://localhost:8000"
+ENV GATEWAY_SERVICE=$API_URI
+
 # Copy the app source code to the working directory
 COPY . .
 
