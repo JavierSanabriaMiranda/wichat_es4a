@@ -23,9 +23,13 @@ app.use(express.json());  // Middleware para leer JSON en las solicitudes
  * This would return all the templates related to "geography" in Spanish.
  */
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  const filePath = path.resolve(__dirname, 'question_template.json');
+  const __dirname = path.resolve();
+  const filePath = path.join(__dirname, 'question_template.json');
+
+  console.log("Ruta del archivo:", filePath);
+  if (!fs.existsSync(filePath)) {
+    throw new Error('El archivo question_template.json no se encuentra');
+  }
 
   const data = fs.readFileSync(filePath, 'utf-8');
   const templates = JSON.parse(data);
