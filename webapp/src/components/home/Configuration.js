@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useConfig } from "../contextProviders/GameConfigProvider";
 
 const Configuration = ({ onClose }) => {
