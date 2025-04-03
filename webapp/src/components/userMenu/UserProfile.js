@@ -14,7 +14,7 @@ import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
 
 
@@ -54,7 +54,7 @@ export const UserProfile = () => {
 
     return (
         <main>
-            <NavBar />
+            <NavBar hasPadding={true}/>
             {/* Cabecera */}
             <div className="w-95vw text-center p-3 mt-5" style={{ backgroundColor: '#5D6C89', color: '#FEB06A' }}>
                 <h2>{t('welcome-message')} <span className="fw-bold">{user?.username || ''}</span></h2>
@@ -81,7 +81,7 @@ export const UserProfile = () => {
                                 <EditUser userName={user?.username || ''} />
                             </Tab.Pane>
                             <Tab.Pane eventKey="history">
-                            <div style={{ maxHeight: '70vh', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                            <div style={{ maxHeight: '60vh', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
                                     {!selectedGame ? (
                                         //Mostrar la lista de partidas si NO hay partida seleccionada
                                         <>

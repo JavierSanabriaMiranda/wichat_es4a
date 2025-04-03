@@ -6,7 +6,7 @@ import LLMChat from './LLMChat';
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Spinner from 'react-bootstrap/Spinner';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion, saveGame, configureGame } from '../../services/GameService';
