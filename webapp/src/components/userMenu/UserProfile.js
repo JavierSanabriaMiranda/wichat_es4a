@@ -14,7 +14,7 @@ import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
 
 

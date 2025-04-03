@@ -6,7 +6,7 @@ import i18n from "../i18n/i18next";
 import { useTranslation } from "react-i18next";
 import Rules from "./Rules"; 
 import "./nav.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
 
 
