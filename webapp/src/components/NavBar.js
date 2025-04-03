@@ -1,22 +1,38 @@
-import React, { useState, useContext } from "react";
-import { Navbar, Nav, Container, Dropdown , Modal, Button} from "react-bootstrap";
+import React, { useState, useContext, useEffect } from "react";
+import { Navbar, Nav, Container, Dropdown, Modal, Button } from "react-bootstrap";
 import { VscAccount } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
 import i18n from "../i18n/i18next";
 import { useTranslation } from "react-i18next";
-import Rules from "./Rules"; 
+import Rules from "./Rules";
 import "./nav.css";
 import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
 
 
-const NavBar = () => {
+const NavBar = ({hasPadding}) => {
   const { t } = useTranslation();
 
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [showRules, setShowRules] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  /**
+   * Hook to set the padding-top of the body when the NavBar is visible and the 
+   * hasPadding prop is true.
+   */
+  useEffect(() => {
+
+    if (hasPadding) {
+      // Sets the padding-top of the body to the height of the navbar
+      document.body.style.paddingTop = "56px";
+    }
+    // Clears the padding-top when the component is unmounted
+    return () => {
+      document.body.style.paddingTop = "0";
+    };
+  }, []);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -33,7 +49,7 @@ const NavBar = () => {
 
   return (
     <>
-      <Navbar expand="lg" fixed="top" className="navbar-custom w-500">
+      <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom w-500">
         <Nav.Link onClick={() => navigate("/")} className="navbar-logo">
           <img src={"/images/logo.png"} alt="Logo" className="navbar-logo" />
         </Nav.Link>
@@ -61,7 +77,7 @@ const NavBar = () => {
               {t("rules-menu")}
             </Nav.Link>
 
-            {/* Mostrar opciones según si hay un token en sessionStorage */}
+            {/* Shows if there's a token in authcontext */}
             {token ? (
               <>
                 <Nav.Link onClick={() => navigate("/user")} className="icon-menu"><VscAccount size={30} /></Nav.Link>
@@ -78,7 +94,7 @@ const NavBar = () => {
       </Navbar>
 
       <Rules show={showRules} handleClose={() => setShowRules(false)} />
-        
+
       <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{t("logout-message")}</Modal.Title>
