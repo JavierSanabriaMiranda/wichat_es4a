@@ -25,23 +25,16 @@ app.use(express.json());  // Middleware para leer JSON en las solicitudes
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
   const __dirname = path.resolve();
   const filePath = path.join(__dirname, 'question_template.json');
-
-  console.log("Ruta del archivo:", filePath);
   if (!fs.existsSync(filePath)) {
     throw new Error('El archivo question_template.json no se encuentra');
   }
-
   const data = fs.readFileSync(filePath, 'utf-8');
   const templates = JSON.parse(data);
-
   const topicsArray = Array.isArray(topics) ? topics : [topics];
-
   const filteredTemplates = templates.filter(template =>
   topicsArray.some(topic => template.topics.includes(topic))
   );
-
   const filteredTemplatesLanguage = filteredTemplates.filter(template => template.lang === lang);
-
   return filteredTemplatesLanguage; 
 }
 
@@ -60,7 +53,6 @@ function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
 function filterUnique(results, label, limit) {
   const uniqueResults = [];
   const seenValues = new Set();
-
   for (const result of results) {
     if (result[label]?.value && !seenValues.has(result[label].value)) {
       seenValues.add(result[label].value);
@@ -84,9 +76,6 @@ function filterUnique(results, label, limit) {
 async function executeQuery(query) {
   const offset = Math.floor(Math.random() * 100); // Generate a random offset between 0 and 99
   const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
-
-  console.log("Ejecutando consulta SPARQL: ", finalQuery);
-  
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -95,9 +84,7 @@ async function executeQuery(query) {
     },
     body: finalQuery
   });
-
   const data = await response.json(); // Parse the response from the API
-
   // Filter and return 4 unique results by their labels
   return filterUnique(data.results.bindings, "label", 4);
 }
@@ -129,9 +116,6 @@ async function generateQuestion(topics, lang) {
   // If there are results, generate the question with its options(correct and false ones)
   if (results.length > 0) {
     const filteredResults = generateQuestionWithOptions(results, "label", "image", randomTemplate);
-    console.log("Final Results:");
-    console.log(JSON.stringify(filteredResults, null, 2));
-
     return filteredResults;
   }
   // If no results found, return an empty array to avoid errors
@@ -187,12 +171,10 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  */
 app.post('/api/question/generate', async (req, res) => {
   try {
-    
     const topics = req.body.topics;
     const lang = req.body.lang;
-    console.log("Que me llega", topics);
-    console.log("Que me llega", lang);
     const questionData = await generateQuestion(topics, lang);
+    
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });
     }
