@@ -8,8 +8,8 @@ const Rules = ({ show, handleClose }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal show={show} onHide={handleClose} centered>
-      <Modal.Header closeButton className = "close-icon-rules">
+    <Modal show={show} onHide={handleClose} centered dialogClassName="rules-modal">
+      <Modal.Header closeButton className="close-icon-rules">
         <Modal.Title>{t("rules-title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -18,6 +18,7 @@ const Rules = ({ show, handleClose }) => {
         <p>{t("rules-content-3")}</p>
       </Modal.Body>
     </Modal>
+
   );
 };
 

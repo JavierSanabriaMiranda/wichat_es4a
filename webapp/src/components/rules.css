@@ -1,13 +1,29 @@
-.modal-content {
+.rules-modal .modal-content {
   background-color: #5D6C89;
-  border-radius: 0.5em;
-  padding: 1em; 
-  color: white;
-  font-family: Arial, sans-serif;
-  width: 70%;
-  max-width: 20em; 
-  margin: auto;
+  border-radius: 12px;
+  padding: 1.5em;
+  color: #FBF6F3;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 600px;
 }
+
+.rules-modal .modal-header {
+  border-bottom: 1px solid #FBF6F3;
+}
+
+.rules-modal .modal-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #FBF6F3;
+}
+
+.rules-modal .modal-body p {
+  margin-bottom: 1em;
+  line-height: 1.5;
+}
+
 
 
 
