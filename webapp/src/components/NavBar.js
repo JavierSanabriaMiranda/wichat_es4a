@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
 
 
-const NavBar = ({hasPadding}) => {
+const NavBar = ({ hasPadding }) => {
   const { t } = useTranslation();
 
   const { token } = useContext(AuthContext);
@@ -49,12 +49,13 @@ const NavBar = ({hasPadding}) => {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom w-500">
-        <Nav.Link onClick={() => navigate("/")} className="navbar-logo">
-          <img src={"/images/logo.png"} alt="Logo" className="navbar-logo" />
-        </Nav.Link>
-        <Container>
-          <Nav className="ms-auto">
+      <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom">
+        <Container fluid className="navbar-inner-container">
+          <Nav.Link onClick={() => navigate("/")} className="navbar-logo">
+            <img src={"/images/logo.png"} alt="Logo" className="navbar-logo" />
+          </Nav.Link>
+
+          <Nav className="ms-auto d-flex align-items-center">
             <Dropdown align="end">
               <Dropdown.Toggle
                 variant="link"
@@ -77,7 +78,6 @@ const NavBar = ({hasPadding}) => {
               {t("rules-menu")}
             </Nav.Link>
 
-            {/* Shows if there's a token in authcontext */}
             {token ? (
               <>
                 <Nav.Link onClick={() => navigate("/user")} className="icon-menu"><VscAccount size={30} /></Nav.Link>
