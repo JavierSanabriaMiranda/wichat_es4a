@@ -17,9 +17,44 @@ const LLMChat = ({ name }) => {
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
-
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
+
+    /**
+     * Converts a text message into speech and plays it aloud.
+     *
+     * @param {string} message - The message to be spoken aloud.
+     */
+    const writeAndspeakLoudTheMessage = (message) => {
+        return (
+            <Typewriter
+              words={[message]}
+              delaySpeed={100}
+              typeSpeed={50}
+              onLoopDone={speakLoudTheMessage(message)}
+            />
+        );
+        
+    };
+
+    const speakLoudTheMessage = (message) => {
+        const utterance = new SpeechSynthesisUtterance(message);
+        const voices = speechSynthesis.getVoices();
+
+        const desiredLang = i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : i18n.language;
+        const voice = voices.find((voice) => voice.lang === desiredLang) || voices[0];
+
+        utterance.lang = desiredLang;
+        utterance.voice = voice;
+        utterance.volume = 1.0;
+
+        console.log("Idioma asignado:", utterance.lang, "Voz usada:", voice ? voice.name : "default", "Volumen:", utterance.volume);
+
+        speechSynthesis.speak(utterance);
+    }
+
+
+
 
     /**
      * This function handles the submit of a message, sending it to the chat.
@@ -46,19 +81,20 @@ const LLMChat = ({ name }) => {
         setLoading(true);
 
         try {
-            const response = await askClue({
-                name: name,
-                userQuestion: inputValue,
-                language: i18n.language
+            const response = await askClue({ 
+                name: name, 
+                userQuestion: inputValue, 
+                language: i18n.language 
             });
+            console.log(i18n.language);
             console.log("Respuesta del LLM:", response.data.answer);
             const llmMsg = (
                 <p className="llm-message" key={`llm-${messages.length}`}>
-                    <Typewriter
-                        words={[response.data.answer]}
-                        delaySpeed={100}
-                        typeSpeed={50}
-                    />
+                    {writeAndspeakLoudTheMessage(response.data.answer)}
+
+
+
+
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, llmMsg]);
@@ -66,7 +102,7 @@ const LLMChat = ({ name }) => {
             console.error("Error enviando mensaje:", error);
             const errorMsg = (
                 <p className="llm-message error" key={`error-${messages.length}`}>
-                    {t('llm-chat-error-msg')}
+                    {writeAndspeakLoudTheMessage(t('llm-chat-error-msg'))}
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, errorMsg]);
