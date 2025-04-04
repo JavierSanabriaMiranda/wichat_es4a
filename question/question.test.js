@@ -40,7 +40,7 @@ describe('Question Service', () => {
       .send({ topics: ['geography'], lang: 'es' });
 
     expect(response.statusCode).toBe(404);
-    expect(response.body.token).toBe(undefined);
+    expect(response.body.question).toBe(undefined);
   });
 
   it('should handle errors gracefully', async () => {
@@ -49,7 +49,7 @@ describe('Question Service', () => {
       .send({ topics: ['error'], lang: 'es' });
 
     expect(response.statusCode).toBe(500);
-    expect(response.body.token).toBe(undefined);
+    expect(response.body.question).toBe(undefined);
   });
 
 });
