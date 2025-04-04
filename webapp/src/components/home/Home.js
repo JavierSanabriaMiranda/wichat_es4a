@@ -20,7 +20,7 @@ export const Home = () => {
       <h1 className="home-heading">
         {t("welcome-home")} <span className="app-name">WiChat</span>
       </h1>
-      <p className="home-subheading">{t("hello-home")}</p>
+      
       <div className="home-buttons">
         <Button size="lg" className="game-options" onClick={() => setShowConfig(true)}>
           {t("quickGame-home")}
