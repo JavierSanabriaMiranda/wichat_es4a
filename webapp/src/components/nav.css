@@ -94,3 +94,60 @@
 .rules-menu:active {
   color: #FEB06A !important; 
 }
+
+@media (max-width: 992px) {
+  .navbar-custom {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    align-items: center;
+    height: auto; 
+    padding: 10px 15px;
+    overflow: visible; 
+    gap: 10px; 
+  }
+
+  .navbar-custom .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-logo {
+    height: 60px;
+    width: auto;
+    margin-right: auto;
+  }
+
+  .navbar-custom .nav {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: flex-end;
+    gap: 8px; 
+  }
+
+  .navbar-custom .nav-link, 
+  .navbar-custom .dropdown-language {
+    font-size: 14px; 
+    padding: 5px;
+    white-space: nowrap; 
+  }
+
+  .navbar-custom .icon-menu svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .navbar-custom .dropdown-menu {
+    position: absolute;
+    background-color: #5D6C89;
+    border: none;
+    width: auto;
+  }
+}
+
+
+
+
