@@ -41,7 +41,7 @@ const newGame = async (req, res) => {
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
         console.log(`Game data saved in cache for cacheId ${cacheId}:`, {topics, lang });
-        res.status(200).send();
+        res.status(200).send("Game data created successfully.");
     } catch (error) {
         console.error("Error creating a new game:", error);
         res.status(500).json({ error: "Internal server error" });
