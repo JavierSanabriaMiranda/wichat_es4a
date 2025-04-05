@@ -73,10 +73,10 @@ const NavBar = ({ hasPadding }) => {
 
               {token ? (
                 <>
-                  <Nav.Link onClick={() => navigate("/user")} className="icon-menu">
+                  <Nav.Link onClick={() => navigate("/user")} className="icon-menu" data-testid="user-icon">
                     <VscAccount size={30} />
                   </Nav.Link>
-                  <Nav.Link className="icon-menu" onClick={handleLogout}>
+                  <Nav.Link className="icon-menu" onClick={handleLogout} data-testid="logout-icon">
                     <GoSignOut size={30} />
                   </Nav.Link>
                 </>
