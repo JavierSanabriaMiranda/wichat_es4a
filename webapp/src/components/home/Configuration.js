@@ -73,7 +73,7 @@ const Configuration = ({ onClose }) => {
   return (
     <div className="overlay">
       <div className="config-container">
-        <CloseButton onClick={handleClose} className="close-icon" />
+      <CloseButton onClick={handleClose} className="close-icon" aria-label="Close configuration" />
         <h2 className="title">{t("title-configuration")}</h2>
         <div className="config-option">
           <label>{t("numberQuestions-configuration")}</label>
