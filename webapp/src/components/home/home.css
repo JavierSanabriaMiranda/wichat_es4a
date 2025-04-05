@@ -4,8 +4,12 @@ body {
 
 .home-heading, .home-subheading, .app-name {
   font-family: 'Roboto', sans-serif;
-  font-size: 3vw; 
+  font-size: 3em; 
   font-weight: bold;
+}
+
+.app-name {
+  font-size: 1em
 }
 
 .home-container {
