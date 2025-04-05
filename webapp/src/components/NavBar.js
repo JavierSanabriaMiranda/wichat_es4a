@@ -9,8 +9,7 @@ import "./nav.css";
 import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
 
-
-const NavBar = ({hasPadding}) => {
+const NavBar = ({ hasPadding }) => {
   const { t } = useTranslation();
 
   const { token } = useContext(AuthContext);
@@ -18,21 +17,14 @@ const NavBar = ({hasPadding}) => {
   const [showRules, setShowRules] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  /**
-   * Hook to set the padding-top of the body when the NavBar is visible and the 
-   * hasPadding prop is true.
-   */
   useEffect(() => {
-
     if (hasPadding) {
-      // Sets the padding-top of the body to the height of the navbar
       document.body.style.paddingTop = "56px";
     }
-    // Clears the padding-top when the component is unmounted
     return () => {
       document.body.style.paddingTop = "0";
     };
-  }, []);
+  }, [hasPadding]);
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
@@ -49,47 +41,53 @@ const NavBar = ({hasPadding}) => {
 
   return (
     <>
-      <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom w-500">
-        <Nav.Link onClick={() => navigate("/")} className="navbar-logo">
-          <img src={"/images/logo.png"} alt="Logo" className="navbar-logo" />
-        </Nav.Link>
-        <Container>
-          <Nav className="ms-auto">
-            <Dropdown align="end">
-              <Dropdown.Toggle
-                variant="link"
-                id="dropdown-language"
-                className="dropdown-language"
-              >
-                {t("language-menu")}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => changeLanguage("es")}>
-                  {t("spanish-menu")}
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => changeLanguage("en")}>
-                  {t("english-menu")}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+      <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom">
+        <Container fluid className="navbar-inner-container">
+          <Navbar.Brand onClick={() => navigate("/")} className="navbar-logo" style={{ cursor: 'pointer' }}>
+            <img src={"/images/logo.png"} alt="Logo" className="navbar-logo" />
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="ms-auto d-flex align-items-center">
+              <Dropdown align="end">
+                <Dropdown.Toggle
+                  variant="link"
+                  id="dropdown-language"
+                  className="dropdown-language"
+                >
+                  {t("language-menu")}
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => changeLanguage("es")}>
+                    {t("spanish-menu")}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeLanguage("en")}>
+                    {t("english-menu")}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
 
-            <Nav.Link className="rules-menu" onClick={() => setShowRules(true)}>
-              {t("rules-menu")}
-            </Nav.Link>
+              <Nav.Link className="rules-menu" onClick={() => setShowRules(true)}>
+                {t("rules-menu")}
+              </Nav.Link>
 
-            {/* Shows if there's a token in authcontext */}
-            {token ? (
-              <>
-                <Nav.Link onClick={() => navigate("/user")} className="icon-menu"><VscAccount size={30} /></Nav.Link>
-                <Nav.Link className="icon-menu" onClick={handleLogout}><GoSignOut size={30} /></Nav.Link>
-              </>
-            ) : (
-              <>
-                <Nav.Link onClick={() => navigate("/login")} className="icon-menu">LogIn</Nav.Link>
-                <Nav.Link onClick={() => navigate("/addUser")} className="icon-menu">Sign Up</Nav.Link>
-              </>
-            )}
-          </Nav>
+              {token ? (
+                <>
+                  <Nav.Link onClick={() => navigate("/user")} className="icon-menu">
+                    <VscAccount size={30} />
+                  </Nav.Link>
+                  <Nav.Link className="icon-menu" onClick={handleLogout}>
+                    <GoSignOut size={30} />
+                  </Nav.Link>
+                </>
+              ) : (
+                <>
+                  <Nav.Link onClick={() => navigate("/login")} className="icon-menu">LogIn</Nav.Link>
+                  <Nav.Link onClick={() => navigate("/addUser")} className="icon-menu">Sign Up</Nav.Link>
+                </>
+              )}
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 
@@ -110,5 +108,3 @@ const NavBar = ({hasPadding}) => {
 };
 
 export default NavBar;
-
-
