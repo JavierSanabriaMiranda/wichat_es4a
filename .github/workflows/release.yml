@@ -12,7 +12,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
+      - run: npm --prefix users/authservice ci
+      - run: npm --prefix users/userservice ci
+      - run: npm --prefix llmservice ci
+      - run: npm --prefix questionservice ci
+      - run: npm --prefix gameservice ci
+      - run: npm --prefix gatewayservice ci
+      - run: npm --prefix webapp ci -- --legacy-peer-deps
+      - run: npm --prefix users/authservice test -- --coverage
+      - run: npm --prefix users/userservice test -- --coverage
+      - run: npm --prefix llmservice test -- --coverage
+      - run: npm --prefix questionservice test -- --coverage
+      - run: npm --prefix gameservice test -- --coverage
+      - run: npm --prefix gatewayservice test -- --coverage
+      - run: npm --prefix webapp test -- --coverage
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarqube-scan-action@master
         env:
@@ -25,6 +38,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm --prefix users/authservice install
+      - run: npm --prefix users/userservice install
+      - run: npm --prefix llmservice install
+      - run: npm --prefix questionservice install
+      - run: npm --prefix gameservice install
+      - run: npm --prefix gatewayservice install
+      - run: npm --prefix webapp install
+      - run: npm --prefix webapp run build
+      - run: npm --prefix webapp run test:e2e
   docker-push-webapp:
     name: Push webapp Docker Image to GitHub Packages
     runs-on: ubuntu-latest
@@ -115,11 +137,11 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         with:
-          name: arquisoft/wichat_es4a/question
+          name: arquisoft/wichat_es4a/questionservice
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
-          workdir: question
+          workdir: questionservice
 
   docker-push-gameservice:
     name: Push game service Docker Image to GitHub Packages
@@ -135,11 +157,11 @@ jobs:
         env:
           API_URI: http://${{ secrets.DEPLOY_HOST }}:8000
         with:
-          name: arquisoft/wichat_es4a/game_service
+          name: arquisoft/wichat_es4a/gameservice
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
-          workdir: game_service
+          workdir: gameservice
           buildargs: API_URI
 
   docker-push-gatewayservice:
