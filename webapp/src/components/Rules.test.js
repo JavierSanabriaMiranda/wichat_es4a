@@ -1,15 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Rules from './Rules'; 
+import Rules from './Rules';
 import { TextEncoder } from 'util';
 
 global.TextEncoder = TextEncoder;
 
-
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key) => key, 
+    t: (key) => key,
   }),
 }));
 
@@ -27,8 +26,11 @@ describe('Rules component', () => {
     const handleCloseMock = jest.fn();
     render(<Rules show={true} handleClose={handleCloseMock} />);
 
-    const closeButton = screen.getByRole('button', { name: /close/i }); 
-    await userEvent.click(closeButton);
+    const closeButton = screen.getByRole('button', { name: /close/i });
+
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
     expect(handleCloseMock).toHaveBeenCalled();
   });
