@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { EditUser } from './EditUser';
 import { AuthProvider } from '../contextProviders/AuthContext';
 import { MemoryRouter } from 'react-router';
-import i18n from '../../i18n/i18next';
+import i18n from 'i18next';
 
 const mockAxios = new MockAdapter(axios);
 
