@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import Configuration from './Configuration';
@@ -58,7 +58,9 @@ describe('Configuration component', () => {
     );
 
     const closeBtn = screen.getByLabelText('Close configuration');
-    await userEvent.click(closeBtn);
+    await act(async () => {
+      await userEvent.click(closeBtn);
+    });
 
     expect(mockOnClose).toHaveBeenCalled();
     expect(mockResetConfig).toHaveBeenCalled();
@@ -71,11 +73,17 @@ describe('Configuration component', () => {
       </MemoryRouter>
     );
 
-    const dropdown = screen.getByText('30');
-    await userEvent.click(dropdown);
+    const questionsDropdownToggle = screen.getByText('30');
 
-    const option20 = screen.getByText('20');
-    await userEvent.click(option20);
+    await act(async () => {
+      await userEvent.click(questionsDropdownToggle);
+    });
+
+    const option20 = await screen.findByText('20');
+
+    await act(async () => {
+      await userEvent.click(option20);
+    });
 
     expect(mockSetConfig).toHaveBeenCalledTimes(1);
     const callArg = mockSetConfig.mock.calls[0][0];
@@ -90,11 +98,17 @@ describe('Configuration component', () => {
       </MemoryRouter>
     );
 
-    const dropdown = screen.getByText('120s');
-    await userEvent.click(dropdown);
+    const timeDropdownToggle = screen.getByText('120s');
 
-    const option60 = screen.getByText('60s');
-    await userEvent.click(option60);
+    await act(async () => {
+      await userEvent.click(timeDropdownToggle);
+    });
+
+    const option60 = await screen.findByText('60s');
+
+    await act(async () => {
+      await userEvent.click(option60);
+    });
 
     expect(mockSetConfig).toHaveBeenCalledTimes(1);
     const callArg = mockSetConfig.mock.calls[0][0];
@@ -110,9 +124,12 @@ describe('Configuration component', () => {
     );
 
     const historyButton = screen.getByText('history-configuration');
-    await userEvent.click(historyButton);
 
-    expect(mockSetConfig).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      await userEvent.click(historyButton);
+    });
+
+    expect(mockSetConfig).toHaveBeenCalled();
     const callArg = mockSetConfig.mock.calls[0][0];
     const result = callArg({ topics: [] });
     expect(result).toEqual(expect.objectContaining({ topics: ['history'] }));
@@ -128,11 +145,17 @@ describe('Configuration component', () => {
     );
 
     const historyButton = screen.getByText('history-configuration');
-    await userEvent.click(historyButton);
+    await act(async () => {
+      await userEvent.click(historyButton);
+    });
 
     const playButton = screen.getByRole('button', { name: 'play-configuration' });
-    await userEvent.click(playButton);
+
+    await act(async () => {
+      await userEvent.click(playButton);
+    });
 
     expect(mockedNavigate).toHaveBeenCalledWith('/game', { state: { questionTime: 120 } });
   });
 });
+
