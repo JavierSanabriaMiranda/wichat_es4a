@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { Home } from './Home';
 import i18n from 'i18next';
 import { TextEncoder } from 'util';
-global.TextEncoder = TextEncoder;
 
+global.TextEncoder = TextEncoder;
 
 jest.mock('./Configuration', () => ({ onClose }) => (
   <div>
@@ -16,7 +16,6 @@ jest.mock('./Configuration', () => ({ onClose }) => (
 ));
 
 jest.mock('../NavBar', () => () => <div>Mocked NavBar</div>);
-
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -46,7 +45,9 @@ describe('Home component', () => {
     );
 
     const quickGameButton = screen.getByText('quickGame-home');
-    await userEvent.click(quickGameButton);
+    await act(async () => {
+      await userEvent.click(quickGameButton);
+    });
 
     expect(screen.getByText('Configuration Component')).toBeInTheDocument();
   });
@@ -59,7 +60,9 @@ describe('Home component', () => {
     );
 
     const chaosModeButton = screen.getByText('chaosMode-home');
-    await userEvent.click(chaosModeButton);
+    await act(async () => {
+      await userEvent.click(chaosModeButton);
+    });
 
     expect(screen.getByText('Configuration Component')).toBeInTheDocument();
   });
@@ -72,13 +75,19 @@ describe('Home component', () => {
     );
 
     const quickGameButton = screen.getByText('quickGame-home');
-    await userEvent.click(quickGameButton);
+    await act(async () => {
+      await userEvent.click(quickGameButton);
+    });
 
     expect(screen.getByText('Configuration Component')).toBeInTheDocument();
 
     const closeButton = screen.getByText('Close');
-    await userEvent.click(closeButton);
+    await act(async () => {
+      await userEvent.click(closeButton);
+    });
 
-    expect(screen.queryByText('Configuration Component')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('Configuration Component')).not.toBeInTheDocument();
+    });
   });
 });
