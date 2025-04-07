@@ -5,6 +5,7 @@ import { MemoryRouter } from 'react-router';
 import NavBar from './NavBar';
 import { TextEncoder } from 'util';
 import AuthContext from './contextProviders/AuthContext';
+import i18n from '../i18n/i18next';
 
 global.TextEncoder = TextEncoder;
 
@@ -90,4 +91,24 @@ describe('NavBar component', () => {
     expect(screen.getByText('logout-message')).toBeInTheDocument();
     expect(screen.getByText('confirm-logout')).toBeInTheDocument();
   });
+  
+
+
+  it('changes language when a language is selected', async () => {
+    await renderWithContext();
+
+    const langDropdown = screen.getByText('language-menu');
+    await act(async () => {
+      await userEvent.click(langDropdown);
+    });
+
+    const spanishOption = screen.getByText('spanish-menu');
+    await act(async () => {
+      await userEvent.click(spanishOption);
+    });
+
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('es');
+  });
+
+
 });

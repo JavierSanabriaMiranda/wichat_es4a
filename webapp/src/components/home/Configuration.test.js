@@ -157,5 +157,67 @@ describe('Configuration component', () => {
 
     expect(mockedNavigate).toHaveBeenCalledWith('/game', { state: { questionTime: 120 } });
   });
+
+  it('removes topic from config when deselected', async () => {
+    render(
+      <MemoryRouter>
+        <Configuration onClose={mockOnClose} />
+      </MemoryRouter>
+    );
+  
+    const historyButton = screen.getByText('history-configuration');
+  
+    await act(async () => {
+      await userEvent.click(historyButton);
+    });
+  
+    await act(async () => {
+      await userEvent.click(historyButton);
+    });
+  
+    const lastCallArg = mockSetConfig.mock.calls.at(-1)[0];
+    const result = lastCallArg({ topics: ['history'] });
+    expect(result).toEqual(expect.objectContaining({ topics: [] }));
+  
+    expect(screen.getByRole('button', { name: 'play-configuration' })).toBeDisabled();
+  });
+
+  it('adds multiple topics to config when selected', async () => {
+    render(
+      <MemoryRouter>
+        <Configuration onClose={mockOnClose} />
+      </MemoryRouter>
+    );
+  
+    const historyButton = screen.getByText('history-configuration');
+    const artButton = screen.getByText('art-configuration');
+  
+    await act(async () => {
+      await userEvent.click(historyButton);
+    });
+  
+    let result = mockSetConfig.mock.calls.at(-1)[0]({ topics: [] });
+    expect(result).toEqual(expect.objectContaining({ topics: ['history'] }));
+  
+    await act(async () => {
+      await userEvent.click(artButton);
+    });
+  
+    result = mockSetConfig.mock.calls.at(-1)[0]({ topics: ['history'] });
+    expect(result).toEqual(expect.objectContaining({ topics: ['history', 'art'] }));
+  });
+  
+
+  it('calls resetConfig on mount', () => {
+    render(
+      <MemoryRouter>
+        <Configuration onClose={mockOnClose} />
+      </MemoryRouter>
+    );
+  
+    expect(mockResetConfig).toHaveBeenCalledTimes(1);
+  });
+  
+  
 });
 
