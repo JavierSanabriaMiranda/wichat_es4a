@@ -145,7 +145,7 @@ describe('Game Service', () => {
 
     it("Should return 200 with a valid user ID when requesting user game history", async () => {
         const response = await request(app)
-            .post('/api/game/history')
+            .post('/api/game/history/gameList')
             .send({ user: { userId: '60d0fe4f5311236168a109cf' } });
 
         expect(response.statusCode).toBe(200);
@@ -153,7 +153,7 @@ describe('Game Service', () => {
 
     it("Should return 400 when no user ID is provided for game history", async () => {
         const response = await request(app)
-            .post('/api/game/history')
+            .post('/api/game/history/gameList')
             .send({ user: {} });
 
         expect(response.statusCode).toBe(500);

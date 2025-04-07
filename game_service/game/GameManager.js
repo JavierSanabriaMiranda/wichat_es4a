@@ -103,7 +103,6 @@ const next = async (req, res) => {
 const endAndSaveGame = async (req, res) => {
     try {
         const game = req.body;
-
         // Validate input data
         if (!game.user.userId || !game || !game.questions || !Array.isArray(game.questions)) {
             return res.status(400).send("Missing required fields or invalid data format.");
@@ -122,7 +121,6 @@ const endAndSaveGame = async (req, res) => {
 
         // Save the game to the database
         const savedGame = await newGame.save();
-
         // Save all the questions related to this game
         const questionsToInsert = game.questions.map(q => ({
             text: q.text, // Question text
