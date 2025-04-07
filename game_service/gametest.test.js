@@ -61,7 +61,7 @@ describe('Game Service', () => {
   it('POST /api/game/new → debe crear un nuevo juego', async () => {
     const response = await request(server)
       .post('/api/game/new')
-      .send({ userId: 'user123', mode: 'normal' });
+      .send({ userId: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGQwZmU0ZjUzMTEyMzYxNjhhMTA5Y2YiLCJpYXQiOjE3NDM0MzU4MzB9.fwQo_RE890KKLsG6PvzFIJMae-s9mwiW_jL6VrSYffM', mode: 'normal' });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ success: true, message: 'Nuevo juego creado' });
