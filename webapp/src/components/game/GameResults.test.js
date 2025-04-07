@@ -3,16 +3,24 @@ import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { GameResults } from './GameResults';
 import { MemoryRouter } from 'react-router';
-import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
-import i18n from 'i18next';
 import { AuthProvider } from '../contextProviders/AuthContext';
+import i18n from 'i18next';
 
+// Mock de ResponsiveContainer para evitar el warning de "width(0) and height(0)"
+jest.mock('recharts', () => {
+  const original = jest.requireActual('recharts');
+  return {
+    ...original,
+    ResponsiveContainer: ({ children }) => <div>{children}</div>,
+  };
+});
 
-// Mocking localStorage
+// Mock de localStorage
 const mockLocalStorage = (data) => {
   global.Storage.prototype.getItem = jest.fn(() => JSON.stringify(data));
   global.Storage.prototype.setItem = jest.fn();
 };
+
 describe('GameResults component', () => {
   const renderComponent = () =>
     render(
@@ -44,8 +52,8 @@ describe('GameResults component', () => {
       userEvent.click(playAgainButton);
     });
 
-    const modalButton = screen.getByRole('button', { name: /play again/i }); // Busca el botón del modal
-    expect(modalButton).toBeInTheDocument();  // Verifica que el modal o su contenido esté visible
+    const modalButton = screen.getByRole('button', { name: /play again/i });
+    expect(modalButton).toBeInTheDocument();
   });
 
   it('should navigate to home page when go back to menu button is clicked', async () => {
@@ -65,48 +73,45 @@ describe('GameResults component', () => {
       userEvent.click(goBackButton);
     });
 
-    // Ensure the navigation works (for this, you would typically have a mock for react-router's navigation)
-    expect(window.location.pathname).toBe('/'); // Adjust based on actual routing behavior
+    expect(window.location.pathname).toBe('/');
   });
 
   it('should display the game details correctly', async () => {
     const mockGameResults = {
-        questions: [
-          {
-            text: 'What is 2+2?',
-            imageUrl: 'url-to-image',
-            wasUserCorrect: true,
-            selectedAnswer: '4',
-            answers: [
-              { text: '3', isCorrect: false },
-              { text: '4', isCorrect: true },
-              { text: '5', isCorrect: false },
-            ],
-          },
-          {
-            text: 'What is 3+3?',
-            imageUrl: 'url-to-image',
-            wasUserCorrect: true,
-            selectedAnswer: '6',
-            answers: [
-              { text: '5', isCorrect: false },
-              { text: '6', isCorrect: true },
-              { text: '7', isCorrect: false },
-            ],
-          },
-        ],
-        points: 100,
-        numOfCorrectAnswers: 2,
-        numOfWrongAnswers: 0,
-        numOfNotAnswered: 0,
-      };
-  
+      questions: [
+        {
+          text: 'What is 2+2?',
+          imageUrl: 'url-to-image',
+          wasUserCorrect: true,
+          selectedAnswer: '4',
+          answers: [
+            { text: '3', isCorrect: false },
+            { text: '4', isCorrect: true },
+            { text: '5', isCorrect: false },
+          ],
+        },
+        {
+          text: 'What is 3+3?',
+          imageUrl: 'url-to-image',
+          wasUserCorrect: true,
+          selectedAnswer: '6',
+          answers: [
+            { text: '5', isCorrect: false },
+            { text: '6', isCorrect: true },
+            { text: '7', isCorrect: false },
+          ],
+        },
+      ],
+      points: 100,
+      numOfCorrectAnswers: 2,
+      numOfWrongAnswers: 0,
+      numOfNotAnswered: 0,
+    };
 
     mockLocalStorage(mockGameResults);
     renderComponent();
 
-    const questionAccordion = screen.getByText('1. What is 2+2?');
-    expect(questionAccordion).toBeInTheDocument();
+    expect(screen.getByText('1. What is 2+2?')).toBeInTheDocument();
     expect(screen.getByText('2. What is 3+3?')).toBeInTheDocument();
   });
 });
