@@ -1,18 +1,19 @@
 // Importing external libraries
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const { MongoMemoryServer } = require("mongodb-memory-server");
 
 // Configuring environment variables from .env file
 dotenv.config();
 
 /**
  * @function connect
- * @description Establishes a connection to MongoDB using the mongoose library. 
- * The connection URL is retrieved from the environment variable `DB_URL` or defaults to a local MongoDB instance.
- * 
- * The connection process uses `mongoose.connect()` with the `useNewUrlParser` and `useUnifiedTopology` options to ensure a modern, stable connection to MongoDB.
- * If the connection is successful, a confirmation message is logged. If an error occurs during the connection attempt, an error message is logged and an exception is thrown.
- * 
+ * @description Establishes a connection to MongoDB using the mongoose library.
+ * If the `DB_URL` environment variable is defined, it connects to the specified MongoDB instance.
+ * Otherwise, it spins up an in-memory MongoDB server (ideal for testing).
+ *
+ * This approach ensures real DB usage in production/dev, and isolated DB usage in tests.
+ *
  * @example
  *  connect()
  *    .then(() => console.log("Connected successfully"))
@@ -20,24 +21,29 @@ dotenv.config();
  */
 const connect = async () => {
   try {
-    // Getting the MongoDB connection URL from the environment variable, or using a local default if not provided
-    const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/bd";
-    console.log("🚀 Conectando a MongoDB en:", dbUrl);
+    let dbUrl;
+
+    if (process.env.DB_URL) {
+      dbUrl = process.env.DB_URL;
+      console.log("🌍 Conectando a MongoDB real:", dbUrl);
+    } else {
+      const mongoServer = await MongoMemoryServer.create();
+      dbUrl = mongoServer.getUri();
+      console.log("🧪 Conectando a MongoDB en memoria para testing");
+    }
 
     // Attempt to connect to MongoDB with mongoose
     await mongoose.connect(dbUrl, {
-      useNewUrlParser: true, // Use the new URL parser for MongoDB
-      useUnifiedTopology: true, // Use the unified topology for MongoDB driver
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
 
-    // If connection is successful, log a success message
     console.log("✅ Conexión exitosa con MongoDB.");
   } catch (error) {
-    // If there's an error connecting to MongoDB, log the error and throw a custom error
     console.error("❌ Error al conectar con MongoDB:", error);
     throw new Error("Error al conectar con MongoDB");
   }
 };
 
 // Exporting the connect function for use in other files
-module.exports = connect; // ✅ Exportar correctamente
+module.exports = connect;
