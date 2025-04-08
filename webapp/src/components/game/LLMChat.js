@@ -20,6 +20,7 @@ const LLMChat = ({ correctAnswer }) => {
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
     const scrollRef = useRef(null);
+    const [chatContext, setChatContext] = useState([]);
 
     const scrollToBottom = () => {
         if (scrollRef.current) {
@@ -89,30 +90,24 @@ const LLMChat = ({ correctAnswer }) => {
         setLoading(true);
 
         try {
-            const context = messages.slice(1).flatMap((m) => {
-                const text =
-                    typeof m.props.children === 'string'
-                        ? m.props.children
-                        : Array.isArray(m.props.children)
-                            ? m.props.children.join('')
-                            : '';
-    
-                const role = m.props.className === 'user-message' ? 'user' : 'assistant';
-    
-                return text.trim() !== '' ? [{ role, content: text.trim() }] : [];
-            });
+            setChatContext(prevContext => [
+                ...prevContext,
+                { role: 'user', content: inputValue.trim() }
+            ]);
 
             const response = await askClue({ 
                 correctAnswer: correctAnswer, 
                 question: inputValue, 
-                context: context,
+                context: chatContext,
                 language: i18n.language.split('-')[0]
             });
             console.log(i18n.language);
             console.log("Respuesta del LLM:", response.data.answer);
+
+            const answerText = response.data.answer;
             const llmMsg = (
                 <p className="llm-message" key={`llm-${messages.length}`}>
-                    {writeAndspeakLoudTheMessage(response.data.answer)}
+                    {writeAndspeakLoudTheMessage(answerText)}
 
 
 
@@ -120,6 +115,10 @@ const LLMChat = ({ correctAnswer }) => {
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, llmMsg]);
+            setChatContext(prevContext => [
+                ...prevContext,
+                { role: 'assistant', content: answerText }
+            ]);
         } catch (error) {
             console.error("Error enviando mensaje:", error);
             const errorMsg = (
