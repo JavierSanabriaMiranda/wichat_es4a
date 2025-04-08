@@ -61,6 +61,17 @@ export const AuthProvider = ({ children }) => {
     };
 
 
+    const isValidToken = async (token) => {
+        try {
+            const res = await axios.post(apiEndpoint + "/validateToken", { token });
+            return res.status === 200;
+        } catch (error) {
+            return false;
+        }
+    };
+
+
+
     const logout = () => {
         setUser(null);
         setToken(null);
