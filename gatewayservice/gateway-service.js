@@ -267,7 +267,7 @@ app.post('/askllm/welcome', async (req, res) => {
     const { name, language } = req.body;
 
     let model = "gemini";
-    let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
+    let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de 'WiChat'. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
     let answer = await axios.post(llmServiceUrl + '/ask', { question, model });
 
     res.json(answer.data);
