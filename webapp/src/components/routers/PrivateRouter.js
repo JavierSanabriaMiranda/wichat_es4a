@@ -1,51 +1,45 @@
 // This hole code has been taken from this source: https://github.com/Arquisoft/wiq_es1c/blob/master/webapp/src/routers/AuthRoute.js
 // It is from a project of the last year of the Software Architecture course in the University of Oviedo
+import { useEffect, useState, useContext } from "react";
+import { Navigate } from "react-router";
+import AuthContext from "../contextProviders/AuthContext";
 
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 
-import { isValidToken } from "../services/user.service";
-
-export const PrivateRoute = ({ children }) =>
+export const PrivateRouter = ({ children }) =>
 {
+    const {token, isValidToken, isLoading: authLoading } = useContext(AuthContext);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isChecking, setIsChecking] = useState(true);
 
-    useEffect(() => 
-    {
-        const verifyToken = async () => 
-        {
-            const token = localStorage.getItem('token');
-            
-            if (!token) 
-            {
+    useEffect(() => {
+        const verifyToken = async () => {
+           
+            if (!token) {
+                console.log("Token not found, redirecting to login");
                 setIsAuthenticated(false);
-                setIsLoading(false);
+                setIsChecking(false);
                 return;
             }
-            
+
             try {
                 const valid = await isValidToken(token);
-                
                 setIsAuthenticated(valid);
-
             } catch (error) {
                 setIsAuthenticated(false);
             }
 
-            setIsLoading(false);
+            setIsChecking(false);
         };
 
-        verifyToken();
-    }, []);
+        if (!authLoading) {
+            verifyToken();
+        }
+    }, [authLoading, token]);
 
-    if (isLoading)
-        return <></>;
+    if (authLoading || isChecking) return <></>;
 
-    if (isAuthenticated)
-        return children;
+    if (isAuthenticated) return children;
 
-    localStorage.removeItem("token");
+    return <Navigate to="/login" replace />;
 
-    return <Navigate to='/login' replace />;
 }

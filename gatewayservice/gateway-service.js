@@ -80,7 +80,6 @@ app.post('/validateToken', async (req, res) => {
       if (err) {
         return res.status(401).json({ message: 'Unauthorized' });
       }
-      res.json({ message: 'Token is valid', userId: decoded.userId });
       res.status(200).json({ message: 'Token is valid', userId: decoded.userId });
     });
   } catch (error) {

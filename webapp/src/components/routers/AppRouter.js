@@ -7,6 +7,7 @@ import { AddUser } from '../AddUser';
 import { Navigate, createBrowserRouter } from 'react-router';
 import { AuthRoute } from './AuthRoute';
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
+import { PrivateRouter } from './PrivateRouter';
 
 
 const router = createBrowserRouter([
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/user',
-    element: <UserProfile/>
+    element: <PrivateRouter><UserProfile/></PrivateRouter>
   },
   {
     path: '/game/results',
