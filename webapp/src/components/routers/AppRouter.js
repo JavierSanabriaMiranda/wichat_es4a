@@ -8,6 +8,7 @@ import { Navigate, createBrowserRouter } from 'react-router';
 import { AuthRoute } from './AuthRoute';
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import { PrivateRouter } from './PrivateRouter';
+import {NotAuthorizedRouter} from './NotAuthorizedRouter';
 
 
 const router = createBrowserRouter([
@@ -29,11 +30,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <AuthRoute><Login /></AuthRoute>
+    element: <NotAuthorizedRouter><AuthRoute><Login /></AuthRoute></NotAuthorizedRouter>
   },
   {
     path: '/addUser',
-    element: <AuthRoute><AddUser /></AuthRoute>
+    element: <NotAuthorizedRouter><AuthRoute><AddUser /></AuthRoute></NotAuthorizedRouter>
   }
 ]);
 
