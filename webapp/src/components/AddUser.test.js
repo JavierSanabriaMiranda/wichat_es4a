@@ -15,15 +15,16 @@ describe('AddUser component', () => {
     mockAxios.reset();
   });
 
-  it('should add user successfully and show confirmation message', async () => {
+  const renderComponent = () => {
     render(
-      <AuthProvider>
-        <MemoryRouter>
-          <AddUser />
-        </MemoryRouter>
-      </AuthProvider>
+      <MemoryRouter>
+        <AddUser />
+      </MemoryRouter>
     );
+  }
 
+  // Function to fill the form and submit it with the given values
+  const fillAndSubmitForm = async ({ username, password, confirmPassword }) => {
     const usernameText = i18n.t('username-message');
     const passwordText = i18n.t('password-message');
     const passwordConfirmText = i18n.t('password-edit-confirm');
@@ -33,16 +34,24 @@ describe('AddUser component', () => {
     const passwordConfirm = screen.getByLabelText(passwordConfirmText);
     const addUserButton = screen.getByRole('button', { name: /Sign Up/i });
 
+    await act(async () => {
+      if (username) await userEvent.type(usernameInput, username);
+      if (password) await userEvent.type(passwordInput, password);
+      if (confirmPassword) await userEvent.type(passwordConfirm, confirmPassword);
+      await userEvent.click(addUserButton);
+    });
+  };
+
+  it('should add user successfully and show confirmation message', async () => {
+    renderComponent();
+
     // Mock the axios.post request to simulate a successful response
     mockAxios.onPost('http://localhost:8000/adduser').reply(200);
 
-    // Use act to wrap the user interactions
-    await act(async () => {
-      // Simulate user input
-      await userEvent.type(usernameInput, 'testUser');
-      await userEvent.type(passwordInput, 'testPassword1');
-      await userEvent.type(passwordConfirm, 'testPassword1');
-      await userEvent.click(addUserButton);
+    await fillAndSubmitForm({
+      username: 'testUser',
+      password: 'testPassword1',
+      confirmPassword: 'testPassword1'
     });
 
     const confirmMessage = i18n.t('user-added');
@@ -50,30 +59,12 @@ describe('AddUser component', () => {
   });
 
   it('should show error because password is not secure', async () => {
-    render(
-      <AuthProvider>
-        <MemoryRouter>
-          <AddUser />
-        </MemoryRouter>
-      </AuthProvider>
-    );
+    renderComponent();
 
-    const usernameText = i18n.t('username-message');
-    const passwordText = i18n.t('password-message');
-    const passwordConfirmText = i18n.t('password-edit-confirm');
-
-    const usernameInput = screen.getByLabelText(usernameText);
-    const passwordInput = screen.getByLabelText(passwordText);
-    const passwordConfirm = screen.getByLabelText(passwordConfirmText);
-    const addUserButton = screen.getByRole('button', { name: /Sign Up/i });
-
-    // Use act to wrap the user interactions
-    await act(async () => {
-      // Simulate user input
-      await userEvent.type(usernameInput, 'testUser');
-      await userEvent.type(passwordInput, 'test');
-      await userEvent.type(passwordConfirm, 'test');
-      await userEvent.click(addUserButton);
+    await fillAndSubmitForm({
+      username: 'testUser',
+      password: 'test',
+      confirmPassword: 'test'
     });
 
     const errorMessage = i18n.t('user-not-added') + i18n.t('password-error-content');
@@ -89,22 +80,10 @@ describe('AddUser component', () => {
       </AuthProvider>
     );
 
-    const usernameText = i18n.t('username-message');
-    const passwordText = i18n.t('password-message');
-    const passwordConfirmText = i18n.t('password-edit-confirm');
-
-    const usernameInput = screen.getByLabelText(usernameText);
-    const passwordInput = screen.getByLabelText(passwordText);
-    const passwordConfirm = screen.getByLabelText(passwordConfirmText);
-    const addUserButton = screen.getByRole('button', { name: /Sign Up/i });
-
-    // Use act to wrap the user interactions
-    await act(async () => {
-      // Simulate user input
-      await userEvent.type(usernameInput, 'testUser');
-      await userEvent.type(passwordInput, 'testPassword1');
-      await userEvent.type(passwordConfirm, 'testPassword2');
-      await userEvent.click(addUserButton);
+    await fillAndSubmitForm({
+      username: 'testUser',
+      password: 'testPassword1',
+      confirmPassword: 'testPassword2'
     });
 
     const errorMessage = i18n.t('user-not-added') + i18n.t('password-mismatch-error');
