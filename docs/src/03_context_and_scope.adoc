@@ -162,6 +162,6 @@ Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
 | questionservice | Configuración de la partida | Pregunta con las posibles respuestas (correcta e incorrectas)
 | API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
 | llmservice | Prompt de solicitud de pistas y respuesta correcta a la pregunta | Pista generada por el modelo evitando decir la respuesta correcta
-| API LLM | Prompt de solicitu de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
+| API LLM | Prompt de solicitud de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
 |===
 
