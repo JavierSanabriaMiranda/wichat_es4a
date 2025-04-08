@@ -51,8 +51,8 @@ describe('GameResults component', () => {
     await act(async () => {
       userEvent.click(playAgainButton);
     });
-
-    const modalButton = screen.getByRole('button', { name: /play again/i });
+   
+    const modalButton = await screen.findByRole('button', { name: i18n.t('play-configuration') });
     expect(modalButton).toBeInTheDocument();
   });
 
