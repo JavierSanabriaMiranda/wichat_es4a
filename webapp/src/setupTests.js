@@ -25,3 +25,7 @@ i18n.use(initReactI18next).init({
       es: { translation: translationES },
     },
   });
+
+  import ResizeObserver from 'resize-observer-polyfill';
+
+  global.ResizeObserver = ResizeObserver;

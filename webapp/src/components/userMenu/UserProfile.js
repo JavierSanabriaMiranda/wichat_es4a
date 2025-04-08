@@ -37,7 +37,6 @@ export const UserProfile = () => {
     // Function to get the user's game history list by the user ID
     const getUserHistoryList = async () => {
         getUserHistory(token).then((response) => {
-            console.log("Partidas jugadas por el usuario ", response);
             setGamesHistoryList(response || []);
             
         }
@@ -47,7 +46,6 @@ export const UserProfile = () => {
         setSelectedGame(game);
         getQuestionsById(game._id).then((response) => {
             setQuestions(response);
-            console.log(response);
         });
     }
 
