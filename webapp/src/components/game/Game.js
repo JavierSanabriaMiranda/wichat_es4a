@@ -25,6 +25,7 @@ export const Game = () => {
 
     // Game configuration
     const { config } = useConfig();
+    const isChaosMode = config.isChaos || false;
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
@@ -75,7 +76,8 @@ export const Game = () => {
                 points,
                 numOfCorrectAnswers: correctAnswers,
                 numOfWrongAnswers: wrongAnswers,
-                numOfNotAnswered: notAnswered
+                numOfNotAnswered: notAnswered,
+                isChaosMode: isChaosMode
             }));
 
             // If there's a user authenticated, the game will be saved in the database
@@ -186,10 +188,12 @@ export const Game = () => {
         if (wasUserCorrect) {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
-        }
-        else {
+        } else {
             setWrongAnswers(wrongAnswers + 1);
-        }
+            if (isChaosMode) {
+                addPoints(-10);
+            }
+        }        
         addQuestionResult(wasUserCorrect, selectedAnswer);
 
         setStopTimer(true);

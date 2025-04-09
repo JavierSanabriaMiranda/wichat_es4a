@@ -25,7 +25,8 @@ const ChaosButton = () => {
     const chaosSettings = {
       questions: randomQuestions,
       timePerRound: randomTime,
-      topics: randomTopics
+      topics: randomTopics,
+      isChaos: true
     };
 
     setConfig(chaosSettings);
