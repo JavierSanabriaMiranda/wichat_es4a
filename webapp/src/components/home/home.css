@@ -115,6 +115,47 @@ body {
   100% { box-shadow: 0 0 5px #ff4d4d; }
 }
 
+/* Estilos para el Modal de Caos */
+.chaos-modal-content {
+  background: linear-gradient(135deg, #ff4e50, #ea8980);
+  font-family: 'Roboto', sans-serif;
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+}
+
+.chaos-modal-content .modal-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.chaos-modal-content p {
+  font-size: 1.1rem;
+  margin: 0.5em 0;
+}
+
+.chaos-slogan {
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.chaos-btn {
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+  border-radius: 10px;
+}
+
+.chaos-btn:hover {
+  opacity: 0.9;
+}
+
+
+@keyframes chaosFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 
 @media (max-width: 768px) {
   .home-heading, .home-subheading, .app-name {

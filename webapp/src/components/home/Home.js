@@ -26,13 +26,11 @@ const ChaosButton = () => {
   };
 
   const handlePlayChaos = () => {
-    // Generar datos aleatorios
     const shuffledTopics = topicList.sort(() => 0.5 - Math.random());
     const randomTopics = shuffledTopics.slice(0, Math.floor(Math.random() * topicList.length) + 1);
     const randomQuestions = questionOptions[Math.floor(Math.random() * questionOptions.length)];
     const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
 
-    // Configuración para el modo caos
     const chaosSettings = {
       questions: randomQuestions,
       timePerRound: randomTime,
@@ -40,10 +38,8 @@ const ChaosButton = () => {
       isChaos: true
     };
 
-    // Guardamos la configuración en el contexto
     setConfig(chaosSettings);
 
-    // Ahora, redirigimos al juego
     window.location.href = '/game';
   };
 
@@ -54,25 +50,43 @@ const ChaosButton = () => {
       </Button>
 
       {/* Modal de introducción al Modo Caos */}
-      <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{t("chaosMode-intro-title")}</Modal.Title>
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        animation={false}
+        centered
+        contentClassName="chaos-modal-content"
+      >
+        <Modal.Header closeButton className="text-center border-0">
+          <Modal.Title className="w-100">
+            <span role="img" aria-label="bomb">💣</span>
+            <span role="img" aria-label="fire">🔥</span>
+            <strong> {t("chaosMode-intro-title")} </strong>
+            <span role="img" aria-label="fire">🔥</span>
+            <span role="img" aria-label="bomb">💣</span>
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>{t("chaosMode-intro-body")}</p>
+
+        <Modal.Body className="text-center">
+          <p>
+          {t("chaosMode-intro-body")}
+          </p>
+          <p className="chaos-slogan">
+            <span role="img" aria-label="target">🎯</span>
+            <strong> {t("chaosMode-slogan")} </strong>
+          </p>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            {t("close")}
+
+        <Modal.Footer className="justify-content-center border-0">
+          <Button variant="secondary" onClick={handleCloseModal} className="me-3 chaos-btn">
+            ❌ {t("close")}
           </Button>
-          <Button 
-            variant="danger" 
-            onClick={handlePlayChaos} 
-          >
-            {t("playChaos")}
+          <Button variant="danger" onClick={handlePlayChaos} className="chaos-btn">
+            🚀 {t("playChaos")}
           </Button>
         </Modal.Footer>
       </Modal>
+
     </>
   );
 };

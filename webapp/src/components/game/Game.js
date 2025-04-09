@@ -29,6 +29,7 @@ export const Game = () => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const { token } = useContext(AuthContext);
+    
 
     const questionTime = config.timePerRound; // Get the question time from the configuration
     const numberOfQuestions = config.questions; // Get the number of questions from tge configuration
