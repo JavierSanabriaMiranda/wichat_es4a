@@ -100,6 +100,22 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.chaos-button {
+  background-color: #d90000 !important;
+  border: none;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff0000, 0 0 20px #ff4d4d;
+  animation: pulseChaos 1.5s infinite;
+}
+
+@keyframes pulseChaos {
+  0% { box-shadow: 0 0 5px #ff4d4d; }
+  50% { box-shadow: 0 0 20px #ff0000; }
+  100% { box-shadow: 0 0 5px #ff4d4d; }
+}
+
+
 @media (max-width: 768px) {
   .home-heading, .home-subheading, .app-name {
     font-size: 5vw; 
