@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Login } from './Login';
 import { MemoryRouter } from 'react-router';
 import i18n from 'i18next';
-import AuthContext from './contextProviders/AuthContext'; // esto apunta al mock
+import AuthContext from './contextProviders/AuthContext';
 
 const mockLogin = jest.fn();
 

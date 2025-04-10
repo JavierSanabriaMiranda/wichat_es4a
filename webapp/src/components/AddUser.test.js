@@ -5,7 +5,6 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { AddUser } from './AddUser';
 import { MemoryRouter } from 'react-router';
-import { AuthProvider } from './contextProviders/AuthContext';
 import i18n from 'i18next';
 
 const mockAxios = new MockAdapter(axios);
@@ -73,11 +72,9 @@ describe('AddUser component', () => {
 
   it('should show error because password and confirm password do not match', async () => {
     render(
-      <AuthProvider>
         <MemoryRouter>
           <AddUser />
         </MemoryRouter>
-      </AuthProvider>
     );
 
     await fillAndSubmitForm({
