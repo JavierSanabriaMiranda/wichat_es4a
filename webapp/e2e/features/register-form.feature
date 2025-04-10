@@ -2,5 +2,15 @@ Feature: Registering a new user
 
 Scenario: The user is not registered in the site
   Given An unregistered user
-  When I fill the data in the form and press submit
-  Then A confirmation message should be shown in the screen
+  When I fill the registration form and submit it
+  Then A success message should appear
+
+Scenario: The user is not registered but the password is invalid
+  Given An unregistered user with an invalid password
+  When I fill the registration form and submit it
+  Then An error message about password content should appear
+
+Scenario: The user is not registered, the password is valid but they don't match
+  Given An unregistered user with valid but mismatching passwords
+  When I fill the registration form and submit it
+  Then An error message about password mismatch should appear
