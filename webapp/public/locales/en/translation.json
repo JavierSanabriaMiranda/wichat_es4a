@@ -74,5 +74,6 @@
     "cancel-button": "Cancel",
     "confirm-button": "Confirm",
     "current-password": "Current Password",
-    "signup-message": "Sign Up"
+    "signup-message": "Sign Up",
+    "login-message": "Login"
 }
