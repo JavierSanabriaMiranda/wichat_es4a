@@ -70,6 +70,23 @@ app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
 
+app.post('/validateToken', async (req, res) => {
+  try {
+    const token = req.body.token;
+    if (!token) {
+      return res.status(401).json({ message: 'Token not provided' });
+    }
+    jwt.verify(token, privateKey, (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      res.status(200).json({ message: 'Token is valid', userId: decoded.userId });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/login', async (req, res) => {
   try {
     // Forward the login request to the authentication service
