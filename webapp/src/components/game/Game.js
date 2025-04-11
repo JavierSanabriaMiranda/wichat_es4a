@@ -107,11 +107,8 @@ export const Game = () => {
             return;
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
-
-        console.log("VOY A PEDIR LA SIGUIENTE PREGUNTA")
+        
         getNextQuestion().then((questionInfo) => {
-
-            console.log("La pregunta es: " + questionInfo.question);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
@@ -124,9 +121,11 @@ export const Game = () => {
 
     // UseEffect to send the information to configure the game and ask for the first question
     useEffect(() => {
-        configureGame(topics, i18n.language.split('-')[0]).then(() => {
+        const run = async () => {
+            await configureGame(topics, i18n.language.split('-')[0]);
             askForNextQuestion();
-        })
+        };
+        run();
     }, []); // Empty dependency array means this effect runs only once on mount
 
     /**
@@ -294,7 +293,7 @@ export const Game = () => {
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
-                <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
+                <div data-testid="gamePoints" className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
                 <button
                     onClick={askExitGame}
                     className="exit-button"

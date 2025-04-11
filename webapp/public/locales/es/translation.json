@@ -51,6 +51,7 @@
     "username-message": "Nombre de Usuario",
     "user-added": "Usuario añadido correctamente.",
     "user-not-added": "No se ha podido añadir el usuario: ",
+    "username-already-exists": "El nombre de usuario ya existe.",
     "add-user-title": "Añadir Usuario",
     "signup-message-sponsor": "¡Demuestra cuánto sabes! Únete a WiChat y compite respondiendo preguntas de diferentes categorías. ¿Listo para el reto?",
     "login-title": "Iniciar Sesión",

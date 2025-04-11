@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 
 /**
  * React component that represents a chat with the LLM to ask for clues.
+ * @param {String} name - The name (correctAnswer) that the LLM has to avoid to say.
  * @returns a chat with the LLM to ask for clues.
  */
 const LLMChat = ({ name }) => {
@@ -51,7 +52,6 @@ const LLMChat = ({ name }) => {
                 userQuestion: inputValue,
                 language: i18n.language
             });
-            console.log("Respuesta del LLM:", response.data.answer);
             const llmMsg = (
                 <p className="llm-message" key={`llm-${messages.length}`}>
                     <Typewriter
@@ -97,7 +97,7 @@ const LLMChat = ({ name }) => {
             >
                 <div className="llm-chat-messages">
                     {messages.map((msg, index) => (
-                        <Row>
+                        <Row key={index}>
                             {msg.props.className === "llm-message" ? (
                                 <>
                                     <Col md={2}>
@@ -143,7 +143,7 @@ const LLMChat = ({ name }) => {
                     onChange={handleInputChange}
                     disabled={loading}
                 />
-                <button type="submit" className="send-prompt-button" disabled={loading}>
+                <button data-testid="chatSubmitButton" type="submit" className="send-prompt-button" disabled={loading}>
                     <img src="/send-message.png" alt="Enviar" />
                 </button>
             </form>
