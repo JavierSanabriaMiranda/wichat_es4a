@@ -86,6 +86,38 @@ defineFeature(feature, test => {
     });
   });
 
+  test("The user tries to register with an existing username", ({ given, when, then }) => {
+    given("A user that is already registered", async () => {
+      username = "alreadyExistsUser";
+      password = "ValidPass123";
+      confirmPassword = "ValidPass123";
+
+      // Intentamos registrar el usuario por primera vez
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
+      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+
+      // Esperamos al mensaje de éxito
+      await expect(page).toMatchElement("div.alert-success", { text: i18n.t('user-added') });
+
+      // Recargamos para hacer el segundo intento
+      await page.reload({ waitUntil: "networkidle0" });
+    });
+
+    when("I fill the registration form with the same username and submit it", async () => {
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
+      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
+      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+    });
+
+    then("An error message about existing username should appear", async () => {
+      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('user-not-added') + i18n.t('username-already-exists') });
+    });
+  });
+
+
   afterAll(async () => {
     await browser.close();
   });
