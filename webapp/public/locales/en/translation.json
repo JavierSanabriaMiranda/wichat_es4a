@@ -59,6 +59,7 @@
     "username-message": "Username",
     "user-added": "User added successfully.",
     "user-not-added": "User could not be added: ",
+    "username-already-exists": "Username already exists.",
     "add-user-title": "Add User",
     "signup-message-sponsor": "Show off your knowledge! Join WiChat and compete by answering questions from different categories. Ready for the challenge?",
     "login-title": "Login",

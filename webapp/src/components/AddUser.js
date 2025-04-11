@@ -38,7 +38,11 @@ export const AddUser = () => {
         navigate('/login');
       }, 1000);
     } catch (error) {
-      setError(error.response?.data?.error);
+      if (error.response?.status === 409) {
+        setError(t('username-already-exists'));
+      } else {
+        setError(error.response?.data?.error);  
+      }
       setSuccess(false);
     }
   };
