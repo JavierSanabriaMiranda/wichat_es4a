@@ -92,16 +92,16 @@ defineFeature(feature, test => {
       password = "ValidPass123";
       confirmPassword = "ValidPass123";
 
-      // Intentamos registrar el usuario por primera vez
+      // Register the user first
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
       await expect(page).toClick('button', { text: i18n.t('signup-message') });
 
-      // Esperamos al mensaje de éxito
+      // Wait for the success message
       await expect(page).toMatchElement("div.alert-success", { text: i18n.t('user-added') });
 
-      // Recargamos para hacer el segundo intento
+      // Reload the page to reset the form
       await page.reload({ waitUntil: "networkidle0" });
     });
 
