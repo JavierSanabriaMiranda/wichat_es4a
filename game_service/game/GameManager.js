@@ -116,11 +116,13 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
-            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
         });
+    
 
         // Save the game to the database
         const savedGame = await newGame.save();
+
+        console.log("Saved game in collection:", savedGame);
         // Save all the questions related to this game
         const questionsToInsert = game.questions.map(q => ({
             text: q.text, // Question text
@@ -138,6 +140,7 @@ const endAndSaveGame = async (req, res) => {
         // Update the played questions in the game
         savedGame.questionsPlayed = savedQuestions.map(question => question._id);
         await savedGame.save();
+
 
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
