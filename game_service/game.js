@@ -14,13 +14,9 @@ const {
   newGame,
   next,
   endAndSaveGame,
-  getNumberOfQuestionsPlayed,
-  getQuestion,
-  getCurrentGame,
   getUserGames,
   getUserGamesWithoutQuestions,
-  getGameQuestions,
-  endGame 
+  getGameQuestions, 
 } = require("./game/GameManager");
 
 const port = 8005;

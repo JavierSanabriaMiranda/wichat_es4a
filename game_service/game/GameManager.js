@@ -17,7 +17,7 @@
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
 const { GamePlayed, Question } = require("../models/index");
-const { validate, getCurrentQuestion, requestQuestion} = require("./QuestionAsk");
+const { requestQuestion} = require("./QuestionAsk");
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -315,7 +315,5 @@ module.exports = {
     next,
     endAndSaveGame,
     getNumberOfQuestionsPlayed,
-    getQuestion,
-    getCurrentGame,
     getGameQuestions,
     getUserGamesWithoutQuestions};
