@@ -19,6 +19,8 @@ async function startServer() {
     gatewayservice = await require("../../gatewayservice/gateway-service");
     //questionservice = await require("../../questionservice/question-service");
     //gameservice = await require("../../gameservice/game-service");
+    questionservice = await require("../../question/question");
+    gameservice = await require("../../game_service/game");
 }
 
 startServer();

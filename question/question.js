@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';  // We use fetch to make HTTP requests to external APIs
 import fs from 'fs';  // We need the fs module to read JSON files
-import path from 'path';  // We use path to handle file and directory paths
+import { dirname, join } from 'path';  // We use path to handle file and directory paths
 import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
 import express from 'express';  // We use express to create and manage the API server
 
@@ -23,8 +23,10 @@ app.use(express.json());  // Middleware para leer JSON en las solicitudes
  * This would return all the templates related to "geography" in Spanish.
  */
 function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
-  const __dirname = path.resolve();
-  const filePath = path.join(__dirname, 'question_template.json');
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
+  const filePath = join(__dirname, 'question_template.json');
 
   console.log("Ruta del archivo:", filePath);
   if (!fs.existsSync(filePath)) {
@@ -37,12 +39,12 @@ function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
   const topicsArray = Array.isArray(topics) ? topics : [topics];
 
   const filteredTemplates = templates.filter(template =>
-  topicsArray.some(topic => template.topics.includes(topic))
+    topicsArray.some(topic => template.topics.includes(topic))
   );
 
   const filteredTemplatesLanguage = filteredTemplates.filter(template => template.lang === lang);
 
-  return filteredTemplatesLanguage; 
+  return filteredTemplatesLanguage;
 }
 
 
@@ -86,7 +88,7 @@ async function executeQuery(query) {
   const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
 
   console.log("Ejecutando consulta SPARQL: ", finalQuery);
-  
+
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -187,7 +189,7 @@ function generateQuestionWithOptions(results, labelKey, imageKey, randomTemplate
  */
 app.post('/api/question/generate', async (req, res) => {
   try {
-    
+
     const topics = req.body.topics;
     const lang = req.body.lang;
     console.log("Que me llega", topics);
