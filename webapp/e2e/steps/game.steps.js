@@ -9,6 +9,51 @@ const { expect } = require('expect-puppeteer');
 let page;
 let browser;
 
+/**
+ * Parametrized function to set the game configuration
+ * @param {String} questions - Number of questions to be asked in the game.
+ * @param {String} time - Time limit for each question.
+ * @param {String} topicClass - Class name of the topic button to be selected.
+ * @param {String} topicText - Text of the topic button to be selected.
+ */
+const configureGame = async ({ questions = '10', time = '60s', topicClass = 'toggle-btn-geography', topicText }) => {
+    // Opens the modal
+    await expect(page).toClick('button', { text: i18n.t("quickGame-home") });
+    await expect(page).toMatchElement('h2', { text: i18n.t("title-configuration") });
+
+    // Number of Questions
+    await expect(page).toClick('button', { text: '30' });
+    await expect(page).toClick('.dropdown-menu .dropdown-item', { text: questions });
+    await expect(page).toMatchElement('button', { text: questions });
+
+    // Time per question
+    await expect(page).toClick('button', { text: '120s' });
+    await expect(page).toClick('.dropdown-menu .dropdown-item', { text: time });
+    await expect(page).toMatchElement('button', { text: time });
+
+    // Makes sure the play button is disabled when no topic is selected
+    await expect(page).toMatchElement('button', {
+        text: i18n.t("play-configuration"),
+        disabled: true
+    });
+
+    // Selects the topic
+    await expect(page).toClick(`label.${topicClass}`, {
+        text: topicText || i18n.t("geography-configuration")
+    });
+
+    // Makes sure the play button is enabled when a topic is selected
+    await expect(page).toMatchElement('button', {
+        text: i18n.t("play-configuration"),
+        disabled: false
+    });
+    await expect(page).toClick('button', { text: i18n.t("play-configuration") });
+
+    await page.waitForTimeout(500);
+    expect(page.url()).toMatch(/\/game/);
+};
+
+
 defineFeature(feature, test => {
 
     // Launches the tests in a headless browser or a non-headless browser based on the environment (GITHUB_ACTIONS)
@@ -31,43 +76,15 @@ defineFeature(feature, test => {
 
     test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
         given('The user has configured a game with:', async () => {
-            // Opens the game configuration modal
-            await expect(page).toClick('button', { text: i18n.t("quickGame-home") });
-
-            // Configures the game
-            await expect(page).toMatchElement('h2', { text: i18n.t("title-configuration") });
-            
-            // Opens the dropdown menu for number of questions
-            await expect(page).toClick('button', { text: '30' });
-            // Selects 10 questions
-            await expect(page).toClick('.dropdown-menu .dropdown-item', { text: '10' });
-            await expect(page).toMatchElement('button', { text: '10' }); // Verifica que ahora muestra "10"
-            
-            // Opens the dropdown menu for time per question
-            await expect(page).toClick('button', { text: '120s' });
-            // Selects 60 seconds
-            await expect(page).toClick('.dropdown-menu .dropdown-item', { text: '60s' });
-            await expect(page).toMatchElement('button', { text: '60s' });
-            
-            // Checks that the play button is disabled when topics are not selected
-            await expect(page).toMatchElement('button', { text: i18n.t("play-configuration"), disabled: true });
-            // Selects the topic "Geography"
-            await expect(page).toClick('label.toggle-btn-geography', {text: i18n.t("geography-configuration")});
-            // Checks that the play button is enabled when topics are selected and clicks it
-            await expect(page).toMatchElement('button', { text: i18n.t("play-configuration"), disabled: false });
-            await expect(page).toClick('button', { text: i18n.t("play-configuration") });
-
-            await page.waitForTimeout(500); // Waits for the game page to load
-
-            const url = page.url();  // Takes the current URL
-            expect(url).toMatch(/\/game/);  // Checks if the URL contains "/game"
-            console.log("Se ha ejecutado el bloque given")
+            await configureGame({
+                questions: '10',
+                time: '60s',
+                topicClass: 'toggle-btn-geography',
+                topicText: i18n.t("geography-configuration")
+            });
         });
 
-        console.log("Voy a entrar al when")
-
         when('The user answers all questions', async () => {
-            console.log("Estoy en el when")
             for (let i = 0; i < 10; i++) {
                 // Waits for the buttons to be visible and enabled
                 await page.waitForSelector('.answer-button-not-answered:not([disabled])');
@@ -94,4 +111,30 @@ defineFeature(feature, test => {
         });
 
     }, 60000); // 60 seconds timeout for the test
+
+    test('The user exits the game before ending', ({ given, when, then }) => {
+        given('The user has configured a game with:', async () => {
+            await configureGame({
+                questions: '10',
+                time: '120s',
+                topicClass: 'toggle-btn-geography',
+                topicText: i18n.t("geography-configuration")
+            });
+        });
+
+        when('The user clicks the exit button', async () => {
+            await page.waitForSelector('.exit-button');
+
+            await expect(page).toClick('.exit-button');
+            // Expects the modal to be visible
+            await expect(page).toMatchElement('div', { text: i18n.t('exit-confirm-msg-title') });
+            // Clicks on the exit button in the modal
+            await expect(page).toClick('button', { text: i18n.t('exit-confirm-msg-exit') });
+        });
+
+        then('The user is redirected to the home page', async () => {
+            await page.waitForTimeout(1000);
+            await expect(page).toMatchElement('h1', { text: i18n.t("welcome-home") });
+        });
+    });
 });
