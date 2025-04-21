@@ -16,7 +16,10 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
-const { GamePlayed, Question } = require("../models/index");
+const { GamePlayed } = require("../models/game_played");
+const { Question } = require("../models/Question");
+
+
 const { requestQuestion} = require("./QuestionAsk");
 
 const mongoose = require('mongoose');
@@ -33,15 +36,12 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
-    console.log("Estoy en el GameManager.js y llamo a la función newGame() de GameManager.js");
     try {
         let cacheId = req.body.cacheId;
-        console.log("Creating a new game for user:", cacheId);
         const { topics, lang } = req.body;
 
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
-        console.log(`Game data saved in cache for cacheId ${cacheId}:`, {topics, lang });
         res.status(200).send("Game data created successfully");
     } catch (error) {
         console.error("Error creating a new game:", error);
@@ -57,21 +57,16 @@ const newGame = async (req, res) => {
  * @returns {void}  Sends the current question of the game in JSON format.
  */
 const next = async (req, res) => {
-    console.log("Request body received:", req.body.cacheId);
     try {
         let cacheId = req.body.cacheId;
-        console.log("Getting next question for user:", cacheId);
 
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
         if (!cacheData) return res.status(400).json({ error: "Game settings not found." });
-
         const { topics, lang } = cacheData;
 
-        console.log("Estoy en el GameManager.js y llamo a la función requestQuestion() de QuestionAsk.js");
         // Call requestQuestion without saving anything to the database
         const questionRaw = await requestQuestion(topics, lang);
-        console.log("Question raw:", questionRaw);
 
         // Transform the response to the required format
         const formattedResponse = {
@@ -84,7 +79,6 @@ const next = async (req, res) => {
             }))
         };
 
-        console.log ("Estas son las respuestas que enviamos:", formattedResponse.answers);
 
         res.status(200).json(formattedResponse);
     } catch (error) {
@@ -92,6 +86,10 @@ const next = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
+const setGameCache = (newCache) => {
+    gameCache = newCache;
+  };
 
 /**
  * Ends the game and saves the results to the database.
@@ -122,9 +120,11 @@ const endAndSaveGame = async (req, res) => {
         // Save the game to the database
         const savedGame = await newGame.save();
 
-        console.log("Saved game in collection:", savedGame);
+
         // Save all the questions related to this game
-        const questionsToInsert = game.questions.map(q => ({
+        const questionsToInsert = game.questions.map(q => (
+            {
+            
             text: q.text, // Question text
             imageUrl: q.imageUrl, // Image URL
             selectedAnswer: q.selectedAnswer, // Selected answer by the user
@@ -132,8 +132,11 @@ const endAndSaveGame = async (req, res) => {
                 text: ans.text, // Option text
                 isCorrect: ans.isCorrect, // If it is the correct answer
             })),
+          
+            
         }));
 
+        
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
 
@@ -159,7 +162,6 @@ const endAndSaveGame = async (req, res) => {
 const getGameQuestions = async (req, res) => {
     try {
         const gameId = req.body.gameId;  // Get the game ID from the URL parameters
-        console.log("Fetching questions for game:", gameId);
 
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
@@ -188,7 +190,6 @@ const getGameQuestions = async (req, res) => {
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
         const userId = req.body.user.userId ;  // Get the user ID from the request body
-        console.log("Request body received:", userId);
 
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
@@ -249,7 +250,6 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 const getQuestion = async (req, res) => {
     try {
         const userId = req.body.user.userId;
-        console.log("Getting current question for user:", userId);
 
         // Get the active game first
         const currentGame = await getCurrentGame(req, res);
@@ -316,4 +316,4 @@ module.exports = {
     endAndSaveGame,
     getNumberOfQuestionsPlayed,
     getGameQuestions,
-    getUserGamesWithoutQuestions};
+    getUserGamesWithoutQuestions, setGameCache};

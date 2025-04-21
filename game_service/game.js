@@ -84,15 +84,6 @@ app.post('/api/game/endAndSaveGame', (req, res) => {
   endAndSaveGame(req, res); // Executes the function when the request is received
 });
 
-/**
- * @function POST /api/game/history
- * @description Retrieves the history of games played by the user by calling the `getUserGames` function.
- * @body {Object} req.body - Request body should include user identification (e.g., user ID).
- */
-app.post('/api/game/history', (req, res) => {
-  console.log('Obteniendo historial de juegos...');
-  getUserGames(req, res); // Executes the function when the request is received
-});
 
 //Información sobre la partida para el historial
 app.post('/api/game/history/gameList', async(req, res) => {

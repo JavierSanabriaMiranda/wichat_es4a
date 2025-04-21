@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
 
+// Define el esquema para GamePlayed
 const gamePlayedSchema = new Schema({
   userId: {
     type: ObjectId,
@@ -54,10 +55,10 @@ const gamePlayedSchema = new Schema({
       return `${day}-${month}-${year}`;
     }
   }
-  
 });
 
-// Crear modelo
+// Crear modelo GamePlayed
 const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
-module.exports = GamePlayed;
+// Exportar el modelo correctamente
+module.exports = { GamePlayed };
