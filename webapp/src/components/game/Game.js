@@ -190,10 +190,10 @@ export const Game = () => {
             addPoints(100);
             setCorrectAnswers(correctAnswers + 1);
         } else {
-            setWrongAnswers(wrongAnswers + 1);
             if (isChaosMode) {
                 addPoints(-50);
             }
+            setWrongAnswers(wrongAnswers + 1);
         }        
         addQuestionResult(wasUserCorrect, selectedAnswer);
 
@@ -290,68 +290,70 @@ export const Game = () => {
     const correctAnswer = answers.find(answer => answer.isCorrect)?.text || '';
 
     return (
-        <main className='game-screen' key={gameKey}>
-            <div className='timer-div'>
-                <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
-            </div>
-            <div className='game-questions-answered'>
-                <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
-            </div>
-            <div className='game-points-and-exit-div'>
-                {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
-                <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
-                <button
-                    onClick={askExitGame}
-                    className="exit-button"
-                    onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
-                    onMouseLeave={() => setExitIcon("/exit-icon.png")}
-                >
-                    <img src={exitIcon} className='exit-icon' alt='exit-button' />
-                </button>
-            </div>
-            <div className='game-question'>
-                <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
-            </div>
-            <div className='div-question-img'>
-                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
-            </div>
-            <section id="question-answers-section">
-                <div id="game-answer-buttons-section">
-                    { /* Create the answerButtons */}
-                    { /* Uses key to help React renderizing */}
-                    {answers.map((answer, index) => (
-                        <AnswerButton
-                            key={index}
-                            answerText={answer.text}
-                            isCorrectAnswer={answer.isCorrect}
-                            answerAction={answerQuestion}
-                            isDisabled={blockButtons}
-                        />
-                    ))}
-
+        <div className={isChaosMode ? 'chaos-mode' : ''}>
+            <main className='game-screen' key={gameKey}>
+                <div className='timer-div'>
+                    <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
                 </div>
-            </section>
-            <aside className='llm-chat-aside'>
-                <LLMChat name={correctAnswer} />
-            </aside>
-            <div className="pass-button-div">
-                <Button className="pass-button" onClick={passQuestion} disabled={blockButtons} >{t('pass-button-text')}</Button>
-            </div>
-            {/* Modal to ask the user if he really wants to exit the game */}
-            <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>{t('exit-confirm-msg-title')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{t('exit-confirm-msg-body')}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        {t('exit-confirm-msg-close')}
+                <div className='game-questions-answered'>
+                    <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
+                </div>
+                <div className='game-points-and-exit-div'>
+                    {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
+                    {pointsToAdd < 0 && isChaosMode && <div className='points-to-remove'>{pointsToAdd}</div>}
+                    <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
+                    <button
+                        onClick={askExitGame}
+                        className="exit-button"
+                        onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
+                        onMouseLeave={() => setExitIcon("/exit-icon.png")}
+                    >
+                        <img src={exitIcon} className='exit-icon' alt='exit-button' />
+                    </button>
+                </div>
+                <div className='game-question'>
+                    <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
+                </div>
+                <div className='div-question-img'>
+                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
+                </div>
+                <section id="question-answers-section">
+                    <div id="game-answer-buttons-section">
+                        {answers.map((answer, index) => (
+                            <AnswerButton
+                                key={index}
+                                answerText={answer.text}
+                                isCorrectAnswer={answer.isCorrect}
+                                answerAction={answerQuestion}
+                                isDisabled={blockButtons}
+                            />
+                        ))}
+                    </div>
+                </section>
+                <aside className='llm-chat-aside'>
+                    <LLMChat name={correctAnswer} />
+                </aside>
+                <div className="pass-button-div">
+                    <Button className="pass-button" onClick={passQuestion} disabled={blockButtons} >
+                        {t('pass-button-text')}
                     </Button>
-                    <Button variant="danger" onClick={exitFromGame}>
-                        {t('exit-confirm-msg-exit')}
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </main>
-    )
-}
+                </div>
+    
+                <Modal show={showModal} onHide={handleCloseModal} animation={false} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{t('exit-confirm-msg-title')}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>{t('exit-confirm-msg-body')}</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            {t('exit-confirm-msg-close')}
+                        </Button>
+                        <Button variant="danger" onClick={exitFromGame}>
+                            {t('exit-confirm-msg-exit')}
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </main>
+        </div>
+    );
+}    
