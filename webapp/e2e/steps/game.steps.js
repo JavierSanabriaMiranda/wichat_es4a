@@ -157,7 +157,7 @@ defineFeature(feature, test => {
 
             await expect(page).toFill('.llm-chat-input', msg);
             await expect(page).toClick('.send-prompt-button');
-            await page.waitForTimeout(20000);
+            await page.waitForTimeout(2000);
         });
 
         then('The LLM answers the question', async () => {
