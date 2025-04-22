@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Configuration from "./Configuration";
 import { useTranslation } from "react-i18next";
 import NavBar from "../NavBar";
-import ChaosMode from "./ChaosMode";
+import { ChaosButton } from "./ChaosMode";
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import './home.css';
 

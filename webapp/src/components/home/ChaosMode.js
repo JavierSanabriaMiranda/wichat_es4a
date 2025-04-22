@@ -7,8 +7,8 @@ import { useConfig } from '../contextProviders/GameConfigProvider';
 
 
 export const ChaosButton = () => {
-    const { setConfig } = useConfig(); // Usamos el setConfig para guardar los datos en el contexto
-    const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
+    const { setConfig } = useConfig(); 
+    const [showModal, setShowModal] = useState(false);
     const { t } = useTranslation();
   
     const topicList = ["history", "entertainment", "art", "sport", "geography"];
@@ -57,11 +57,9 @@ export const ChaosButton = () => {
       >
         <Modal.Header closeButton className="text-center border-0">
           <Modal.Title className="w-100">
-            <span role="img" aria-label="bomb">💣</span>
-            <span role="img" aria-label="fire">🔥</span>
-            <strong> {t("chaosMode-intro-title")} </strong>
-            <span role="img" aria-label="fire">🔥</span>
-            <span role="img" aria-label="bomb">💣</span>
+            <span role="img" aria-label="bomb">🔥💣</span>
+            {t("chaosMode-intro-title")}
+            <span role="img" aria-label="bomb">💣🔥</span>
           </Modal.Title>
         </Modal.Header>
 
@@ -70,17 +68,14 @@ export const ChaosButton = () => {
           {t("chaosMode-intro-body")}
           </p>
           <p className="chaos-slogan">
-            <span role="img" aria-label="target">🎯</span>
-            <strong> {t("chaosMode-slogan")} </strong>
+            <span role="img" aria-label="random">🔀 </span>
+            {t("chaosMode-slogan")}
           </p>
         </Modal.Body>
 
         <Modal.Footer className="justify-content-center border-0">
-          <Button variant="secondary" onClick={handleCloseModal} className="me-3 chaos-btn">
-            ❌ {t("close")}
-          </Button>
           <Button variant="danger" onClick={handlePlayChaos} className="chaos-btn">
-            🚀 {t("playChaos")}
+          {t("playChaos")}
           </Button>
         </Modal.Footer>
       </Modal>
