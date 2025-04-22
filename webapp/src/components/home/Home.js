@@ -18,11 +18,11 @@ const ChaosButton = () => {
   const timeOptions = [60, 120, 180];
 
   const handleShowModal = () => {
-    setShowModal(true); // Muestra el modal
+    setShowModal(true); 
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Cierra el modal
+    setShowModal(false); 
   };
 
   const handlePlayChaos = () => {

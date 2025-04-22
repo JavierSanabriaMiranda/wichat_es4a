@@ -192,7 +192,7 @@ export const Game = () => {
         } else {
             setWrongAnswers(wrongAnswers + 1);
             if (isChaosMode) {
-                addPoints(-10);
+                addPoints(-50);
             }
         }        
         addQuestionResult(wasUserCorrect, selectedAnswer);
