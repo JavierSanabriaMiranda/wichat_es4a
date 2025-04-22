@@ -4,6 +4,10 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const User = require('./user-model');
 
+const correctUser = {
+  username: 'testuser',
+  password: 'Password123',
+};
 
 let mongoServer;
 let app;
@@ -22,12 +26,7 @@ afterAll(async () => {
 
 describe('User Service', () => {
   it('should add a new user on POST /adduser', async () => {
-    const newUser = {
-      username: 'testuser',
-      password: 'testpassword',
-    };
-
-    const response = await request(app).post('/adduser').send(newUser);
+    const response = await request(app).post('/adduser').send(correctUser);
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('username', 'testuser');
 
@@ -39,7 +38,39 @@ describe('User Service', () => {
     expect(userInDb.username).toBe('testuser');
 
     // Assert that the password is encrypted
-    const isPasswordValid = await bcrypt.compare('testpassword', userInDb.password);
+    const isPasswordValid = await bcrypt.compare('Password123', userInDb.password);
     expect(isPasswordValid).toBe(true);
+  });
+
+  it('should response with an error 400 because password is not secure', async () => {
+    const newUser = {
+      username: 'testuser',
+      password: 'password',
+    };
+
+    const response = await request(app).post('/adduser').send(newUser);
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error', 'Password error content: password');
+  });
+
+  it('should response with an error 409 because username already exists', async () => {
+    // Same user with another password
+    const existingUser = {
+      username: 'testuser',
+      password: 'Password12345',
+    };
+    await request(app).post('/adduser').send(correctUser); // Add the user first
+    const response = await request(app).post('/adduser').send(existingUser); // Try to add the same user again
+    expect(response.status).toBe(409);
+    expect(response.body).toHaveProperty('error', 'Username already exists');
+  });
+
+  it ('should response with an error 400 because required fields are missing', async () => {
+    const newUser = {
+      password: 'Password123',
+    };
+    const response = await request(app).post('/adduser').send(newUser);
+    expect(response.status).toBe(400);
+    expect(response.body).toHaveProperty('error', 'Missing required field: username');
   });
 });
