@@ -61,6 +61,7 @@
     "username-message": "Username",
     "user-added": "User added successfully.",
     "user-not-added": "User could not be added: ",
+    "username-already-exists": "Username already exists.",
     "add-user-title": "Add User",
     "signup-message-sponsor": "Show off your knowledge! Join WiChat and compete by answering questions from different categories. Ready for the challenge?",
     "login-title": "Login",
@@ -68,6 +69,7 @@
     "login-failure": "Your username or password is incorrect.",
     "enter-username-placeholder": "Enter your username",
     "enter-password-placeholder": "Enter your password",
+    "enter-confirm-password-placeholder": "Confirm your password",
     "auth-error-too-many-attempts": "Too many attempts. Try again later.",
     "password-error-content": "Password must be at least 8 characters long, contain at least one uppercase letter, one number, and no spaces.",
     "confirm-logout": "Are you sure you want to log out?",
@@ -80,5 +82,7 @@
     "chaosMode-intro-body": "This is the mode where anything can happen. The questions will be random, the times unpredictable, and everything is out of control. Are you ready to face this chaos?",
     "close": "Close",
     "playChaos": "Play in Chaos Mode",
-    "chaosMode-slogan": "Each game is different. The only sure thing is surprise"
+    "chaosMode-slogan": "Each game is different. The only sure thing is surprise",
+    "signup-message": "Sign Up",
+    "login-message": "Login"
 }

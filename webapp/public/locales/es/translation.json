@@ -50,6 +50,7 @@
     "username-message": "Nombre de Usuario",
     "user-added": "Usuario añadido correctamente.",
     "user-not-added": "No se ha podido añadir el usuario: ",
+    "username-already-exists": "El nombre de usuario ya existe.",
     "add-user-title": "Añadir Usuario",
     "signup-message-sponsor": "¡Demuestra cuánto sabes! Únete a WiChat y compite respondiendo preguntas de diferentes categorías. ¿Listo para el reto?",
     "login-title": "Iniciar Sesión",
@@ -68,6 +69,7 @@
     "login-success": "Se ha iniciado sesión correctamente",
     "enter-username-placeholder": "Introduzca su nombre de usuario",
     "enter-password-placeholder": "Introduzca su contraseña",
+    "enter-confirm-password-placeholder": "Confirme su contraseña",
     "auth-error-too-many-attempts": "Demasiadas intentos. Inténtelo de nuevo más tarde.",
     "password-error-content": "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, un número y no contener espacios.",
     "confirm-logout": "¿Estás seguro de que deseas cerrar sesión?",
@@ -80,5 +82,7 @@
     "chaosMode-intro-body": "Este es el modo en el que todo puede pasar. Las preguntas serán aleatorias, los tiempos serán impredecibles y todo está fuera de control. ¿Estás listo para enfrentarte a este caos?",
     "close": "Cerrar",
     "playChaos": "Jugar en Modo Caos",
-    "chaosMode-slogan": "Cada partida es distinta. Lo único seguro es la sorpresa."
+    "chaosMode-slogan": "Cada partida es distinta. Lo único seguro es la sorpresa.",
+    "signup-message": "Sign Up",
+    "login-message": "Login"
 }

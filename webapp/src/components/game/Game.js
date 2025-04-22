@@ -110,11 +110,8 @@ export const Game = () => {
             return;
         }
         setNumberOfQuestionsAnswered(numberOfQuestionsAnswered + 1);
-
-        console.log("VOY A PEDIR LA SIGUIENTE PREGUNTA")
+        
         getNextQuestion().then((questionInfo) => {
-
-            console.log("La pregunta es: " + questionInfo.question);
             setQuestion(questionInfo.question);
             setAnswers(questionInfo.answers);
             setStopTimer(false);
@@ -127,9 +124,11 @@ export const Game = () => {
 
     // UseEffect to send the information to configure the game and ask for the first question
     useEffect(() => {
-        configureGame(topics, i18n.language.split('-')[0]).then(() => {
+        const run = async () => {
+            await configureGame(topics, i18n.language.split('-')[0]);
             askForNextQuestion();
-        })
+        };
+        run();
     }, []); // Empty dependency array means this effect runs only once on mount
 
     /**
@@ -291,10 +290,46 @@ export const Game = () => {
 
     return (
         <div className={isChaosMode ? 'chaos-mode' : ''}>
-            <main className='game-screen' key={gameKey}>
-                <div className='timer-div'>
-                    <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
+        <main className='game-screen' key={gameKey}>
+            <div className='timer-div'>
+                <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
+            </div>
+            <div className='game-questions-answered'>
+                <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
+            </div>
+            <div className='game-points-and-exit-div'>
+                {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
+                <div data-testid="gamePoints" className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
+                <button
+                    onClick={askExitGame}
+                    className="exit-button"
+                    onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
+                    onMouseLeave={() => setExitIcon("/exit-icon.png")}
+                >
+                    <img src={exitIcon} className='exit-icon' alt='exit-button' />
+                </button>
+            </div>
+            <div className='game-question'>
+                <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
+            </div>
+            <div className='div-question-img'>
+                {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
+            </div>
+            <section id="question-answers-section">
+                <div id="game-answer-buttons-section">
+                    { /* Create the answerButtons */}
+                    { /* Uses key to help React renderizing */}
+                    {answers.map((answer, index) => (
+                        <AnswerButton
+                            key={index}
+                            answerText={answer.text}
+                            isCorrectAnswer={answer.isCorrect}
+                            answerAction={answerQuestion}
+                            isDisabled={blockButtons}
+                        />
+                    ))}
                 </div>
+                </section>
                 <div className='game-questions-answered'>
                     <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
                 </div>
