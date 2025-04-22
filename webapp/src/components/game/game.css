@@ -354,7 +354,7 @@ button:not(:disabled):active {
 
 /* ===================== CHAOS MODE STYLE ===================== */
 .chaos-mode .game-screen {
-    background: linear-gradient(120deg, #ec7575, #f5a37f, #edf389);
+    background: linear-gradient(120deg, #ec7575, #f5a37f, #ebba91);
     background-size: 600% 600%;
     animation: backgroundChaos 8s ease infinite;
 }
