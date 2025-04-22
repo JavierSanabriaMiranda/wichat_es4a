@@ -1,4 +1,12 @@
-const ChaosButton = () => {
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import { useTranslation } from "react-i18next";
+import './home.css';
+import Modal from "react-bootstrap/Modal";
+import { useConfig } from '../contextProviders/GameConfigProvider';
+
+
+export const ChaosButton = () => {
     const { setConfig } = useConfig(); // Usamos el setConfig para guardar los datos en el contexto
     const [showModal, setShowModal] = useState(false); // Estado para mostrar el modal
     const { t } = useTranslation();

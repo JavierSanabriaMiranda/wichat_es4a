@@ -6,8 +6,6 @@ import NavBar from "../NavBar";
 import ChaosMode from "./ChaosMode";
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import './home.css';
-import Modal from "react-bootstrap/Modal";
-import { useConfig } from '../contextProviders/GameConfigProvider';
 
 
 export const Home = () => {
@@ -26,7 +24,7 @@ export const Home = () => {
           {t("quickGame-home")}
         </Button>
         <GameConfigProvider key={Date.now()}>
-          <ChaosMode />
+          <ChaosButton />
         </GameConfigProvider>
       </div>
 
