@@ -299,6 +299,7 @@ export const Game = () => {
             </div>
             <div className='game-points-and-exit-div'>
                 {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
+                {pointsToAdd < 0 && isChaosMode && <div className='points-to-remove'>{pointsToAdd}</div>}
                 <div data-testid="gamePoints" className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
                 <button
                     onClick={askExitGame}
@@ -329,41 +330,6 @@ export const Game = () => {
                         />
                     ))}
                 </div>
-                </section>
-                <div className='game-questions-answered'>
-                    <p className="question-number">{numberOfQuestionsAnswered}/{numberOfQuestions}</p>
-                </div>
-                <div className='game-points-and-exit-div'>
-                    {pointsToAdd > 0 && <div className='points-to-add'>+{pointsToAdd}</div>}
-                    {pointsToAdd < 0 && isChaosMode && <div className='points-to-remove'>{pointsToAdd}</div>}
-                    <div className={points < 1000 ? 'points-div-under-1000' : 'points-div-above-1000'}>{points}pts</div>
-                    <button
-                        onClick={askExitGame}
-                        className="exit-button"
-                        onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
-                        onMouseLeave={() => setExitIcon("/exit-icon.png")}
-                    >
-                        <img src={exitIcon} className='exit-icon' alt='exit-button' />
-                    </button>
-                </div>
-                <div className='game-question'>
-                    <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
-                </div>
-                <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
-                </div>
-                <section id="question-answers-section">
-                    <div id="game-answer-buttons-section">
-                        {answers.map((answer, index) => (
-                            <AnswerButton
-                                key={index}
-                                answerText={answer.text}
-                                isCorrectAnswer={answer.isCorrect}
-                                answerAction={answerQuestion}
-                                isDisabled={blockButtons}
-                            />
-                        ))}
-                    </div>
                 </section>
                 <aside className='llm-chat-aside'>
                     <LLMChat name={correctAnswer} />

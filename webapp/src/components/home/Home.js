@@ -23,13 +23,13 @@ export const Home = () => {
         <Button size="lg" className="game-options" onClick={() => setShowConfig(true)}>
           {t("quickGame-home")}
         </Button>
-        <GameConfigProvider key={Date.now()}>
+        <GameConfigProvider>
           <ChaosButton />
         </GameConfigProvider>
       </div>
 
       {showConfig &&
-        <GameConfigProvider key={Date.now()}>
+        <GameConfigProvider>
           <Configuration onClose={() => setShowConfig(false)} />
         </GameConfigProvider>
       }
