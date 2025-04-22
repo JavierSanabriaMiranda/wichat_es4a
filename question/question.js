@@ -28,7 +28,6 @@ function loadQuestionTemplatesWithTopicLanguage(topics, lang) {
 
   const filePath = join(__dirname, 'question_template.json');
 
-  console.log("Ruta del archivo:", filePath);
   if (!fs.existsSync(filePath)) {
     throw new Error('El archivo question_template.json no se encuentra');
   }
@@ -87,7 +86,6 @@ async function executeQuery(query) {
   const offset = Math.floor(Math.random() * 100); // Generate a random offset between 0 and 99
   const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
 
-  console.log("Ejecutando consulta SPARQL: ", finalQuery);
 
   const response = await fetch(url, {
     method: "POST",
@@ -131,8 +129,6 @@ async function generateQuestion(topics, lang) {
   // If there are results, generate the question with its options(correct and false ones)
   if (results.length > 0) {
     const filteredResults = generateQuestionWithOptions(results, "label", "image", randomTemplate);
-    console.log("Final Results:");
-    console.log(JSON.stringify(filteredResults, null, 2));
 
     return filteredResults;
   }
@@ -192,8 +188,6 @@ app.post('/api/question/generate', async (req, res) => {
 
     const topics = req.body.topics;
     const lang = req.body.lang;
-    console.log("Que me llega", topics);
-    console.log("Que me llega", lang);
     const questionData = await generateQuestion(topics, lang);
     if (!questionData) {
       return res.status(404).json({ error: "No valid question generated" });

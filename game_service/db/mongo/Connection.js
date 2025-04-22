@@ -22,7 +22,6 @@ const connect = async () => {
   try {
     // Getting the MongoDB connection URL from the environment variable, or using a local default if not provided
     const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/bd";
-    console.log("🚀 Conectando a MongoDB en:", dbUrl);
 
     // Attempt to connect to MongoDB with mongoose
     await mongoose.connect(dbUrl, {
@@ -31,7 +30,6 @@ const connect = async () => {
     });
 
     // If connection is successful, log a success message
-    console.log("✅ Conexión exitosa con MongoDB.");
   } catch (error) {
     // If there's an error connecting to MongoDB, log the error and throw a custom error
     console.error("❌ Error al conectar con MongoDB:", error);
