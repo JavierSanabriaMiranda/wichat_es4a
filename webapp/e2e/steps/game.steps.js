@@ -11,8 +11,8 @@ let browser;
 
 /**
  * Parametrized function to set the game configuration
- * @param {String} questions - Number of questions to be asked in the game.
- * @param {String} time - Time limit for each question.
+ * @param {String} questions - Number of questions to be asked in the game. Value must be one of the options available in the dropdown.
+ * @param {String} time - Time limit for each question. Value must be one of the options available in the dropdown.
  * @param {String} topicClass - Class name of the topic button to be selected.
  * @param {String} topicText - Text of the topic button to be selected.
  */
@@ -136,5 +136,41 @@ defineFeature(feature, test => {
             await page.waitForTimeout(1000);
             await expect(page).toMatchElement('h1', { text: i18n.t("welcome-home") });
         });
+    });
+
+    test('The user asks a question about the image to the LLM', ({ given, when, then }) => {
+        given('The user has configured a game with:', async () => {
+            await configureGame({
+                questions: '10',
+                time: '60s',
+                topicClass: 'toggle-btn-geography',
+                topicText: i18n.t("geography-configuration")
+            });
+        });
+
+        when('The user asks for a clue to the LLM', async () => {
+            // Should be a first llm message saying hello
+            const llmMsgs = await page.$$('.llm-message');
+            expect(llmMsgs.length).toBe(1);
+
+            const msg = "¿Me puedes dar una pista sobre la imagen?";
+
+            await expect(page).toFill('.llm-chat-input', msg);
+            await expect(page).toClick('.send-prompt-button');
+            await page.waitForTimeout(20000);
+        });
+
+        then('The LLM answers the question', async () => {
+            const llmMsgs = await page.$$('.llm-message');
+            const userMsgs = await page.$$('.user-message');
+
+            // Check that there are 2 LLM messages and 1 user message
+            expect(llmMsgs.length).toBe(2);
+            expect(userMsgs.length).toBe(1);
+        });
+    });
+
+    afterAll(async () => {
+        await browser.close();
     });
 });
