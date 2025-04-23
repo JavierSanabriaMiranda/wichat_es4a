@@ -1,28 +1,69 @@
-//libreria para trabajar con MongoDB
-// Importar mongoose
+/**
+ * @fileoverview Defines the Mongoose model for a Question entity.
+ * This schema represents questions used in a quiz game, including 
+ * the question text, possible answers, user selection, and result.
+ */
+
+
 const mongoose = require("mongoose");
 const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
 
 
-
-//esquema para bd de pregunta
+/**
+ * Mongoose schema for a question.
+ * Each question includes the text, an image, possible answers,
+ * and optionally user response data.
+ */
 const questionSchema = new Schema({
-    text: { type: String, required: true }, // Enunciado de la pregunta
-    imageUrl: { type: String, required: true }, // URL de la imagen asociada a la pregunta
-    wasUserCorrect: { type: Boolean, required: false }, // Indica si el usuario respondió correctamente
-    selectedAnswer: { type: String, required: false }, // Respuesta seleccionada por el usuario
+    text: { 
+        type: String, 
+        required: false 
+    }, // The question text
+
+    imageUrl: { 
+        type: String, 
+        required: false 
+    }, // URL of the image associated with the question
+
+    wasUserCorrect: { 
+        type: Boolean, 
+        required: false 
+    }, // Whether the user answered the question correctly
+
+    selectedAnswer: { 
+        type: String, 
+        required: false 
+    }, // The answer selected by the user
+
     answers: [
         {
-            text: { type: String, required: true }, // Texto de la opción de respuesta
-            isCorrect: { type: Boolean, required: true } // Indica si es la respuesta correcta
+            text: { 
+                type: String, 
+                required: false 
+            }, // Text of the answer option
+
+            isCorrect: { 
+                type: Boolean, 
+                required: false 
+            } // Indicates whether the option is the correct answer
         }
-    ]
+    ],
+    topics: [
+        {
+          type: String,
+          required: false
+        }
+      ]
 });
 
-//se crea el modelo a partir del esquema que se definió previamente
+/**
+ * Mongoose model for the Question collection.
+ */
 const Question = model("Question", questionSchema);
 
-//sirve para representar lo que se exportará desde el archivo actual -> el modelo de Pregunta
-// Exportación en ES Module
-module.exports =  Question;
+/**
+ * Exports the Question model for use in other modules.
+ */
+module.exports = Question;
+

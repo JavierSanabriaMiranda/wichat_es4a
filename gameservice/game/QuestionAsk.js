@@ -3,8 +3,6 @@
  * and requesting questions from an external service.
  * 
  * Main functions:
- * - `validate`: Validates that the required fields are present in the request body.
- * - `getCurrentQuestion`: Retrieves the current question for a user based on their ID.
  * - `requestQuestion`: Makes a request to an external API to retrieve a new question.
  * 
  * @module QuestionManager
@@ -12,53 +10,7 @@
 const axios = require('axios');
 const { Game } = require("../models/index");
 
-/**
- * Validates that the request body contains the required fields.
- * 
- * @param {Object} req - The request object containing the request body.
- * @param {Array} requiredFields - List of fields expected in the request body.
- * @returns {boolean} - Returns `true` if all required fields are present, otherwise `false`.
- */
-const validate = (req, requiredFields) => {
-    for (const field of requiredFields) {
-        if (!(field in req.body)) {
-            return false;
-        }
-    }
-    return true;
-};
 
-/**
- * Retrieves the current question for a user based on their ID.
- * 
- * @param {string} userId - The user's ID for retrieving their current question.
- * @returns {Object|null} - Returns the first question from the active game, or `null` if no question is found.
- */
-const getCurrentQuestion = async (userId) => {
-    // Fetch the user's games from the database
-    let games = await Game.findAll({
-        where: {
-            user_id: userId
-        }
-    });
-
-    // If no active games are found, return null
-    if (games == null || games.length < 1) {
-        return null;
-    }
-
-    let game = games[0];  // Get the first active game found
-
-    // Fetch the questions associated with the game
-    let questions = await game.getQuestions();
-    // If no questions are associated with the game, return null
-    if (questions == null || questions.length < 1) {
-        return null;
-    }
-
-    // Return the first question of the game
-    return questions[0];
-};
 
 /**
  * Makes a request to an external API to retrieve a new question.
@@ -72,16 +24,16 @@ const getCurrentQuestion = async (userId) => {
  */
 const requestQuestion = async (topics, lang) => {
     let gatewayServiceUrl = process.env.GATEWAY_SERVICE || 'http://localhost:8000';
-    console.log("Que me llega", topics);
-    console.log("Que me llega", lang);
+
+   
     try {
-        console.log("Estoy en QuestionAsk.js y el endpoint es: " + gatewayServiceUrl + '/api/question/new');
-        // Realiza la solicitud POST a la API con los datos en el body
-        const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
-            topics: topics,   // Incluyendo 'topics' en el cuerpo
-            lang: lang        // Incluyendo 'lang' en el cuerpo
+            // Make a POST request to the API with the data in the body
+            const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
+            topics: topics,   
+            lang: lang       
         });
-        // Realiza la solicitud a la API externa
+        // Make the request to the external API
+
         const { question, correct, image, options } = res.data;
         // Validate that the response has the expected structure
         if (!question || !correct || !image || !Array.isArray(options) || options.length < 1) {
@@ -98,10 +50,7 @@ const requestQuestion = async (topics, lang) => {
         allOptions.sort(() => Math.random() - 0.5);
 
         // Return the question in the correct format
-        console.log("Pregunta", question);
-        console.log("Respuesta correcta", correct);
-        console.log("Imagen", image);
-        console.log("Opciones", options);
+
         return {
             question: question,
             answer: correct,
@@ -110,8 +59,7 @@ const requestQuestion = async (topics, lang) => {
         };
 
     } catch (error) {
-        console.error("Error getting the question from the external service, using simulated question.");
-        console.error(error);
+
 
         // Return a fallback simulated question in case of failure
         return {
@@ -123,4 +71,5 @@ const requestQuestion = async (topics, lang) => {
     }
 };
 
-module.exports = { validate, getCurrentQuestion, requestQuestion };
+module.exports = {requestQuestion };
+

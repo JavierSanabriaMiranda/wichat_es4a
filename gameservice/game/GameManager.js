@@ -16,8 +16,13 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
-const { GamePlayed, Question } = require("../models/index");
-const { validate, getCurrentQuestion, requestQuestion} = require("./QuestionAsk");
+
+const { GamePlayed } = require("../models/game_played");
+const Question  = require("../models/Question");
+
+
+const { requestQuestion} = require("./QuestionAsk");
+
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -33,17 +38,40 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
-    console.log("Estoy en el GameManager.js y llamo a la función newGame() de GameManager.js");
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
+      
+
+        const allowedTopics = ["geography", "history", "science", "sport", "character", "art", "entertainment"];
+        const allowedLangs = ["es", "en"];
+
+        // Validar campos obligatorios y que no estén vacíos
+        if (
+            !cacheId ||
+            !topics ||
+            (Array.isArray(topics) && topics.length === 0) ||
+            (typeof topics === "string" && topics.trim() === "") ||
+            !lang
+        ) {
+            return res.status(400).json({ error: "Missing or empty required fields: cacheId, topics, or lang." });
+        }
+
+         // Normalizar topics a array
+         const topicList = Array.isArray(topics) ? topics : [topics];
+
+         // Validar que todos los topics estén permitidos
+         const invalidTopics = topicList.filter(t => !allowedTopics.includes(t));
+        // Validar idioma
+        if (!allowedLangs.includes(lang) || invalidTopics.length > 0) {
+            return res.status(400).json({ error: `Invalid topics or language` });
+        }
 
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
-        console.log(`Game data saved in cache for cacheId ${cacheId}:`, {topics, lang });
-        res.status(200).send();
+        res.status(200).send(cacheId.toString()); // Send the cache ID back to the client
+
     } catch (error) {
-        console.error("Error creating a new game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -56,10 +84,10 @@ const newGame = async (req, res) => {
  * @returns {void}  Sends the current question of the game in JSON format.
  */
 const next = async (req, res) => {
-    console.log("Request body received:", req.body.cacheId);
+
     try {
         let cacheId = req.body.cacheId;
-        console.log("Getting next question for user:", cacheId);
+
 
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
@@ -67,30 +95,28 @@ const next = async (req, res) => {
 
         const { topics, lang } = cacheData;
 
-        console.log("Estoy en el GameManager.js y llamo a la función requestQuestion() de QuestionAsk.js");
         // Call requestQuestion without saving anything to the database
         const questionRaw = await requestQuestion(topics, lang);
-        console.log("Question raw:", questionRaw);
 
         // Transform the response to the required format
         const formattedResponse = {
-            text: questionRaw.question,  // Mapea la pregunta
-            imageUrl: questionRaw.imageUrl || "",  // Usa la imagen si existe
-            selectedAnswer: "",  // No tenemos esta información aún, la dejamos vacía
+            text: questionRaw.question,  
+            imageUrl: questionRaw.imageUrl || "", 
+            selectedAnswer: "",  
             answers: questionRaw.options.map(option => ({
                 text: option,
-                isCorrect: option === questionRaw.answer  // Marcar la respuesta correcta
+                isCorrect: option === questionRaw.answer  
             }))
         };
 
-        console.log ("Estas son las respuestas que enviamos:", formattedResponse.answers);
+
 
         res.status(200).json(formattedResponse);
     } catch (error) {
-        console.error("Error getting next question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 /**
  * Ends the game and saves the results to the database.
@@ -116,22 +142,42 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
-            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
+            topi
+
         });
+
 
         // Save the game to the database
         const savedGame = await newGame.save();
 
+        // Recoger todos los topics de las preguntas sin repetir
+        const topicsSet = new Set();
+        game.questions.forEach(q => {
+            if (q.topics) {
+                // Asegura que siempre trabajas con array o único topic
+                const topicList = Array.isArray(q.topics) ? q.topics : [q.topics];
+                topicList.forEach(t => topicsSet.add(t));
+            }
+        });
+        const uniqueTopics = Array.from(topicsSet);
+
+
         // Save all the questions related to this game
-        const questionsToInsert = game.questions.map(q => ({
+        const questionsToInsert = game.questions.map(q => (
+            {
+
             text: q.text, // Question text
             imageUrl: q.imageUrl, // Image URL
             selectedAnswer: q.selectedAnswer, // Selected answer by the user
             answers: q.answers.map(ans => ({
                 text: ans.text, // Option text
                 isCorrect: ans.isCorrect, // If it is the correct answer
+
             })),
+          topics: uniqueTopics // ← aquí los topics únicos
+            
         }));
+
 
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
@@ -140,9 +186,9 @@ const endAndSaveGame = async (req, res) => {
         savedGame.questionsPlayed = savedQuestions.map(question => question._id);
         await savedGame.save();
 
+
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
-        console.error("Error saving game data:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -157,11 +203,15 @@ const endAndSaveGame = async (req, res) => {
 const getGameQuestions = async (req, res) => {
     try {
         const gameId = req.body.gameId;  // Get the game ID from the URL parameters
-        console.log("Fetching questions for game:", gameId);
+        if (!gameId) {
+            return res.status(400).json({ error: "Missing gameId in request body." });
+        }
+        
 
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
-            .populate('questions')  // Populate the questions for this specific game
+            .populate('questionsPlayed')  // Populate the questions for this specific game
+
             .exec();
 
         if (!game) {
@@ -169,9 +219,9 @@ const getGameQuestions = async (req, res) => {
         }
 
         // Return the questions associated with the game in JSON format
-        res.status(200).json(game.questions);
+        res.status(200).json(game.questionsPlayed);
+
     } catch (error) {
-        console.error("Error fetching game questions:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -186,7 +236,10 @@ const getGameQuestions = async (req, res) => {
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
         const userId = req.body.user.userId ;  // Get the user ID from the request body
-        console.log("Request body received:", userId);
+        if (!userId) {
+            return res.status(400).json({ error: "Missing userId in request body." });
+        }
+        
 
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
@@ -197,20 +250,19 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         }
 
         // Return games without associated questions in JSON format
-        // Mapear los resultados para devolver el formato correcto
         const formattedGames = games.map(game => ({
             _id: game._id,
-            userId: game.user,  // En el esquema, 'user' es el ObjectId del usuario
+            userId: game.user,  
             numberOfQuestions: game.numberOfQuestions,
-            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  // Agregar número de respuestas correctas si existe
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  
             gameMode: game.gameMode,
             points: game.points,
-            topics: game.topics || []  // Si topics es null/undefined, devuelve un array vacío
+            topics: game.topics || [] 
+
         }));
         res.status(200).json(formattedGames);   
          
     } catch (error) {
-        console.error("Error fetching user games:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -232,7 +284,6 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 
         return game.questionsPlayed.length;
     } catch (error) {
-        console.error("Error getting number of questions played:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -247,7 +298,7 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 const getQuestion = async (req, res) => {
     try {
         const userId = req.body.user.userId;
-        console.log("Getting current question for user:", userId);
+
 
         // Get the active game first
         const currentGame = await getCurrentGame(req, res);
@@ -278,7 +329,6 @@ const getQuestion = async (req, res) => {
             imageUrl: question.imageUrl || ""
         });
     } catch (error) {
-        console.error("Error retrieving current question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -303,7 +353,6 @@ const getCurrentGame = async (req, res) => {
 
         return currentGame;
     } catch (error) {
-        console.error("Error retrieving current game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -313,7 +362,6 @@ module.exports = {
     next,
     endAndSaveGame,
     getNumberOfQuestionsPlayed,
-    getQuestion,
-    getCurrentGame,
     getGameQuestions,
     getUserGamesWithoutQuestions};
+
