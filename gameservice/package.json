@@ -1,5 +1,5 @@
 {
-  "name": "game_service",
+  "name": "gameservice",
   "version": "1.0.0",
   "main": "game-service.js",
   "scripts": {
