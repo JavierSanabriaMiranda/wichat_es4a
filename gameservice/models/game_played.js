@@ -72,5 +72,4 @@ const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
 module.exports = { GamePlayed };
 
-module.exports = GamePlayed;
 

@@ -45,7 +45,7 @@ const newGame = async (req, res) => {
 
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
-        res.status(200).send("Game data created successfully");
+        res.status(200).send(cacheId.toString()); // Send the cache ID back to the client
 
     } catch (error) {
         console.error("Error creating a new game:", error);
@@ -330,5 +330,5 @@ module.exports = {
     endAndSaveGame,
     getNumberOfQuestionsPlayed,
     getGameQuestions,
-    getUserGamesWithoutQuestions, setGameCache};
+    getUserGamesWithoutQuestions};
 

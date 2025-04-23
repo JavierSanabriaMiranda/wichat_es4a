@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongodb = require('./db/mongo/Connection');
+const { connect, disconnect } = require('./db/mongo/Connection');
 
 // Libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express');
@@ -73,8 +73,15 @@ app.post('/api/game/next', (req, res) => {
  * @description Ends the current game and saves the results by calling the `endAndSaveGame` function.
  * @param {Object} req.body - Request body should include game end data and final player responses.
  */
-app.post('/api/game/endAndSaveGame', (req, res) => {
-  endAndSaveGame(req, res); // Executes the function when the request is received
+app.post('/api/game/endAndSaveGame', async (req, res) => {
+  try {
+    await connect();                  // Connect to MongoDB
+    await endAndSaveGame(req, res);   // Call your game logic
+  } catch (error) {
+    res.status(error.response?.status || 500).send("Internal server error.");
+  } finally {
+    await disconnect();               // Always disconnect, even if error occurs
+  }
 });
 
 /**
@@ -83,11 +90,15 @@ app.post('/api/game/endAndSaveGame', (req, res) => {
  * @param {Object} req.body - Request body should include user details to get their game history.
  * @param {Object} res - The response object used to send the result back to the client.
  */
-app.post('/api/game/history/gameList', async(req, res) => {
-  try{
-    getUserGamesWithoutQuestions(req, res); // Executes the function when the request is received
-
-  }catch(error){
+app.post('/api/game/history/gameList', async (req, res) => {
+  try {
+    await connect(); // Connect to MongoDB
+    await getUserGamesWithoutQuestions(req, res);
+  } catch (error) {
+    console.error("Error in gameList endpoint:", error);
+    res.status(error.response?.status || 500).send("Internal server error.");
+  } finally {
+    await disconnect(); // Always disconnect
   }
 });
 
@@ -97,13 +108,17 @@ app.post('/api/game/history/gameList', async(req, res) => {
  * @param {Object} req.body - Request body should include user/game details to get the question history.
  * @param {Object} res - The response object used to send the result back to the client.
  */
-app.post('/api/game/history/gameQuestions', async(req, res) => {
-  try{
-    getGameQuestions(req, res); // Executes the function when the request is received
-  }catch(error){
+app.post('/api/game/history/gameQuestions', async (req, res) => {
+  try {
+    await connect(); // Connect to MongoDB
+    await getGameQuestions(req, res);
+  } catch (error) {
+    console.error("Error in gameQuestions endpoint:", error);
+    res.status(error.response?.status || 500).send("Internal server error.");
+  } finally {
+    await disconnect(); // Always disconnect
   }
 });
-
 /**
  * @description OpenAPI-Swagger Documentation
  * 
@@ -122,19 +137,6 @@ if (fs.existsSync(openapiPath)) {
 } else {
 }
 
-/**
- * @description Connect to MongoDB on first request
- * 
- * When the /api/connectMongo POST request is made, this API will establish a connection to MongoDB.
- * 
- * @function POST /api/connectMongo
- * @param {Object} req.body - Request body is not required.
- * @param {Object} res - The response object to send the result back to the client.
- */
-app.post('/api/connectMongo', (req, res) => {
-  mongodb(); // Connect to MongoDB when this request is made
-  res.status(200).send('MongoDB connection established.');
-});
 
 // Start the server and listen on the specified port
 const server = app.listen(port, () => {
