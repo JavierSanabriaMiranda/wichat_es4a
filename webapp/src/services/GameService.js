@@ -83,7 +83,7 @@ import axios from 'axios';
             axios.post(apiEndpoint + '/api/game/endAndSaveGame', gameData,
                 {   // Options (including headers)
                     headers: {
-                        authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );

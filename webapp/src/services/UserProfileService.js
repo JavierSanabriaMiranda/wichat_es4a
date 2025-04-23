@@ -44,7 +44,7 @@ const changePassword = async (token, currentPassword, newPassword) => {
             },
             {   // Options (including headers)
                 headers: {
-                    authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
         );
