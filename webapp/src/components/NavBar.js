@@ -9,6 +9,21 @@ import "./nav.css";
 import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
 
+/**
+ * Navigation bar component that is displayed at the top of the application.
+ * 
+ * Features:
+ * - Displays a logo that navigates to the home page on click.
+ * - Language switcher to toggle between supported languages.
+ * - Navigation links including "Rules", "Login", "Sign Up", and user profile/logout options if logged in.
+ * - Logout confirmation modal.
+ * - Rules modal to display game instructions.
+ * - Applies top padding to the body when required (to avoid overlapping content).
+ *
+ * @param {boolean} hasPadding - Determines whether top padding should be added to the body.
+ * @returns {JSX.Element} Navigation bar with interactive language, auth, and help features.
+ */
+
 const NavBar = ({ hasPadding }) => {
   const { t } = useTranslation();
 
@@ -17,6 +32,7 @@ const NavBar = ({ hasPadding }) => {
   const [showRules, setShowRules] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
+  // Apply top padding when hasPadding is true to avoid overlapping the content
   useEffect(() => {
     if (hasPadding) {
       document.body.style.paddingTop = "56px";
@@ -26,15 +42,18 @@ const NavBar = ({ hasPadding }) => {
     };
   }, [hasPadding]);
 
+  // Handles language change
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
   };
 
+  // Removes the token and redirects to home after confirming logout
   const confirmLogout = () => {
     sessionStorage.removeItem("token");
     window.location.href = "/";
   };
 
+  // Opens logout confirmation modal
   const handleLogout = () => {
     setShowLogoutModal(true);
   };
@@ -71,6 +90,7 @@ const NavBar = ({ hasPadding }) => {
                 {t("rules-menu")}
               </Nav.Link>
 
+              {/* Conditional rendering based on user authentication */}
               {token ? (
                 <>
                   <Nav.Link onClick={() => navigate("/user")} className="icon-menu" data-testid="user-icon">
