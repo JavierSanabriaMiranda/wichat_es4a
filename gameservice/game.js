@@ -56,8 +56,6 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS) to handle reques
  * @param {Object} req.body - Request body should include data to start a new game.
  */
 app.post('/api/game/new', (req, res) => {
-  console.log("Estoy en game.js y llamo a la función newGame() de GameManager.js");
-  console.log('Iniciando un nuevo juego...');
   newGame(req, res); // Executes the function when the request is received
 });
 
@@ -67,8 +65,6 @@ app.post('/api/game/new', (req, res) => {
  * @param {Object} req.body - Request body should include data about the current game and player.
  */
 app.post('/api/game/next', (req, res) => {
-  console.log("Estoy en GameService.js y llamo a la función next() de GameManager.js");
-  console.log('Obteniendo la siguiente pregunta...');
   next(req, res); // Executes the function when the request is received
 });
 
@@ -78,7 +74,6 @@ app.post('/api/game/next', (req, res) => {
  * @param {Object} req.body - Request body should include game end data and final player responses.
  */
 app.post('/api/game/endAndSaveGame', (req, res) => {
-  console.log('Respondiendo a la pregunta...');
   endAndSaveGame(req, res); // Executes the function when the request is received
 });
 
@@ -90,11 +85,9 @@ app.post('/api/game/endAndSaveGame', (req, res) => {
  */
 app.post('/api/game/history/gameList', async(req, res) => {
   try{
-    console.log("Generating history for the game...");
     getUserGamesWithoutQuestions(req, res); // Executes the function when the request is received
 
   }catch(error){
-    console.log("Error generating game history: ", error.message);
   }
 });
 
@@ -106,10 +99,8 @@ app.post('/api/game/history/gameList', async(req, res) => {
  */
 app.post('/api/game/history/gameQuestions', async(req, res) => {
   try{
-    console.log("Generating history for game questions...");
     getGameQuestions(req, res); // Executes the function when the request is received
   }catch(error){
-    console.log("Error generating question history: ", error.message);
   }
 });
 
@@ -129,7 +120,6 @@ if (fs.existsSync(openapiPath)) {
   // Serve the Swagger UI at the /api-doc endpoint
   app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 } else {
-  console.log("No OpenAPI configuration found. The configuration file is missing.");
 }
 
 /**
@@ -148,7 +138,6 @@ app.post('/api/connectMongo', (req, res) => {
 
 // Start the server and listen on the specified port
 const server = app.listen(port, () => {
-  console.log(`Game service listening at http://localhost:${port}`);
 });
 
 module.exports = server;

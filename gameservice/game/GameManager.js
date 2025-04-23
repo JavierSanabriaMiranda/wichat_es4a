@@ -44,7 +44,6 @@ const newGame = async (req, res) => {
         gameCache.set(cacheId.toString(), { topics, lang });
         res.status(200).send("Game data created successfully");
     } catch (error) {
-        console.error("Error creating a new game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -82,7 +81,7 @@ const next = async (req, res) => {
 
         res.status(200).json(formattedResponse);
     } catch (error) {
-        console.error("Error getting next question:", error);
+       
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -141,7 +140,7 @@ const endAndSaveGame = async (req, res) => {
 
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
-        console.error("Error saving game data:", error.toString());
+       
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -170,7 +169,7 @@ const getGameQuestions = async (req, res) => {
         // Return the questions associated with the game in JSON format
         res.status(200).json(game.questions);
     } catch (error) {
-        console.error("Error fetching game questions:", error);
+       
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -208,7 +207,6 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         res.status(200).json(formattedGames);   
          
     } catch (error) {
-        console.error("Error fetching user games:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -230,7 +228,6 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 
         return game.questionsPlayed.length;
     } catch (error) {
-        console.error("Error getting number of questions played:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -275,7 +272,6 @@ const getQuestion = async (req, res) => {
             imageUrl: question.imageUrl || ""
         });
     } catch (error) {
-        console.error("Error retrieving current question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -300,7 +296,6 @@ const getCurrentGame = async (req, res) => {
 
         return currentGame;
     } catch (error) {
-        console.error("Error retrieving current game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
