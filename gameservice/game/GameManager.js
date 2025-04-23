@@ -17,7 +17,7 @@
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
 const { GamePlayed } = require("../models/game_played");
-const { Question } = require("../models/Question");
+const Question  = require("../models/Question");
 
 
 const { requestQuestion} = require("./QuestionAsk");
@@ -70,12 +70,12 @@ const next = async (req, res) => {
 
         // Transform the response to the required format
         const formattedResponse = {
-            text: questionRaw.question,  // Mapea la pregunta
-            imageUrl: questionRaw.imageUrl || "",  // Usa la imagen si existe
-            selectedAnswer: "",  // No tenemos esta información aún, la dejamos vacía
+            text: questionRaw.question, 
+            imageUrl: questionRaw.imageUrl || "", 
+            selectedAnswer: "",  
             answers: questionRaw.options.map(option => ({
                 text: option,
-                isCorrect: option === questionRaw.answer  // Marcar la respuesta correcta
+                isCorrect: option === questionRaw.answer  
             }))
         };
 
@@ -101,30 +101,28 @@ const setGameCache = (newCache) => {
 const endAndSaveGame = async (req, res) => {
     try {
         const game = req.body;
+
         // Validate input data
-        if (!game.user.userId || !game || !game.questions || !Array.isArray(game.questions)) {
+        if (!game.userId || !game || !game.questions || !Array.isArray(game.questions)) {
             return res.status(400).send("Missing required fields or invalid data format.");
         }
 
         // Create a new game entry
         const newGame = new GamePlayed({
-            userId: new mongoose.Types.ObjectId(game.user.userId),
+            userId: new mongoose.Types.ObjectId(game.userId),
             numberOfQuestions: game.numberOfQuestions,
             numberOfCorrectAnswers: game.numberOfCorrectAnswers,
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
+            topics: game.questions.flatMap(q => q.answers.map(a => a.text))          
         });
-    
 
         // Save the game to the database
         const savedGame = await newGame.save();
 
-
         // Save all the questions related to this game
-        const questionsToInsert = game.questions.map(q => (
-            {
-            
+        const questionsToInsert = game.questions.map(q => ({
             text: q.text, // Question text
             imageUrl: q.imageUrl, // Image URL
             selectedAnswer: q.selectedAnswer, // Selected answer by the user
@@ -132,11 +130,8 @@ const endAndSaveGame = async (req, res) => {
                 text: ans.text, // Option text
                 isCorrect: ans.isCorrect, // If it is the correct answer
             })),
-          
-            
         }));
 
-        
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
 
@@ -144,13 +139,13 @@ const endAndSaveGame = async (req, res) => {
         savedGame.questionsPlayed = savedQuestions.map(question => question._id);
         await savedGame.save();
 
-
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
-        console.error("Error saving game data:", error);
+        console.error("Error saving game data:", error.toString());
         res.status(500).json({ error: "Internal server error" });
     }
 };
+
 
 /**
  * Retrieves all questions associated with a specific game.

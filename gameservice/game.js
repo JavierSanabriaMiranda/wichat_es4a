@@ -50,12 +50,10 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS) to handle reques
  *   - Body data: A JSON object with user details (e.g., user ID).
  */
 
-// API Endpoints
-
 /**
  * @function POST /api/game/new
  * @description Initiates a new game by calling the `newGame` function.
- * @body {Object} req.body - Request body should include data to start a new game.
+ * @param {Object} req.body - Request body should include data to start a new game.
  */
 app.post('/api/game/new', (req, res) => {
   console.log("Estoy en game.js y llamo a la función newGame() de GameManager.js");
@@ -66,7 +64,7 @@ app.post('/api/game/new', (req, res) => {
 /**
  * @function POST /api/game/next
  * @description Retrieves the next question for the game by calling the `next` function.
- * @body {Object} req.body - Request body should include data about the current game and player.
+ * @param {Object} req.body - Request body should include data about the current game and player.
  */
 app.post('/api/game/next', (req, res) => {
   console.log("Estoy en GameService.js y llamo a la función next() de GameManager.js");
@@ -77,37 +75,44 @@ app.post('/api/game/next', (req, res) => {
 /**
  * @function POST /api/game/endAndSaveGame
  * @description Ends the current game and saves the results by calling the `endAndSaveGame` function.
- * @body {Object} req.body - Request body should include game end data and final player responses.
+ * @param {Object} req.body - Request body should include game end data and final player responses.
  */
 app.post('/api/game/endAndSaveGame', (req, res) => {
   console.log('Respondiendo a la pregunta...');
   endAndSaveGame(req, res); // Executes the function when the request is received
 });
 
-
-//Información sobre la partida para el historial
+/**
+ * @function POST /api/game/history/gameList
+ * @description Retrieves game history without question details.
+ * @param {Object} req.body - Request body should include user details to get their game history.
+ * @param {Object} res - The response object used to send the result back to the client.
+ */
 app.post('/api/game/history/gameList', async(req, res) => {
   try{
-    console.log("Generando historico sobre partida");
+    console.log("Generating history for the game...");
     getUserGamesWithoutQuestions(req, res); // Executes the function when the request is received
 
   }catch(error){
-    console.log("Error al generar el historico de partida: ", error.message);
-
+    console.log("Error generating game history: ", error.message);
   }
 });
 
-//Información sobre las preguntas de una partida para el historial
+/**
+ * @function POST /api/game/history/gameQuestions
+ * @description Retrieves the game question history.
+ * @param {Object} req.body - Request body should include user/game details to get the question history.
+ * @param {Object} res - The response object used to send the result back to the client.
+ */
 app.post('/api/game/history/gameQuestions', async(req, res) => {
   try{
-    console.log("Generando historico sobre preguntas de una partida");
+    console.log("Generating history for game questions...");
     getGameQuestions(req, res); // Executes the function when the request is received
-
   }catch(error){
-    console.log("Error al generar el historico de preguntas: ", error.message);
-
+    console.log("Error generating question history: ", error.message);
   }
 });
+
 /**
  * @description OpenAPI-Swagger Documentation
  * 
@@ -133,11 +138,12 @@ if (fs.existsSync(openapiPath)) {
  * When the /api/connectMongo POST request is made, this API will establish a connection to MongoDB.
  * 
  * @function POST /api/connectMongo
- * @body {Object} req.body - Request body is not required.
+ * @param {Object} req.body - Request body is not required.
+ * @param {Object} res - The response object to send the result back to the client.
  */
 app.post('/api/connectMongo', (req, res) => {
   mongodb(); // Connect to MongoDB when this request is made
-  res.status(200).send('Conexión a MongoDB establecida.');
+  res.status(200).send('MongoDB connection established.');
 });
 
 // Start the server and listen on the specified port

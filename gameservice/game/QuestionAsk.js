@@ -27,12 +27,12 @@ const requestQuestion = async (topics, lang) => {
     console.log("Que me llega", lang);
     try {
         console.log("Estoy en QuestionAsk.js y el endpoint es: " + gatewayServiceUrl + '/api/question/new');
-        // Realiza la solicitud POST a la API con los datos en el body
-        const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
-            topics: topics,   // Incluyendo 'topics' en el cuerpo
-            lang: lang        // Incluyendo 'lang' en el cuerpo
+            // Make a POST request to the API with the data in the body
+            const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
+            topics: topics,   
+            lang: lang       
         });
-        // Realiza la solicitud a la API externa
+        // Make the request to the external API
         const { question, correct, image, options } = res.data;
         // Validate that the response has the expected structure
         if (!question || !correct || !image || !Array.isArray(options) || options.length < 1) {

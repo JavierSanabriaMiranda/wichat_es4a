@@ -1,9 +1,22 @@
-const mongoose = require("mongoose");
+/**
+ * Mongoose schema for storing data about a completed game session.
+ * 
+ * Fields:
+ * - userId: Reference to the user who played the game.
+ * - numberOfQuestions: Total number of questions in the game.
+ * - numberOfCorrectAnswers: Total number of correct answers given by the user.
+ * - gameMode: Mode or type of the game.
+ * - points: Points earned in the game.
+ * - questions: List of questions presented in the game.
+ * - topics: Topics or categories associated with the game.
+ * - gameDate: Date when the game was played, formatted as DD-MM-YYYY.
+ */
 
+const mongoose = require("mongoose");
 const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
 
-// Define el esquema para GamePlayed
+// Define the schema for GamePlayed
 const gamePlayedSchema = new Schema({
   userId: {
     type: ObjectId,
@@ -26,17 +39,10 @@ const gamePlayedSchema = new Schema({
     type: Number,
     default: 0
   },
-  questions: [
+  questionsPlayed: [
     {
-      text: { type: String, required: true },
-      imageUrl: { type: String, default: "" },
-      selectedAnswer: { type: String, required: false },
-      answers: [
-        {
-          text: { type: String, required: true },
-          isCorrect: { type: Boolean, required: true }
-        }
-      ]
+      type: ObjectId,
+      ref: "Question"
     }
   ],
   topics: [
@@ -50,15 +56,13 @@ const gamePlayedSchema = new Schema({
     default: () => {
       const now = new Date();
       const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0'); // Meses van de 0 a 11
+      const month = String(now.getMonth() + 1).padStart(2, '0'); // Months go from 0 to 11
       const year = now.getFullYear();
       return `${day}-${month}-${year}`;
     }
   }
 });
 
-// Crear modelo GamePlayed
 const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
-// Exportar el modelo correctamente
 module.exports = { GamePlayed };
