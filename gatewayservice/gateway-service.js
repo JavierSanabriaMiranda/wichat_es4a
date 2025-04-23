@@ -213,12 +213,13 @@ app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
  * @param {Object} req.body.user - The authenticated user’s information.
  * @returns {Object} The game history list from the game service.
  */
-app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
+app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
   try {
     await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
     const historyResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
     res.json(historyResponse.data);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
