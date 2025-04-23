@@ -13,12 +13,18 @@ async function startServer() {
     mongoserver = await MongoMemoryServer.create();
     const mongoUri = mongoserver.getUri();
     process.env.MONGODB_URI = mongoUri;
+
+    // Load API KEY from .env file
+    require('dotenv').config({ path: require('path').resolve(__dirname, '../../.env') });
+
     userservice = await require("../../users/userservice/user-service");
     authservice = await require("../../users/authservice/auth-service");
     llmservice = await require("../../llmservice/llm-service");
     gatewayservice = await require("../../gatewayservice/gateway-service");
     //questionservice = await require("../../questionservice/question-service");
     //gameservice = await require("../../gameservice/game-service");
+    questionservice = await require("../../question/question");
+    gameservice = await require("../../game_service/game");
 }
 
 startServer();

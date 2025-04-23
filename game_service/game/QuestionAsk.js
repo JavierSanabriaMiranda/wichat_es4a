@@ -72,10 +72,7 @@ const getCurrentQuestion = async (userId) => {
  */
 const requestQuestion = async (topics, lang) => {
     let gatewayServiceUrl = process.env.GATEWAY_SERVICE || 'http://localhost:8000';
-    console.log("Que me llega", topics);
-    console.log("Que me llega", lang);
     try {
-        console.log("Estoy en QuestionAsk.js y el endpoint es: " + gatewayServiceUrl + '/api/question/new');
         // Realiza la solicitud POST a la API con los datos en el body
         const res = await axios.post(`${gatewayServiceUrl}/api/question/new`, {
             topics: topics,   // Incluyendo 'topics' en el cuerpo
@@ -98,10 +95,6 @@ const requestQuestion = async (topics, lang) => {
         allOptions.sort(() => Math.random() - 0.5);
 
         // Return the question in the correct format
-        console.log("Pregunta", question);
-        console.log("Respuesta correcta", correct);
-        console.log("Imagen", image);
-        console.log("Opciones", options);
         return {
             question: question,
             answer: correct,

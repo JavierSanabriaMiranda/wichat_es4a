@@ -33,14 +33,12 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
-    console.log("Estoy en el GameManager.js y llamo a la función newGame() de GameManager.js");
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
 
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
-        console.log(`Game data saved in cache for cacheId ${cacheId}:`, {topics, lang });
         res.status(200).send();
     } catch (error) {
         console.error("Error creating a new game:", error);
@@ -56,10 +54,8 @@ const newGame = async (req, res) => {
  * @returns {void}  Sends the current question of the game in JSON format.
  */
 const next = async (req, res) => {
-    console.log("Request body received:", req.body.cacheId);
     try {
         let cacheId = req.body.cacheId;
-        console.log("Getting next question for user:", cacheId);
 
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
@@ -67,10 +63,8 @@ const next = async (req, res) => {
 
         const { topics, lang } = cacheData;
 
-        console.log("Estoy en el GameManager.js y llamo a la función requestQuestion() de QuestionAsk.js");
         // Call requestQuestion without saving anything to the database
         const questionRaw = await requestQuestion(topics, lang);
-        console.log("Question raw:", questionRaw);
 
         // Transform the response to the required format
         const formattedResponse = {
@@ -82,8 +76,6 @@ const next = async (req, res) => {
                 isCorrect: option === questionRaw.answer  // Marcar la respuesta correcta
             }))
         };
-
-        console.log ("Estas son las respuestas que enviamos:", formattedResponse.answers);
 
         res.status(200).json(formattedResponse);
     } catch (error) {
@@ -157,7 +149,6 @@ const endAndSaveGame = async (req, res) => {
 const getGameQuestions = async (req, res) => {
     try {
         const gameId = req.body.gameId;  // Get the game ID from the URL parameters
-        console.log("Fetching questions for game:", gameId);
 
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
@@ -186,7 +177,6 @@ const getGameQuestions = async (req, res) => {
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
         const userId = req.body.user.userId ;  // Get the user ID from the request body
-        console.log("Request body received:", userId);
 
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
@@ -247,7 +237,6 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 const getQuestion = async (req, res) => {
     try {
         const userId = req.body.user.userId;
-        console.log("Getting current question for user:", userId);
 
         // Get the active game first
         const currentGame = await getCurrentGame(req, res);

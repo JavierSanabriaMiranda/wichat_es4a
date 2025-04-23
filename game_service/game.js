@@ -62,8 +62,6 @@ app.use(cors()); // Enable Cross-Origin Resource Sharing (CORS) to handle reques
  * @body {Object} req.body - Request body should include data to start a new game.
  */
 app.post('/api/game/new', (req, res) => {
-  console.log("Estoy en game.js y llamo a la función newGame() de GameManager.js");
-  console.log('Iniciando un nuevo juego...');
   newGame(req, res); // Executes the function when the request is received
 });
 
@@ -73,8 +71,6 @@ app.post('/api/game/new', (req, res) => {
  * @body {Object} req.body - Request body should include data about the current game and player.
  */
 app.post('/api/game/next', (req, res) => {
-  console.log("Estoy en GameService.js y llamo a la función next() de GameManager.js");
-  console.log('Obteniendo la siguiente pregunta...');
   next(req, res); // Executes the function when the request is received
 });
 
@@ -84,7 +80,6 @@ app.post('/api/game/next', (req, res) => {
  * @body {Object} req.body - Request body should include game end data and final player responses.
  */
 app.post('/api/game/endAndSaveGame', (req, res) => {
-  console.log('Respondiendo a la pregunta...');
   endAndSaveGame(req, res); // Executes the function when the request is received
 });
 
@@ -94,18 +89,16 @@ app.post('/api/game/endAndSaveGame', (req, res) => {
  * @body {Object} req.body - Request body should include user identification (e.g., user ID).
  */
 app.post('/api/game/history', (req, res) => {
-  console.log('Obteniendo historial de juegos...');
   getUserGames(req, res); // Executes the function when the request is received
 });
 
 //Información sobre la partida para el historial
 app.post('/api/game/history/gameList', async(req, res) => {
   try{
-    console.log("Generando historico sobre partida");
     getUserGamesWithoutQuestions(req, res); // Executes the function when the request is received
 
   }catch(error){
-    console.log("Error al generar el historico de partida: ", error.message);
+    console.error("Error al generar el historico de partida: ", error.message);
 
   }
 });
@@ -113,12 +106,10 @@ app.post('/api/game/history/gameList', async(req, res) => {
 //Información sobre las preguntas de una partida para el historial
 app.post('/api/game/history/gameQuestions', async(req, res) => {
   try{
-    console.log("Generando historico sobre preguntas de una partida");
     getGameQuestions(req, res); // Executes the function when the request is received
 
   }catch(error){
-    console.log("Error al generar el historico de preguntas: ", error.message);
-
+    console.error("Error al generar el historico de preguntas: ", error.message);
   }
 });
 /**
