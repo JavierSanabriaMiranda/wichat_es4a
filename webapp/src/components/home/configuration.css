@@ -30,16 +30,15 @@ h2 {
     z-index: 1100; 
 }
 
-/* 🛠 Botón de cerrar ajustable según el tamaño de la pantalla */
 .close-icon {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 3%;
+    left: 90%;
     color: red;
-    font-size: 24px; /* Tamaño normal */
+    font-size: 24px;
     cursor: pointer;
     z-index: 1200;
-    transition: font-size 0.2s ease-in-out; /* Transición suave */
+    transition: font-size 0.2s ease-in-out;
 }
 
 .title {
@@ -147,7 +146,7 @@ h2 {
     cursor: not-allowed;
 }
 
-/* 📏 Ajustes responsivos */
+
 @media (max-width: 600px) {
     .config-container {
         padding: 20px;
@@ -166,18 +165,16 @@ h2 {
         font-size: 14px;
     }
 
-    /* 🔽 Reducimos el tamaño del botón de cerrar en pantallas pequeñas */
     .close-icon {
-        font-size: 18px; /* Más pequeño */
+        font-size: 18px; 
         top: 8px;
         left: 8px;
     }
 }
 
 @media (max-width: 400px) {
-    /* 📏 Ajuste extra para pantallas ultra pequeñas */
     .close-icon {
-        font-size: 16px; /* Aún más pequeño */
+        font-size: 16px; 
         top: 5px;
         left: 5px;
     }

@@ -52,7 +52,7 @@ describe('Home component', () => {
     expect(screen.getByText('Configuration Component')).toBeInTheDocument();
   });
 
-  it('shows Configuration component when Chaos Mode button is clicked', async () => {
+  it('shows Chaos Mode modal when Chaos Mode button is clicked', async () => {
     render(
       <MemoryRouter>
         <Home />
@@ -64,7 +64,9 @@ describe('Home component', () => {
       await userEvent.click(chaosModeButton);
     });
 
-    expect(screen.getByText('Configuration Component')).toBeInTheDocument();
+    expect(screen.getByText('chaosMode-intro-title')).toBeInTheDocument();
+    expect(screen.getByText('chaosMode-intro-body')).toBeInTheDocument();
+    expect(screen.getByText('playChaos')).toBeInTheDocument();
   });
 
   it('hides Configuration component when Close is clicked', async () => {
