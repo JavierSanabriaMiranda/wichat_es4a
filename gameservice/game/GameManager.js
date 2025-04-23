@@ -42,13 +42,15 @@ const newGame = async (req, res) => {
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
-
+        if (!cacheId || !topics || !lang) {
+            return res.status(400).json({ error: "Missing required fields: cacheId, topics, or lang." });
+        }
+        
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
         res.status(200).send(cacheId.toString()); // Send the cache ID back to the client
 
     } catch (error) {
-        console.error("Error creating a new game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -90,7 +92,6 @@ const next = async (req, res) => {
 
         res.status(200).json(formattedResponse);
     } catch (error) {
-        console.error("Error getting next question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -156,7 +157,6 @@ const endAndSaveGame = async (req, res) => {
 
         res.status(200).send("Game data saved successfully.");
     } catch (error) {
-        console.error("Error saving game data:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -171,7 +171,10 @@ const endAndSaveGame = async (req, res) => {
 const getGameQuestions = async (req, res) => {
     try {
         const gameId = req.body.gameId;  // Get the game ID from the URL parameters
-
+        if (!gameId) {
+            return res.status(400).json({ error: "Missing gameId in request body." });
+        }
+        
 
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
@@ -187,7 +190,6 @@ const getGameQuestions = async (req, res) => {
         res.status(200).json(game.questionsPlayed);
 
     } catch (error) {
-        console.error("Error fetching game questions:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -202,7 +204,10 @@ const getGameQuestions = async (req, res) => {
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
         const userId = req.body.user.userId ;  // Get the user ID from the request body
-
+        if (!userId) {
+            return res.status(400).json({ error: "Missing userId in request body." });
+        }
+        
 
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
@@ -226,7 +231,6 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         res.status(200).json(formattedGames);   
          
     } catch (error) {
-        console.error("Error fetching user games:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -248,7 +252,6 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 
         return game.questionsPlayed.length;
     } catch (error) {
-        console.error("Error getting number of questions played:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -294,7 +297,6 @@ const getQuestion = async (req, res) => {
             imageUrl: question.imageUrl || ""
         });
     } catch (error) {
-        console.error("Error retrieving current question:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -319,7 +321,6 @@ const getCurrentGame = async (req, res) => {
 
         return currentGame;
     } catch (error) {
-        console.error("Error retrieving current game:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
