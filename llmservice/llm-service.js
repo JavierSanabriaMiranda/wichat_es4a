@@ -2,7 +2,7 @@ const axios = require('axios');
 const express = require('express');
 
 // Utils
-const { getLanguage, normalizeString } = require('../llmservice/llm-service-utils');
+const { getLanguage } = require('../llmservice/llm-service-utils');
 
 const app = express();
 const port = 8003;
@@ -140,28 +140,9 @@ app.post('/askllm/clue', async (req, res) => {
             
             ¿Qué le responderías en ${getLanguage(language)}?
             `.trim();
-      console.log("Prompt: ", prompt);
       const llmResponse = await sendQuestionToLLM(prompt, apiKey, model);
-      console.log("Respuesta del modelo: ", llmResponse);
-
-      // if (typeof llmResponse !== 'string') {
-      //   // model = 'empathy';
-      //   console.log("Switching to empathy model");
-      //   console.log("Respuesta vacía o inválida del modelo: ", llmResponse);
-      //   continue;
-      // }
-
-      // const normalizedAnswer = normalizeString(llmResponse.toLowerCase());
-      // const normalizedName = normalizeString(correctAnswer.toLowerCase());
-      // const nameWords = normalizedName.split(/[\s-]+/);
-
-      // if (!nameWords.some(word => normalizedAnswer.includes(word))) {
-      //   answer = llmResponse;
-      //   break;
-      // }
       answer = llmResponse;
       break;
-      attempts += 1;
     }
 
     if (answer === "idk") {
@@ -197,13 +178,7 @@ app.post('/askllm/welcome', async (req, res) => {
 
     let model = 'gemini';
     let answer = "idk";
-    try {
-      answer = await sendQuestionToLLM("Saluda a " + username + " de forma educada y deséale suerte para su partida de 'WiChat'. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".", apiKey, model);
-    } catch (error) {
-      // model = 'empathy';
-      console.log("Switching to empathy model");
-      answer = await sendQuestionToLLM("Saluda a " + username + " de forma educada y deséale suerte para su partida de 'WiChat'. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".", apiKey, model);
-    }
+    answer = await sendQuestionToLLM("Saluda a " + username + " de forma educada y deséale suerte para su partida de 'WiChat'. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".", apiKey, model);
 
     res.json({ answer });
 
