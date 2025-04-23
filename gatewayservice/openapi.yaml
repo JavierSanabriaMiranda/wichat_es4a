@@ -39,6 +39,7 @@ paths:
                   username:
                     type: string
                     description: User ID
+                    example: student
                   password:
                     type: string
                     description: Hashed password
@@ -55,18 +56,25 @@ paths:
                     type: integer
                     example: '0'                                        
         '400':
-          description: Failed to add user.
+          description: Failed to add user due to missing fields or not secure password.
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    description: Error information.
-                    example: getaddrinfo EAI_AGAIN mongodb
+                oneOf:
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        description: Missing field error.
+                        example: "Missing required field: password"
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        description: Password security error.
+                        example: "Password error content: notSecurePassword"
         '409':
-          description: User already exists.
+          description: Username already exists.
           content:
             application/json:
               schema:
@@ -75,7 +83,7 @@ paths:
                   error:
                     type: string
                     description: Error information.
-                    example: User already exists
+                    example: Username already exists
   /health:
     get:
       summary: Check the health status of the service.
@@ -119,6 +127,10 @@ paths:
               schema:
                 type: object
                 properties:
+                  token:
+                    type: string
+                    description: JWT token for authentication.
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
                   username:
                     type: string
                     description: Username.
@@ -127,6 +139,10 @@ paths:
                     type: string
                     description: Creation date.
                     example: '2024-03-17T20:47:23.935Z'
+                  id:
+                    type: string
+                    description: User ID.
+                    example: 65f756db3fa22d227a4b7c7d
         '401':
           description: Invalid credentials.
           content:
@@ -174,14 +190,9 @@ paths:
             schema:
               type: object
               required:
-                - username
                 - currentPassword
                 - newPassword
               properties:
-                username:
-                  type: string
-                  description: Username whose password is to be changed.
-                  example: student
                 currentPassword:
                   type: string
                   description: Current password of the user.
@@ -198,11 +209,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
+                  success:
                     type: string
-                    example: Password updated
-        '400':
-          description: Invalid input or user not found.
+                    example: true
+        '404':
+          description: User not found.
           content:
             application/json:
               schema:
@@ -212,7 +223,7 @@ paths:
                     type: string
                     example: User not found
         '401':
-          description: Unauthorized - Token missing or invalid.
+          description: Unauthorized - Incorrect Password.
           content:
             application/json:
               schema:
@@ -220,7 +231,17 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Unauthorized
+                    example: Incorrent current password
+        '400':
+          description: Unauthorized - Missing or invalid token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Cast to ObjectId failed for value \"guestXXXXXXXXXXXX\" (type string) at path \"_id\" for model \"User\"
 
   /api/game/endAndSaveGame:
     post:
@@ -307,7 +328,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Game saved
+                    example: Game data saved successfully.
         '400':
           description: Invalid input or missing fields.
           content:
@@ -329,7 +350,7 @@ paths:
                     type: string
                     example: Unauthorized
         '500':
-          description: Internal server error.
+          description: Error saving the game.
           content:
             application/json:
               schema:
@@ -337,9 +358,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Error saving the game
-
-
+                    example: Internal server error
 
 
 
@@ -360,19 +379,26 @@ paths:
                 items:
                   type: object
                   properties:
-                    gameId:
+                    _id:
                       type: string
                       example: 661c8e10f7c1a5c7b0b3d2a4
-                    date:
-                      type: string
-                      format: date-time
-                      example: "2024-04-01T15:30:00Z"
-                    score:
+                    numberOfQuestions:
                       type: integer
-                      example: 120
-                    topic:
+                      example: 10
+                    numberOfCorrectAnswers:
+                      type: integer
+                      example: 8
+                    gameMode:
                       type: string
-                      example: "Geography"
+                      example: normal
+                    points:
+                      type: integer
+                      example: 800
+                    topics:
+                      type: array
+                      items:
+                        type: string
+                      example: ["art", "history"]
         '401':
           description: Unauthorized - Invalid or missing token.
           content:
@@ -393,6 +419,16 @@ paths:
                   error:
                     type: string
                     example: Internal Server Error
+        '404':
+          description: No games found for the user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: No games found for this user.
   /api/game/new:
     post:
       summary: Configure a new game with selected topics and language
@@ -428,7 +464,7 @@ paths:
                     type: string
                     example: abc123def456ghi789
         '400':
-          description: Bad request - missing or invalid parameters.
+          description: Bad request - Invalid topics or language.
           content:
             application/json:
               schema:
@@ -436,7 +472,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Missing or invalid game configuration
+                    example: Invalid topics or language
         '500':
           description: Internal server error.
           content:
@@ -473,19 +509,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  question:
-                    type: object
-                    properties:
-                      text:
-                        type: string
-                        example: What is the capital of France?
-                      imageUrl:
-                        type: string
-                        format: uri
-                        example: https://example.com/question-image.jpg
-                      topic:
-                        type: string
-                        example: Geography
+                  text:
+                    type: string
+                    example: What is the capital of France?
+                  imageUrl:
+                    type: string
+                    format: uri
+                    example: https://example.com/question-image.jpg
+                  selectedAnswer:
+                    type: string
+                    example: Paris
                   answers:
                     type: array
                     items:
@@ -525,7 +558,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Game settings not found
+                    example: Game settings not found.
 
 
 
