@@ -1,0 +1,27 @@
+config:
+  target: "http://localhost:8000"   # URL del servicio o aplicación a probar
+  phases:
+    - duration: 5
+      arrivalRate: 1
+      rampTo: 10
+      name: Warm up phase   # Fase de calentamiento: 60 segundos, comenzando con 1 solicitud por segundo y aumentando a 100 solicitudes por segundo
+    - duration: 5
+      arrivalRate: 10
+      rampTo: 20
+      name: Ramp up load    # Incremento de carga: 60 segundos, comenzando con 100 solicitudes por segundo y aumentando a 1000 solicitudes por segundo
+    - duration: 5
+      arrivalRate: 20
+      rampTo: 30
+      name: Spike phase     # Fase de pico: 300 segundos, comenzando con 1000 solicitudes por segundo y aumentando a 10000 solicitudes por segundo
+
+  processor: "./processor.js"
+
+scenarios:
+  - name: "Prueba de carga: Register"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"

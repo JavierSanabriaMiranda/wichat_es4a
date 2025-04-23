@@ -40,7 +40,7 @@ const LLMChat = ({ correctAnswer }) => {
               delaySpeed={100}
               typeSpeed={50}
               onType={scrollToBottom}
-              onLoopDone={speakLoudTheMessage(message)}
+              // onLoopDone={speakLoudTheMessage(message)}
             />
         );
         
@@ -56,8 +56,6 @@ const LLMChat = ({ correctAnswer }) => {
         utterance.lang = desiredLang;
         utterance.voice = voice;
         utterance.volume = 1.0;
-
-        console.log("Idioma asignado:", utterance.lang, "Voz usada:", voice ? voice.name : "default", "Volumen:", utterance.volume);
 
         speechSynthesis.speak(utterance);
     }
@@ -101,8 +99,6 @@ const LLMChat = ({ correctAnswer }) => {
                 context: chatContext,
                 language: i18n.language.split('-')[0]
             });
-            console.log(i18n.language);
-            console.log("Respuesta del LLM:", response.data.answer);
 
             const answerText = response.data.answer;
             const llmMsg = (
