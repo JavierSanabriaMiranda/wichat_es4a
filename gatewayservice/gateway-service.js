@@ -197,7 +197,7 @@ app.post('/askllm/clue', async (req, res) => {
     const llmResponse = await axios.post(llmServiceUrl + '/askllm/clue', req.body);
     res.json(llmResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al pedir una pista al LLM' });
   }
 });
 
@@ -208,7 +208,7 @@ app.post('/askllm/welcome', async (req, res) => {
     const llmResponse = await axios.post(llmServiceUrl + '/askllm/welcome', req.body);
     res.json(llmResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al pedir un saludo al LLM' });
   }
 });
 
