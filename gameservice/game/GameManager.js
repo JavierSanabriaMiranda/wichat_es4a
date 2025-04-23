@@ -38,14 +38,35 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
-
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
-        if (!cacheId || !topics || !lang) {
-            return res.status(400).json({ error: "Missing required fields: cacheId, topics, or lang." });
+      
+
+        const allowedTopics = ["geography", "history", "science", "sport", "character", "art", "entertainment"];
+        const allowedLangs = ["es", "en"];
+
+        // Validar campos obligatorios y que no estén vacíos
+        if (
+            !cacheId ||
+            !topics ||
+            (Array.isArray(topics) && topics.length === 0) ||
+            (typeof topics === "string" && topics.trim() === "") ||
+            !lang
+        ) {
+            return res.status(400).json({ error: "Missing or empty required fields: cacheId, topics, or lang." });
         }
-        
+
+         // Normalizar topics a array
+         const topicList = Array.isArray(topics) ? topics : [topics];
+
+         // Validar que todos los topics estén permitidos
+         const invalidTopics = topicList.filter(t => !allowedTopics.includes(t));
+        // Validar idioma
+        if (!allowedLangs.includes(lang) || invalidTopics.length > 0) {
+            return res.status(400).json({ error: `Invalid topics or language` });
+        }
+
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
         res.status(200).send(cacheId.toString()); // Send the cache ID back to the client
@@ -121,6 +142,7 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
+            topi
 
         });
 
@@ -128,6 +150,16 @@ const endAndSaveGame = async (req, res) => {
         // Save the game to the database
         const savedGame = await newGame.save();
 
+        // Recoger todos los topics de las preguntas sin repetir
+        const topicsSet = new Set();
+        game.questions.forEach(q => {
+            if (q.topics) {
+                // Asegura que siempre trabajas con array o único topic
+                const topicList = Array.isArray(q.topics) ? q.topics : [q.topics];
+                topicList.forEach(t => topicsSet.add(t));
+            }
+        });
+        const uniqueTopics = Array.from(topicsSet);
 
 
         // Save all the questions related to this game
@@ -140,9 +172,9 @@ const endAndSaveGame = async (req, res) => {
             answers: q.answers.map(ans => ({
                 text: ans.text, // Option text
                 isCorrect: ans.isCorrect, // If it is the correct answer
-            })),
 
-          
+            })),
+          topics: uniqueTopics // ← aquí los topics únicos
             
         }));
 

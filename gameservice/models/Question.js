@@ -48,7 +48,13 @@ const questionSchema = new Schema({
                 required: false 
             } // Indicates whether the option is the correct answer
         }
-    ]
+    ],
+    topics: [
+        {
+          type: String,
+          required: false
+        }
+      ]
 });
 
 /**
