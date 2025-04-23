@@ -11,6 +11,7 @@ const axios = require('axios');
 const { Game } = require("../models/index");
 
 
+
 /**
  * Makes a request to an external API to retrieve a new question.
  * 
@@ -23,6 +24,7 @@ const { Game } = require("../models/index");
  */
 const requestQuestion = async (topics, lang) => {
     let gatewayServiceUrl = process.env.GATEWAY_SERVICE || 'http://localhost:8000';
+
    
     try {
             // Make a POST request to the API with the data in the body
@@ -31,6 +33,7 @@ const requestQuestion = async (topics, lang) => {
             lang: lang       
         });
         // Make the request to the external API
+
         const { question, correct, image, options } = res.data;
         // Validate that the response has the expected structure
         if (!question || !correct || !image || !Array.isArray(options) || options.length < 1) {
@@ -47,7 +50,7 @@ const requestQuestion = async (topics, lang) => {
         allOptions.sort(() => Math.random() - 0.5);
 
         // Return the question in the correct format
-       
+
         return {
             question: question,
             answer: correct,
@@ -56,7 +59,7 @@ const requestQuestion = async (topics, lang) => {
         };
 
     } catch (error) {
-       
+
 
         // Return a fallback simulated question in case of failure
         return {
@@ -69,3 +72,4 @@ const requestQuestion = async (topics, lang) => {
 };
 
 module.exports = {requestQuestion };
+

@@ -1,3 +1,4 @@
+
 /**
  * Mongoose schema for storing data about a completed game session.
  * 
@@ -17,6 +18,7 @@ const { Schema, model, Types } = mongoose;
 const { ObjectId } = Types;
 
 // Define the schema for GamePlayed
+
 const gamePlayedSchema = new Schema({
   userId: {
     type: ObjectId,
@@ -39,10 +41,12 @@ const gamePlayedSchema = new Schema({
     type: Number,
     default: 0
   },
+
   questionsPlayed: [
     {
       type: ObjectId,
       ref: "Question"
+
     }
   ],
   topics: [
@@ -51,6 +55,7 @@ const gamePlayedSchema = new Schema({
       required: false
     }
   ],
+
   gameDate: {
     type: String,
     default: () => {
@@ -66,3 +71,6 @@ const gamePlayedSchema = new Schema({
 const GamePlayed = model("GamePlayed", gamePlayedSchema);
 
 module.exports = { GamePlayed };
+
+module.exports = GamePlayed;
+

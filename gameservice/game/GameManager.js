@@ -16,11 +16,13 @@
  * - `getQuestion`: Retrieves the current question the user is on in the game.
  * - `getCurrentGame`: Retrieves the active game of a user.
  */
+
 const { GamePlayed } = require("../models/game_played");
 const Question  = require("../models/Question");
 
 
 const { requestQuestion} = require("./QuestionAsk");
+
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -36,6 +38,7 @@ const gameCache = new NodeCache();
  * @returns {void}  Sends an HTTP response based on the operation status.
  */
 const newGame = async (req, res) => {
+
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
@@ -43,6 +46,7 @@ const newGame = async (req, res) => {
         // Store values in cache
         gameCache.set(cacheId.toString(), { topics, lang });
         res.status(200).send("Game data created successfully");
+
     } catch (error) {
         console.error("Error creating a new game:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -57,12 +61,15 @@ const newGame = async (req, res) => {
  * @returns {void}  Sends the current question of the game in JSON format.
  */
 const next = async (req, res) => {
+
     try {
         let cacheId = req.body.cacheId;
+
 
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
         if (!cacheData) return res.status(400).json({ error: "Game settings not found." });
+
         const { topics, lang } = cacheData;
 
         // Call requestQuestion without saving anything to the database
@@ -80,6 +87,7 @@ const next = async (req, res) => {
         };
 
 
+
         res.status(200).json(formattedResponse);
     } catch (error) {
         console.error("Error getting next question:", error);
@@ -87,9 +95,6 @@ const next = async (req, res) => {
     }
 };
 
-const setGameCache = (newCache) => {
-    gameCache = newCache;
-  };
 
 /**
  * Ends the game and saves the results to the database.
@@ -101,6 +106,7 @@ const setGameCache = (newCache) => {
 const endAndSaveGame = async (req, res) => {
     try {
         const game = req.body;
+
         // Validate input data
         if (!game.user.userId || !game || !game.questions || !Array.isArray(game.questions)) {
             return res.status(400).send("Missing required fields or invalid data format.");
@@ -114,17 +120,19 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
+
         });
-    
+
 
         // Save the game to the database
         const savedGame = await newGame.save();
 
 
+
         // Save all the questions related to this game
         const questionsToInsert = game.questions.map(q => (
             {
-            
+
             text: q.text, // Question text
             imageUrl: q.imageUrl, // Image URL
             selectedAnswer: q.selectedAnswer, // Selected answer by the user
@@ -132,11 +140,12 @@ const endAndSaveGame = async (req, res) => {
                 text: ans.text, // Option text
                 isCorrect: ans.isCorrect, // If it is the correct answer
             })),
+
           
             
         }));
 
-        
+
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
 
@@ -163,9 +172,11 @@ const getGameQuestions = async (req, res) => {
     try {
         const gameId = req.body.gameId;  // Get the game ID from the URL parameters
 
+
         // Find the game and populate the associated questions
         const game = await GamePlayed.findById(gameId)
             .populate('questionsPlayed')  // Populate the questions for this specific game
+
             .exec();
 
         if (!game) {
@@ -174,6 +185,7 @@ const getGameQuestions = async (req, res) => {
 
         // Return the questions associated with the game in JSON format
         res.status(200).json(game.questionsPlayed);
+
     } catch (error) {
         console.error("Error fetching game questions:", error);
         res.status(500).json({ error: "Internal server error" });
@@ -190,6 +202,7 @@ const getGameQuestions = async (req, res) => {
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
         const userId = req.body.user.userId ;  // Get the user ID from the request body
+
 
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
@@ -208,6 +221,7 @@ const getUserGamesWithoutQuestions = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             topics: game.topics || [] 
+
         }));
         res.status(200).json(formattedGames);   
          
@@ -249,6 +263,7 @@ const getNumberOfQuestionsPlayed = async (req, res) => {
 const getQuestion = async (req, res) => {
     try {
         const userId = req.body.user.userId;
+
 
         // Get the active game first
         const currentGame = await getCurrentGame(req, res);
@@ -316,3 +331,4 @@ module.exports = {
     getNumberOfQuestionsPlayed,
     getGameQuestions,
     getUserGamesWithoutQuestions, setGameCache};
+

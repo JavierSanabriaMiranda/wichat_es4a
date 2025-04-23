@@ -1,3 +1,4 @@
+
 /**
  * @fileoverview This module exports the Mongoose models used in the application.
  * 
@@ -10,3 +11,4 @@ const GamePlayed = require("./game_played");
 const Question = require("./Question");
 
 module.exports = { GamePlayed, Question };
+
