@@ -32,20 +32,20 @@ endif::arc42help[]
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-.Content
-The quality tree (as defined in ATAM – Architecture Tradeoff Analysis Method) with quality/evaluation scenarios as leafs.
+.Contenido
+El árbol de calidad (según lo definido en ATAM – Architecture Tradeoff Analysis Method) con escenarios de calidad/evaluación como hojas.
 
-.Motivation
-The tree structure with priorities provides an overview for a sometimes large number of quality requirements.
+.Motivación
+La estructura en forma de árbol con prioridades proporciona una visión general de lo que a veces puede ser un gran número de requisitos de calidad.
 
-.Form
-The quality tree is a high-level overview of the quality goals and requirements:
+.Formato
+El árbol de calidad es una vista general de alto nivel sobre los objetivos y requisitos de calidad:
 
-* tree-like refinement of the term "quality". Use "quality" or "usefulness" as a root
-* a mind map with quality categories as main branches
+* refinamiento en forma de árbol del término "calidad". Usa "calidad" o "utilidad" como raíz
 
-In any case the tree should include links to the scenarios of the following section.
+* un mapa mental con categorías de calidad como ramas principales
 
+En cualquier caso, el árbol debe incluir enlaces a los escenarios de la siguiente sección.
 
 ****
 endif::arc42help[]
