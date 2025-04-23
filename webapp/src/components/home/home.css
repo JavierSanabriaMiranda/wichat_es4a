@@ -36,6 +36,11 @@ body {
   animation: fadeIn 2s ease-out; 
 }
 
+.btn-close.white {
+  filter: invert(1);
+  opacity: 1; /* opcional, para mayor visibilidad */
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -100,15 +105,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.chaos-button {
-  background-color: #d90000 !important;
-  border: none;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 0 10px #ff0000, 0 0 20px #ff4d4d;
-  animation: pulseChaos 1.5s infinite;
-}
-
 @keyframes pulseChaos {
   0% { box-shadow: 0 0 5px #ff4d4d; }
   50% { box-shadow: 0 0 20px #ff0000; }
@@ -140,11 +136,22 @@ body {
   font-weight: bold;
 }
 
-.chaos-btn {
-  font-size: 1rem;
-  padding: 0.6em 1.2em;
-  border-radius: 10px;
+.chaos-button {
+  background-color: #f14848 !important;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;  
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px #f14848, 0 0 20px #ff4d4d;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  animation: pulseChaos 1.5s infinite;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
+
 
 .chaos-btn:hover {
   opacity: 0.9;

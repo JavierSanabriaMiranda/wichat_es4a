@@ -377,7 +377,7 @@ button:not(:disabled):active {
     100% { transform: translateX(0); }
   }
   
-  .chaos-mode .answer-button-wrong-answer {
+  .answer-button-wrong-answer {
     animation: shake 0.4s ease;
   }
 
