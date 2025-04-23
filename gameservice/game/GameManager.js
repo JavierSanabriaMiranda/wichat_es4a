@@ -194,15 +194,14 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         }
 
         // Return games without associated questions in JSON format
-        // Mapear los resultados para devolver el formato correcto
         const formattedGames = games.map(game => ({
             _id: game._id,
-            userId: game.user,  // En el esquema, 'user' es el ObjectId del usuario
+            userId: game.user, 
             numberOfQuestions: game.numberOfQuestions,
-            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  // Agregar número de respuestas correctas si existe
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  
             gameMode: game.gameMode,
             points: game.points,
-            topics: game.topics || []  // Si topics es null/undefined, devuelve un array vacío
+            topics: game.topics || [] 
         }));
         res.status(200).json(formattedGames);   
          
