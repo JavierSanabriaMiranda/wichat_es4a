@@ -2,7 +2,9 @@
 FROM node:22
 
 # Set the working directory in the container
+
 WORKDIR /usr/src/questionservice
+
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -17,4 +19,6 @@ COPY . .
 EXPOSE 8004
 
 # Define the command to run your app
+
 CMD ["node", "question-service.js"]
+

@@ -2,7 +2,9 @@
     {
         "question": "¿A qué país pertenece esta bandera?",
         "selector": "<input>",
+
         "topics": ["geography"],
+
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
         "imageurl": "<output>",
         "lang": "es"
