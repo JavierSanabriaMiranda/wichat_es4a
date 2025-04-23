@@ -81,9 +81,11 @@ export const Game = () => {
                 isChaosMode: isChaosMode
             }));
 
+            const valor = isChaosMode ? "caos" : "normal";
+
             // If there's a user authenticated, the game will be saved in the database
             if (token) {
-                saveGame(token, questionResults, numberOfQuestions, correctAnswers, "normal", points)
+                saveGame(token, questionResults, numberOfQuestions, correctAnswers, valor, points)
                     .catch(err => {
                         console.error("Error saving game:", err)
                     })
