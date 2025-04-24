@@ -13,6 +13,8 @@ app.use(express.json());
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
 mongoose.connect(mongoUri);
 
+const privateKey = process.env.TOKEN_SECRET_KEY || 'your_secret_key';
+
 const failedAttempts = new Map(); // Store failed login attempts per IP address
 const MAX_ATTEMPTS = 5; // Maximum number of failed attempts before blocking
 const WINDOW_MS = 5 * 60 * 1000; // 5 minutes
@@ -65,7 +67,7 @@ app.post('/login', loginLimiter, [
       failedAttempts.delete(ip);
         
       // Generate a JWT token
-      const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' });
+      const token = jwt.sign({ userId: user._id }, privateKey, { expiresIn: '1h' });
       // Respond with the token and user information
       res.json({ token: token, username: username, createdAt: user.createdAt, id: user._id });
     } else {

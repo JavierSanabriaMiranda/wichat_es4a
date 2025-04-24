@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const app = require('./gateway-service');
 
-const privateKey = "your-secret-key";
+
+const privateKey = process.env.TOKEN_SECRET_KEY || 'your_secret_key';
 
 afterAll(async () => {
   app.close();
