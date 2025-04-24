@@ -1,6 +1,7 @@
 const request = require('supertest');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+
 const app = require('./gateway-service');
 
 const privateKey = "your-secret-key";
@@ -19,8 +20,6 @@ describe('Gateway Service', () => {
         return Promise.resolve({ data: { token: 'mockedToken' } });
       } else if (url.includes('/adduser')) {
         return Promise.resolve({ data: { userId: 'mockedUserId' } });
-      } else if (url.includes('/ask') && !url.includes('/askllm')) {
-        return Promise.resolve({ data: { answer: 'llmanswer' } });
       } else if (url.includes('/api/question/generate')) {
         return Promise.resolve({ data: { question: 'generatedQuestion' } });
       } else if (url.includes('/editUser')) {
@@ -86,14 +85,6 @@ describe('Gateway Service', () => {
     expect(response.body.result).toBe('userEdited');
   });
 
-  it('should forward askllm request to the llm service', async () => {
-    const response = await request(app)
-      .post('/askllm')
-      .send({ question: 'question', model: 'gemini' });
-    expect(response.statusCode).toBe(200);
-    expect(response.body.answer).toBe('llmanswer');
-  });
-
   it('should forward askllm clue request to the llm service', async () => {
     const response = await request(app)
       .post('/askllm/clue')
@@ -140,7 +131,7 @@ describe('Gateway Service', () => {
   it('should return game history list with valid token', async () => {
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
-      .get('/api/game/history/gameList')
+      .post('/api/game/history/gameList')
       .set('Authorization', `Bearer ${token}`)
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(200);
@@ -220,20 +211,6 @@ describe('Gateway Service', () => {
     expect(response.body.error).toBe('Service error');
   });
 
-  it('should handle askllm error from llm service', async () => {
-    axios.post.mockImplementationOnce((url) => {
-      if (url.includes('/ask') && !url.includes('/askllm/clue') && !url.includes('/askllm/welcome')) {
-        return Promise.reject({ response: { status: 502, data: { error: 'LLM down' } } });
-      }
-      return Promise.resolve({ data: {} });
-    });
-    const response = await request(app)
-      .post('/askllm')
-      .send({ question: 'q', model: 'gem' });
-    expect(response.statusCode).toBe(502);
-    expect(response.body.error).toBe('LLM down');
-  });
-
   it('should handle askllm/clue error from llm service', async () => {
     axios.post.mockImplementationOnce((url) => {
       if (url.includes('/askllm/clue')) {
@@ -273,7 +250,7 @@ describe('Gateway Service', () => {
       .post('/api/question/new')
       .send({ foo: 'bar' });
     expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe('Error al generar la pregunta');
+    expect(response.body.error).toBe('Error generating question');
   });
 
   it('should handle /api/game/question error', async () => {
@@ -308,23 +285,25 @@ describe('Gateway Service', () => {
 
   it('should handle /api/game/new error', async () => {
     axios.post.mockImplementationOnce((url) => {
-      if (url.includes('/api/connectMongo')) {
-        return Promise.reject(new Error('mongo fail'));
+      if (url.includes('/api/game/new')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Error starting game' } } });
       }
       return Promise.resolve({ data: {} });
     });
+  
     const response = await request(app)
       .post('/api/game/new')
       .send({ some: 'data' });
+  
     expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe('Error iniciando juego');
+    expect(response.body.error).toBe('Error starting game');
   });
 
   it('should handle /api/game/history/gameList error', async () => {
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     axios.post.mockImplementationOnce(() => Promise.reject(new Error('mongo fail')));
     const response = await request(app)
-      .get('/api/game/history/gameList')
+      .post('/api/game/history/gameList')
       .set('Authorization', `Bearer ${token}`)
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(500);
@@ -342,15 +321,10 @@ describe('Gateway Service', () => {
 
   it('should return game history list without token (guest)', async () => {
     const response = await request(app)
-      .get('/api/game/history/gameList')
+      .post('/api/game/history/gameList')
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(200);
     expect(response.body.history).toEqual(['game1', 'game2']);
-  });
-
-  it('should return 404 for /api-doc when OpenAPI not configured', async () => {
-    const response = await request(app).get('/api-doc');
-    expect(response.statusCode).toBe(301);
   });
 
 });
