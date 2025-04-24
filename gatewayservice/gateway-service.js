@@ -93,8 +93,9 @@ app.post('/login', async (req, res) => {
  * @param {Object} req.body - The data required to generate a new question.
  * @returns {Object} The generated question from the question service.
  */
-app.post('/api/question/new', async (req, res) => {
+app.post('/api/question/new', verifyToken, async (req, res) => {
   try {
+
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
   } catch (error) {
@@ -148,6 +149,7 @@ app.post('/api/user/editUser', verifyToken, async (req, res) => {
  */
 app.post('/api/game/new', verifyToken, async (req, res) => {
   try {
+   
     await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
     res.json({ cacheId: req.body.cacheId });
   } catch (error) {
@@ -164,7 +166,16 @@ app.post('/api/game/new', verifyToken, async (req, res) => {
  */
 app.post('/api/game/question', verifyToken, async (req, res) => {
   try {
-    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
+    console.log("Fetching next question with cacheId:", req.body);
+    console.log("Request body:", req.user);
+    const gameDataWithUser = {
+      ...req.body,
+      user: {
+        userId: req.user.userId 
+      }
+    };
+
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, gameDataWithUser);
     res.json(questionResponse.data);
   } catch (error) {
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error fetching question' });
@@ -254,7 +265,7 @@ app.post('/api/game/history/gameQuestions', async (req, res) => {
  * @route {GET} /api/game/history/gameList
  * @param {Object} req.body.user - The authenticated user’s information.
  * @returns {Object} The game history list from the game service.
- */
+ *//*
 app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
   try {
     const { userId } = req.user;  // Get user ID from the decoded token
@@ -275,7 +286,7 @@ app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
  * @route {GET} /api/game/history/gameQuestions/:gameId
  * @param {Object} req.params.gameId - The game ID.
  * @returns {Object} The question history from the game service.
- */
+ *//*
 app.get('/api/game/history/gameQuestions/:gameId', async (req, res) => {
   try {
     const { gameId } = req.params;  // Get gameId from URL parameter
@@ -284,7 +295,7 @@ app.get('/api/game/history/gameQuestions/:gameId', async (req, res) => {
   } catch (error) {
     res.status(error.response?.status || 500).json({ message: "Internal server error" });
   }
-});
+});*/
 
 /**
  * Endpoint to get a clue from the LLM service based on the user’s question.

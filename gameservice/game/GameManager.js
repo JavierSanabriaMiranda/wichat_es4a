@@ -81,8 +81,9 @@ const newGame = async (req, res) => {
 const next = async (req, res) => {
 
     try {
+        console.log(req.body);
         let cacheId = req.body.user.userId;
-
+       
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
         if (!cacheData || cacheId.trim() === "") return res.status(400).json({ error: "Game settings not found." });
@@ -107,6 +108,7 @@ const next = async (req, res) => {
 
         res.status(200).json(formattedResponse);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
