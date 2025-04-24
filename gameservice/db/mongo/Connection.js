@@ -5,7 +5,6 @@ dotenv.config();
 
 const connect = async () => {
   if (process.env.NODE_ENV === "test") {
-    console.log("Estamos en entorno de pruebas. No se conecta a la base de datos.");
     return;  // Retorna sin hacer nada para evitar la conexión
   }
   try {
@@ -20,13 +19,11 @@ const connect = async () => {
 
 const disconnect = async () => {
   if (process.env.NODE_ENV === "test") {
-    console.log("Estamos en entorno de pruebas. No se conecta a la base de datos.");
     return;  // Retorna sin hacer nada para evitar la conexión
   }
   try {
     await mongoose.disconnect();
   } catch (error) {
-    console.error("⚠️ Error closing MongoDB connection:", error);
     throw error;
   }
 };

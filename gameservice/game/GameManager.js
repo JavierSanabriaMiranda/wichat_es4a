@@ -175,7 +175,6 @@ const endAndSaveGame = async (req, res) => {
             
         }));
 
-        console.log("Questions to insert:", questionsToInsert);
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
 
@@ -186,10 +185,8 @@ const endAndSaveGame = async (req, res) => {
 
         res.status(200).json({ message: "Game data saved successfully." });
     } catch (error) {
-        console.error('Error occurred while saving game data:', error.message); // Agregar un log más detallado del error
         console.error(error.stack); // También podemos mostrar el stack del error para tener más contexto
     
-        console.error("Error saving game data:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 };
