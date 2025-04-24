@@ -16,6 +16,8 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
 
     const { t } = useTranslation();
 
+    console.log("Esta es mi fecha: ", date);
+
     return (
         <Button 
             variant="outline-primary" 
@@ -43,8 +45,8 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
             </Badge>
             <span className="d-flex align-items-center">
                 <Calendar size={20} className="me-2 text-muted" />
-                {date && !isNaN(new Date(date).getTime()) 
-                ? new Date(date).toLocaleDateString() 
+                {date 
+                ? date
                 : t('invalid-game-date')}
             </span>
         </Button>
