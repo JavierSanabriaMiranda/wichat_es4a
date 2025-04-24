@@ -21,17 +21,4 @@ function getLanguage(language) {
     }
   }
   
-  /**
-   * Normalizes a string by removing diacritical marks (accents).
-   *
-   * @param {string} str - The string to be normalized.
-   * @returns {string} - The normalized string without diacritical marks.
-   */
-  function normalizeString(str) {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  }
-  
-  module.exports = {
-    getLanguage,
-    normalizeString
-  };  
+  module.exports = { getLanguage };

@@ -154,4 +154,203 @@ describe('Gateway Service', () => {
     expect(response.statusCode).toBe(200);
     expect(response.body.questions).toEqual(['q1', 'q2']);
   });
+
+  // Tests (olviados) v2
+  it('should handle login error from auth service', async () => {
+    axios.post.mockImplementationOnce(() => 
+      Promise.reject({ response: { status: 400, data: { error: 'Invalid creds' } } })
+    );
+    const response = await request(app)
+      .post('/login')
+      .send({ username: 'u', password: 'p' });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe('Invalid creds');
+  });
+
+  it('should handle adduser error from user service', async () => {
+    axios.post.mockImplementationOnce(() => 
+      Promise.reject({ response: { status: 409, data: { error: 'User exists' } } })
+    );
+    const response = await request(app)
+      .post('/adduser')
+      .send({ username: 'u', password: 'p' });
+    expect(response.statusCode).toBe(409);
+    expect(response.body.error).toBe('User exists');
+  });
+
+  it('should assign guest user when editing user without token', async () => {
+    const response = await request(app)
+      .post('/api/user/editUser')
+      .send({ username: 'guestedit' });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.result).toBe('userEdited');
+  });
+
+  it('should return 401 when Authorization header has no token', async () => {
+    const response = await request(app)
+      .post('/api/user/editUser')
+      .set('Authorization', 'Bearer ')
+      .send({ username: 'edit' });
+    expect(response.statusCode).toBe(401);
+    expect(response.body.message).toBe("Token wasn't provided properly");
+  });
+
+  it('should return 401 for invalid token on editUser', async () => {
+    const response = await request(app)
+      .post('/api/user/editUser')
+      .set('Authorization', 'Bearer invalid.token.here')
+      .send({ username: 'edit' });
+    expect(response.statusCode).toBe(401);
+    expect(response.body.message).toBe("Unauthorized");
+  });
+
+  it('should handle editUser service error', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/editUser')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Service error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/api/user/editUser')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ username: 'user' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Service error');
+  });
+
+  it('should handle askllm error from llm service', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/ask') && !url.includes('/askllm/clue') && !url.includes('/askllm/welcome')) {
+        return Promise.reject({ response: { status: 502, data: { error: 'LLM down' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/askllm')
+      .send({ question: 'q', model: 'gem' });
+    expect(response.statusCode).toBe(502);
+    expect(response.body.error).toBe('LLM down');
+  });
+
+  it('should handle askllm/clue error from llm service', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/askllm/clue')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Clue error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/askllm/clue')
+      .send({ correctAnswer: 'a', question: 'q', context: [], language: 'en' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Clue error');
+  });
+
+  it('should handle askllm/welcome error from llm service', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/askllm/welcome')) {
+        return Promise.reject({ response: { status: 503, data: { error: 'Welcome error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/askllm/welcome')
+      .send({ username: 'u', language: 'en' });
+    expect(response.statusCode).toBe(503);
+    expect(response.body.error).toBe('Welcome error');
+  });
+
+  it('should handle /api/question/new error', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/question/generate')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Gen error' }, data: { foo: 'bar' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/api/question/new')
+      .send({ foo: 'bar' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Error al generar la pregunta');
+  });
+
+  it('should handle /api/game/question error', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/game/next')) {
+        return Promise.reject({ response: { status: 404, data: { error: 'Not found' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/api/game/question')
+      .send({ gameId: 'game1' });
+    expect(response.statusCode).toBe(404);
+    expect(response.body.error).toBe('Not found');
+  });
+
+  it('should handle /api/game/endAndSaveGame error', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/game/endAndSaveGame')) {
+        return Promise.reject({ response: { status: 400, data: { error: 'End error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/api/game/endAndSaveGame')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ gameId: 'game1', score: 10 });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe('End error');
+  });
+
+  it('should handle /api/game/new error', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/connectMongo')) {
+        return Promise.reject(new Error('mongo fail'));
+      }
+      return Promise.resolve({ data: {} });
+    });
+    const response = await request(app)
+      .post('/api/game/new')
+      .send({ some: 'data' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Error iniciando juego');
+  });
+
+  it('should handle /api/game/history/gameList error', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('mongo fail')));
+    const response = await request(app)
+      .get('/api/game/history/gameList')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ gameId: 'game1' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe('Internal server error');
+  });
+
+  it('should handle /api/game/history/gameQuestions error', async () => {
+    axios.post.mockImplementationOnce(() => Promise.reject(new Error('mongo fail')));
+    const response = await request(app)
+      .post('/api/game/history/gameQuestions')
+      .send({ gameId: 'game1' });
+    expect(response.statusCode).toBe(500);
+    expect(response.body.message).toBe('Internal server error');
+  });
+
+  it('should return game history list without token (guest)', async () => {
+    const response = await request(app)
+      .get('/api/game/history/gameList')
+      .send({ gameId: 'game1' });
+    expect(response.statusCode).toBe(200);
+    expect(response.body.history).toEqual(['game1', 'game2']);
+  });
+
+  it('should return 404 for /api-doc when OpenAPI not configured', async () => {
+    const response = await request(app).get('/api-doc');
+    expect(response.statusCode).toBe(301);
+  });
+
 });

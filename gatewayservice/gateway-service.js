@@ -247,35 +247,8 @@ app.post('/api/game/history/gameQuestions', async (req, res) => {
  */
 app.post('/askllm/clue', async (req, res) => {
   try {
-    const { name, userQuestion, language } = req.body;
-    let model = "gemini";
-    let attempts = 0;
-    let answer = "idk";
-
-    while (attempts < 10) {
-      let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
-      let llmResponse = await axios.post(llmServiceUrl + '/ask', { question, model });
-
-      const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
-      const normalizedName = normalizeString(name.toLowerCase());
-
-      const nameWords = normalizedName.split(/[\s-]+/);
-
-      if (!nameWords.some(word => normalizedAnswer.includes(word))) {
-        answer = llmResponse;
-        break;
-      }
-
-      attempts += 1;
-    }
-
-    if (answer === "idk") {
-      let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
-      let fallbackResponse = await axios.post(llmServiceUrl + '/ask', { question: fallbackQuestion, model });
-      answer = fallbackResponse;
-    }
-
-    res.json(answer.data);
+    const llmResponse = await axios.post(llmServiceUrl + '/askllm/clue', req.body);
+    res.json(llmResponse.data);
   } catch (error) {
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error generating clue' });
   }
@@ -290,35 +263,8 @@ app.post('/askllm/clue', async (req, res) => {
  */
 app.post('/askllm/welcome', async (req, res) => {
   try {
-    const { name, language } = req.body;
-    let model = "gemini";
-    let attempts = 0;
-    let answer = "idk";
-
-    while (attempts < 10) {
-      let question = "Dile a un usuario que debes adivinar el nombre de una persona misteriosa. No uses el nombre. Responde de manera breve y en " + getLanguage(language) + ".";
-      let llmResponse = await axios.post(llmServiceUrl + '/ask', { question, model });
-
-      const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
-      const normalizedName = normalizeString(name.toLowerCase());
-
-      const nameWords = normalizedName.split(/[\s-]+/);
-
-      if (!nameWords.some(word => normalizedAnswer.includes(word))) {
-        answer = llmResponse;
-        break;
-      }
-
-      attempts += 1;
-    }
-
-    if (answer === "idk") {
-      let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
-      let fallbackResponse = await axios.post(llmServiceUrl + '/ask', { question: fallbackQuestion, model });
-      answer = fallbackResponse;
-    }
-
-    res.json(answer.data);
+    const llmResponse = await axios.post(llmServiceUrl + '/askllm/welcome', req.body);
+    res.json(llmResponse.data);
   } catch (error) {
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error generating welcome message' });
   }
