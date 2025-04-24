@@ -80,7 +80,7 @@ const next = async (req, res) => {
        
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
-        if (!cacheData || cacheId.trim() === "") return res.status(400).json({ error: "Game settings not found." });
+        if (!cacheData) return res.status(400).json({ error: "Game settings not found." });
 
         const { topics, lang } = cacheData;
 
