@@ -18,7 +18,7 @@ const { GamePlayed } = require("../models/game_played");
 const { Question } = require("../models/Question");
 
 
-const { requestQuestion} = require("./QuestionAsk");
+const { requestQuestion } = require("./QuestionAsk");
 
 
 const mongoose = require('mongoose');
@@ -37,7 +37,7 @@ const newGame = async (req, res) => {
     try {
         let cacheId = req.body.cacheId;
         const { topics, lang } = req.body;
-      
+
 
         const allowedTopics = ["geography", "history", "science", "sport", "character", "art", "entertainment"];
         const allowedLangs = ["es", "en"];
@@ -52,9 +52,9 @@ const newGame = async (req, res) => {
             return res.status(400).json({ error: "Missing or empty required fields: cacheId, topics, or lang." });
         }
 
-         const topicList = Array.isArray(topics) ? topics : [topics];
+        const topicList = Array.isArray(topics) ? topics : [topics];
 
-         const invalidTopics = topicList.filter(t => !allowedTopics.includes(t));
+        const invalidTopics = topicList.filter(t => !allowedTopics.includes(t));
         if (!allowedLangs.includes(lang) || invalidTopics.length > 0) {
             return res.status(400).json({ error: `Invalid topics or language` });
         }
@@ -77,7 +77,7 @@ const newGame = async (req, res) => {
 const next = async (req, res) => {
     try {
         let cacheId = req.body.cacheId;
-       
+
         // Get values from cache
         const cacheData = gameCache.get(cacheId.toString());
         if (!cacheData) return res.status(400).json({ error: "Game settings not found." });
@@ -89,12 +89,12 @@ const next = async (req, res) => {
 
         // Transform the response to the required format
         const formattedResponse = {
-            text: questionRaw.question,  
-            imageUrl: questionRaw.imageUrl || "", 
-            selectedAnswer: questionRaw.selectedAnswer || "",  
+            text: questionRaw.question,
+            imageUrl: questionRaw.imageUrl || "",
+            selectedAnswer: questionRaw.selectedAnswer || "",
             answers: questionRaw.options.map(option => ({
                 text: option,
-                isCorrect: option === questionRaw.answer  
+                isCorrect: option === questionRaw.answer
             }))
         };
         res.status(200).json(formattedResponse);
@@ -114,11 +114,11 @@ const next = async (req, res) => {
  */
 const endAndSaveGame = async (req, res) => {
     try {
-       
+
         if (!req.body.userId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
-        
+
         const game = req.body;
 
         // Validate input data
@@ -143,30 +143,30 @@ const endAndSaveGame = async (req, res) => {
             gameMode: game.gameMode,
             points: game.points,
             questions: game.questions,
-            topics: uniqueTopics, 
+            topics: uniqueTopics,
 
         });
 
 
         // Save the game to the database
-        const savedGame = await newGame.save();       
+        const savedGame = await newGame.save();
 
 
         // Save all the questions related to this game
         const questionsToInsert = game.questions.map(q => (
             {
 
-            text: q.text, // Question text
-            imageUrl: q.imageUrl, // Image URL
-            selectedAnswer: q.selectedAnswer, // Selected answer by the user
-            answers: q.answers.map(ans => ({
-                text: ans.text, // Option text
-                isCorrect: ans.isCorrect, // If it is the correct answer
+                text: q.text, // Question text
+                imageUrl: q.imageUrl, // Image URL
+                selectedAnswer: q.selectedAnswer, // Selected answer by the user
+                answers: q.answers.map(ans => ({
+                    text: ans.text, // Option text
+                    isCorrect: ans.isCorrect, // If it is the correct answer
 
-            })),
-          topics: q.topics 
-            
-        }));
+                })),
+                topics: q.topics
+
+            }));
 
         // Save all the questions to the database
         const savedQuestions = await Question.insertMany(questionsToInsert);
@@ -179,7 +179,7 @@ const endAndSaveGame = async (req, res) => {
         res.status(200).json({ message: "Game data saved successfully." });
     } catch (error) {
         console.error(error.stack); // También podemos mostrar el stack del error para tener más contexto
-    
+
         res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -225,12 +225,12 @@ const getGameQuestions = async (req, res) => {
  */
 const getUserGamesWithoutQuestions = async (req, res) => {
     try {
-       
-        const userId = req.body.userId ;  // Get the user ID from the request body
+
+        const userId = req.body.userId;  // Get the user ID from the request body
         if (!userId) {
             return res.status(401).json({ error: "Unauthorized - Invalid or missing token." });
         }
-        
+
         const objectId = new mongoose.Types.ObjectId(userId);
         const games = await GamePlayed.find({ userId: objectId }).exec();
 
@@ -242,16 +242,17 @@ const getUserGamesWithoutQuestions = async (req, res) => {
         // Return games without associated questions in JSON format
         const formattedGames = games.map(game => ({
             _id: game._id,
-            userId: game.user,  
+            userId: game.user,
             numberOfQuestions: game.numberOfQuestions,
-            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,  
+            numberOfCorrectAnswers: game.numberOfCorrectAnswers || 0,
             gameMode: game.gameMode,
             points: game.points,
-            topics: game.topics || [] 
+            topics: game.topics || [],
+            date: game.gameDate
+        }
+        ));
+        res.status(200).json(formattedGames);
 
-        }));
-        res.status(200).json(formattedGames);   
-         
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
     }
@@ -262,5 +263,6 @@ module.exports = {
     next,
     endAndSaveGame,
     getGameQuestions,
-    getUserGamesWithoutQuestions};
+    getUserGamesWithoutQuestions
+};
 
