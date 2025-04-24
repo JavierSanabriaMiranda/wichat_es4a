@@ -131,7 +131,7 @@ app.post('/askllm/clue', async (req, res) => {
             
             Instrucciones:
             - Jamás digas ni parte ni sinónimo de "${correctAnswer}".
-            - Sé claro, breve y creativo con tus pistas.
+            - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
             - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
             - Asegúrate de que tus pistas no se repitan.
             
@@ -142,7 +142,13 @@ app.post('/askllm/clue', async (req, res) => {
             
             ¿Qué le responderías en ${getLanguage(language)}?
             `.trim();
-      const llmResponse = await sendQuestionToLLM(prompt, apiKey, model);
+      var llmResponse = "idk";
+      try {
+        llmResponse = await sendQuestionToLLM(prompt, apiKey, model);
+      }
+      catch (error) {
+        attempts++;
+      }
       answer = llmResponse;
       break;
     }
