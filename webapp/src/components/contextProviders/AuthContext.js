@@ -41,11 +41,13 @@ export const AuthProvider = ({ children }) => {
             const res = await axios.post(apiEndpoint + "/login", { username, password });
             const { token, id } = res.data;
             setUser({ username, id });
-            setToken(token);
             setError(null);
 
-            localStorage.setItem("user", JSON.stringify({ username, id }));
-            sessionStorage.setItem("token", token);
+            setTimeout(() => {
+                setToken(token);
+                localStorage.setItem("user", JSON.stringify({ username, id }));
+                sessionStorage.setItem("token", token);
+            }, 1000)
 
             callback({ success: true })
 
@@ -82,7 +84,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, error, login, logout , isValidToken, isLoading}}>
+        <AuthContext.Provider value={{ user, token, error, login, logout, isValidToken, isLoading }}>
             {children}
         </AuthContext.Provider>
     );
