@@ -131,7 +131,7 @@ describe('Gateway Service', () => {
   it('should return game history list with valid token', async () => {
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
-      .post('/api/game/history/gameList')
+      .get('/api/game/history/gameList')
       .set('Authorization', `Bearer ${token}`)
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(200);
@@ -303,7 +303,7 @@ describe('Gateway Service', () => {
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     axios.post.mockImplementationOnce(() => Promise.reject(new Error('mongo fail')));
     const response = await request(app)
-      .post('/api/game/history/gameList')
+      .get('/api/game/history/gameList')
       .set('Authorization', `Bearer ${token}`)
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(500);
@@ -321,7 +321,7 @@ describe('Gateway Service', () => {
 
   it('should return game history list without token (guest)', async () => {
     const response = await request(app)
-      .post('/api/game/history/gameList')
+      .get('/api/game/history/gameList')
       .send({ gameId: 'game1' });
     expect(response.statusCode).toBe(200);
     expect(response.body.history).toEqual(['game1', 'game2']);
@@ -330,7 +330,7 @@ describe('Gateway Service', () => {
   it('should return 401 if userId is missing in /api/game/history/gameList', async () => {
     const token = jwt.sign({}, privateKey);
     const response = await request(app)
-      .post('/api/game/history/gameList')
+      .get('/api/game/history/gameList')
       .set('Authorization', `Bearer ${token}`)
       .send({});
     
