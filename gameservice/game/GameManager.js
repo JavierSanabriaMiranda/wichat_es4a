@@ -18,7 +18,7 @@
  */
 
 const { GamePlayed } = require("../models/game_played");
-const Question  = require("../models/Question");
+const { Question } = require("../models/Question");
 
 
 const { requestQuestion} = require("./QuestionAsk");

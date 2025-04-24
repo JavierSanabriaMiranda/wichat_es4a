@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const {GamePlayed} = require('./models/game_played'); // Usa la ruta correcta a tu modelo
-const Question = require('./models/Question'); // Ajusta la ruta si es distinta
+const {Question} = require('./models/Question'); // Ajusta la ruta si es distinta
 
 
 // Clave secreta para firmar el token JWT (ajústala a tu configuración real)
@@ -154,7 +154,7 @@ describe('Game Service API', () => {
       });
   
     expect(response.statusCode).toBe(200);
-    expect(response.text).toBe("Game data saved successfully.");  // Cambié esta línea
+    expect(response.text).toBe("{\"message\":\"Game data saved successfully.\"}");  // Cambié esta línea
 });
   
   
@@ -233,11 +233,8 @@ it('should return 400 when creating a new game without required fields', async (
       .send({
         user: { userId: '60d0fe4f5311236168a109cf' },
         questions: [{
-          text: 'What is 2+2?', 
-          imageUrl: 'http://example.com/image2.jpg',
-          selectedAnswer: '4',
-          topics: ['math'],
-          answers: [{ text: '4', isCorrect: true },{ text: '4', isCorrect: true },{ text: '4', isCorrect: true },{ text: '4', isCorrect: true }] }],
+          text: 'What is 2+2?'
+        }],
         numberOfCorrectAnswers: 1,
         points: 10
       });

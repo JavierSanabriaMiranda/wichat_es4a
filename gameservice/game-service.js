@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { connect, disconnect } = require('./db/mongo/Connection');
+require('dotenv').config();
 
 // Libraries required for OpenAPI-Swagger
 const swaggerUi = require('swagger-ui-express');
