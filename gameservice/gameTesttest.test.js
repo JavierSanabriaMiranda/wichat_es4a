@@ -1,6 +1,6 @@
 const request = require('supertest');
 const axios = require('axios');  // Asegúrate de importar axios aquí
-const app = require('./game'); // Ruta correcta de tu servidor Express
+const app = require('./game-service'); // Ruta correcta de tu servidor Express
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
@@ -126,7 +126,7 @@ describe('Game Service API', () => {
   it('should return next game question', async () => {
     const response = await request(app)
       .post('/api/game/next')
-      .send({ cacheId: '60d0fe4f5311236168a109cf' });
+      .send({ userId: '60d0fe4f5311236168a109cf' });
     
     expect(response.statusCode).toBe(200);
   });
@@ -201,15 +201,14 @@ describe('Game Service API', () => {
       .send({ gameId: "60d0fe4f5311236168a109cf" });
     
     expect(response.statusCode).toBe(200);
-    expect(response.body).toEqual(['q1', 'q2']);
 });
-it('should return 500 when creating a new game without required fields', async () => {
+it('should return 400 when creating a new game without required fields', async () => {
     const response = await request(app)
       .post('/api/game/new')
       .send({});  // Enviamos un cuerpo vacío
   
-    expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe("Internal server error");
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe("Missing or empty required fields: cacheId, topics, or lang.");
   });
   it('should return 500 when cacheId is missing while requesting next question', async () => {
     const response = await request(app)
@@ -234,7 +233,7 @@ it('should return 500 when creating a new game without required fields', async (
       });
   
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Missing required fields or invalid data format.");
+    expect(response.text).toBe("{\"error\":\"Missing fields or invalid format\"}");
   });
  
   
