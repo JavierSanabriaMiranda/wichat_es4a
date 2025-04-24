@@ -16,8 +16,6 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
 
     const { t } = useTranslation();
 
-    console.log("Esta es mi fecha: ", date);
-
     return (
         <Button 
             variant="outline-primary" 
