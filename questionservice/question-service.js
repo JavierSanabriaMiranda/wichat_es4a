@@ -1,8 +1,7 @@
-import fetch from 'node-fetch';  // We use fetch to make HTTP requests to external APIs
-import fs from 'fs';  // We need the fs module to read JSON files
-import path from 'path';  // We use path to handle file and directory paths
-import { fileURLToPath } from 'url';  // We use fileURLToPath to convert file URLs to local paths in ES modules
-import express from 'express';  // We use express to create and manage the API server
+const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
 
 const port = 8004;
 const app = express();
@@ -74,18 +73,16 @@ function filterUnique(results, label, limit) {
  * 
  */
 async function executeQuery(query) {
-  const offset = Math.floor(Math.random() * 100); // Generate a random offset between 0 and 99
-  const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`; // Add offset and limit to the query
-  const response = await fetch(url, {
-    method: "POST",
+  const offset = Math.floor(Math.random() * 100);
+  const finalQuery = query + ` LIMIT 100 OFFSET ${offset}`;
+  const response = await axios.post(url, finalQuery, {
     headers: {
       "Content-Type": "application/sparql-query",
       "Accept": "application/json"
-    },
-    body: finalQuery
+    }
   });
-  const data = await response.json(); // Parse the response from the API
-  // Filter and return 4 unique results by their labels
+
+  const data = response.data;
   return filterUnique(data.results.bindings, "label", 4);
 }
 
@@ -194,4 +191,4 @@ const server = app.listen(port, async () => {
   console.log(`Question Service listening at http://localhost:${port}`);
 });
 
-export default server;
+module.exports = server
