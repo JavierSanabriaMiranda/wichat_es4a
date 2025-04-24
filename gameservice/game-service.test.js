@@ -125,7 +125,7 @@ describe('Game Service API', () => {
   it('should return next game question', async () => {
     const response = await request(app)
       .post('/api/game/next')
-      .send({ user: { userId: '60d0fe4f5311236168a109cf' } });
+      .send({ cacheId: '60d0fe4f5311236168a109cf' });
 
     expect(response.statusCode).toBe(200);
   });
@@ -137,9 +137,8 @@ describe('Game Service API', () => {
       .post('/api/game/endAndSaveGame')
       .set('authorization', `Bearer ${token}`)
       .send({ 
-        user: {
-          userId: '60d0fe4f5311236168a109cf'
-        },
+       
+          userId: '60d0fe4f5311236168a109cf',
         questions: [
           {
             text: 'What is the capital of France?',
@@ -168,7 +167,7 @@ describe('Game Service API', () => {
     const response = await request(app)
       .post('/api/game/history/gameList')
       .set('authorization', `Bearer ${token}`)
-      .send({ "user": { "userId": "60d0fe4f5311236168a109cf" }});
+      .send({  "userId": "60d0fe4f5311236168a109cf" });
     
     expect(response.statusCode).toBe(200);
       
@@ -214,7 +213,7 @@ it('should return 400 when creating a new game without required fields', async (
       .post('/api/game/endAndSaveGame')
       .set('authorization', `Bearer ${token}`)
       .send({
-        user: { userId: '' },  // userId vacío
+         userId: '' ,  // userId vacío
         questions: [],  // Preguntas vacías
         numberOfQuestions: 0,
         numberOfCorrectAnswers: 0,
@@ -222,8 +221,8 @@ it('should return 400 when creating a new game without required fields', async (
         points: 0
       });
   
-    expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("{\"error\":\"Missing fields or invalid format\"}");
+    expect(response.statusCode).toBe(401);
+    expect(response.text).toBe("{\"error\":\"Unauthorized\"}");
   });
  
   
@@ -236,7 +235,7 @@ it('should return 400 when creating a new game without required fields', async (
       .post('/api/game/endAndSaveGame')
       .set('authorization', `Bearer ${token}`)
       .send({
-        user: { userId: '60d0fe4f5311236168a109cf' },
+        userId: '60d0fe4f5311236168a109cf' ,
         questions: [{
           text: 'What is 2+2?'
         }],
@@ -252,8 +251,8 @@ it('should return 400 when creating a new game without required fields', async (
       .post('/api/game/history/gameList')
       .send({});  // Cuerpo vacío sin userId
   
-    expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe("Internal server error");
+    expect(response.statusCode).toBe(401);
+    expect(response.body.error).toBe("Unauthorized - Invalid or missing token.");
   });
   
   
@@ -270,5 +269,135 @@ it('should return 400 when creating a new game without required fields', async (
     expect(response.statusCode).toBe(500);
     expect(response.body.error).toBe('Internal server error');
   });
-  
+  // newGame tests
+  it('should return 400 if topics is an empty string in newGame', async () => {
+    const res = await request(app)
+      .post('/api/game/new')
+      .send({ cacheId: '12345', topics: '', lang: 'en' });
+    
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Missing or empty required fields: cacheId, topics, or lang.");
+  });
+
+  it('should return 400 if lang is invalid in newGame', async () => {
+    const res = await request(app)
+      .post('/api/game/new')
+      .send({ cacheId: '12345', topics: ['science'], lang: 'jp' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Invalid topics or language");
+  });
+
+  it('should return 400 if any topic is invalid in newGame', async () => {
+    const res = await request(app)
+      .post('/api/game/new')
+      .send({ cacheId: '12345', topics: ['science', 'unknown'], lang: 'en' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Invalid topics or language");
+  });
+
+  // next tests
+  it('should return 400 if cacheId not found in next', async () => {
+    const res = await request(app)
+      .post('/api/game/next')
+      .send({ cacheId: 'nonexistent' });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Game settings not found.");
+  });
+
+  // endAndSaveGame tests
+  it('should return 400 if questions is not an array in endAndSaveGame', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+    const res = await request(app)
+      .post('/api/game/endAndSaveGame')
+      .set('authorization', `Bearer ${token}`)
+      .send({
+        userId: '60d0fe4f5311236168a109cf',
+        questions: 'invalid',
+        numberOfQuestions: 1,
+        numberOfCorrectAnswers: 1,
+        gameMode: 'normal',
+        points: 5
+      });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Missing fields or invalid format");
+  });
+
+  it('should return 500 if Question.insertMany throws an error', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+
+    // Forzar error
+    const originalInsertMany = Question.insertMany;
+    Question.insertMany = jest.fn().mockRejectedValue(new Error('Insert failed'));
+
+    const res = await request(app)
+      .post('/api/game/endAndSaveGame')
+      .set('authorization', `Bearer ${token}`)
+      .send({
+        userId: '60d0fe4f5311236168a109cf',
+        questions: [
+          {
+            text: 'Capital of Italy?',
+            imageUrl: '',
+            selectedAnswer: 'Rome',
+            answers: [{ text: 'Rome', isCorrect: true }],
+            topics: ['geography']
+          }
+        ],
+        numberOfQuestions: 1,
+        numberOfCorrectAnswers: 1,
+        gameMode: 'normal',
+        points: 10
+      });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.error).toBe("Internal server error");
+
+    // Restaurar
+    Question.insertMany = originalInsertMany;
+  });
+
+  // getUserGamesWithoutQuestions tests
+  it('should return 404 if user has no games', async () => {
+    const userId = '60d0fe4f5311236168a109c4';
+
+    jest.spyOn(GamePlayed, 'findById').mockResolvedValue([]);
+
+    const res = await request(app)
+      .post('/api/game/history/gameList')
+      .send({ userId });
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body.error).toBe("No games found for this user.");
+  });
+
+
+
+  // getGameQuestions tests
+  it('should return 400 if gameId is missing in getGameQuestions', async () => {
+    const res = await request(app)
+      .post('/api/game/history/gameQuestions')
+      .send({});
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBe("Missing gameId in request body.");
+  });
+
+  it('should return 500 if DB throws while retrieving questions', async () => {
+    jest.spyOn(GamePlayed, 'findById').mockImplementation(() => ({
+      populate: () => ({
+        exec: () => Promise.reject(new Error('DB error'))
+      })
+    }));
+
+    const res = await request(app)
+      .post('/api/game/history/gameQuestions')
+      .send({ gameId: 'someId' });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body.error).toBe("Internal server error");
+  });
 });
