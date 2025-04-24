@@ -167,6 +167,8 @@ app.post('/api/game/question', async (req, res) => {
 // **Finalizar el juego y guardar los datos**
 app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
   try {
+    console.log("Finalizando y guardando el juego...");
+    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
     const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body, {
       headers: { Authorization: req.headers["authorization"] }
     });
