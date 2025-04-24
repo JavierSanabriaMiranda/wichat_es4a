@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./auth-model')
-const rateLimit = require('express-rate-limit');
-const { check, matchedData, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator');
 const app = express();
 const port = 8002;
 
@@ -23,7 +22,7 @@ function loginLimiter(req, res, next) {
   const ip = req.ip;
   const entry = failedAttempts.get(ip);
 
-  if (entry && entry.count >= MAX_ATTEMPTS && (Date.now() - entry.lastAttempt) < WINDOW_MS) {
+  if (entry && entry.count+1 >= MAX_ATTEMPTS && (Date.now() - entry.lastAttempt) < WINDOW_MS) {
     return res.status(429).json({ error: 'Too many login attempts, please try again later' });
   }
 
