@@ -10,7 +10,6 @@ let gatewayservice;
 
 
 async function startServer() {
-    console.log('Starting MongoDB memory server...');
     mongoserver = await MongoMemoryServer.create();
     const mongoUri = mongoserver.getUri();
     process.env.MONGODB_URI = mongoUri;

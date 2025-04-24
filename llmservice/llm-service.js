@@ -85,9 +85,7 @@ app.post('/ask', async (req, res) => {
 
     const { question, model } = req.body;
     //load the api key from an environment variable
-    console.log("Estoy en llmservice y voy a pedir la API KEY");
     const apiKey = process.env.LLM_API_KEY;
-    console.log("APIKEY: ", apiKey);
     if (!apiKey) {
       return res.status(400).json({ error: 'API key is missing.' });
     }
@@ -197,7 +195,6 @@ app.post('/askllm/welcome', async (req, res) => {
 });
 
 const server = app.listen(port, () => {
-  console.log(`LLM Service listening at http://localhost:${port}`);
 });
 
 module.exports = server

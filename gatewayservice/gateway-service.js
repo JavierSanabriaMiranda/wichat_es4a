@@ -50,7 +50,6 @@ const verifyToken = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      console.log(decoded);
       req.body.userId = decoded.userId;
       next();
     });
@@ -300,7 +299,6 @@ if (fs.existsSync(openapiPath)) {
 
 // Start the gateway service
 const server = app.listen(port, () => {
-  console.log(`Gateway Service listening at http://localhost:${port}`);
 });
 
 module.exports = server;

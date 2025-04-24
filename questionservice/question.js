@@ -205,7 +205,6 @@ app.post('/api/question/generate', async (req, res) => {
  * @param {number} port - The port the server will listen on.
  */
 const server = app.listen(port, async () => {
-  console.log(`Question Service listening at http://localhost:${port}`);
 });
 
 export default server;

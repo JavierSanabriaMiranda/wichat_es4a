@@ -99,7 +99,6 @@ app.post('/editUser', async (req, res) => {
 });
 
 const server = app.listen(port, () => {
-  console.log(`User Service listening at http://localhost:${port}`);
 });
 
 // Listen for the 'close' event on the Express.js server

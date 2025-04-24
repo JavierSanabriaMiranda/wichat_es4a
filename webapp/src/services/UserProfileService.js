@@ -9,7 +9,6 @@ const getUserHistory = async (token) => {
                 Authorization: `Bearer ${token}`,
             }
         });
-        console.log("Esta es la info de las partidas: ", response.data);
         return response.data;
     } catch (error) {
         console.error("Error en UserProfileService - getUserHistory:", error);

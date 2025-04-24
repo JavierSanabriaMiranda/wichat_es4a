@@ -81,7 +81,6 @@ app.post('/login', loginLimiter, [
 
 // Start the server
 const server = app.listen(port, () => {
-  console.log(`Auth Service listening at http://localhost:${port}`);
 });
 
 server.on('close', () => {
