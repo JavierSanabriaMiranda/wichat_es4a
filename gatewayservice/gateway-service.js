@@ -100,12 +100,9 @@ app.post('/login', async (req, res) => {
 // **Generar la pregunta de cara a que la use GameService**
 app.post('/api/question/new', async (req, res) => {
   try {
-    console.log("Estoy en gateway-service.js y el apiEndpoint es: " + questionServiceUrl + '/api/question/generate');
-    console.log("Generando pregunta...")
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
   } catch (error) {
-    console.log("Error al generar la pregunta: ", error.message);
     res.status(error.response?.status || 500).json({
       error: error.response?.data?.error || 'Error al generar la pregunta',
       details: error.response?.data || {}
@@ -117,7 +114,7 @@ app.post('/adduser', async (req, res) => {
   try {
     // Forward the add user request to the user service
     const userResponse = await axios.post(userServiceUrl + '/adduser', req.body);
-    console.log(userResponse)
+    (userResponse)
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
@@ -145,13 +142,8 @@ app.post('/askllm', async (req, res) => {
 
 // **Iniciar una nueva partida**
 app.post('/api/game/new', generateCacheId, async (req, res) => {
-  console.log("Estoy en gateway-service.js");
   try {
-    console.log("Llamando a:", `${gameServiceUrl}/api/connectMongo`);
-    console.log("Iniciando una nueva partida...");
     await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
-
-    console.log("Llamando a:", `${gameServiceUrl}/api/game/new`);
     await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
 
     res.json({ cacheId: req.body.cacheId });
@@ -163,9 +155,7 @@ app.post('/api/game/new', generateCacheId, async (req, res) => {
 
 // **Obtener la siguiente pregunta de la partida**
 app.post('/api/game/question', async (req, res) => {
-  console.log("Estoy en gateway-service.js y el apiEndpoint es: " + gameServiceUrl + '/api/game/question');
   try {
-    console.log("Solicitando la siguiente pregunta...");
     const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
     res.json(questionResponse.data);
   } catch (error) {
@@ -194,11 +184,6 @@ app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
 // Información sobre la partida para el historial (con verificación de token)
 app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
   try {
-    console.log("Generando histórico sobre partida");
-    console.log("UserId:", req.body.user.userId);
-    console.log("Llamando a:", `${gameServiceUrl}/api/game/history/gameList`);
-    console.log("Body:", req.body);
-
     await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
 
     const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
@@ -214,7 +199,6 @@ app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
 // Información sobre las preguntas de una partida para el historial (con verificación de token)
 app.post('/api/game/history/gameQuestions', async (req, res) => {
   try {
-    console.log("Generando histórico sobre preguntas de una partida");
 
     await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
 
@@ -246,6 +230,7 @@ app.post('/askllm/clue', async (req, res) => {
        * @returns {string} - A prompt for the user to guess the name without revealing it, in the specified language.
        */
       let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
+  
       let llmResponse = await axios.post(llmServiceUrl + '/ask', { question, model });
 
       const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
@@ -274,7 +259,7 @@ app.post('/askllm/clue', async (req, res) => {
 
     res.json(answer.data);
   } catch (error) {
-    console.log("Error al generar la pista: ", error.message);
+    console.error("Error al generar la pista: ", error.message);
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pista' });
   }
 });

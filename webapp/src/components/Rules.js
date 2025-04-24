@@ -16,6 +16,9 @@ const Rules = ({ show, handleClose }) => {
         <p>{t("rules-content-1")}</p>
         <p>{t("rules-content-2")}</p>
         <p>{t("rules-content-3")}</p>
+        <p>{t("rules-content-4")}</p>
+        <p>{t("rules-content-5")}</p>
+        <p>{t("rules-content-6")}</p>
       </Modal.Body>
     </Modal>
 

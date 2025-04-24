@@ -36,6 +36,11 @@ body {
   animation: fadeIn 2s ease-out; 
 }
 
+.btn-close.white {
+  filter: invert(1);
+  opacity: 1; /* opcional, para mayor visibilidad */
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -99,6 +104,65 @@ body {
   transform: translateY(2px); 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+@keyframes pulseChaos {
+  0% { box-shadow: 0 0 5px #ff4d4d; }
+  50% { box-shadow: 0 0 20px #ff0000; }
+  100% { box-shadow: 0 0 5px #ff4d4d; }
+}
+
+/* Estilos para el Modal de Caos */
+.chaos-modal-content {
+  background: linear-gradient(135deg, #ff4e50, #ea8980);
+  font-family: 'Roboto', sans-serif;
+  border-radius: 12px;
+  padding: 20px;
+  color: white;
+}
+
+.chaos-modal-content .modal-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.chaos-modal-content p {
+  font-size: 1.1rem;
+  margin: 0.5em 0;
+}
+
+.chaos-slogan {
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.chaos-button {
+  background-color: #f14848 !important;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;  
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px #f14848, 0 0 20px #ff4d4d;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+  animation: pulseChaos 1.5s infinite;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+
+.chaos-btn:hover {
+  opacity: 0.9;
+}
+
+
+@keyframes chaosFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 
 @media (max-width: 768px) {
   .home-heading, .home-subheading, .app-name {

@@ -22,13 +22,10 @@ async function getRandomCountryAndFlag() {
     const results = data.results.bindings;
 
     if (results.length === 0) {
-        console.log("No results found.");
         return;
     }
 
     const result = data.results.bindings[0];
-    console.log("Country: " + result.countryLabel.value);
-    console.log("Flag URL: " + result.flag.value);
 }
 
 getRandomCountryAndFlag();

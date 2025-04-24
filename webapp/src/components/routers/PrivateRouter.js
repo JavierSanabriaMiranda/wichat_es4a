@@ -15,7 +15,6 @@ export const PrivateRouter = ({ children }) =>
         const verifyToken = async () => {
            
             if (!token) {
-                console.log("Token not found, redirecting to login");
                 setIsAuthenticated(false);
                 setIsChecking(false);
                 return;
