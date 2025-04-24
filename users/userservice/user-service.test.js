@@ -91,9 +91,7 @@ describe('User Service', () => {
     const requestData = {
       currentPassword: correctUser.password,
       newPassword: 'NewPassword123',
-      user: {
-        userId: newUserId
-      }
+      userId: newUserId
     }
 
     // Sends the request to edit the user
@@ -110,9 +108,7 @@ describe('User Service', () => {
     const requestData = {
       currentPassword: correctUser.password,
       newPassword: 'notsecurepassword',
-      user: {
-        userId: newUserId
-      }
+      userId: newUserId
     }
 
     // Sends the request to edit the user
@@ -129,9 +125,7 @@ describe('User Service', () => {
     const requestData = {
       currentPassword: "notMatchingPassword",
       newPassword: 'NewPassword123',
-      user: {
-        userId: newUserId
-      }
+      userId: newUserId
     }
 
     // Sends the request to edit the user
