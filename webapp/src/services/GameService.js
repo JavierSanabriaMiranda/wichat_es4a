@@ -39,7 +39,6 @@ import axios from 'axios';
             }
             return fullStructure;
         } catch (error) {
-            console.error("Error al obtener la pregunta:", error);
         }
     };
 
@@ -83,7 +82,7 @@ import axios from 'axios';
                 }
             );
         } catch (error) {
-            console.error("Error al guardar el juego:", error);
+
         }
     }
 
@@ -103,7 +102,6 @@ import axios from 'axios';
             const response = await axios.post(apiEndpoint + '/api/game/new', gameConfig);
             cacheId = response.data.cacheId; // Store the cacheId for future requests
         } catch (error) {
-            console.error("Error al guardar el juego:", error);
         }
     }
 

@@ -73,7 +73,6 @@ async function sendQuestionToLLM(question, apiKey, model = 'gemini') {
     return config.transformResponse(response);
 
   } catch (error) {
-    console.error(`Error sending question to ${model}:`, error.message || error);
     return null;
   }
 }

@@ -11,7 +11,6 @@ const getUserHistory = async (token) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error en UserProfileService - getUserHistory:", error);
     }
 }
 
@@ -25,7 +24,6 @@ const getQuestionsById = async (gameId) => {
         const response = await axios.post(`${apiEndpoint}/api/game/history/gameQuestions`, content);
         return response.data;
     } catch (error) {
-        console.error("Error en UserProfileService - getGameHistoryById:", error);
     }
 }
 
@@ -45,7 +43,6 @@ const changePassword = async (token, currentPassword, newPassword) => {
         );
         return response.data;
     } catch (error) {
-        console.error("Error en UserProfileService - changePassword:", error);
     }
 }
 

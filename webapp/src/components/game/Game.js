@@ -87,7 +87,6 @@ export const Game = () => {
             if (token) {
                 saveGame(token, questionResults, numberOfQuestions, correctAnswers, valor, points)
                     .catch(err => {
-                        console.error("Error saving game:", err)
                     })
                     .finally(() => {
                         setTimeout(() => {

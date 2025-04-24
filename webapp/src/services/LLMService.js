@@ -22,7 +22,6 @@ const askClue = async ({ correctAnswer, question, context, language }) => {
         });
         return response;
     } catch (error) {
-        console.error("Error en LLMService - askClue:", error);
         throw error;
     }
 };

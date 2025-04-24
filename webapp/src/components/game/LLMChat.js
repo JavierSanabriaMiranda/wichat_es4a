@@ -86,7 +86,6 @@ const LLMChat = ({ name }) => {
                 { role: 'assistant', content: answerText }
             ]);
         } catch (error) {
-            console.error("Error enviando mensaje:", error);
             const errorMsg = (
                 <p className="llm-message error" key={`error-${messages.length}`}>
                     <Typewriter

@@ -177,8 +177,6 @@ const endAndSaveGame = async (req, res) => {
 
         res.status(200).json({ message: "Game data saved successfully." });
     } catch (error) {
-        console.error(error.stack); // También podemos mostrar el stack del error para tener más contexto
-
         res.status(500).json({ error: "Internal server error" });
     }
 };
