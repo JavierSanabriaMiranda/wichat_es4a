@@ -56,6 +56,14 @@ const verifyToken = (req, res, next) => {
   }
 };
 
+const generateCacheId = (req, res, next) => {
+  const min = 10 ** 15; // Número mínimo de 16 dígitos
+  const max = 10 ** 16 - 1; // Número máximo de 16 dígitos
+  
+  req.body.cacheId = Math.floor(Math.random() * (max - min + 1)) + min;
+  next();
+}
+
 
 /**
  * Health check endpoint to verify if the service is running.
@@ -144,7 +152,7 @@ app.post('/api/user/editUser', verifyToken, async (req, res) => {
  * @param {Object} req.body - The data required to start a new game.
  * @returns {Object} The response from the game service, including a cache ID.
  */
-app.post('/api/game/new', verifyToken, async (req, res) => {
+app.post('/api/game/new', generateCacheId, async (req, res) => {
   try {
    
     await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
@@ -332,8 +340,6 @@ if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
   const swaggerDocument = YAML.parse(file);
   app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-} else {
-  console.log("Not configuring OpenAPI. Configuration file not present.");
 }
 
 // Start the gateway service
