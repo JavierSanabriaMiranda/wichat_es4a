@@ -35,21 +35,12 @@ jest.mock('./models/Question', () => ({
           selectedAnswer: 'Paris',
           answers: [
             { text: 'Paris', isCorrect: true },
+            { text: 'Paris', isCorrect: true },
+            { text: 'Paris', isCorrect: true },
             { text: 'London', isCorrect: false }
           ],
           topics: ['geography']
-        },
-        {
-          _id: '603d2f3e4f1b3b1f7237c7ee',
-          text: 'What is 2 + 2?',
-          imageUrl: 'http://example.com/image2.jpg',
-          selectedAnswer: '4',
-          answers: [
-            { text: '4', isCorrect: true },
-            { text: '5', isCorrect: false }
-          ],
-          topics: ['geography']
-        },
+        }
       ]),
     },
   }));
@@ -135,11 +126,11 @@ describe('Game Service API', () => {
   });
 
   it('should end and save game', async () => {
-   
+    
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
       .post('/api/game/endAndSaveGame')
-      .set('Authorization', `Bearer ${token}`)
+      .set('authorization', `Bearer ${token}`)
       .send({ 
         user: {
           userId: '60d0fe4f5311236168a109cf'
@@ -171,7 +162,7 @@ describe('Game Service API', () => {
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
       .post('/api/game/history/gameList')
-      .set('Authorization', `Bearer ${token}`)
+      .set('authorization', `Bearer ${token}`)
       .send({ "user": { "userId": "60d0fe4f5311236168a109cf" }});
     
     expect(response.statusCode).toBe(200);
@@ -216,7 +207,7 @@ it('should return 400 when creating a new game without required fields', async (
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
       .post('/api/game/endAndSaveGame')
-      .set('Authorization', `Bearer ${token}`)
+      .set('authorization', `Bearer ${token}`)
       .send({
         user: { userId: '' },  // userId vacío
         questions: [],  // Preguntas vacías
@@ -238,10 +229,15 @@ it('should return 400 when creating a new game without required fields', async (
     const token = jwt.sign({ userId: 'testUser' }, privateKey);
     const response = await request(app)
       .post('/api/game/endAndSaveGame')
-      .set('Authorization', `Bearer ${token}`)
+      .set('authorization', `Bearer ${token}`)
       .send({
         user: { userId: '60d0fe4f5311236168a109cf' },
-        questions: [{ text: 'What is 2+2?', answers: [{ text: '4', isCorrect: true }] }],
+        questions: [{
+          text: 'What is 2+2?', 
+          imageUrl: 'http://example.com/image2.jpg',
+          selectedAnswer: '4',
+          topics: ['math'],
+          answers: [{ text: '4', isCorrect: true },{ text: '4', isCorrect: true },{ text: '4', isCorrect: true },{ text: '4', isCorrect: true }] }],
         numberOfCorrectAnswers: 1,
         points: 10
       });

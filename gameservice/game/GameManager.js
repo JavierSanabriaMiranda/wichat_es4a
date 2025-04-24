@@ -46,7 +46,6 @@ const newGame = async (req, res) => {
         const allowedTopics = ["geography", "history", "science", "sport", "character", "art", "entertainment"];
         const allowedLangs = ["es", "en"];
 
-        // Validar campos obligatorios y que no estén vacíos
         if (
             !cacheId ||
             !topics ||
@@ -57,12 +56,9 @@ const newGame = async (req, res) => {
             return res.status(400).json({ error: "Missing or empty required fields: cacheId, topics, or lang." });
         }
 
-         // Normalizar topics a array
          const topicList = Array.isArray(topics) ? topics : [topics];
 
-         // Validar que todos los topics estén permitidos
          const invalidTopics = topicList.filter(t => !allowedTopics.includes(t));
-        // Validar idioma
         if (!allowedLangs.includes(lang) || invalidTopics.length > 0) {
             return res.status(400).json({ error: `Invalid topics or language` });
         }
@@ -194,7 +190,7 @@ const endAndSaveGame = async (req, res) => {
         console.error(error.stack); // También podemos mostrar el stack del error para tener más contexto
     
         console.error("Error saving game data:", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Internal server error" });
     }
 };
 
