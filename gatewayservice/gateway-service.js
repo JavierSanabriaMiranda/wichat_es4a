@@ -3,46 +3,46 @@ const axios = require('axios');
 const cors = require('cors');
 const promBundle = require('express-prom-bundle');
 
-// Libraries required for OpenAPI-Swagger
+// OpenAPI-Swagger Libraries
 const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const YAML = require('yaml');
 
-// Utils
-const { getLanguage, normalizeString } = require('./gateway-service-utils');
-
-// Convertir "import jwt from 'jsonwebtoken'" a require
+// JWT Authentication library
 const jwt = require('jsonwebtoken');
-const privateKey = "your-secret-key";
+const privateKey = "your-secret-key"; // Secret key for JWT verification
 
 const app = express();
 const port = 8000;
 
+// URLs for microservices
 const llmServiceUrl = process.env.LLM_SERVICE_URL || 'http://localhost:8003';
 const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
 const questionServiceUrl = process.env.QUESTION_SERVICE_URL || 'http://localhost:8004';
 
-
 app.use(cors());
 app.use(express.json());
 
-//Prometheus configuration
+// Prometheus metrics middleware
 const metricsMiddleware = promBundle({ includeMethod: true });
 app.use(metricsMiddleware);
 
-// Middleware para verificar el token
+/**
+ * Middleware to verify JWT token for authentication.
+ * If the token is not provided, assigns a guest user. If the token is valid, decodes the user information and attaches it to the request body.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The callback function to move to the next middleware or route handler.
+ */
 const verifyToken = (req, res, next) => {
-
-  // If there's no token provided, assign a guest user
   if (!req.headers["authorization"]) {
-    req.body.user = { userId: "guest" + Date.now() }; // If there's no token, assign a guest user
+    req.user = { userId: "guest" + Date.now() };
     next();
-  }
-  // If there's a token, verify it
-  else {
-    const token = req.headers["authorization"]?.split(" ")[1]; // Obtener el token del encabezado de autorización
+  } else {
+    const token = req.headers["authorization"]?.split(" ")[1]; 
     if (!token) {
       return res.status(401).json({ message: "Token wasn't provided properly" });
     }
@@ -50,8 +50,8 @@ const verifyToken = (req, res, next) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      req.body.user = decoded; // Guardar la información del usuario decodificada en la solicitud
-      next(); // Continuar con la siguiente función de middleware o ruta
+      req.user = decoded; 
+      next();
     });
   }
 };
@@ -65,7 +65,12 @@ const generateCacheId = (req, res, next) => {
 }
 
 
-// Health check endpoint
+/**
+ * Health check endpoint to verify if the service is running.
+ *
+ * @route {GET} /health
+ * @returns {Object} 200 status with a message indicating the service is OK.
+ */
 app.get('/health', (req, res) => {
   res.json({ status: 'OK' });
 });
@@ -87,9 +92,15 @@ app.post('/validateToken', async (req, res) => {
   }
 });
 
+/**
+ * Endpoint to handle user login by forwarding the request to the authentication service.
+ *
+ * @route {POST} /login
+ * @param {Object} req.body - The login credentials provided by the user.
+ * @returns {Object} The authentication response from the auth service.
+ */
 app.post('/login', async (req, res) => {
   try {
-    // Forward the login request to the authentication service
     const authResponse = await axios.post(authServiceUrl + '/login', req.body);
     res.json(authResponse.data);
   } catch (error) {
@@ -97,30 +108,51 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// **Generar la pregunta de cara a que la use GameService**
-app.post('/api/question/new', async (req, res) => {
+/**
+ * Endpoint to generate a new question, forwarding the request to the question service.
+ *
+ * @route {POST} /api/question/new
+ * @param {Object} req.body - The data required to generate a new question.
+ * @returns {Object} The generated question from the question service.
+ */
+app.post('/api/question/new', verifyToken, async (req, res) => {
   try {
+
     const endResponse = await axios.post(`${questionServiceUrl}/api/question/generate`, req.body);
     res.json(endResponse.data);
   } catch (error) {
     res.status(error.response?.status || 500).json({
-      error: error.response?.data?.error || 'Error al generar la pregunta',
+      error: error.response?.data?.error || 'Error generating question',
       details: error.response?.data || {}
     });
   }
 });
 
+/**
+ * Endpoint to add a new user by forwarding the request to the user service.
+ *
+ * @route {POST} /adduser
+ * @param {Object} req.body - The data required to create a new user.
+ * @returns {Object} The response from the user service.
+ */
 app.post('/adduser', async (req, res) => {
   try {
-    // Forward the add user request to the user service
     const userResponse = await axios.post(userServiceUrl + '/adduser', req.body);
-    (userResponse)
     res.json(userResponse.data);
   } catch (error) {
     res.status(error.response.status).json({ error: error.response.data.error });
   }
 });
 
+/**
+ * Endpoint to edit an existing user's details.
+ * Requires JWT token verification for user authentication.
+ *
+ * @route {POST} /api/user/editUser
+ * @param {Object} req.body - The data required to update the user's details.
+ * @param {Object} req.user - The authenticated user's information.
+ * @returns {Object} The response from the user service.
+ */
 app.post('/api/user/editUser', verifyToken, async (req, res) => {
   try {
     const editResponse = await axios.post(userServiceUrl + '/editUser', req.body);
@@ -130,171 +162,202 @@ app.post('/api/user/editUser', verifyToken, async (req, res) => {
   }
 });
 
-app.post('/askllm', async (req, res) => {
-  try {
-    // Forward the add user request to the user service
-    const llmResponse = await axios.post(llmServiceUrl + '/ask', req.body);
-    res.json(llmResponse.data);
-  } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
-  }
-});
-
-// **Iniciar una nueva partida**
+/**
+ * Endpoint to start a new game by forwarding the request to the game service.
+ *
+ * @route {POST} /api/game/new
+ * @param {Object} req.body - The data required to start a new game.
+ * @returns {Object} The response from the game service, including a cache ID.
+ */
 app.post('/api/game/new', generateCacheId, async (req, res) => {
   try {
-    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+   
     await axios.post(`${gameServiceUrl}/api/game/new`, req.body);
-
     res.json({ cacheId: req.body.cacheId });
   } catch (error) {
-    console.error("Error al iniciar el juego:", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error iniciando juego' });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error starting game' });
   }
 });
 
-// **Obtener la siguiente pregunta de la partida**
-app.post('/api/game/question', async (req, res) => {
+/**
+ * Endpoint to fetch the next question in the game.
+ *
+ * @route {POST} /api/game/question
+ * @param {Object} req.body - The data required to retrieve the next question.
+ * @returns {Object} The next question from the game service.
+ */
+app.post('/api/game/question', verifyToken, async (req, res) => {
   try {
-    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, req.body);
+    console.log("Fetching next question with cacheId:", req.body);
+    console.log("Request body:", req.user);
+    const gameDataWithUser = {
+      ...req.body,
+      user: {
+        userId: req.user.userId 
+      }
+    };
+
+    const questionResponse = await axios.post(`${gameServiceUrl}/api/game/next`, gameDataWithUser);
     res.json(questionResponse.data);
   } catch (error) {
-    console.error("Error al obtener la siguiente pregunta:", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error obteniendo la pregunta' });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error fetching question' });
   }
 });
 
-// **Finalizar el juego y guardar los datos**
+/**
+ * Endpoint to end and save the game.
+ * Requires JWT token verification for user authentication.
+ *
+ * @route {POST} /api/game/endAndSaveGame
+ * @param {Object} req.body - The data required to end and save the game.
+ * @param {Object} req.user - The authenticated user's information.
+ * @returns {Object} The response from the game service after ending and saving the game.
+ */
 app.post('/api/game/endAndSaveGame', verifyToken, async (req, res) => {
   try {
-    console.log("Finalizando y guardando el juego...");
-    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, req.body, {
-      headers: { Authorization: req.headers["authorization"] }
-    });
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized: User ID is missing" });
+    }
+
+    const gameDataWithUser = {
+      ...req.body,
+      user: {
+        userId: req.user.userId 
+      }
+    };
+
+    const endResponse = await axios.post(`${gameServiceUrl}/api/game/endAndSaveGame`, gameDataWithUser);
+
     res.json(endResponse.data);
   } catch (error) {
-    console.error("Error al finalizar el juego:", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error finalizando el juego' });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error ending and saving game' });
   }
 });
 
 
-
-// Información sobre la partida para el historial (con verificación de token)
-app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
+/**
+ * Endpoint to fetch the history of games for the user.
+ * Requires JWT token verification for user authentication.
+ *
+ * @route {GET} /api/game/history/gameList
+ * @param {Object} req.body.user - The authenticated user’s information.
+ * @returns {Object} The game history list from the game service.
+ */
+app.post('/api/game/history/gameList', verifyToken, async (req, res) => {
   try {
-    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
+    // Verifica si req.user tiene el userId
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({ error: "Unauthorized: User ID is missing" });
+    }
 
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, req.body);
-
-    res.json(endResponse.data);
+    
+    // Añadir el userId al cuerpo de la solicitud para el microservicio
+    const gameDataWithUser = {
+      ...req.body, // El cuerpo original de la solicitud
+      user: {
+        userId: req.user.userId // Añadir userId del req.user
+      }
+    };
+    const historyResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameList`, gameDataWithUser);
+    res.json(historyResponse.data);
   } catch (error) {
-    console.error("Error al generar el histórico de partida:", error.message);
-    res.status(500).json({ message: "Internal server error" });
-
+    res.status(error.response?.status || 500).json({ message: "Internal server error" });
   }
 });
 
-// Información sobre las preguntas de una partida para el historial (con verificación de token)
+/**
+ * Endpoint to fetch the history of questions for a specific game.
+ *
+ * @route {POST} /api/game/history/gameQuestions
+ * @param {Object} req.body - The data required to fetch game question history.
+ * @returns {Object} The question history from the game service.
+ */
 app.post('/api/game/history/gameQuestions', async (req, res) => {
   try {
-
-    await axios.post(`${gameServiceUrl}/api/connectMongo`, req.body);
-
-    const endResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body)
-
-    res.json(endResponse.data);
+    const questionHistoryResponse = await axios.post(`${gameServiceUrl}/api/game/history/gameQuestions`, req.body);
+    res.json(questionHistoryResponse.data);
   } catch (error) {
-    console.error("Error al generar el histórico de preguntas:", error.message);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(error.response?.status || 500).json({ message: "Internal server error" });
   }
 });
+/**
+ * Endpoint to fetch the history of games for the user.
+ * Requires JWT token verification for user authentication.
+ *
+ * @route {GET} /api/game/history/gameList
+ * @param {Object} req.body.user - The authenticated user’s information.
+ * @returns {Object} The game history list from the game service.
+ *//*
+app.get('/api/game/history/gameList', verifyToken, async (req, res) => {
+  try {
+    const { userId } = req.user;  // Get user ID from the decoded token
+    const historyResponse = await axios.get(`${gameServiceUrl}/api/game/history/gameList/${userId}`, {
+      headers: {
+        Authorization: req.headers["authorization"]  // Pasar el token al microservicio si es necesario
+      }
+    });
 
-// Endpoint to get a clue from the LLM service
+    res.json(historyResponse.data);
+  } catch (error) {
+    res.status(error.response?.status || 500).json({ message: "Internal server error" });
+  }
+});
+/**
+ * Endpoint to fetch the history of questions for a specific game.
+ *
+ * @route {GET} /api/game/history/gameQuestions/:gameId
+ * @param {Object} req.params.gameId - The game ID.
+ * @returns {Object} The question history from the game service.
+ *//*
+app.get('/api/game/history/gameQuestions/:gameId', async (req, res) => {
+  try {
+    const { gameId } = req.params;  // Get gameId from URL parameter
+    const questionHistoryResponse = await axios.get(`${gameServiceUrl}/api/game/history/gameQuestions/${gameId}`);
+    res.json(questionHistoryResponse.data);
+  } catch (error) {
+    res.status(error.response?.status || 500).json({ message: "Internal server error" });
+  }
+});*/
+
+/**
+ * Endpoint to get a clue from the LLM service based on the user’s question.
+ *
+ * @route {POST} /askllm/clue
+ * @param {Object} req.body - The data required to get a clue from LLM.
+ * @returns {Object} The clue generated by the LLM service.
+ */
 app.post('/askllm/clue', async (req, res) => {
   try {
-    const { name, userQuestion, language } = req.body;
-
-    let model = "gemini";
-    let attempts = 0;
-    let answer = "idk";
-
-    while (attempts < 10) {
-      /**
-       * Generates a question prompt for a user to guess a name without revealing it.
-       *
-       * @param {string} name - The name that the user needs to guess.
-       * @param {string} userQuestion - The question asked by the user.
-       * @param {string} language - The language in which the response should be given.
-       * @returns {string} - A prompt for the user to guess the name without revealing it, in the specified language.
-       */
-      let question = "Un usuario debe adivinar " + name + ". Para ello pregunta: " + userQuestion + ". ¿Qué le responderías? De forma corta y concisa. NO PUEDES DECIR DE NINGUNA FORMA " + name + ". Debes responder en " + getLanguage(language) + ".";
-  
-      let llmResponse = await axios.post(llmServiceUrl + '/ask', { question, model });
-
-      const normalizedAnswer = normalizeString(llmResponse.data.answer.toLowerCase());
-      const normalizedName = normalizeString(name.toLowerCase());
-
-      const nameWords = normalizedName.split(/[\s-]+/);
-
-      if (!nameWords.some(word => normalizedAnswer.includes(word))) {
-        answer = llmResponse;
-        break;
-      }
-
-      attempts += 1;
-    }
-
-    if (answer === "idk") {
-      /**
-       * @description Generates a fallback question in the specified language.
-       * @param {string} language - The language code to determine the language of the fallback question.
-       * @returns {string} A fallback question prompting the user to respond briefly in the specified language.
-       */
-      let fallbackQuestion = "Responde brevemente en " + getLanguage(language) + " que no sabes la respuesta.";
-      let fallbackResponse = await axios.post(llmServiceUrl + '/ask', { question: fallbackQuestion, model });
-      answer = fallbackResponse;
-    }
-
-    res.json(answer.data);
+    const llmResponse = await axios.post(llmServiceUrl + '/askllm/clue', req.body);
+    res.json(llmResponse.data);
   } catch (error) {
-    console.error("Error al generar la pista: ", error.message);
-    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error al generar la pista' });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error generating clue' });
   }
 });
 
-// Endpoint to get a welcome message from the LLM service
+/**
+ * Endpoint to get a welcome message from the LLM service.
+ *
+ * @route {POST} /askllm/welcome
+ * @param {Object} req.body - The data required to generate a welcome message.
+ * @returns {Object} The welcome message generated by the LLM service.
+ */
 app.post('/askllm/welcome', async (req, res) => {
   try {
-    const { name, language } = req.body;
-
-    let model = "gemini";
-    let question = "Saluda a " + name + " de forma educada y deséale suerte para su partida de WiChat. Sé conciso, UNA FRASE. Debes responder en " + getLanguage(language) + ".";
-    let answer = await axios.post(llmServiceUrl + '/ask', { question, model });
-
-    res.json(answer.data);
+    const llmResponse = await axios.post(llmServiceUrl + '/askllm/welcome', req.body);
+    res.json(llmResponse.data);
   } catch (error) {
-    res.status(error.response.status).json({ error: error.response.data.error });
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error generating welcome message' });
   }
 });
 
-// Read the OpenAPI YAML file synchronously
-const openapiPath = './openapi.yaml'
+// OpenAPI-Swagger documentation configuration
+const openapiPath = './openapi.yaml';
 if (fs.existsSync(openapiPath)) {
   const file = fs.readFileSync(openapiPath, 'utf8');
-
-  // Parse the YAML content into a JavaScript object representing the Swagger document
   const swaggerDocument = YAML.parse(file);
-
-  // Serve the Swagger UI documentation at the '/api-doc' endpoint
-  // This middleware serves the Swagger UI files and sets up the Swagger UI page
-  // It takes the parsed Swagger document as input
   app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-} else {
-  console.log("Not configuring OpenAPI. Configuration file not present.")
 }
-
 
 // Start the gateway service
 const server = app.listen(port, () => {

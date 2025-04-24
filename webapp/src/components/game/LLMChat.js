@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { useTranslation } from 'react-i18next';
 import { askClue } from '../../services/LLMService';
@@ -12,15 +12,57 @@ import Col from 'react-bootstrap/Col';
  * @param {String} name - The name (correctAnswer) that the LLM has to avoid to say.
  * @returns a chat with the LLM to ask for clues.
  */
-const LLMChat = ({ name }) => {
+const LLMChat = ({ correctAnswer }) => {
     const { t, i18n } = useTranslation();
 
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
-
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
+    const scrollRef = useRef(null);
+    const [chatContext, setChatContext] = useState([]);
+
+    const scrollToBottom = () => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollToBottom();
+        }
+    };
+
+    /**
+     * Converts a text message into speech and plays it aloud.
+     *
+     * @param {string} message - The message to be spoken aloud.
+     */
+    const writeAndspeakLoudTheMessage = (message) => {
+        return (
+            <Typewriter
+              words={[message]}
+              delaySpeed={100}
+              typeSpeed={50}
+              onType={scrollToBottom}
+              // onLoopDone={speakLoudTheMessage(message)}
+            />
+        );
+        
+    };
+
+    const speakLoudTheMessage = (message) => {
+        const utterance = new SpeechSynthesisUtterance(message);
+        const voices = speechSynthesis.getVoices();
+
+        const desiredLang = i18n.language === "en" ? "en-US" : i18n.language === "es" ? "es-ES" : i18n.language;
+        const voice = voices.find((voice) => voice.lang === desiredLang) || voices[0];
+
+        utterance.lang = desiredLang;
+        utterance.voice = voice;
+        utterance.volume = 1.0;
+
+        speechSynthesis.speak(utterance);
+    }
+
+
+
 
     /**
      * This function handles the submit of a message, sending it to the chat.
@@ -47,26 +89,36 @@ const LLMChat = ({ name }) => {
         setLoading(true);
 
         try {
-            const response = await askClue({
-                name: name,
-                userQuestion: inputValue,
-                language: i18n.language
+            setChatContext(prevContext => [
+                ...prevContext,
+                { role: 'user', content: inputValue.trim() }
+            ]);
+
+            const response = await askClue({ 
+                correctAnswer: correctAnswer, 
+                question: inputValue, 
+                context: chatContext,
+                language: i18n.language.split('-')[0]
             });
             const llmMsg = (
                 <p className="llm-message" key={`llm-${messages.length}`}>
-                    <Typewriter
-                        words={[response.data.answer]}
-                        delaySpeed={100}
-                        typeSpeed={50}
-                    />
+                    {writeAndspeakLoudTheMessage(answerText)}
+
+
+
+
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, llmMsg]);
+            setChatContext(prevContext => [
+                ...prevContext,
+                { role: 'assistant', content: answerText }
+            ]);
         } catch (error) {
             console.error("Error enviando mensaje:", error);
             const errorMsg = (
                 <p className="llm-message error" key={`error-${messages.length}`}>
-                    {t('llm-chat-error-msg')}
+                    {writeAndspeakLoudTheMessage(t('llm-chat-error-msg'))}
                 </p>
             );
             setMessages(prevMessages => [...prevMessages, errorMsg]);
@@ -84,6 +136,7 @@ const LLMChat = ({ name }) => {
     return (
         <Card className="llm-chat" bg={'light'}>
             <Scrollbars
+                ref={scrollRef}
                 style={{ width: '100%', height: '100%' }}
                 autoHide // Oculta el scroll cuando no se usa
                 autoHideTimeout={1000} // Tiempo antes de ocultarlo
@@ -109,28 +162,14 @@ const LLMChat = ({ name }) => {
                                 </>
                             ) : (
                                 <>
-                                    <Col md={4}>
-                                    </Col>
+                                    <Col md={4}></Col>
                                     <Col md={8}>
                                         {msg}
                                     </Col>
-
                                 </>
                             )}
                         </Row>
                     ))}
-                    {loading && (
-                        <Row>
-                            <Col md={2}>
-                                <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
-                            </Col>
-                            <Col md={8}>
-                                <p className="llm-message loading">
-                                    <span className="question-loading">{t('llm-chat-loading-msg')}</span>
-                                </p>
-                            </Col>
-                        </Row>
-                    )}
                 </div>
             </Scrollbars>
             <form className="llm-chat-form" onSubmit={handleSubmit}>

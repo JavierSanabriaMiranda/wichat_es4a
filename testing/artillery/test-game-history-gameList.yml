@@ -1,0 +1,42 @@
+config:
+  target: "http://localhost:8000"
+  phases:
+    - duration: 5
+      arrivalRate: 1
+      rampTo: 10
+      name: Warm up phase
+    - duration: 5
+      arrivalRate: 10
+      rampTo: 20
+      name: Ramp up
+    - duration: 5
+      arrivalRate: 20
+      rampTo: 30
+      name: Steady phase
+  processor: "./processor.js"
+
+scenarios:
+  - name: "Cargar /api/game/history/gameList con token"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+          capture:
+            - json: "$.token"
+              as: authToken
+      - think: 2
+      - get:
+          url: "/api/game/history/gameList"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            gameId: "game123"
+            playerId: "playerXYZ"

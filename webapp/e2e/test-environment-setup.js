@@ -4,6 +4,8 @@ let mongoserver;
 let userservice;
 let authservice;
 let llmservice;
+let questionservice;
+let gameservice;
 let gatewayservice;
 let questionservice;
 let gameservice;
@@ -20,6 +22,8 @@ async function startServer() {
     userservice = await require("../../users/userservice/user-service");
     authservice = await require("../../users/authservice/auth-service");
     llmservice = await require("../../llmservice/llm-service");
+    questionservice = await require("../../question/question-service");
+    gameservice = await require("../../gameservice/game-service");
     gatewayservice = await require("../../gatewayservice/gateway-service");
     //questionservice = await require("../../questionservice/question-service");
     //gameservice = await require("../../gameservice/game-service");
