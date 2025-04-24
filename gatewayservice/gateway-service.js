@@ -8,9 +8,6 @@ const swaggerUi = require('swagger-ui-express');
 const fs = require('fs');
 const YAML = require('yaml');
 
-// Utility functions
-const { getLanguage, normalizeString } = require('./gateway-service-utils');
-
 // JWT Authentication library
 const jwt = require('jsonwebtoken');
 const privateKey = "your-secret-key"; // Secret key for JWT verification
