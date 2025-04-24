@@ -44,7 +44,6 @@ const welcome = async ({ username, language }) => {
         });
         return response;
     } catch (error) {
-        console.error("Error en LLMService - welcome:", error);
         throw error;
     }
 };

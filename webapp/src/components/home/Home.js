@@ -48,7 +48,6 @@ export const Home = () => {
         const response = await welcome({ username: user?.username || "", language: i18n.language.split('-')[0] });
         setGreeting(response.data.answer);
       } catch (error) {
-        console.error("Error al obtener saludo:", error);
         setGreeting(t("hello-home"));
       }
     };
