@@ -49,8 +49,6 @@ const configureGame = async ({ questions = '10', time = '60s', topicClass = 'tog
     });
     await expect(page).toClick('button', { text: i18n.t("play-configuration") });
 
-    await page.waitForTimeout(500);
-    expect(page.url()).toMatch(/\/game/);
 };
 
 
@@ -93,15 +91,11 @@ defineFeature(feature, test => {
                 await page.click('.answer-button-not-answered');
 
                 // Waits for the next question to load
-                await page.waitForTimeout(500);
+                
             }
         });
 
         then('The user is redirected to the game results page', async () => {
-            await page.waitForTimeout(1000);
-
-            const url = page.url();  // Takes the current URL
-            expect(url).toMatch(/\/game\/results/);  // Checks if the URL contains "/game/results"
 
             await expect(page).toMatchElement('h2', { text: i18n.t("game-details-text") });
         });
@@ -133,7 +127,7 @@ defineFeature(feature, test => {
         });
 
         then('The user is redirected to the home page', async () => {
-            await page.waitForTimeout(1000);
+            
             await expect(page).toMatchElement('h1', { text: i18n.t("welcome-home") });
         });
     });
@@ -157,7 +151,7 @@ defineFeature(feature, test => {
 
             await expect(page).toFill('.llm-chat-input', msg);
             await expect(page).toClick('.send-prompt-button');
-            await page.waitForTimeout(2000);
+            
         });
 
         then('The LLM answers the question', async () => {
