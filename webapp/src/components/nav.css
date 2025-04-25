@@ -51,9 +51,21 @@
   transition: color 0.3s ease-in-out;
 }
 
+.donate-menu {
+  font-size: 20px;
+  color: #FBF6F3;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
 .icon-menu:hover {
   color: #FEB06A;
 }
+
+.donate-menu:hover {
+  color: #FEB06A;
+}
+
 
 .language-options:active, 
 .language-options:hover, 
