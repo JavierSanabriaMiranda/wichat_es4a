@@ -101,7 +101,7 @@ export const Game = () => {
             }
 
         }
-    }, [questionResults]);
+    }, [questionResults, numberOfQuestionsAnswered, navigate, token, correctAnswers, wrongAnswers, notAnswered, points, isChaosMode]);
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
@@ -276,7 +276,7 @@ export const Game = () => {
         if (exitRequested && !isLoading) {
             navigate('/');
         }
-    }, [exitRequested, isLoading]);
+    }, [exitRequested, isLoading, navigate]);
 
     /**
      * Finds the correct answer from a list of answers.

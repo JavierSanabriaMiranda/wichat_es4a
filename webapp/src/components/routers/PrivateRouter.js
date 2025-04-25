@@ -33,7 +33,7 @@ export const PrivateRouter = ({ children }) =>
         if (!authLoading) {
             verifyToken();
         }
-    }, [authLoading, token]);
+    }, [authLoading, token, isValidToken]);
 
     if (authLoading || isChecking) return <></>;
 

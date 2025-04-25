@@ -29,7 +29,7 @@ export const NotAuthorizedRouter = ({ children }) => {
         if (!authLoading) {
             checkAuth();
         }
-    }, [authLoading, token]);
+    }, [authLoading, token, isValidToken]);
 
     if (authLoading || isChecking) return <></>;
 
