@@ -90,6 +90,8 @@ const NavBar = ({ hasPadding }) => {
                 {t("rules-menu")}
               </Nav.Link>
 
+              <Nav.Link onClick={() => navigate("/execute-payment")} className="donate-menu">Donar</Nav.Link>
+
               {/* Conditional rendering based on user authentication */}
               {token ? (
                 <>

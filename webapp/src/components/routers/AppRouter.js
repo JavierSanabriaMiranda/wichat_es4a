@@ -1,5 +1,6 @@
 import { Game } from '../game/Game';
 import { Home } from '../home/Home';
+import { Donate } from '../donationservice/donate.js';
 import { UserProfile } from '../userMenu/UserProfile';
 import { GameResults } from '../game/GameResults';
 import { Login } from '../Login';
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: '/addUser',
     element: <NotAuthorizedRouter><AuthRoute><AddUser /></AuthRoute></NotAuthorizedRouter>
+  },
+  {
+    path: '/execute-payment',
+    element: <Donate />
   }
 ]);
 
