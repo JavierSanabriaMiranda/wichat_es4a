@@ -58,6 +58,10 @@
   transition: color 0.3s ease-in-out;
 }
 
+.donate-menu:hover {
+  color: #FEB06A;
+}
+
 .icon-menu:hover {
   color: #FEB06A;
 }
@@ -96,6 +100,11 @@
   box-shadow: none !important; /* Remove default shadow */
 }
 
+.donate-menu:focus {
+  outline: none !important; /* Remove default outline */
+  box-shadow: none !important; /* Remove default shadow */
+}
+
 .icon-menu svg {
   fill: #FBF6F3 !important;
   transition: fill 0.3s ease-in-out;
@@ -123,6 +132,19 @@
 .rules-menu:active {
   color: #FEB06A !important; 
 }
+
+.donate-menu:active,
+.donate-menu:visited {
+  color: #FBF6F3 !important; 
+  background-color: transparent !important; 
+}
+
+.donate-menu:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  color: #FBF6F3 !important;
+}
+
 
 /* ===================== RESPONSIVE STYLE ===================== */
 @media (max-width: 992px) {
