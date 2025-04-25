@@ -217,21 +217,21 @@
     },
 
     {
-        "question": "¿Quién es esta persona famosa?",
+        "question": "¿Quién es esta persona?",
         "selector": "<input>",
         "topics": ["character"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 ?profession. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') FILTER(?profession IN (wd:Q82955, wd:Q2316238, wd:Q1936989, wd:Q3336037, wd:Q1794174, wd:Q3281717, wd:Q1891395, wd:Q2073392, wd:Q813717, wd:Q639669, wd:Q901, wd:Q36180, wd:Q1299, wd:Q483501, wd:Q1860, wd:Q11740, wd:Q496418, wd:Q5582)) FILTER(EXISTS { ?image wdt:P31 wd:Q3305213 }) }",
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q82921 wd:Q901 wd:Q188094 wd:Q10800557 wd:Q36180 wd:Q2259451 } ?entity wdt:P106 ?profession. ?entity wdt:P18 ?image. ?entity wdt:P31 wd:Q5. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
         "imageurl": "<output>",
         "lang": "es"
-    },
-    {
-        "question": "Who is this famous person?",
+      },
+      {
+        "question": "Who is this person?",
         "selector": "<input>",
         "topics": ["character"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 ?profession. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') FILTER(?profession IN (wd:Q82955, wd:Q2316238, wd:Q1936989, wd:Q3336037, wd:Q1794174, wd:Q3281717, wd:Q1891395, wd:Q2073392, wd:Q813717, wd:Q639669, wd:Q901, wd:Q36180, wd:Q1299, wd:Q483501, wd:Q1860, wd:Q11740, wd:Q496418, wd:Q5582)) FILTER(EXISTS { ?image wdt:P31 wd:Q3305213 }) }",
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q82921 wd:Q901 wd:Q188094 wd:Q10800557 wd:Q36180 wd:Q2259451 } ?entity wdt:P106 ?profession. ?entity wdt:P18 ?image. ?entity wdt:P31 wd:Q5. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
-    },             
+      },           
     {
         "question": "¿Cuál es el nombre del cuadro?",
         "selector": "<input>",
