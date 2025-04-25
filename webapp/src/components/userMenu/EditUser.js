@@ -6,11 +6,10 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import { changePassword } from '../../services/UserProfileService.js';
 import AuthContext from '../contextProviders/AuthContext.js';
-import i18n from '../../i18n/i18next.js';
 
 export const EditUser = ({ userName }) => {
     const { t } = useTranslation();
-    const { user, token } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     
     // Estados para los campos
     const [password, setPassword] = useState('');

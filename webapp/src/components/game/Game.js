@@ -11,7 +11,6 @@ import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion, saveGame, configureGame } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
-import { use } from 'react';
 import AuthContext from '../contextProviders/AuthContext';
 
 
@@ -314,7 +313,7 @@ export const Game = () => {
                     <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
                 </div>
                 <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
+                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} alt="" />}
                 </div>
                 <section id="question-answers-section">
                     <div id="game-answer-buttons-section">

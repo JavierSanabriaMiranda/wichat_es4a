@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -8,10 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ResultSectorChart } from './ResultSectorChart';
 import { QuestionAccordion } from "../gameHistory/QuestionAccordion";
-import { useLocation, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import Configuration from '../home/Configuration';
-import { use } from "i18next";
 
 
 /**

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Button, Dropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CloseButton from "react-bootstrap/CloseButton";
-import { GoXCircle } from "react-icons/go";
 import { useTranslation } from "react-i18next";
 import "./configuration.css";
 import ToggleButton from "react-bootstrap/ToggleButton";
@@ -27,7 +26,7 @@ import { useConfig } from "../contextProviders/GameConfigProvider";
 const Configuration = ({ onClose }) => {
 
   // Constant to store the configuration of the game
-  const { config, setConfig, resetConfig } = useConfig();
+  const { setConfig, resetConfig } = useConfig();
 
   const [questions, setQuestions] = useState(30); // Default number of questions
   const [time, setTime] = useState(120); // Default time per round

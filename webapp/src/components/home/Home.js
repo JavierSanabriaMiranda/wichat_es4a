@@ -30,7 +30,7 @@ export const Home = () => {
   const [showConfig, setShowConfig] = useState(false); // Controls visibility of configuration panel
   const [greeting, setGreeting] = useState(null);
   const { t, i18n } = useTranslation();
-  const { user, token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     /**

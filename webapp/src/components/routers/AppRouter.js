@@ -4,7 +4,7 @@ import { UserProfile } from '../userMenu/UserProfile';
 import { GameResults } from '../game/GameResults';
 import { Login } from '../Login';
 import { AddUser } from '../AddUser';
-import { Navigate, createBrowserRouter } from 'react-router';
+import { createBrowserRouter } from 'react-router';
 import { AuthRoute } from './AuthRoute';
 import { GameConfigProvider } from '../contextProviders/GameConfigProvider';
 import { PrivateRouter } from './PrivateRouter';

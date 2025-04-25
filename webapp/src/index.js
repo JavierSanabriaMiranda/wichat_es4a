@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import i18n from './i18n/i18next.js';
 
-import { GameResults } from './components/game/GameResults.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
