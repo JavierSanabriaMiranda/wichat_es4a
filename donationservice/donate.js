@@ -22,31 +22,38 @@ Establecemos los controladores que vamos a usar
 */
 const createPayment = (req, res) => {
     const body = {
-        intent: 'CAPTURE',
-        purchase_units: [{
-            amount: {
-                currency_code: 'EUR',
-                value: '1'
-            }
-        }],
-        application_context: {
-            brand_name:`Wichat`,
-            landing_page: 'NO_PREFERENCE', //default para mas info
-            user_action: 'PAY_NOW', //accion para que paypal muestre el monto de pago
-            return_url: `http://localhost:8006/execute-payment`, //url despues de realizar el pago
-            cancel_url: `http://localhost:8006/cancel-payment` //url despues de realizar el pago -> se cancela el pago
+      intent: 'CAPTURE',
+      purchase_units: [{
+        amount: {
+          currency_code: 'EUR',
+          value: '1'
         }
-    }
-
-    //https://api-m.sandbox.paypal.com/v2/checkout/orders [POST]
+      }],
+      application_context: {
+        brand_name: `Wichat`,
+        landing_page: 'NO_PREFERENCE',
+        user_action: 'PAY_NOW',
+        return_url: `http://localhost:8006/execute-payment`,
+        cancel_url: `http://localhost:8006/cancel-payment`
+      }
+    };
+  
     request.post(`${PAYPAL_API}/v2/checkout/orders`, {
-        auth,
-        body,
-        json: true
+      auth,
+      body,
+      json: true
     }, (err, response) => {
-        res.json({ data: response.body })
-    })
-}
+      if (err) {
+        return res.status(500).json({ error: 'Error al crear el pago' });
+      }
+  
+      const links = response.body.links;
+      const approvalUrl = links.find(link => link.rel === 'approve')?.href;
+  
+      res.json({ approvalUrl }); //  esto es lo que espera el frontend
+    });
+  };
+  
 
 /*
 Esta funcion captura el dinero REALMENTE
