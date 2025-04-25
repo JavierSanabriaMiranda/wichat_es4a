@@ -10,7 +10,7 @@ const {Question} = require('./models/Question'); // Ajusta la ruta si es distint
 
 
 // Clave secreta para firmar el token JWT (ajústala a tu configuración real)
-const privateKey = process.env.TOKEN_SECRET_KEY || 'your_secret_key';
+const privateKey = process.env.TOKEN_SECRET_KEY || 'your-secret-key';
 
 // Aquí haces el mock de axios
 jest.mock('axios');  // Esto permite simular todas las llamadas axios dentro de las pruebas

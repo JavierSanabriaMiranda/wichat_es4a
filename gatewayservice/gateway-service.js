@@ -10,7 +10,7 @@ const YAML = require('yaml');
 
 // JWT Authentication library
 const jwt = require('jsonwebtoken');
-const privateKey = process.env.TOKEN_SECRET_KEY || 'your_secret_key'; // Secret key for JWT verification
+const privateKey = process.env.TOKEN_SECRET_KEY || 'your-secret-key'; // Secret key for JWT verification
 
 const app = express();
 const port = 8000;

@@ -13,7 +13,7 @@ app.use(express.json());
 const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/userdb';
 mongoose.connect(mongoUri);
 
-const privateKey = process.env.TOKEN_SECRET_KEY || 'your_secret_key';
+const privateKey = process.env.TOKEN_SECRET_KEY || 'your-secret-key';
 
 const failedAttempts = new Map(); // Store failed login attempts per IP address
 const MAX_ATTEMPTS = 5; // Maximum number of failed attempts before blocking
