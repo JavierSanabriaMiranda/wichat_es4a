@@ -58,6 +58,23 @@ const NavBar = ({ hasPadding }) => {
     setShowLogoutModal(true);
   };
 
+  const handleDonate = async () => {
+    try {
+      const res = await fetch('http://localhost:8006/create-payment', {
+        method: 'POST',
+      });
+      const data = await res.json();
+
+      if (data.approvalUrl) {
+        window.location.href = data.approvalUrl;
+      } else {
+        alert('Error al generar el enlace de PayPal');
+      }
+    } catch (err) {
+      alert('Error al conectar con el servidor');
+    }
+  };
+
   return (
     <>
       <Navbar collapseOnSelect expand="lg" fixed="top" className="navbar-custom">
@@ -90,7 +107,7 @@ const NavBar = ({ hasPadding }) => {
                 {t("rules-menu")}
               </Nav.Link>
 
-              <Nav.Link onClick={() => navigate("/execute-payment")} className="donate-menu">Donar</Nav.Link>
+              <Nav.Link onClick={handleDonate} className="donate-menu">Donar</Nav.Link>
 
               {/* Conditional rendering based on user authentication */}
               {token ? (
