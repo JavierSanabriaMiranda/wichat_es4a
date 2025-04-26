@@ -106,6 +106,7 @@ services:
       LLM_SERVICE_URL: http://llmservice:8003
       QUESTION_SERVICE_URL: http://questionservice:8004
       GAME_SERVICE_URL: http://gameservice:8005
+      DONATION_SERVICE_URL: http://donationservice:8006
   webapp:
     container_name: webapp-wichat_es4a
     image: ghcr.io/arquisoft/wichat_es4a/webapp:latest
@@ -116,6 +117,19 @@ services:
       - gatewayservice
     ports:
       - "3000:3000"
+  
+  donationservice:
+    container_name: donationservice-wichat_es4a
+    image: ghcr.io/arquisoft/wichat_es4a/donationservice:latest
+    profiles: ["dev", "prod"]
+    build:
+      context: ./donationservice
+    ports:
+      - "8006:8006"
+    networks:
+      - mynetwork
+    depends_on:
+      - webapp
 
   prometheus:
     image: prom/prometheus

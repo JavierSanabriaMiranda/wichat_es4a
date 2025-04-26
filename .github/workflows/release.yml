@@ -185,6 +185,28 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           workdir: gatewayservice
+  
+  docker-push-donationservice:
+    name: Push donation service Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [e2e-tests]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
+        env:
+          REDIRECTION_URI: http://${{ secrets.DEPLOY_HOST }}:3000
+          DONATION_SERVICE_URI: http://${{ secrets.DEPLOY_HOST }}:8006
+        with:
+          name: arquisoft/wichat_es4a/donationservice
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          workdir: donationservice
+          buildargs: REDIRECTION_URI,DONATION_SERVICE_URI
 
   deploy:
     name: Deploy over SSH

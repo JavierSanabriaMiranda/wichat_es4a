@@ -1,4 +1,3 @@
-import { Component } from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 
 const ConfigContext = createContext();
@@ -9,7 +8,7 @@ const defaultConfig = { questions: 30, timePerRound: 120, topics: [] };
  * Provider for the game configuration, it will store the configuration in the local storage
  * 
  * @param {Component} children Component that will be wrapped by the provider
- * @returns 
+ * @returns the configuration context
  */
 export const GameConfigProvider = ({ children }) => {
     

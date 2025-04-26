@@ -21,6 +21,7 @@ const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://localhost:8002';
 const userServiceUrl = process.env.USER_SERVICE_URL || 'http://localhost:8001';
 const gameServiceUrl = process.env.GAME_SERVICE_URL || 'http://localhost:8005';
 const questionServiceUrl = process.env.QUESTION_SERVICE_URL || 'http://localhost:8004';
+const donationServiceUrl = process.env.DONATION_SERVICE_URL || 'http://localhost:8006';
 
 app.use(cors());
 app.use(express.json());
@@ -288,6 +289,16 @@ app.post('/askllm/welcome', async (req, res) => {
     res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error generating welcome message' });
   }
 });
+
+app.post('/create-payment', async (req, res) => {
+  try {
+    const paymentResponse = await axios.post(donationServiceUrl + '/create-payment', req.body);
+    res.json(paymentResponse.data);
+  } catch (error) {
+    res.status(error.response?.status || 500).json({ error: error.response?.data?.error || 'Error creating payment' });
+  }
+}
+);
 
 // OpenAPI-Swagger documentation configuration
 const openapiPath = './openapi.yaml';

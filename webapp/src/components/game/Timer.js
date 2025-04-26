@@ -31,7 +31,7 @@ const Timer = ({ initialTime, onTimeUp, stopTime }) => {
         }, 1000);
 
         return () => clearInterval(timer); // Clean up the timer when the component is unmounted
-    }, [timeLeft, onTimeUp]);
+    }, [timeLeft, onTimeUp, stopTime, timeUp]);
 
     return (
         <div className={className}>

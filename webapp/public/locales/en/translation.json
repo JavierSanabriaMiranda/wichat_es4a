@@ -84,5 +84,9 @@
     "playChaos": "Play in Chaos Mode",
     "chaosMode-slogan": "Each game is different. The only sure thing is surprise",
     "signup-message": "Sign Up",
-    "login-message": "Login"
+    "login-message": "Login",
+    "donate-text": "Support us!",
+    "donation-error": "Error accessing PayPal",
+    "server-connection-error": "Error connecting to the server. Please try again later.",
+    "paypal-access-error-modal-title": "Error accessing PayPal"
 }

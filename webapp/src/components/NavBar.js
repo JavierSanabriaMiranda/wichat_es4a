@@ -8,6 +8,7 @@ import Rules from "./Rules";
 import "./nav.css";
 import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
+import { donate } from '../services/DonationService';
 
 /**
  * Navigation bar component that is displayed at the top of the application.
@@ -31,6 +32,8 @@ const NavBar = ({ hasPadding }) => {
   const navigate = useNavigate();
   const [showRules, setShowRules] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDonateModal, setShowDonateModal] = useState(false);
+  const [donateError, setDonateError] = useState('');
 
   // Apply top padding when hasPadding is true to avoid overlapping the content
   useEffect(() => {
@@ -56,6 +59,22 @@ const NavBar = ({ hasPadding }) => {
   // Opens logout confirmation modal
   const handleLogout = () => {
     setShowLogoutModal(true);
+  };
+
+  const handleDonate = async () => {
+    try {
+      const res = await donate();
+      if (res.success) {
+        await setDonateError('');
+        window.location.href = res.approvalUrl;
+      } else if (res.error) {
+        await setDonateError(t("donate-error"));
+        setShowDonateModal(true);
+      }
+    } catch (error) {
+      await setDonateError(t("server-connection-error"));
+      setShowDonateModal(true);
+    }
   };
 
   return (
@@ -90,6 +109,8 @@ const NavBar = ({ hasPadding }) => {
                 {t("rules-menu")}
               </Nav.Link>
 
+              <Nav.Link onClick={handleDonate} className="donate-menu">{t('donate-text')}</Nav.Link>
+
               {/* Conditional rendering based on user authentication */}
               {token ? (
                 <>
@@ -113,6 +134,7 @@ const NavBar = ({ hasPadding }) => {
 
       <Rules show={showRules} handleClose={() => setShowRules(false)} />
 
+      {/* Modal for logout confirmation */}
       <Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{t("logout-message")}</Modal.Title>
@@ -121,6 +143,17 @@ const NavBar = ({ hasPadding }) => {
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>{t("cancel-button")}</Button>
           <Button variant="danger" onClick={confirmLogout}>{t("confirm-button")}</Button>
+        </Modal.Footer>
+      </Modal>
+    
+      {/* Modal for donation error message */}
+      <Modal show={showDonateModal} onHide={() => setShowDonateModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{t('paypal-access-error-modal-title')}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{donateError}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDonateModal(false)}>{t("close-button-text")}</Button>
         </Modal.Footer>
       </Modal>
     </>
