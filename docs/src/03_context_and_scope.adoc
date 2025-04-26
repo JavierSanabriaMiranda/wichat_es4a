@@ -43,8 +43,6 @@ image::../images/contexto-de-negocio.png[Contexto de Negocio]
 | _WIChat_ | _Aplicación web principal donde se desarrolla el juego._
 | _Wikidata_ | _Fuente de donde se extraen las preguntas, las imágenes y las respuestas._
 | _LLM_API_ | _API que integra un modelo de lenguaje que se utiliza para generar pistas dinámicas y conversacionales que ayudan al concursante a responder las preguntas._
-| _Sistema de Donaciones_ | _Módulo que permite a los usuarios realizar donaciones mediante PayPal, enviándoles automáticamente un email de agradecimiento personalizado tras cada donación exitosa._
-| _Correo Transaccional_ | _Servicio de envío de correos automáticos basado en nodemailer._
 |===
 
 ifdef::arc42help[]
