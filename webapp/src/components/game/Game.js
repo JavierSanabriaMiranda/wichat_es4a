@@ -314,7 +314,12 @@ export const Game = () => {
                     <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
                 </div>
                 <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} />}
+                    <img
+                        className="question-img"
+                        src={question.imageUrl}
+                        onContextMenu={(e) => e.preventDefault()}
+
+                    />
                 </div>
                 <section id="question-answers-section">
                     <div id="game-answer-buttons-section">
