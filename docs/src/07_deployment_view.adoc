@@ -107,5 +107,5 @@ Microservicios::
 * Game_Service: Controla la lógica de la aplicación (modelo de dominio, conexión con la base de datos).
 * LlmService: Se conecta con la API de Gemini y gestiona el funcionamiento del LLM.
 * Base de Datos: Almacena información de usuarios, partidas y preguntas.
-
+* DonationService: Gestiona las donaciones de los usuarios a través de PayPal y envía correos automáticos de agradecimiento.
 
