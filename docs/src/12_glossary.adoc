@@ -87,4 +87,9 @@ sistemas operativos
 infraestructuras a través de archivos de configuración escritos en un lenguaje declarativo llamado 
 HCL (HashiCorp Configuration Language).
 Lo utilizamos para describir de manera codificada los recuross necesarios para nuestro despliegue en AWS.
+
+| **Paypal**
+| **Plataforma de pagos en línea** que permite a usuarios y empresas enviar y recibir dinero de forma segura a través de internet. 
+Facilita transacciones sin necesidad de compartir información financiera directamente entre comprador y vendedor, y ofrece 
+servicios como protección al comprador y al vendedor.
 |===
