@@ -24,3 +24,7 @@ Scenario: User enters a new password with spaces
 Scenario: User enters a new password with less than 8 characters
   When They fill in the change password form with a password shorter than 8 characters and submit it
   Then The error message "Password must be at least 8 characters long" should be shown
+
+Scenario: User enters incorrect current password
+  When They fill in the current password form with an incorrect password and submit it
+  Then The error message "Password update failed" should be shown
