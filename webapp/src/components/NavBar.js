@@ -102,7 +102,7 @@ const NavBar = ({ hasPadding }) => {
                 </>
               ) : (
                 <>
-                  <Nav.Link onClick={() => navigate("/login")} className="icon-menu">LogIn</Nav.Link>
+                  <Nav.Link onClick={() => navigate("/login")} className="icon-menu" data-testid="login-text">LogIn</Nav.Link>
                   <Nav.Link onClick={() => navigate("/addUser")} className="icon-menu">Sign Up</Nav.Link>
                 </>
               )}
