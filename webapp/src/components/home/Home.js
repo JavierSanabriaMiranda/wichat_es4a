@@ -53,7 +53,7 @@ export const Home = () => {
     };
 
     fetchGreeting();
-  }, [i18n.language, t]); // Esto se vuelve a ejecutar cada vez que cambia el idioma
+  }, [i18n.language, t, user]); // Esto se vuelve a ejecutar cada vez que cambia el idioma
 
   return (
     <div className="home-container">

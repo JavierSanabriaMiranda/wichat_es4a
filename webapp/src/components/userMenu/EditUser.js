@@ -124,6 +124,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={currentPassword} 
                         onChange={e => setCurrentPassword(e.target.value)}
+                        data-testid="current-password-input"
                         required
                     />
                 </Form.Group>
@@ -135,6 +136,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={password} 
                         onChange={handlePasswordChange}
+                        data-testid="new-password-input"
                         required
                     />
                 </Form.Group>
@@ -146,6 +148,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={confirmPassword} 
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        data-testid="confirm-new-password-input"
                         required
                     />
                 </Form.Group>
@@ -158,7 +161,7 @@ export const EditUser = ({ userName }) => {
             </Form>
 
             {/* Modal de confirmación */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered data-testid="modal-confirmation-password">
                 <Modal.Header closeButton>
                     <Modal.Title>{t('modal-title-edit-profile')}</Modal.Title>
                 </Modal.Header>

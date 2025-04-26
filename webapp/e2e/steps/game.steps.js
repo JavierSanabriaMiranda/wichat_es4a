@@ -5,9 +5,42 @@ const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/game.feature');
 const i18n = require('../i18n-test-helper.js');
 const { expect } = require('expect-puppeteer');
+const axios = require('axios');
 
 let page;
 let browser;
+
+let username = "gameUser";
+let password = "ValidPassword123";
+
+/**
+ * Auxiliar method that registers a user with the username "validUser" and the password "ValidPassword123".
+ */
+const registerNewUser = async () => {
+    // Register the user if not already registered
+    await axios.post('http://localhost:8000/adduser', {
+        username: username,
+        password: password,
+        confirmPassword: password,
+    });
+}
+
+/**
+ * Auxiliar method that logs in with the registered user.
+ * The user has the username "validUser" and the password "ValidPassword123".
+ */
+const setupAuthenticatedUser = async () => {
+    // Log in with the user's credentials
+    await page.goto("http://localhost:3000/login", { waitUntil: "networkidle0" });
+    await expect(page).toClick('button', { text: i18n.t('login-message') });
+    await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
+    await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
+    await expect(page).toClick('button', { text: i18n.t('login-message') });
+
+    await page.waitForSelector('h1', { text: i18n.t('welcome-home') });
+    await expect(page).toMatchElement('h1', { text: i18n.t('welcome-home') });
+    
+}
 
 /**
  * Parametrized function to set the game configuration
@@ -63,15 +96,73 @@ defineFeature(feature, test => {
 
         page = await browser.newPage();
         setDefaultOptions({ timeout: 30000 });
+
+        registerNewUser();
     });
 
     // Redirects to the home page and waits for the page to load
+     
     beforeEach(async () => {
         await page.goto("http://localhost:3000/", {
             waitUntil: "networkidle0",
         });
     });
+    
+   
 
+    test('User successfully sees their played game in the history', ({ given, when, then }) => {
+            given('A user logged in', async () => {
+                await setupAuthenticatedUser();
+            });
+    
+            when('The user configures and plays a new game', async () => {
+                // Configures the game with 10 questions, 60 seconds each, and the geography topic
+                await configureGame({
+                    questions: '10',
+                    time: '60s',
+                    topicClass: 'toggle-btn-geography',
+                    topicText: i18n.t("geography-configuration")
+                });
+                // Waits for the game to load
+                for (let i = 0; i < 10; i++) {
+                    // Waits for the buttons to be visible and enabled
+                    await page.waitForSelector('.answer-button-not-answered:not([disabled])');
+    
+                    // Clicks always the first answer button
+                    await page.click('.answer-button-not-answered');
+                }
+
+                await expect(page).toMatchElement('h2', { text: i18n.t("game-details-text") });
+            });
+    
+            then('The user should see the played game in their history', async () => {
+                // Goes to the user page
+                await page.goto("http://localhost:3000/user", { waitUntil: "networkidle0" });
+                
+                // Click on the "Game History" tab to view the history
+                await expect(page).toClick('a', { text: i18n.t('game-history') });
+
+                // Wait for the game history list to load and check if the game appears
+                await page.waitForSelector('[data-testid="game-history-button-0"]', { visible: true });
+                
+                // Verify that the game history button contains relevant game information
+                const gameHistoryText = await page.$eval('[data-testid="game-history-button-0"]', el => el.textContent);
+                
+                // Check that the game mode appears
+                expect(gameHistoryText).toContain('NORMAL'); 
+
+                // Click on the game history button to view the game details
+                await expect(page).toClick('[data-testid="game-history-button-0"]');
+
+                // Wait for the game details to load
+                await page.waitForSelector('h5', { text: i18n.t("game-details-text") });
+
+                const accordionButtons = await page.$$('.accordion-button');
+                expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
+                
+            });
+    }, 60000); // 60 seconds timeout for the test
+    
     test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
         given('The user has configured a game with:', async () => {
             await configureGame({
@@ -163,7 +254,7 @@ defineFeature(feature, test => {
             expect(userMsgs.length).toBe(1);
         });
     });
-
+    
     afterAll(async () => {
         await browser.close();
     });
