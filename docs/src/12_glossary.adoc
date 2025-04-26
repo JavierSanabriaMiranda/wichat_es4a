@@ -87,4 +87,5 @@ sistemas operativos
 infraestructuras a través de archivos de configuración escritos en un lenguaje declarativo llamado 
 HCL (HashiCorp Configuration Language).
 Lo utilizamos para describir de manera codificada los recuross necesarios para nuestro despliegue en AWS.
+
 |===

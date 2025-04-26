@@ -33,6 +33,8 @@ endif::arc42help[]
 
 * **Generación Automática de Contenidos:** Las imágenes de las preguntas y las pistas serán generadas automáticamente utilizando datos de Wikidata. Esto garantizará la variedad y el contexto adecuado de las preguntas.
 
+* **Donaciones con PayPal:** Implementamos un flujo completo donde, tras capturar un pago exitoso en PayPal, enviamos automáticamente un email personalizado de agradecimiento al donante. Además, configuramos tanto el entorno sandbox para pruebas como la preparación para producción real.
+
 === Objetivos de Calidad
 
 ifdef::arc42help[]
