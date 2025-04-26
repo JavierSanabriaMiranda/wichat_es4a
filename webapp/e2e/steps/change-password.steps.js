@@ -85,7 +85,79 @@ defineFeature(feature, test => {
 
     });
 
+    test('User enters a new password that doesn\'t match the confirmation', ({ given, when, then }) => {
+
+        when('They fill in the change password form with mismatched passwords and submit it', async () => {
+            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await expect(page).toFill('[data-testid="current-password-input"]', password);
+            await expect(page).toFill('[data-testid="new-password-input"]', 'NewPassword123');
+            await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'DifferentPassword123');
+            await expect(page).toClick('button', { text: i18n.t('save-changes-button') });
+        });
+
+        then('The error message "Passwords do not match" should be shown', async () => {
+            await expect(page).toMatchElement('p.text-danger', { text: i18n.t('password-mismatch-error') });
+        });
+    });
+
+    test('User enters a new password without an uppercase letter', ({ given, when, then }) => {
+
+        when('They fill in the change password form with an invalid password and submit it', async () => {
+            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await expect(page).toFill('[data-testid="current-password-input"]', password);
+            await expect(page).toFill('[data-testid="new-password-input"]', 'newpassword123');
+            await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'newpassword123');
+            await expect(page).toClick('button', { text: i18n.t('save-changes-button') });
+        });
+
+        then('The error message "Password must contain at least one uppercase letter" should be shown', async () => {
+            await expect(page).toMatchElement('p.text-danger', { text: i18n.t('password-error-content') });
+        });
+    });
+
+    test('User enters a new password without a number', ({ given, when, then }) => {
+
+        when('They fill in the change password form with an invalid password and submit it', async () => {
+            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await expect(page).toFill('[data-testid="current-password-input"]', password);
+            await expect(page).toFill('[data-testid="new-password-input"]', 'NoNumberPassword');
+            await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'NoNumberPassword');
+            await expect(page).toClick('button', { text: i18n.t('save-changes-button') });
+        });
+
+        then('The error message "Password must contain at least one number" should be shown', async () => {
+            await expect(page).toMatchElement('p.text-danger', { text: i18n.t('password-error-content') });
+        });
+    });
+
+    test('User enters a new password with spaces', ({ given, when, then }) => {
     
+        when('They fill in the change password form with a password containing spaces and submit it', async () => {
+            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await expect(page).toFill('[data-testid="current-password-input"]', password);
+            await expect(page).toFill('[data-testid="new-password-input"]', 'Password With Space');
+            await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'Password With Space');
+            await expect(page).toClick('button', { text: i18n.t('save-changes-button') });
+        });
+
+        then('The error message "Password cannot contain spaces" should be shown', async () => {
+            await expect(page).toMatchElement('p.text-danger', { text: i18n.t('password-error-content') });
+        });
+    });
+
+    test('User enters a new password with less than 8 characters', ({ given, when, then }) => {
+        when('They fill in the change password form with a password shorter than 8 characters and submit it', async () => {
+            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await expect(page).toFill('[data-testid="current-password-input"]', password);
+            await expect(page).toFill('[data-testid="new-password-input"]', 'short');
+            await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'short');
+            await expect(page).toClick('button', { text: i18n.t('save-changes-button') });
+        });
+
+        then('The error message "Password must be at least 8 characters long" should be shown', async () => {
+            await expect(page).toMatchElement('p.text-danger', { text: i18n.t('password-error-content') });
+        });
+    });
 
 
     afterAll(async () => {
