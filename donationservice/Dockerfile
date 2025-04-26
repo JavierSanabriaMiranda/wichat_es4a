@@ -12,6 +12,10 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
+ARG REDIRECTION_URI="http://localhost:3000"
+ENV REDIRECTION_PAGE=$REDIRECTION_URI
+
+
 # Copy the app source code to the working directory
 COPY . .
 

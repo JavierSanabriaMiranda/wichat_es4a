@@ -2,9 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const request = require('request');
 
+
 const app = express();
 app.use(cors());
 const port = 8006;
+
+const redirectionUrl = process.env.REDIRECTION_PAGE || 'http://localhost:3000';
 
 /*
 Crear una aplicacion en PayPal
@@ -137,7 +140,7 @@ const executePayment = (req, res) => {
           });
       }
       // Redirigir al usuario a la página principal después del pago exitoso
-      res.redirect('http://localhost:3000');
+      res.redirect(redirectionUrl);
   });
 };
 
@@ -147,14 +150,10 @@ app.post(`/create-payment`, createPayment)
 app.get(`/execute-payment`, executePayment)
 
 app.get('/cancel-payment', (req, res) => {
-    res.redirect(`http://localhost:3000`)
-});
-
-app.post('/api/donate', (req, res) => {
-    console.log("estoy aqui");
+    res.redirect(redirectionUrl)
 });
 
 app.listen(port, () => {
-    console.log(`Comenzemos a generar dinero --> http://localhost:8006`);
+    
 })
 
