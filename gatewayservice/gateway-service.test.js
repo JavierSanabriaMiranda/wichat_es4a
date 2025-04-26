@@ -147,7 +147,6 @@ describe('Gateway Service', () => {
     expect(response.body.questions).toEqual(['q1', 'q2']);
   });
 
-  // Tests (olviados) v2
   it('should handle login error from auth service', async () => {
     axios.post.mockImplementationOnce(() => 
       Promise.reject({ response: { status: 400, data: { error: 'Invalid creds' } } })
@@ -347,4 +346,128 @@ describe('Gateway Service', () => {
     expect(response.statusCode).toBe(401);
   });
 
+  it('should handle error when /api/question/new fails with 500', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/question/generate')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal question generation error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/api/question/new')
+      .send({ prompt: 'generate something' });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal question generation error');
+    expect(response.body.details).toBeDefined();
+  });
+
+  it('should handle error when /api/game/new fails with 500', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/game/new')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal game start error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/api/game/new')
+      .send({ someGameData: 'value' });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal game start error');
+  });
+
+  it('should handle error when fetching next game question fails with 500', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/game/next')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal fetch question error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/api/game/question')
+      .send({ gameId: 'someGameId' });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal fetch question error');
+  });
+
+  it('should handle error when ending and saving game fails with 500', async () => {
+    const token = jwt.sign({ userId: 'testUser' }, privateKey);
+  
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/api/game/endAndSaveGame')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal save game error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/api/game/endAndSaveGame')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ userId: 'testUser', gameId: 'someGameId', score: 100 });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal save game error');
+  });
+  
+  it('should handle error when generating clue fails with 500', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/askllm/clue')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal LLM error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/askllm/clue')
+      .send({ question: 'What is the capital of France?' });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal LLM error');
+  });
+
+  it('should handle error when generating welcome message fails with 500', async () => {
+    axios.post.mockImplementationOnce((url) => {
+      if (url.includes('/askllm/welcome')) {
+        return Promise.reject({ response: { status: 500, data: { error: 'Internal LLM welcome error' } } });
+      }
+      return Promise.resolve({ data: {} });
+    });
+  
+    const response = await request(app)
+      .post('/askllm/welcome')
+      .send({ user: 'newUser' });
+  
+    expect(response.statusCode).toBe(500);
+    expect(response.body.error).toBe('Internal LLM welcome error');
+  });
+
+  it('debería devolver 401 si no se proporciona un token', async () => {
+    const res = await request(app).post('/validateToken').send({});
+    expect(res.statusCode).toEqual(401);
+    expect(res.body.message).toBe('Token not provided');
+  });
+
+  it('debería devolver 200 si el token es válido', async () => {
+    const token = jwt.sign({ userId: 'usuario123' }, privateKey, { algorithm: 'HS256' }); // o el algoritmo que uses
+    const res = await request(app).post('/validateToken').send({ token });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body.message).toBe('Token is valid');
+    expect(res.body.userId).toBe('usuario123');
+  });
+  
+  it('debería devolver 500 si ocurre un error inesperado en el servidor', async () => {
+    jest.spyOn(jwt, 'verify').mockImplementation(() => {
+      throw new Error('Fallo interno');
+    });
+    const token = jwt.sign({ userId: 'usuario123' }, privateKey, { algorithm: 'HS256' });
+    const res = await request(app).post('/validateToken').send({ token });
+    expect(res.statusCode).toEqual(500);
+    expect(res.body.error).toBe('Fallo interno');
+    jwt.verify.mockRestore(); 
+  });
 });
