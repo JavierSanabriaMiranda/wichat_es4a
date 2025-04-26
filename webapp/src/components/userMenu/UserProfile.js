@@ -1,6 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
-import { Container, Typography, TextField, Snackbar, Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
@@ -9,16 +7,12 @@ import Tab from 'react-bootstrap/Tab';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { EditUser } from './EditUser';
 import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n/i18next.js';
 import { QuestionAccordion } from '../gameHistory/QuestionAccordion.js';
 import { GameHistoryButton } from '../gameHistory/GameHistoryButton.js';
 import NavBar from '../NavBar.js';
 import AuthContext from '../contextProviders/AuthContext.js';
 import { useNavigate } from 'react-router';
 import { getUserHistory, getQuestionsById } from '../../services/UserProfileService.js';
-
-
-const apiEndpoint = process.env.REACT_APP_API_ENDPOINT || 'http://localhost:8000';
 
 export const UserProfile = () => { 
     

@@ -11,7 +11,6 @@ import './game.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getNextQuestion, saveGame, configureGame } from '../../services/GameService';
 import { useConfig } from '../contextProviders/GameConfigProvider';
-import { use } from 'react';
 import AuthContext from '../contextProviders/AuthContext';
 
 

@@ -32,7 +32,7 @@ export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered })
 
         return (
             <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={16} fontWeight="bold">
-                {value != 0 ? value : ""}
+                {value !== 0 ? value : ""}
             </text>
         );
     };
