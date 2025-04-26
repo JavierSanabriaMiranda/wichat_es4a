@@ -133,9 +133,6 @@ el usuario por medio de pistas, sin dar dicha respuesta correcta directamente
 ===== API LLM
 Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
 
-===== donationservice
-Servicio encargado de gestionar todo el flujo relacionado con las donaciones en la aplicación. Permite iniciar el pago mediante PayPal, capturar el pago una vez completado, y enviar automáticamente un correo de agradecimiento personalizado al usuario que ha donado, asegurando también la correcta separación entre entornos de prueba y producción.
-
 
 ==== Mapeo de Canales de Entrada/salida
 
@@ -153,6 +150,5 @@ Servicio encargado de gestionar todo el flujo relacionado con las donaciones en 
 | API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
 | llmservice | Prompt de solicitud de pistas y respuesta correcta a la pregunta | Pista generada por el modelo evitando decir la respuesta correcta
 | API LLM | Prompt de solicitud de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
-| donationservice | Datos de donación y confirmación de pago | Captura del pago completado y envío de email de agradecimiento personalizado
 |===
 
