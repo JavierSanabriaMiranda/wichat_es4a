@@ -88,6 +88,4 @@ infraestructuras a través de archivos de configuración escritos en un lenguaje
 HCL (HashiCorp Configuration Language).
 Lo utilizamos para describir de manera codificada los recuross necesarios para nuestro despliegue en AWS.
 
-| **DonationService** 
-| **Microservicio encargado de gestionar las donaciones** realizadas por los usuarios a través de la integración con PayPal, enviando correos automáticos de agradecimiento tras confirmar la recepción de una donación exitosa.
 |===
