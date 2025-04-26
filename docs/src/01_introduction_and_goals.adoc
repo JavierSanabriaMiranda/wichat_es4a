@@ -63,7 +63,7 @@ endif::arc42help[]
 |Meta |Descripción
 
 |Rendimiento
-|El sistema debe garantizar tiempos de respuesta dentro de los límites aceptables, incluso en condiciones de alta demanda. Se optimizará el uso de recursos para minimizar la latencia y mejorar la experiencia del usuario. Además, se implementarán optimizaciones de consultas para reducir la carga en los servidores y mejorar la velocidad de ejecución de las funciones más críticas.
+|Se realizan consultas al servicio que proporciona las imágenes y las preguntas del juego de manera eficiente para que el tiempo de carga de estas sea el menor posible y el rendimiento sea el máximo alcanzable.
 
 |Escalabilidad
 |El diseño del sistema debe permitir un crecimiento eficiente, asegurando que pueda manejar un aumento en la cantidad de usuarios y datos sin afectar negativamente el rendimiento.

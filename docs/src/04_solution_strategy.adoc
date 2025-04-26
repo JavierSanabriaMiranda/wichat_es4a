@@ -7,7 +7,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 ==== Frontend
 * **Motivación**: Elegimos _**JavaScript**_ y _**React**_ para el desarrollo del frontend por su flexibilidad y su capacidad para crear interfaces dinámicas y altamente interactivas. Dado que uno de los objetivos clave del proyecto es la _usabilidad_, _React_ facilita el desarrollo de interfaces modernas y centradas en el usuario, lo que optimiza la experiencia. Además, _React_ es ampliamente utilizado y bien soportado, lo que facilita la integración y el mantenimiento.
 * **Objetivos de calidad**: _Usabilidad_, _Mantenibilidad_, _Integrabilidad_
-* **Restricciones clave**: El sistema debe ser accesible desde diferentes plataformas y dispositivos, incluyendo navegadores web modernos.
+* **Restricciones clave**: El sistema debe ser accesible desde diferentes plataformas, incluyendo navegadores web modernos.
 
 ==== Backend
 * **Motivación**: _**Node.js**_ con _**Express**_ fue elegido para el desarrollo del backend debido a su rendimiento, escalabilidad y naturaleza no bloqueante, lo cual es crucial cuando se manejan múltiples solicitudes simultáneas en una aplicación web. _Express_, por su parte, es un framework minimalista y permite construir APIs RESTful eficientes, lo que se adapta bien a las necesidades de integración del sistema con diversas APIs externas.

@@ -97,7 +97,7 @@ correspondientes al backend
 
 ===== gatewayservice
 API que hace de enlace entre las distintas partes de la aplicación. Funciona como una especie de fachada que sirve para que los
-distintos microservicios no tengan por qué conocerse entre ellos, para comunicarse solo deben de hacer peticiones al gateway y este
+distintos microservicios no tengan por qué conocerse entre ellos. Para comunicarse solo deben de hacer peticiones al gateway y este
 hará una redirección de la petición al servicio correspondiente.
 
 ===== authservice
@@ -105,7 +105,7 @@ Servicio que se comunica con la base de datos de usuarios a fin de comprobar si 
 se corresponden con un usuario
 
 ===== userservice
-Servicio que se comunica con la base de datos de usuarios a fin de añadir usuarios y modificar los datos relativos a los usuarios
+Servicio que se comunica con la base de datos de usuarios a fin de añadir usuarios y modificar los datos relativos a los usuarios.
 
 ===== Base de Datos "userdb"
 Base de datos que almacena toda la información de los usuarios como su nombre de usuario, sus datos de logIn, etc

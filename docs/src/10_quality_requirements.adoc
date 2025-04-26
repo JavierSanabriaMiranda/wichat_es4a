@@ -49,7 +49,7 @@ En cualquier caso, el árbol debe incluir enlaces a los escenarios de la siguien
 
 ****
 endif::arc42help[]
-
+[cols="e,2e" options="header"]
 |===
 |Escenario |Requisito |Objetivo
 
@@ -71,7 +71,7 @@ endif::arc42help[]
 |===
 
 === Escenarios de calidad
-
+[cols="e,2e" options="header"]
 |===
 |Id |Escenario
 

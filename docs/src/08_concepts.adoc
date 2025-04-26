@@ -63,13 +63,13 @@ La aplicación será un sitio web donde los usuarios podrán jugar a WICHAT. La 
 
 === Persistencia
 
-En cuanto a la gestión de datos en la aplicación, cabe mencionar que en todos los casos usamos MongoDB. El microservicio game_service gestiona la base de datos del juego, las preguntas y el historial de partidas, mientras que el microservicio user se encarga de la base de datos de los usuarios.
+En cuanto a la gestión de datos en la aplicación, cabe mencionar que en todos los casos usamos MongoDB. El microservicio gameservice gestiona la base de datos del juego, las preguntas y el historial de partidas, mientras que los microservicios userservice y authservice se encargan de la base de datos de los usuarios.
 
 image::../images/bds.png[Bases de datos en MongoDB]
 
 === Seguridad
 
-Para garantizar la seguridad de los usuarios, la aplicación cifra sus contraseñas antes de almacenarlas en la base de datos utilizando el algoritmo bcrypt, lo que asegura que las contraseñas no se guarden de manera visible ni en texto claro. Además, se realiza una validación para asegurarse de que los campos esenciales, como el nombre de usuario y la contraseña, estén presentes en la solicitud antes de crear un nuevo usuario, lo que garantiza que los datos necesarios sean correctos y completos. Además, añadimos un control de fuerza bruta para el login. Si se falla múltiples veces seguidas al intentar hacer login, se bloquea la IP durante varios minutos.
+Para garantizar la seguridad de los usuarios, la aplicación cifra sus contraseñas antes de almacenarlas en la base de datos utilizando el algoritmo bcrypt, lo que asegura que las contraseñas no se guarden de manera visible ni en texto plano. Además, se realiza una validación para asegurarse de que los campos esenciales, como el nombre de usuario y la contraseña, estén presentes en la solicitud antes de crear un nuevo usuario, lo que garantiza que los datos necesarios sean correctos y completos. Además, añadimos un control de fuerza bruta para el login. Si se falla múltiples veces seguidas al intentar hacer login, se bloquea la IP durante varios minutos.
 
 === Pruebas
 
