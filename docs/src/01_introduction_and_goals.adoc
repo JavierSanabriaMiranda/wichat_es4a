@@ -19,13 +19,13 @@ endif::arc42help[]
 
 === Descripción de los requisitos
 
-* **Registro e Inicio de Sesión de Usuarios:** Los usuarios deberán registrarse para participar en los juegos, o iniciar sesión si ya se han registrado previamente.
+* **Registro e Inicio de Sesión de Usuarios:** Los usuarios podrán registrarse para guardar o consultar los resultados de sus partidas, o iniciar sesión si ya se han registrado previamente.
 
 * **Generación de Preguntas y Respuestas:** El sistema proporcionará preguntas de diversas temáticas. Se generarán automáticamente respuestas correctas e incorrectas utilizando datos de Wikidata. Cada pregunta tendrá 4 posibles respuestas.
 
-* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
+* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas. Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
 
-* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de juegos jugados, preguntas acertadas y falladas, y el tiempo utilizado.
+* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de puntos obtenidos, las preguntas acertadas y falladas, y la fecha.
 
 * **Límite de Tiempo para Responder:** Cada pregunta tendrá un límite de tiempo determinado para ser respondida por los usuarios.
 
