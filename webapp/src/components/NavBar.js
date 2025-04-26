@@ -8,6 +8,7 @@ import Rules from "./Rules";
 import "./nav.css";
 import { useNavigate } from 'react-router';
 import AuthContext from "./contextProviders/AuthContext";
+import { donate } from '../services/DonationService';
 
 /**
  * Navigation bar component that is displayed at the top of the application.
@@ -60,18 +61,14 @@ const NavBar = ({ hasPadding }) => {
 
   const handleDonate = async () => {
     try {
-      const res = await fetch('http://localhost:8000/create-payment', {
-        method: 'POST',
-      });
-      const data = await res.json();
-
-      if (data.approvalUrl) {
-        window.location.href = data.approvalUrl;
-      } else {
-        alert('Error al generar el enlace de PayPal');
+      const res = await donate();
+      if (res.success) {
+        window.location.href = res.approvalUrl;
+      } else if(res.error) {
+        alert(t("donate-error"));
       }
-    } catch (err) {
-      alert('Error al conectar con el servidor');
+    } catch (error) {
+      alert(t("server-connection-error"));
     }
   };
 
@@ -107,7 +104,7 @@ const NavBar = ({ hasPadding }) => {
                 {t("rules-menu")}
               </Nav.Link>
 
-              <Nav.Link onClick={handleDonate} className="donate-menu">Donar</Nav.Link>
+              <Nav.Link onClick={handleDonate} className="donate-menu">{t('donate-text')}</Nav.Link>
 
               {/* Conditional rendering based on user authentication */}
               {token ? (
