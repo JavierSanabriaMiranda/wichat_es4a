@@ -8,6 +8,7 @@ app.use(cors());
 const port = 8006;
 
 const redirectionUrl = process.env.REDIRECTION_PAGE || 'http://localhost:3000';
+const donationServiceUrl = process.env.DONATION_SERVICE || 'http://localhost:8006';
 
 /*
 Crear una aplicacion en PayPal
@@ -49,8 +50,8 @@ const createPayment = (req, res) => {
         brand_name: `Wichat`,
         landing_page: 'NO_PREFERENCE',
         user_action: 'PAY_NOW',
-        return_url: `http://localhost:8006/execute-payment`,
-        cancel_url: `http://localhost:8006/cancel-payment`
+        return_url: `${donationServiceUrl}/execute-payment`,
+        cancel_url: `${donationServiceUrl}/cancel-payment`
       }
     };
   
