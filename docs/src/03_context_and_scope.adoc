@@ -43,6 +43,7 @@ image::../images/contexto-de-negocio.png[Contexto de Negocio]
 | _WIChat_ | _Aplicación web principal donde se desarrolla el juego._
 | _Wikidata_ | _Fuente de donde se extraen las preguntas, las imágenes y las respuestas._
 | _LLM_API_ | _API que integra un modelo de lenguaje que se utiliza para generar pistas dinámicas y conversacionales que ayudan al concursante a responder las preguntas._
+| _API Paypal_ | _API que integra el servicio de Paypal a fin de poder realizar donaciones a los desarrolladores de la aplicación._
 |===
 
 ifdef::arc42help[]
@@ -133,6 +134,12 @@ el usuario por medio de pistas, sin dar dicha respuesta correcta directamente
 ===== API LLM
 Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
 
+===== donationservice
+Servicio que gestiona las donaciones a los desarrolladores de la aplicación por medio de su conexión con la API de Paypal
+
+===== API Paypal
+API de Paypal que permite acceder a sus servicios para usarlos como medio para enviar dinero a los desarrolladores
+
 ==== Mapeo de Canales de Entrada/salida
 
 [options="header",cols="1,2,2"]
@@ -149,5 +156,7 @@ Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
 | API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
 | llmservice | Prompt de solicitud de pistas y respuesta correcta a la pregunta | Pista generada por el modelo evitando decir la respuesta correcta
 | API LLM | Prompt de solicitud de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
+| donationservice | Petición HTTP de acceso al servicio de donación | Redirección al servicio de Paypal
+| API Paypal | Petición HTTP con la configuración | Petición HTTP para confirmación o cancelación de la operación
 |===
 
