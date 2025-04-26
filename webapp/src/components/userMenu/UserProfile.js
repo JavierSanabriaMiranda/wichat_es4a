@@ -26,6 +26,9 @@ export const UserProfile = () => {
     // UseEffect to call getUserHistory on initial render
     useEffect(() => {
         getUserHistoryList();
+        // I disable the eslint rule for exhaustive dependencies here because 
+        // I want this effect to run only once when the component mounts.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Function to get the user's game history list by the user ID
