@@ -6,11 +6,10 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import { changePassword } from '../../services/UserProfileService.js';
 import AuthContext from '../contextProviders/AuthContext.js';
-import i18n from '../../i18n/i18next.js';
 
 export const EditUser = ({ userName }) => {
     const { t } = useTranslation();
-    const { user, token } = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     
     // Estados para los campos
     const [password, setPassword] = useState('');
@@ -125,6 +124,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={currentPassword} 
                         onChange={e => setCurrentPassword(e.target.value)}
+                        data-testid="current-password-input"
                         required
                     />
                 </Form.Group>
@@ -136,6 +136,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={password} 
                         onChange={handlePasswordChange}
+                        data-testid="new-password-input"
                         required
                     />
                 </Form.Group>
@@ -147,6 +148,7 @@ export const EditUser = ({ userName }) => {
                         placeholder={t('password-placeholder')} 
                         value={confirmPassword} 
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        data-testid="confirm-new-password-input"
                         required
                     />
                 </Form.Group>
@@ -159,7 +161,7 @@ export const EditUser = ({ userName }) => {
             </Form>
 
             {/* Modal de confirmación */}
-            <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+            <Modal show={showModal} onHide={() => setShowModal(false)} centered data-testid="modal-confirmation-password">
                 <Modal.Header closeButton>
                     <Modal.Title>{t('modal-title-edit-profile')}</Modal.Title>
                 </Modal.Header>

@@ -85,5 +85,8 @@
     "chaosMode-slogan": "Cada partida es distinta. Lo único seguro es la sorpresa.",
     "signup-message": "Sign Up",
     "login-message": "Login",
-    "donate-menu": "Donar"
+    "donate-text": "¡Apóyanos!",
+    "donation-error": "Error al acceder a PayPal",
+    "server-connection-error": "Error al conectar con el servidor. Por favor, inténtelo de nuevo más tarde.",
+    "paypal-access-error-modal-title": "Error al acceder a PayPal"
 }

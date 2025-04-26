@@ -30,7 +30,7 @@ export const Home = () => {
   const [showConfig, setShowConfig] = useState(false); // Controls visibility of configuration panel
   const [greeting, setGreeting] = useState(null);
   const { t, i18n } = useTranslation();
-  const { user, token } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     /**
@@ -53,7 +53,7 @@ export const Home = () => {
     };
 
     fetchGreeting();
-  }, [i18n.language, t]); // Esto se vuelve a ejecutar cada vez que cambia el idioma
+  }, [i18n.language, t, user]); // Esto se vuelve a ejecutar cada vez que cambia el idioma
 
   return (
     <div className="home-container">

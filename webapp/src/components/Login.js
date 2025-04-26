@@ -1,6 +1,5 @@
 // src/components/Login.js
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
@@ -12,13 +11,12 @@ export const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const { login, error } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
-  const [createdAt, setCreatedAt] = useState('');
 
   const loginUser = async (event) => {
     event.preventDefault();

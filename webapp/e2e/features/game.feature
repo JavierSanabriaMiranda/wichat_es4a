@@ -1,5 +1,10 @@
 Feature: Game functionality
 
+Scenario: User successfully sees their played game in the history
+  Given A user logged in
+  When The user configures and plays a new game
+  Then The user should see the played game in their history
+
 Scenario: The user completes a normal game with 10 geography questions, 60 seconds each
   Given The user has configured a game with:
     | numberOfQuestions | timePerQuestion | topic     |

@@ -36,6 +36,8 @@
 
         "node-fetch": "^3.3.2",
 
+        "nodemailer": "^6.10.1",
+
         "request": "^2.88.2",
 
         "swagger-ui-express": "^5.0.1",

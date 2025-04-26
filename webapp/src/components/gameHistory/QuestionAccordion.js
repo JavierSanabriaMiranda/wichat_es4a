@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n/i18next.js';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
 

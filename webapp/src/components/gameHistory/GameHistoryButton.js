@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
-import i18n from '../../i18n/i18next.js';
 import { Badge } from 'react-bootstrap';
 import { Calendar, CheckCircle } from 'lucide-react';
 
@@ -12,7 +10,7 @@ import { Calendar, CheckCircle } from 'lucide-react';
  * This component represents the button with the game info that appears on the user's profile.
  * Clicking on it will show the history of the game it describes.
  */
-export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date, onClick, gameMode}  ) => {
+export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date, onClick, gameMode, index}  ) => {
 
     const { t } = useTranslation();
 
@@ -22,6 +20,7 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
             className="w-100 my-2 d-flex justify-content-between align-items-center p-3 shadow-sm rounded"
             onClick={onClick}
             style={{ fontSize: '1rem', fontWeight: '500' }}
+            data-testid={"game-history-button-" + index}
         >
             <span className="d-flex align-items-center">
                 <CheckCircle size={20} className="me-2 text-success" />
