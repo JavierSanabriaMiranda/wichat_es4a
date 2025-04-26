@@ -133,6 +133,7 @@ el usuario por medio de pistas, sin dar dicha respuesta correcta directamente
 ===== API LLM
 Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
 
+
 ==== Mapeo de Canales de Entrada/salida
 
 [options="header",cols="1,2,2"]

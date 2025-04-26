@@ -41,6 +41,8 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 | _API Usage_                 | Se utilizarán APIs para acceder a la información de usuarios y preguntas generadas. 
 | _Frontend Web_               | El sistema tendrá al menos un frontend web desplegado y accesible a través de la Web.
 | _Límite de tiempo_           | Las preguntas deben ser respondidas dentro de un plazo de tiempo determinado.
+| _Sistema de Donaciones (PayPal)_ | Se implementará un sistema de donaciones integrando PayPal, enviando un email automático de agradecimiento tras cada donación exitosa. 
+| _Correo Transaccional_ | Se utilizará un servicio de correo para notificaciones automáticas, empleando autenticación segura (App Passwords).
 |===
 
 **RESTRICCIONES ORGANIZATIVAS**
