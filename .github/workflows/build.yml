@@ -30,6 +30,7 @@ jobs:
       - run: npm --prefix gameservice test -- --coverage
       - run: npm --prefix gatewayservice test -- --coverage
       - run: npm --prefix webapp test -- --coverage
+      - run: npm --prefix donationservice test -- --coverage
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@master
         env:
