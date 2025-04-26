@@ -281,7 +281,7 @@ export const Game = () => {
             navigate('/');
         }
     }, [exitRequested, isLoading, navigate]);
-    }, [exitRequested, isLoading, navigate]);
+
 
     /**
      * Finds the correct answer from a list of answers.
