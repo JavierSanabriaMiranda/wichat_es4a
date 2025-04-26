@@ -122,6 +122,8 @@ services:
     container_name: donationservice-wichat_es4a
     image: ghcr.io/arquisoft/wichat_es4a/donationservice:latest
     profiles: ["dev", "prod"]
+    env_file:
+      - .env
     build:
       context: ./donationservice
     ports:

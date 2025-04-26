@@ -65,7 +65,7 @@ const requestQuestion = async (topics, lang) => {
         return {
             question: 'Which country does this outline belong to?',
             answer: 'Sri Lanka',
-            imageUrl: 'http://commons.wikimedia.org/wiki/Special:FilePath/Topography%20Sri%20Lanka.jpg',
+            imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Topography%20Sri%20Lanka.jpg',
             options: ['Qatar', 'Mexico', 'Kenya', 'Sri Lanka']
         };
     }

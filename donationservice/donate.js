@@ -17,21 +17,21 @@ https://developer.paypal.com/developer/applications (debemos acceder con nuestra
 cuentas de test -> https://developer.paypal.com/developer/accounts/
 */
 //LIVE
-//const CLIENT = 'AcKJut5zUiBLapN-TK1SGjGOzAhLlMpXHl2zeSzlDnbB6THGcVbZZuo35xsGVFNIC-kna6bm4qBInobz';
-//const SECRET = 'ENgfCMLDsbdVldtXBPm6HpFVuqAPi9SHXkANV-gcmQIqBXfxnWCtg2IrZKQEbFnmwHCG3-HC4IXZjiHN';
-const CLIENT = 'Ad4-5ZwcKmhYHdTJmLhVhpd_y3VxgLwP62JqrvtygXp1tZOiFahkOnmNxVMO-xNSBFFcLXgryu3EbiM5';
-const SECRET = 'EBdAluW-Y-sMq-5zM8CL6pOq1GZo9UYVx3XHj6Je_kPGTU0AznUNjdk9uOhawi2P6KED-o29eLlfAR3z';
-//TODO
+const CLIENT = process.env.PAYPAL_CLIENT_ID;
+const SECRET = process.env.PAYPAL_SECRET_KEY;
+
 const PAYPAL_API ='https://api-m.sandbox.paypal.com'; // Live https://api-m.paypal.com
 const auth = {user: CLIENT, pass: SECRET}
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // puedes usar Gmail, Outlook, etc.
-    auth: {
-        user: 'WiChat4a@gmail.com', // tu correo de envío
-        pass: 'ongv ptdj dwcc nbjb' // tu contraseña o app password si es Gmail
-    }
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+      user: 'WiChat4a@gmail.com',
+      pass: 'ongv ptdj dwcc nbjb'
+  }
 });
 
 /*
