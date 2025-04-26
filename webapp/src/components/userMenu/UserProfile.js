@@ -93,6 +93,7 @@ export const UserProfile = () => {
                                                         date={game.date}
                                                         onClick={() => getGameQuestionsByGameId(game)}
                                                         gameMode={game.gameMode}
+                                                        index={index}
                                                     />
                                                 ))}
                                         </>

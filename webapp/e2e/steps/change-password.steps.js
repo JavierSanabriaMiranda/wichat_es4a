@@ -77,9 +77,7 @@ defineFeature(feature, test => {
         });
 
         then('A confirmation modal should be shown', async () => {
-            console.log("Waiting for confirmation modal...");
             await page.waitForSelector('[data-testid="modal-confirmation-password"]', { visible: true });
-            console.log("Confirmation modal shown!");
             await expect(page).toClick('button', { text: i18n.t('close-button-text') });
         });
 
