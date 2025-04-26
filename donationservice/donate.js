@@ -12,9 +12,13 @@ Agregar las credenciales de nuestra app de PayPal
 https://developer.paypal.com/developer/applications (debemos acceder con nuestra cuenta de paypal)
 cuentas de test -> https://developer.paypal.com/developer/accounts/
 */
-const CLIENT = 'ASvnlzo-PymyeRSxwq4L4RtpuqQvCUBzyZkKqNz5IKzrPzFnEEUQH6ny-ZVyTedWoINPUCeqtExWpCUi';
-const SECRET = 'EIhQjimqEeHCSS75NsYMuAOu7BBuINHzbrNlqomuy2M4QwdvwNmtMYcInGezkHgE8ziNlse7nEPRTb-c';
-const PAYPAL_API = 'https://api-m.sandbox.paypal.com'; // Live https://api-m.paypal.com
+//LIVE
+//const CLIENT = 'AcKJut5zUiBLapN-TK1SGjGOzAhLlMpXHl2zeSzlDnbB6THGcVbZZuo35xsGVFNIC-kna6bm4qBInobz';
+//const SECRET = 'ENgfCMLDsbdVldtXBPm6HpFVuqAPi9SHXkANV-gcmQIqBXfxnWCtg2IrZKQEbFnmwHCG3-HC4IXZjiHN';
+const CLIENT = 'Ad4-5ZwcKmhYHdTJmLhVhpd_y3VxgLwP62JqrvtygXp1tZOiFahkOnmNxVMO-xNSBFFcLXgryu3EbiM5';
+const SECRET = 'EBdAluW-Y-sMq-5zM8CL6pOq1GZo9UYVx3XHj6Je_kPGTU0AznUNjdk9uOhawi2P6KED-o29eLlfAR3z';
+//TODO
+const PAYPAL_API ='https://api-m.sandbox.paypal.com'; // Live https://api-m.paypal.com
 const auth = {user: CLIENT, pass: SECRET}
 const nodemailer = require('nodemailer');
 
@@ -84,7 +88,7 @@ const executePayment = (req, res) => {
         console.log('Pago completado:', response.body);
         console.log('Enviando correo');
         const nombreDonante = response.body.payer.name.given_name;
-        const correoDelDonante = 'andreaacerobus@gmail.com'; //response.body.payer.email_address;
+        const correoDelDonante = 'andreaacerobus@gmail.com';//response.body.payer.email_address;
         const cantidadDonada = response.body.purchase_units[0].payments.captures[0].amount.value;
         const moneda = response.body.purchase_units[0].payments.captures[0].amount.currency_code;
         const mailOptions = {

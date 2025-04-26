@@ -60,7 +60,7 @@ const NavBar = ({ hasPadding }) => {
 
   const handleDonate = async () => {
     try {
-      const res = await fetch('http://localhost:8006/create-payment', {
+      const res = await fetch('http://localhost:8000/create-payment', {
         method: 'POST',
       });
       const data = await res.json();
