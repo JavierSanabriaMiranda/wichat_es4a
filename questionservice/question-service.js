@@ -73,7 +73,7 @@ function filterUnique(results, label, limit) {
  * 
  */
 async function executeQuery(query) {
-  const offset = 600;
+  const offset = 150;
   const finalQuery = query + ` LIMIT `+ offset +`OFFSET ${offset}`;
   const response = await axios.post(url, finalQuery, {
     headers: {

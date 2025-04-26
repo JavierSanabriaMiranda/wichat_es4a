@@ -1,4 +1,4 @@
-[
+[  
     {
         "question": "¿A qué país pertenece esta bandera?",
         "selector": "<input>",
@@ -34,25 +34,7 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
-    },
-
-
-    {
-        "question": "¿Cuál es la capital de este país?",
-        "selector": "<input>",
-        "topics": ["geography"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
-        "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "What is the capital of this country?",
-        "selector": "<input>",
-        "topics": ["geography"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
-        "imageurl": "<output>",
-        "lang": "en"
-    },
+    },    
 
 
     {
@@ -236,7 +218,7 @@
     
 
     {
-        "question": "¿Quién es esta persona?",
+        "question": "¿Quién es esta persona famosa?",
         "selector": "<input>",
         "topics": ["character"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q82921 wd:Q901 wd:Q188094 wd:Q10800557 wd:Q36180 wd:Q2259451 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
@@ -244,7 +226,7 @@
         "lang": "es"
       },      
       {
-        "question": "Who is this person?",
+        "question": "Who is this famous person?",
         "selector": "<input>",
         "topics": ["character"],
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q82921 wd:Q901 wd:Q188094 wd:Q10800557 wd:Q36180 wd:Q2259451 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
