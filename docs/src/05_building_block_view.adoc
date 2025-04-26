@@ -188,7 +188,7 @@ Component p as "Paypal" #2aa198
 
 game <-- questions: Genera preguntas
 questions <-left- w: Proveee datos de preguntas
-llm <-left- llm: Genera pistas
+llm <-left- g: Genera pistas
 donation <-left- p: Aporta información de pagos
 
 legend
