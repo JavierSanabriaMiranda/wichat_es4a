@@ -211,9 +211,6 @@ Contained Building Blocks::
 |*LLM Service* 
 |Es un microservicio que utiliza un modelo de lenguaje para generar pistas basadas en las preguntas proporcionadas, asegurando respuestas coherentes y contextuales para mejorar la experiencia del usuario.
 
-|*Donation Service* 
-|Es un microservicio responsable de gestionar las donaciones de los usuarios a través de PayPal, capturando los pagos exitosos y enviando automáticamente correos de agradecimiento personalizados para fortalecer el vínculo con la comunidad.
-
 |*Game Data y User Data* 
 |Son las bases de datos principales de la aplicación y juntas almacenarán todos los datos persistentes importantes de la aplicación.
 |===
