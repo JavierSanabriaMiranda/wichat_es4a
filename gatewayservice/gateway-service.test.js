@@ -459,7 +459,7 @@ describe('Gateway Service', () => {
     expect(res.body.message).toBe('Token is valid');
     expect(res.body.userId).toBe('usuario123');
   });
-  
+
   it('debería devolver 500 si ocurre un error inesperado en el servidor', async () => {
     jest.spyOn(jwt, 'verify').mockImplementation(() => {
       throw new Error('Fallo interno');
@@ -469,5 +469,46 @@ describe('Gateway Service', () => {
     expect(res.statusCode).toEqual(500);
     expect(res.body.error).toBe('Fallo interno');
     jwt.verify.mockRestore(); 
+  });
+
+  it('debería devolver 200 y los datos del pago cuando el servicio externo responde correctamente', async () => {
+    const mockPaymentResponse = { data: { success: true, paymentId: 'pago123' } };
+    axios.post.mockResolvedValue(mockPaymentResponse);
+
+    const res = await request(app)
+      .post('/create-payment')
+      .send({ amount: 100 });
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual({ success: true, paymentId: 'pago123' });
+    expect(axios.post).toHaveBeenCalledWith(expect.stringContaining('/create-payment'), { amount: 100 });
+  });
+
+  it('debería devolver el statusCode y mensaje de error del servicio externo si falla', async () => {
+    const mockError = {
+      response: {
+        status: 400,
+        data: { error: 'Invalid payment data' }
+      }
+    };
+    axios.post.mockRejectedValue(mockError);
+
+    const res = await request(app)
+      .post('/create-payment')
+      .send({ amount: 0 });
+
+    expect(res.statusCode).toEqual(400);
+    expect(res.body.error).toBe('Invalid payment data');
+  });
+
+  it('debería devolver 500 si ocurre un error inesperado', async () => {
+    axios.post.mockRejectedValue(new Error('Service unavailable'));
+
+    const res = await request(app)
+      .post('/create-payment')
+      .send({ amount: 100 });
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body.error).toBe('Error creating payment');
   });
 });
