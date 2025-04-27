@@ -19,6 +19,7 @@ jobs:
       - run: npm --prefix gameservice ci
       - run: npm --prefix gatewayservice ci
       - run: npm --prefix webapp ci -- --legacy-peer-deps
+      - run: npm --prefix donationservice ci
       - run: npm --prefix users/authservice test -- --coverage
       - run: npm --prefix users/userservice test -- --coverage
       - run: npm --prefix llmservice test -- --coverage
@@ -26,6 +27,7 @@ jobs:
       - run: npm --prefix gameservice test -- --coverage
       - run: npm --prefix gatewayservice test -- --coverage
       - run: npm --prefix webapp test -- --coverage
+      - run: npm --prefix donationservice test -- --coverage
       - name: Analyze with SonarCloud
         uses: SonarSource/sonarqube-scan-action@master
         env:
@@ -44,6 +46,7 @@ jobs:
       - run: npm --prefix questionservice install
       - run: npm --prefix gameservice install
       - run: npm --prefix gatewayservice install
+      - run: npm --prefix donationservice install
       - run: npm --prefix webapp install
       - run: npm --prefix webapp run build
       - run: npm --prefix webapp run test:e2e
@@ -218,6 +221,7 @@ jobs:
       docker-push-gatewayservice,
       docker-push-questionservice,
       docker-push-gameservice,
+      docker-push-donationservice,
       docker-push-webapp
     ]
     steps:
@@ -232,4 +236,7 @@ jobs:
             docker compose --profile prod down
             echo "LLM_API_KEY=${{ secrets.LLM_API_KEY }}" > .env
             echo "TOKEN_SECRET_KEY=${{ secrets.TOKEN_SECRET_KEY }}" >> .env
+            echo "REDIRECTION_URI=http://${{ secrets.DEPLOY_HOST }}:3000" >> .env
+            echo "DONATION_SERVICE_URI=http://${{ secrets.DEPLOY_HOST }}:8006" >> .env
+            echo "API_URI=http://${{ secrets.DEPLOY_HOST }}:8000" >> .env
             docker compose --profile prod up -d --pull always
