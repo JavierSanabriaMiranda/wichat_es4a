@@ -73,7 +73,7 @@ image::../images/vista-de-despliegue-nivel-1.png[Vista de Despliegue Nivel 1]
 Motivación::
 * Escalabilidad: AWS permite escalar horizontalmente mediante la creación de múltiples instancias de contenedores según la demanda.
 * Disponibilidad: La infraestructura de AWS facilita la alta disponibilidad a través de balanceadores de carga y zonas de disponibilidad.
-* Integración con servicios externos: La integración con Wikidata y LLM_API permite extender las capacidades de la plataforma sin complejidad adicional.
+* Integración con servicios externos: La integración con Wikidata, LLM_API y Paypal API permite extender las capacidades de la plataforma sin complejidad adicional.
 
 Características de Calidad y Rendimiento::
 * Bajo tiempo de respuesta: La cercanía geográfica de los servidores AWS al usuario final reduce la latencia.
@@ -101,10 +101,10 @@ image::../images/vista-de-despliegue-nivel-2.png[Vista de Despliegue Nivel 2]
 Microservicios::
 * WebApp: Servicio que sirve la aplicación frontend y se comunica con el GatewayService.
 * GatewayService: Actúa como punto de entrada único para el frontend, enrutando solicitudes a los microservicios adecuados.
-* Question Service: Gestiona las llamadas a Wikidata para conseguir las preguntas.
+* QuestionService: Gestiona las llamadas a Wikidata para conseguir las preguntas.
 * UserService: Maneja las operaciones con los usuarios.
 * AuthService: Gestiona la autenticación y autorización de usuarios.
-* Game_Service: Controla la lógica de la aplicación (modelo de dominio, conexión con la base de datos).
+* GameService: Controla la lógica de la aplicación (modelo de dominio, conexión con la base de datos).
 * LlmService: Se conecta con la API de Gemini y gestiona el funcionamiento del LLM.
 * Base de Datos: Almacena información de usuarios, partidas y preguntas.
 * DonationService: Gestiona las donaciones de los usuarios a través de PayPal y envía correos automáticos de agradecimiento.
