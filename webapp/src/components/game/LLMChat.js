@@ -15,6 +15,7 @@ import Col from 'react-bootstrap/Col';
 const LLMChat = ({ name }) => {
     const { t, i18n } = useTranslation();
 
+
     const [messages, setMessages] = useState([
         <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);

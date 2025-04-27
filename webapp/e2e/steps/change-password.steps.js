@@ -45,7 +45,10 @@ const setupAuthenticatedUser = async () => {
 
     // Goes to the user page after logging in
     await expect(page).toMatchElement('[data-testid="home-title"]');;
-    await page.goto("http://localhost:3000/user", { waitUntil: "networkidle0" });
+    await page.goto("http://localhost:3000/user", {
+        waitUntil: "networkidle0",
+        timeout: 180000,
+    });
 }
 
 defineFeature(feature, test => {

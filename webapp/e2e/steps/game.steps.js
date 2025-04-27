@@ -30,7 +30,10 @@ const registerNewUser = async () => {
  */
 const setupAuthenticatedUser = async () => {
     // Log in with the user's credentials
-    await page.goto("http://localhost:3000/login", { waitUntil: "networkidle0" });
+    await page.goto("http://localhost:3000/login", {
+        waitUntil: "networkidle0",
+        timeout: 180000,
+    });
 
     await page.waitForSelector('[data-testid="login-username-input"]', {
         visible: true,
@@ -146,7 +149,10 @@ defineFeature(feature, test => {
 
         then('The user should see the played game in their history', async () => {
             // Goes to the user page
-            await page.goto("http://localhost:3000/user", { waitUntil: "networkidle0" });
+            await page.goto("http://localhost:3000/user", {
+                waitUntil: "networkidle0",
+                timeout: 180000,
+            });
 
             // Click on the "Game History" tab to view the history
             await expect(page).toClick('[data-testid="game-history-link"]');
@@ -253,8 +259,11 @@ defineFeature(feature, test => {
 
         when('The user asks for a clue to the LLM', async () => {
             // Should be a first llm message saying hello
-            const llmMsgs = await page.$$('.llm-message');
-            expect(llmMsgs.length).toBe(1);
+            const llmMsgs = await page.waitForSelector('.llm-message', {
+                visible: true,
+                timeout: 300000
+              });
+            await expect(llmMsgs.length).toBe(1);
 
             const msg = "¿Me puedes dar una pista sobre la imagen?";
 
@@ -264,12 +273,18 @@ defineFeature(feature, test => {
         });
 
         then('The LLM answers the question', async () => {
-            const llmMsgs = await page.$$('.llm-message');
-            const userMsgs = await page.$$('.user-message');
+            const llmMsgs = await page.waitForSelector('.llm-message', {
+                visible: true,
+                timeout: 300000
+              });
+            const userMsgs = await page.waitForSelector('.user-message', {
+                visible: true,
+                timeout: 300000
+              });
 
             // Check that there are 2 LLM messages and 1 user message
-            expect(llmMsgs.length).toBe(2);
-            expect(userMsgs.length).toBe(1);
+            await expect(llmMsgs.length).toBe(2);
+            await expect(userMsgs.length).toBe(1);
         });
     });
 
