@@ -16,7 +16,6 @@ services:
     profiles: ["dev", "prod"]
     env_file:
       - .env
-    build: ./users/authservice
     depends_on:
       - mongodb
     ports:
