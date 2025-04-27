@@ -218,7 +218,7 @@ defineFeature(feature, test => {
             expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
         });
 
-    }, 60000); // 60 seconds timeout for the test
+    });
 
     test('The user exits the game before ending', ({ given, when, then }) => {
         given('The user has configured a game with:', async () => {
