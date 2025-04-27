@@ -16,6 +16,7 @@ export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [errorCode, setErrorCode] = useState(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const loginUser = async (event) => {
@@ -25,6 +26,7 @@ export const Login = () => {
     login(username, password, (result) => {
       if (!result.success) {
         setErrorMsg(result.error);
+        setErrorCode(result.code);
         return;
       }
 
@@ -81,7 +83,7 @@ export const Login = () => {
                 </Button>
               </Form>
               {loginSuccess && <Alert variant="success" className="mt-3">{t('login-success')}</Alert>}
-              {errorMsg && <Alert variant="danger" className="mt-3">{errorMsg}</Alert>}
+              {errorMsg && <Alert variant="danger" data-testid={`login-error-${errorCode}`} className="mt-3">{errorMsg}</Alert>}
             </Card>
           </Col>
         </Row>

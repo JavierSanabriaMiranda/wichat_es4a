@@ -55,11 +55,11 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setError(t('auth-error-bad-credentials'));
-                callback({ success: false, error: t('auth-error-bad-credentials') })
+                callback({ success: false, error: t('auth-error-bad-credentials'), code: 401})
             }
             else if (error.response && error.response.status === 429) {
                 setError(t('auth-error-too-many-attempts'));
-                callback({ success: false, error: t('auth-error-too-many-attempts') })
+                callback({ success: false, error: t('auth-error-too-many-attempts'), code: 429})
             }
         }
     };

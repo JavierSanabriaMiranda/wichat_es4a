@@ -3,7 +3,6 @@ const puppeteer = require('puppeteer');
 const { defineFeature, loadFeature } = require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/login-form.feature');
-const i18n = require('../i18n-test-helper.js'); 
 const axios = require('axios');
 
 
@@ -51,7 +50,7 @@ defineFeature(feature, test => {
     });
 
     then('I should be redirected to the homepage', async () => {
-        await expect(page).toMatchElement('h1', { text: i18n.t('welcome-home') });
+        await page.waitForSelector('[data-testid="home-title"]', { visible: true });
         
 
          // Hacer clic en las tres rayitas para desplegar el menú
@@ -87,7 +86,7 @@ defineFeature(feature, test => {
     });
 
     then('An error message should appear indicating invalid credentials', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-bad-credentials') });
+      await page.waitForSelector('[data-testid="login-error-401"]', { visible: true });
     });
   });
 
@@ -107,7 +106,7 @@ defineFeature(feature, test => {
     });
 
     then('A security message should appear saying to try again later', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-too-many-attempts') });
+      await page.waitForSelector('[data-testid="login-error-429"]', { visible: true });
     });
   });
 
