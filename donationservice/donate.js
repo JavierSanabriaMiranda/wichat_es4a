@@ -154,4 +154,7 @@ app.get('/cancel-payment', (req, res) => {
     res.redirect(redirectionUrl)
 });
 
+app.listen(port, () => {  
+})
+
 module.exports = app;
