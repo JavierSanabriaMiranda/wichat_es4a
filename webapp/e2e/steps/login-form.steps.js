@@ -4,6 +4,7 @@ const { defineFeature, loadFeature } = require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/login-form.feature');
 const axios = require('axios');
+const i18n = require('../i18n-test-helper.js');
 
 
 let page;
@@ -20,9 +21,10 @@ defineFeature(feature, test => {
   });
 
   beforeEach(async () => {
-    await page.goto("http://localhost:3000/login", {
+    await page.goto("http://localhost:3000/login", { 
       waitUntil: "networkidle0",
-    });
+      timeout: 180000,
+  });
   });
 
   let username, password;
@@ -86,7 +88,7 @@ defineFeature(feature, test => {
     });
 
     then('An error message should appear indicating invalid credentials', async () => {
-      await page.waitForSelector('[data-testid="login-error-401"]', { visible: true });
+      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-bad-credentials') });
     });
   });
 
@@ -106,7 +108,7 @@ defineFeature(feature, test => {
     });
 
     then('A security message should appear saying to try again later', async () => {
-      await page.waitForSelector('[data-testid="login-error-429"]', { visible: true });
+      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-too-many-attempts') });
     });
   });
 

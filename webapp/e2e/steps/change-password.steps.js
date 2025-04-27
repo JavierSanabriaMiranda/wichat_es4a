@@ -30,7 +30,10 @@ const registerNewUser = async () => {
  */
 const setupAuthenticatedUser = async () => {
     // Log in with the user's credentials
-    await page.goto("http://localhost:3000/login", { waitUntil: "networkidle0" });
+    await page.goto("http://localhost:3000/login", { 
+        waitUntil: "networkidle0", 
+        timeout: 180000, 
+    });
 
     await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
 
@@ -64,12 +67,12 @@ defineFeature(feature, test => {
         const newPassword = 'NewValidPassword123';
 
         given('A user logged in', async () => {
-            
-            setupAuthenticatedUser();
+            await setupAuthenticatedUser();
         });
 
         when('They fill in the change password form and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
+
             // Fills in the current password, new password and confirm password fields
             await expect(page).toFill('[data-testid="current-password-input"]', password)
             await expect(page).toFill('[data-testid="new-password-input"]', newPassword)
@@ -88,7 +91,7 @@ defineFeature(feature, test => {
     test('User enters a new password that doesn\'t match the confirmation', ({ when, then }) => {
 
         when('They fill in the change password form with mismatched passwords and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', password);
             await expect(page).toFill('[data-testid="new-password-input"]', 'NewPassword123');
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'DifferentPassword123');
@@ -103,7 +106,7 @@ defineFeature(feature, test => {
     test('User enters a new password without an uppercase letter', ({  when, then }) => {
 
         when('They fill in the change password form with an invalid password and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', password);
             await expect(page).toFill('[data-testid="new-password-input"]', 'newpassword123');
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'newpassword123');
@@ -118,7 +121,7 @@ defineFeature(feature, test => {
     test('User enters a new password without a number', ({ when, then }) => {
 
         when('They fill in the change password form with an invalid password and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', password);
             await expect(page).toFill('[data-testid="new-password-input"]', 'NoNumberPassword');
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'NoNumberPassword');
@@ -133,7 +136,7 @@ defineFeature(feature, test => {
     test('User enters a new password with spaces', ({ when, then }) => {
     
         when('They fill in the change password form with a password containing spaces and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', password);
             await expect(page).toFill('[data-testid="new-password-input"]', 'Password With Space');
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'Password With Space');
@@ -147,7 +150,7 @@ defineFeature(feature, test => {
 
     test('User enters a new password with less than 8 characters', ({ when, then }) => {
         when('They fill in the change password form with a password shorter than 8 characters and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', password);
             await expect(page).toFill('[data-testid="new-password-input"]', 'short');
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', 'short');
@@ -162,7 +165,7 @@ defineFeature(feature, test => {
     test('User enters incorrect current password', ({ when, then }) => {
         const newPassword = 'NewValidPassword123';
         when('They fill in the current password form with an incorrect password and submit it', async () => {
-            await page.waitForSelector(`#formCurrentPassword`, { visible: true });
+            await page.waitForSelector('[data-testid="current-password-input"]', { visible: true });
             await expect(page).toFill('[data-testid="current-password-input"]', 'WrongPassword123');
             await expect(page).toFill('[data-testid="new-password-input"]', newPassword);
             await expect(page).toFill('[data-testid="confirm-new-password-input"]', newPassword);

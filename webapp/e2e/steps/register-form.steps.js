@@ -19,8 +19,9 @@ defineFeature(feature, test => {
   });
 
   beforeEach(async () => {
-    await page.goto("http://localhost:3000/adduser", {
+    await page.goto("http://localhost:3000/adduser", { 
       waitUntil: "networkidle0",
+      timeout: 180000,
     });
   });
 

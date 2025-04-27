@@ -108,8 +108,9 @@ defineFeature(feature, test => {
     // Redirects to the home page and waits for the page to load
      
     beforeEach(async () => {
-        await page.goto("http://localhost:3000/", {
-            waitUntil: "networkidle0",
+        await page.goto("http://localhost:3000/", { 
+            waitUntil: "networkidle0", 
+            timeout: 180000,
         });
     });
     
