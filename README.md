@@ -16,16 +16,21 @@
 <img align="center" src="https://github.com/Arquisoft/wichat_es4a/blob/fb12a447b31793acba7aa8dd72ca83e6fe88f601/webapp/public/images/logo.png" height="200">
 
 ## Contributors
-<img align="right" width="450" height="277.5" src="dog.gif"> 
 
-| Name | GitHub Profile|
-|------|---------------|
-|Andrea Acero Suárez| <a href="https://github.com/AndreaAcero"><img src="https://img.shields.io/badge/UO287876-Andrea Acero-blue"></a>
-|Ana Díez Díaz| <a href="https://github.com/UO288302"><img src="https://img.shields.io/badge/UO288302-Ana Díez-green"></a>
-|Aitor Gómez Ogueta| <a href="https://github.com/Aitorsiius"><img src="https://img.shields.io/badge/UO294066-Aitor Gómez-red"></a>
-|Adriana Herrero González| <a href="https://github.com/adrianaherreroglez"><img src="https://img.shields.io/badge/UO287543-Adriana Herrero-pink"></a>
-|Claudia Nistal Martínez| <a href="https://github.com/claudianistal"><img src="https://img.shields.io/badge/UO294420-Claudia Nistal-orange"></a>
-|Javier Sanabria Miranda| <a href="https://github.com/JavierSanabriaMiranda"><img src="https://img.shields.io/badge/UO293758-Javier Sanabria-yellow"></a>
+<p float="left">
+  
+  <img src="dog.gif" width="40%" align="right">
+
+</p>
+
+| Name | GitHub Profile |
+|------|----------------|
+| Andrea Acero Suárez | <a href="https://github.com/AndreaAcero"><img src="https://img.shields.io/badge/UO287876-Andrea%20Acero-blue"></a> |
+| Ana Díez Díaz | <a href="https://github.com/UO288302"><img src="https://img.shields.io/badge/UO288302-Ana%20Díez-green"></a> |
+| Aitor Gómez Ogueta | <a href="https://github.com/Aitorsiius"><img src="https://img.shields.io/badge/UO294066-Aitor%20Gómez-red"></a> |
+| Adriana Herrero González | <a href="https://github.com/adrianaherreroglez"><img src="https://img.shields.io/badge/UO287543-Adriana%20Herrero-pink"></a> |
+| Claudia Nistal Martínez | <a href="https://github.com/claudianistal"><img src="https://img.shields.io/badge/UO294420-Claudia%20Nistal-orange"></a> |
+| Javier Sanabria Miranda | <a href="https://github.com/JavierSanabriaMiranda"><img src="https://img.shields.io/badge/UO293758-Javier%20Sanabria-yellow"></a> |
 
 This is a base project for the Software Architecture course in 2024/2025. It is a basic application composed of several components.
 
