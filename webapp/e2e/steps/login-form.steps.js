@@ -71,14 +71,16 @@ defineFeature(feature, test => {
       // Hacemos clic en el icono de logout
       await page.click('nav [data-testid="logout-icon"]');
 
+      const xpath = '/html/body/div[3]/div/div/div[3]/button[2]';
+
       // Esperamos a que el modal de confirmación aparezca
-      await page.waitForSelector('.modal-footer button.btn-danger', {
+      const [button] = await page.waitForXPath(xpath, {
         visible: true,
         timeout: 300000
       });
 
       // Hacemos clic en el botón de "Confirmar" del modal para cerrar sesión
-      await page.click('.modal-footer button.btn-danger');
+      await button.click();
     });
   });
 
