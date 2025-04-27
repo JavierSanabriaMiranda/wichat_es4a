@@ -72,9 +72,15 @@ function filterUnique(results, label, limit) {
  * @returns {Array} - An array of up to 4 unique results based on the entity labels, including the corresponding images.
  * 
  */
-async function executeQuery(query) {
-
-  const offset = 150;
+async function executeQuery(query, topics) {
+  let offset;
+  const topicsArray = Array.isArray(topics) ? topics : [topics];
+  
+  if (topicsArray.some(topic => topic === "sport" || topic === "geography" || topic == "history")) {
+    offset = Math.floor(Math.random() * 100); 
+  }else{
+    offset = Math.floor(Math.random() * 100) + 200;
+  }
   const finalQuery = query + ` LIMIT ` + offset + ` OFFSET ${offset}`;
 
   const response = await axios.post(url, finalQuery, {
@@ -110,7 +116,7 @@ async function generateQuestion(topics, lang) {
   // Get the SPARQL query from the selected template
   const query = randomTemplate.query;
   // Run the query to get the data
-  const results = await executeQuery(query);
+  const results = await executeQuery(query,topics);
 
   // If there are results, generate the question with its options(correct and false ones)
   if (results.length > 0) {
