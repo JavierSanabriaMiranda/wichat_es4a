@@ -40,20 +40,27 @@ app.post('/adduser', async (req, res) => {
   try {
     // Check if required fields are present in the request body
     validateRequiredFields(req, ['username', 'password']);
-
-    // Validate that username is a string
-    if (typeof req.body.username !== 'string') {
-      return res.status(400).json({ error: 'Invalid username format' });
-    }
+    req.body.username = req.body.username.replace(/[^\w\s]/gi, ''); // Remove special characters
 
     // Password security validation
     validatePassword(req.body.password);
 
-    // Sanitize username (optional, por si quieres limpiar espacios, etc.)
-    const username = req.body.username.trim();
+    const rawUsername = req.body.username;
 
-    // Check if the username already exists
-    let existingUser = await User.findOne({ username: username })
+    // Validate that username is a string
+    if (typeof rawUsername !== 'string') {
+      return res.status(400).json({ error: 'Invalid username format' });
+    }
+
+    // Optional: sanitize username
+    const username = rawUsername.trim();
+
+    // Extra validation
+    if (username.length < 3 || username.length > 30) {
+      return res.status(400).json({ error: 'Username must be between 3 and 30 characters' });
+    }
+
+    let existingUser = await User.findOne({ username: username });
     if (existingUser) {
       return res.status(409).json({ error: 'Username already exists' });
     }
