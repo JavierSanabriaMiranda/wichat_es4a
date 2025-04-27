@@ -92,7 +92,7 @@ const executePayment = (req, res) => {
         console.log('Pago completado:', response.body);
         console.log('Enviando correo');
         const nombreDonante = response.body.payer.name.given_name;
-        const correoDelDonante = 'andreaacerobus@gmail.com';//response.body.payer.email_address;
+        const correoDelDonante = 'WiChat4a@gmail.com';//response.body.payer.email_address;
         const cantidadDonada = response.body.purchase_units[0].payments.captures[0].amount.value;
         const moneda = response.body.purchase_units[0].payments.captures[0].amount.currency_code;
         const mailOptions = {
