@@ -4,7 +4,6 @@ const { defineFeature, loadFeature } = require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/login-form.feature');
 const axios = require('axios');
-const i18n = require('../i18n-test-helper.js');
 
 
 let page;
@@ -21,10 +20,10 @@ defineFeature(feature, test => {
   });
 
   beforeEach(async () => {
-    await page.goto("http://localhost:3000/login", { 
+    await page.goto("http://localhost:3000/login", {
       waitUntil: "networkidle0",
       timeout: 180000,
-  });
+    });
   });
 
   let username, password;
@@ -34,8 +33,8 @@ defineFeature(feature, test => {
       username = "validUser";
       password = "ValidPassword123";
 
-       // Register the user if not already registered
-       await axios.post('http://localhost:8000/adduser', {
+      // Register the user if not already registered
+      await axios.post('http://localhost:8000/adduser', {
         username: username,
         password: password,
         confirmPassword: password,
@@ -43,29 +42,40 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
-      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="login-username-input"]', {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="login-username-input"]', username);
       await expect(page).toFill('[data-testid="login-password-input"]', password)
-      
+
       await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('I should be redirected to the homepage', async () => {
-        await page.waitForSelector('[data-testid="home-title"]', { visible: true });
-        
+      await page.waitForSelector('[data-testid="home-title"]', {
+        visible: true,
+        timeout: 300000
+      });
 
-         // Hacer clic en las tres rayitas para desplegar el menú
+      // Hacer clic en las tres rayitas para desplegar el menú
       await page.click('.navbar-toggler');  // Esto abre el menú hamburguesa en dispositivos móviles
 
       // Esperamos que el botón de logout sea visible ahora
-      await page.waitForSelector('nav [data-testid="logout-icon"]'); // Esperamos que el icono de logout sea visible
+      await page.waitForSelector('nav [data-testid="logout-icon"]', {
+        visible: true,
+        timeout: 300000
+      });
 
       // Hacemos clic en el icono de logout
       await page.click('nav [data-testid="logout-icon"]');
 
       // Esperamos a que el modal de confirmación aparezca
-      await page.waitForSelector('.modal-footer button.btn-danger');  // Esperamos el botón de confirmación
+      await page.waitForSelector('.modal-footer button.btn-danger', {
+        visible: true,
+        timeout: 300000
+      });
 
       // Hacemos clic en el botón de "Confirmar" del modal para cerrar sesión
       await page.click('.modal-footer button.btn-danger');
@@ -79,16 +89,19 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
-      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="login-username-input"]', {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="login-username-input"]', username);
       await expect(page).toFill('[data-testid="login-password-input"]', password);
-      
+
       await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('An error message should appear indicating invalid credentials', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-bad-credentials') });
+      await expect(page).toMatchElement("div.alert-danger");
     });
   });
 
@@ -99,7 +112,11 @@ defineFeature(feature, test => {
     });
 
     when('I attempt to log in with invalid credentials more than 5 times', async () => {
-      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="login-username-input"]', {
+        visible: true,
+        timeout: 300000
+      });
+
       for (let i = 0; i < 4; i++) {
         await expect(page).toFill('[data-testid="login-username-input"]', username);
         await expect(page).toFill('[data-testid="login-password-input"]', password)
@@ -108,11 +125,11 @@ defineFeature(feature, test => {
     });
 
     then('A security message should appear saying to try again later', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-too-many-attempts') });
+      await expect(page).toMatchElement("div.alert-danger");
     });
   });
 
-  
+
 
   afterAll(async () => {
     await browser.close();

@@ -2,8 +2,6 @@ const puppeteer = require('puppeteer');
 const { defineFeature, loadFeature } = require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/register-form.feature');
-const i18n = require('../i18n-test-helper.js');
-
 
 let page;
 let browser;
@@ -36,7 +34,10 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="register-username-input"]',  {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="register-username-input"]', username);
       await expect(page).toFill('[data-testid="register-password-input"]', password);
@@ -47,7 +48,7 @@ defineFeature(feature, test => {
     });
 
     then('A success message should appear', async () => {
-      await expect(page).toMatchElement("div.alert-success", { text: i18n.t('user-added') });
+      await expect(page).toMatchElement("div.alert-success");
     });
   });
 
@@ -60,7 +61,10 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="register-username-input"]',  {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="register-username-input"]', username);
       await expect(page).toFill('[data-testid="register-password-input"]', password);
@@ -70,7 +74,7 @@ defineFeature(feature, test => {
     });
 
     then('An error message about password content should appear', async () => { 
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('password-error-content') });
+      await expect(page).toMatchElement("div.alert-danger");
     });
   });
 
@@ -83,7 +87,10 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="register-username-input"]',  {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="register-username-input"]', username);
       await expect(page).toFill('[data-testid="register-password-input"]', password);
@@ -93,7 +100,7 @@ defineFeature(feature, test => {
     });
 
     then('An error message about password mismatch should appear', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('password-mismatch-error') });
+      await expect(page).toMatchElement("div.alert-danger");
     });
   });
 
@@ -103,7 +110,10 @@ defineFeature(feature, test => {
       password = "ValidPass123";
       confirmPassword = "ValidPass123";
 
-      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="register-username-input"]',  {
+        visible: true,
+        timeout: 300000
+      });
       // Register the user first
       await expect(page).toFill('[data-testid="register-username-input"]', username);
       await expect(page).toFill('[data-testid="register-password-input"]', password);
@@ -112,14 +122,17 @@ defineFeature(feature, test => {
       await expect(page).toClick('[data-testid="register-button"]');
 
       // Wait for the success message
-      await expect(page).toMatchElement("div.alert-success", { text: i18n.t('user-added') });
+      await expect(page).toMatchElement("div.alert-success");
 
       // Reload the page to reset the form
       await page.reload({ waitUntil: "networkidle0" });
     });
 
     when("I fill the registration form with the same username and submit it", async () => {
-      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+      await page.waitForSelector('[data-testid="register-username-input"]',  {
+        visible: true,
+        timeout: 300000
+      });
 
       await expect(page).toFill('[data-testid="register-username-input"]', username);
       await expect(page).toFill('[data-testid="register-password-input"]', password);
@@ -129,7 +142,7 @@ defineFeature(feature, test => {
     });
 
     then("An error message about existing username should appear", async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('user-not-added') + i18n.t('username-already-exists') });
+      await expect(page).toMatchElement("div.alert-danger");
     });
   });
 

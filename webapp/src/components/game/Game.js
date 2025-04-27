@@ -354,7 +354,7 @@ export const Game = () => {
                         <Button variant="secondary" onClick={handleCloseModal}>
                             {t('exit-confirm-msg-close')}
                         </Button>
-                        <Button variant="danger" onClick={exitFromGame}>
+                        <Button data-testid="exit-game-modal-button" variant="danger" onClick={exitFromGame}>
                             {t('exit-confirm-msg-exit')}
                         </Button>
                     </Modal.Footer>

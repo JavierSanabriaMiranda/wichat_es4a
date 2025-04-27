@@ -172,7 +172,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button disabled={topics.length === 0} className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
+        <Button data-testid="play-configuration-button" disabled={topics.length === 0} className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
       </div>
     </div>
   );
