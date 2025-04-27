@@ -34,7 +34,7 @@ const setupAuthenticatedUser = async () => {
     await page.goto("http://localhost:3000/login", { waitUntil: "networkidle0" });
     await expect(page).toClick('button', { text: i18n.t('login-message') });
     
-    await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+    await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
 
     await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
     await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);

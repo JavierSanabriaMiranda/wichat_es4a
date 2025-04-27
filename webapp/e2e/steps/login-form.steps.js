@@ -42,6 +42,8 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toClick('button', { text: i18n.t('login-message') });
@@ -75,6 +77,8 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toClick('button', { text: i18n.t('login-message') });
@@ -92,6 +96,7 @@ defineFeature(feature, test => {
     });
 
     when('I attempt to log in with invalid credentials more than 5 times', async () => {
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
       for (let i = 0; i < 4; i++) {
         await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
         await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);

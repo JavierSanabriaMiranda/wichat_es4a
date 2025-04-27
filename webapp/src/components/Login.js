@@ -57,6 +57,7 @@ export const Login = () => {
                 <Form.Group className="mb-3" controlId="formUsername">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('username-message')}</Form.Label>
                   <Form.Control
+                    data-testid="login-username-input"
                     type="text"
                     placeholder={t('enter-username-placeholder')}
                     value={username}

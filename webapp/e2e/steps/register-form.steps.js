@@ -35,7 +35,7 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
 
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
@@ -57,7 +57,7 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
 
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
@@ -79,7 +79,7 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
 
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
@@ -98,6 +98,7 @@ defineFeature(feature, test => {
       password = "ValidPass123";
       confirmPassword = "ValidPass123";
 
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
       // Register the user first
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
@@ -112,7 +113,7 @@ defineFeature(feature, test => {
     });
 
     when("I fill the registration form with the same username and submit it", async () => {
-      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
 
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
