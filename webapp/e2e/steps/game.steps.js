@@ -55,6 +55,8 @@ const configureGame = async ({ questions = '10', time = '60s', topicClass = 'tog
     await page.waitForSelector('[data-testid="quickGame-button"]', { visible: true });
     // Opens the modal
     await expect(page).toClick('[data-testid="quickGame-button"]');
+    // Waits for the modal to be visible
+    await page.waitForSelector('[data-testid="configuration-modal-title"]', { visible: true });
     await expect(page).toMatchElement('h2', { text: i18n.t("title-configuration") });
 
     // Number of Questions
