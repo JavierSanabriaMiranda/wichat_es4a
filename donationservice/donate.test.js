@@ -20,6 +20,10 @@ jest.mock('nodemailer', () => {
   };
 });
 
+afterAll(() => {
+  app.close();
+});
+
 describe('Pruebas de Donaciones con PayPal Sandbox', () => {
   
   beforeEach(() => {

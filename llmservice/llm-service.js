@@ -113,6 +113,26 @@ app.post('/askllm/clue', async (req, res) => {
     let answer = "idk";
     let cleanContext = context.filter(msg => typeof msg.content === 'string' && msg.content.trim() !== '');
     let history = cleanContext.map((msg, i) => `Turno ${i + 1} [${msg.role}]: ${msg.content}`).join('\n');
+
+    let prompt = `
+    Estás ayudando a un usuario a adivinar el término secreto: **"${correctAnswer}"**.
+    Tu tarea es proporcionarle pistas útiles, pero sin revelar directa o indirectamente el término ni ninguna de sus partes.
+    
+    Instrucciones:
+    - Jamás digas ni parte ni sinónimo de "${correctAnswer}".
+    - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
+    - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
+    - Asegúrate de que tus pistas no se repitan.
+    
+    Conversación hasta ahora:
+    ${history}
+    
+    Nueva pregunta del usuario: "${question}"
+    
+    ¿Qué le responderías en ${getLanguage(language)}?
+    `.trim();
+
+    var llmResponse = "idk";
     while (attempts < 3) {
             /**
        * Generates a question prompt for a user to guess a name without revealing it.
@@ -122,32 +142,18 @@ app.post('/askllm/clue', async (req, res) => {
        * @param {string} language - The language in which the response should be given.
        * @returns {string} - A response for the user to guess the name without revealing it, in the specified language.
        */
-      let prompt = `
-            Estás ayudando a un usuario a adivinar el término secreto: **"${correctAnswer}"**.
-            Tu tarea es proporcionarle pistas útiles, pero sin revelar directa o indirectamente el término ni ninguna de sus partes.
-            
-            Instrucciones:
-            - Jamás digas ni parte ni sinónimo de "${correctAnswer}".
-            - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
-            - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
-            - Asegúrate de que tus pistas no se repitan.
-            
-            Conversación hasta ahora:
-            ${history}
-            
-            Nueva pregunta del usuario: "${question}"
-            
-            ¿Qué le responderías en ${getLanguage(language)}?
-            `.trim();
-      var llmResponse = "idk";
+      
       try {
         llmResponse = await sendQuestionToLLM(prompt, apiKey, model);
       }
       catch (error) {
         attempts++;
+        continue;
       }
+      
       answer = llmResponse;
       break;
+
     }
 
     if (answer === "idk") {
@@ -160,7 +166,7 @@ app.post('/askllm/clue', async (req, res) => {
       let fallbackResponse = await sendQuestionToLLM(fallbackQuestion, apiKey);
       answer = fallbackResponse;
     }
-    
+
     res.json({ answer });
 
   } catch (error) {

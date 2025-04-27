@@ -16,6 +16,7 @@ export const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [errorCode, setErrorCode] = useState(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
 
   const loginUser = async (event) => {
@@ -25,6 +26,7 @@ export const Login = () => {
     login(username, password, (result) => {
       if (!result.success) {
         setErrorMsg(result.error);
+        setErrorCode(result.code);
         return;
       }
 
@@ -57,6 +59,7 @@ export const Login = () => {
                 <Form.Group className="mb-3" controlId="formUsername">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('username-message')}</Form.Label>
                   <Form.Control
+                    data-testid="login-username-input"
                     type="text"
                     placeholder={t('enter-username-placeholder')}
                     value={username}
@@ -67,6 +70,7 @@ export const Login = () => {
                 <Form.Group className="mb-3" controlId="formPassword">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-message')}</Form.Label>
                   <Form.Control
+                    data-testid="login-password-input"
                     type="password"
                     placeholder={t('enter-password-placeholder')}
                     value={password}
@@ -74,12 +78,12 @@ export const Login = () => {
                     required
                   />
                 </Form.Group>
-                <Button type="submit" className="w-100" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
+                <Button type="submit" className="w-100" data-testid="login-button" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
                     {t('login-message')}
                 </Button>
               </Form>
               {loginSuccess && <Alert variant="success" className="mt-3">{t('login-success')}</Alert>}
-              {errorMsg && <Alert variant="danger" className="mt-3">{errorMsg}</Alert>}
+              {errorMsg && <Alert variant="danger" data-testid={`login-error-${errorCode}`} className="mt-3">{errorMsg}</Alert>}
             </Card>
           </Col>
         </Row>

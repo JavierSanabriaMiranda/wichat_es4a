@@ -32,14 +32,15 @@ const registerNewUser = async () => {
 const setupAuthenticatedUser = async () => {
     // Log in with the user's credentials
     await page.goto("http://localhost:3000/login", { waitUntil: "networkidle0" });
-    await expect(page).toClick('button', { text: i18n.t('login-message') });
-    await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-    await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-    await expect(page).toClick('button', { text: i18n.t('login-message') });
-
-    await page.waitForSelector('h1', { text: i18n.t('welcome-home') });
-    await expect(page).toMatchElement('h1', { text: i18n.t('welcome-home') });
     
+    await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+
+    await expect(page).toFill('[data-testid="login-username-input"]', username);
+    await expect(page).toFill('[data-testid="login-password-input"]', password)
+    await expect(page).toClick('[data-testid="login-button"]');
+
+    await page.waitForSelector('[data-testid="home-title"]', { visible: true });
+    await expect(page).toMatchElement('h1', { text: i18n.t('welcome-home') });
 }
 
 /**
@@ -50,8 +51,12 @@ const setupAuthenticatedUser = async () => {
  * @param {String} topicText - Text of the topic button to be selected.
  */
 const configureGame = async ({ questions = '10', time = '60s', topicClass = 'toggle-btn-geography', topicText }) => {
+    
+    await page.waitForSelector('[data-testid="quickGame-button"]', { visible: true });
     // Opens the modal
-    await expect(page).toClick('button', { text: i18n.t("quickGame-home") });
+    await expect(page).toClick('[data-testid="quickGame-button"]');
+    // Waits for the modal to be visible
+    await page.waitForSelector('[data-testid="configuration-modal-title"]', { visible: true });
     await expect(page).toMatchElement('h2', { text: i18n.t("title-configuration") });
 
     // Number of Questions

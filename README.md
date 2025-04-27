@@ -3,11 +3,36 @@
 [![Actions Status](https://github.com/arquisoft/wichat_es4a/workflows/CI%20for%20wichat_es4a/badge.svg)](https://github.com/arquisoft/wichat_es4a/actions)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es4a&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es4a)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es4a&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es4a)
+[![Open Issues](https://img.shields.io/github/issues/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/issues?q=is%3Aissue+is%3Aclosed)
+[![Pull Requests](https://img.shields.io/github/issues-pr/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/pulls)
+[![Open Source](https://badgen.net/badge/open-source/yes/green)](https://github.com/arquisoft/wichat_es4a)
+
+[![CodeScene Average Code Health](https://codescene.io/projects/66324/status-badges/average-code-health)](https://codescene.io/projects/66324)
+[![CodeScene Hotspot Code Health](https://codescene.io/projects/66324/status-badges/hotspot-code-health)](https://codescene.io/projects/66324)
+[![CodeScene System Mastery](https://codescene.io/projects/66324/status-badges/system-mastery)](https://codescene.io/projects/66324)
+[![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/66324)
+
+<img align="center" src="https://github.com/Arquisoft/wichat_es4a/blob/fb12a447b31793acba7aa8dd72ca83e6fe88f601/webapp/public/images/logo.png" height="200">
+
+## Contributors
 
 <p float="left">
-<img src="https://blog.wildix.com/wp-content/uploads/2020/06/react-logo.jpg" height="100">
-<img src="https://miro.medium.com/max/365/1*Jr3NFSKTfQWRUyjblBSKeg.png" height="100">
+  
+  <img src="dog.gif" width="40%" align="right">
+
 </p>
+
+| Name | GitHub Profile |
+|------|----------------|
+| Andrea Acero Suárez | <a href="https://github.com/AndreaAcero"><img src="https://img.shields.io/badge/UO287876-Andrea%20Acero-blue"></a> |
+| Ana Díez Díaz | <a href="https://github.com/UO288302"><img src="https://img.shields.io/badge/UO288302-Ana%20Díez-green"></a> |
+| Aitor Gómez Ogueta | <a href="https://github.com/Aitorsiius"><img src="https://img.shields.io/badge/UO294066-Aitor%20Gómez-red"></a> |
+| Adriana Herrero González | <a href="https://github.com/adrianaherreroglez"><img src="https://img.shields.io/badge/UO287543-Adriana%20Herrero-pink"></a> |
+| Claudia Nistal Martínez | <a href="https://github.com/claudianistal"><img src="https://img.shields.io/badge/UO294420-Claudia%20Nistal-orange"></a> |
+| Javier Sanabria Miranda | <a href="https://github.com/JavierSanabriaMiranda"><img src="https://img.shields.io/badge/UO293758-Javier%20Sanabria-yellow"></a> |
+
+## Context
 
 This is a base project for the Software Architecture course in 2024/2025. It is a basic application composed of several components.
 
@@ -15,6 +40,7 @@ This is a base project for the Software Architecture course in 2024/2025. It is 
 - **Auth service**. Express service that handles the authentication of users.
 - **LLM service**. Express service that handles the communication with the LLM.
 - **Gateway service**. Express service that is exposed to the public and serves as a proxy to the two previous ones.
+- **Donation service**. Express service that handles PayPal donations by creating orders, capturing payments, and sending personalized thank-you emails. It connects to PayPal's API.
 - **Webapp**. React web application that uses the gateway service to allow basic login and new user features.
 
 Both the user and auth service share a Mongo database that is accessed with mongoose.

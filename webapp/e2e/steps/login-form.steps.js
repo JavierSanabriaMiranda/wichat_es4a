@@ -3,7 +3,6 @@ const puppeteer = require('puppeteer');
 const { defineFeature, loadFeature } = require('jest-cucumber');
 const setDefaultOptions = require('expect-puppeteer').setDefaultOptions;
 const feature = loadFeature('./features/login-form.feature');
-const i18n = require('../i18n-test-helper.js'); 
 const axios = require('axios');
 
 
@@ -42,13 +41,16 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toClick('button', { text: i18n.t('login-message') });
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="login-username-input"]', username);
+      await expect(page).toFill('[data-testid="login-password-input"]', password)
+      
+      await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('I should be redirected to the homepage', async () => {
-        await expect(page).toMatchElement('h1', { text: i18n.t('welcome-home') });
+        await page.waitForSelector('[data-testid="home-title"]', { visible: true });
         
 
          // Hacer clic en las tres rayitas para desplegar el menú
@@ -75,13 +77,16 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toClick('button', { text: i18n.t('login-message') });
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="login-username-input"]', username);
+      await expect(page).toFill('[data-testid="login-password-input"]', password);
+      
+      await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('An error message should appear indicating invalid credentials', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-bad-credentials') });
+      await page.waitForSelector('[data-testid="login-error-401"]', { visible: true });
     });
   });
 
@@ -92,15 +97,16 @@ defineFeature(feature, test => {
     });
 
     when('I attempt to log in with invalid credentials more than 5 times', async () => {
+      await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
       for (let i = 0; i < 4; i++) {
-        await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-        await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-        await expect(page).toClick('button', { text: i18n.t('login-message') });
+        await expect(page).toFill('[data-testid="login-username-input"]', username);
+        await expect(page).toFill('[data-testid="login-password-input"]', password)
+        await expect(page).toClick('[data-testid="login-button"]');
       }
     });
 
     then('A security message should appear saying to try again later', async () => {
-      await expect(page).toMatchElement("div.alert-danger", { text: i18n.t('auth-error-too-many-attempts') });
+      await page.waitForSelector('[data-testid="login-error-429"]', { visible: true });
     });
   });
 

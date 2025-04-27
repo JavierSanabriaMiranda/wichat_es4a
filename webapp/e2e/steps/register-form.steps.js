@@ -35,10 +35,14 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
-      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="register-username-input"]', username);
+      await expect(page).toFill('[data-testid="register-password-input"]', password);
+      await expect(page).toFill('[data-testid="register-confirm-password-input"]', confirmPassword);
+     
+      await expect(page).toClick('[data-testid="register-button"]');
+      
     });
 
     then('A success message should appear', async () => {
@@ -55,10 +59,13 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
-      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="register-username-input"]', username);
+      await expect(page).toFill('[data-testid="register-password-input"]', password);
+      await expect(page).toFill('[data-testid="register-confirm-password-input"]', confirmPassword);
+     
+      await expect(page).toClick('[data-testid="register-button"]');
     });
 
     then('An error message about password content should appear', async () => { 
@@ -75,10 +82,13 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
-      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="register-username-input"]', username);
+      await expect(page).toFill('[data-testid="register-password-input"]', password);
+      await expect(page).toFill('[data-testid="register-confirm-password-input"]', confirmPassword);
+     
+      await expect(page).toClick('[data-testid="register-button"]');
     });
 
     then('An error message about password mismatch should appear', async () => {
@@ -92,11 +102,13 @@ defineFeature(feature, test => {
       password = "ValidPass123";
       confirmPassword = "ValidPass123";
 
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
       // Register the user first
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
-      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+      await expect(page).toFill('[data-testid="register-username-input"]', username);
+      await expect(page).toFill('[data-testid="register-password-input"]', password);
+      await expect(page).toFill('[data-testid="register-confirm-password-input"]', confirmPassword);
+     
+      await expect(page).toClick('[data-testid="register-button"]');
 
       // Wait for the success message
       await expect(page).toMatchElement("div.alert-success", { text: i18n.t('user-added') });
@@ -106,10 +118,13 @@ defineFeature(feature, test => {
     });
 
     when("I fill the registration form with the same username and submit it", async () => {
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
-      await expect(page).toClick('button', { text: i18n.t('signup-message') });
+      await page.waitForSelector('[data-testid="register-username-input"]', { visible: true });
+
+      await expect(page).toFill('[data-testid="register-username-input"]', username);
+      await expect(page).toFill('[data-testid="register-password-input"]', password);
+      await expect(page).toFill('[data-testid="register-confirm-password-input"]', confirmPassword);
+     
+      await expect(page).toClick('[data-testid="register-button"]');
     });
 
     then("An error message about existing username should appear", async () => {

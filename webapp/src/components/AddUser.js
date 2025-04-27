@@ -98,6 +98,7 @@ export const AddUser = () => {
                 <Form.Group className="mb-3" controlId="formUsername">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('username-message')}</Form.Label>
                   <Form.Control
+                    data-testid="register-username-input"
                     type="text"
                     placeholder={t('enter-username-placeholder')}
                     value={username}
@@ -108,6 +109,7 @@ export const AddUser = () => {
                 <Form.Group className="mb-3" controlId="formPassword">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-message')}</Form.Label>
                   <Form.Control
+                    data-testid="register-password-input"
                     type="password"
                     placeholder={t('enter-password-placeholder')}
                     value={password}
@@ -118,6 +120,7 @@ export const AddUser = () => {
                 <Form.Group className="mb-3" controlId="formPasswordConfirm">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-edit-confirm')}</Form.Label>
                   <Form.Control
+                    data-testid="register-confirm-password-input"
                     type="password"
                     placeholder={t('enter-confirm-password-placeholder')}
                     value={confirmPassword}
@@ -125,7 +128,7 @@ export const AddUser = () => {
                     required
                   />
                 </Form.Group>
-                <Button type="submit" className="w-100" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
+                <Button type="submit" className="w-100" data-testid="register-button" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
                     {t('signup-message')}
                 </Button>
               </Form>
