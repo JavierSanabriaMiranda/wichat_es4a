@@ -35,6 +35,8 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
+      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
@@ -55,6 +57,8 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
+      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
@@ -75,6 +79,8 @@ defineFeature(feature, test => {
     });
 
     when('I fill the registration form and submit it', async () => {
+      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
@@ -106,6 +112,8 @@ defineFeature(feature, test => {
     });
 
     when("I fill the registration form with the same username and submit it", async () => {
+      await page.waitForSelector(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`);
+
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
       await expect(page).toFill(`input[placeholder="${i18n.t('enter-confirm-password-placeholder')}"]`, confirmPassword);
