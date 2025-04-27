@@ -263,7 +263,7 @@ defineFeature(feature, test => {
                 visible: true,
                 timeout: 300000
               });
-            await expect(llmMsgs.length).toBe(1);
+            expect(llmMsgs.length).toBe(1);
 
             const msg = "¿Me puedes dar una pista sobre la imagen?";
 
@@ -283,8 +283,8 @@ defineFeature(feature, test => {
               });
 
             // Check that there are 2 LLM messages and 1 user message
-            await expect(llmMsgs.length).toBe(2);
-            await expect(userMsgs.length).toBe(1);
+            expect(llmMsgs.length).toBe(2);
+            expect(userMsgs.length).toBe(1);
         });
     });
 
