@@ -73,16 +73,9 @@ function filterUnique(results, label, limit) {
  * 
  */
 async function executeQuery(query, topics) {
-  let offset;
-  const topicsArray = Array.isArray(topics) ? topics : [topics];
-  
-  if (topicsArray.some(topic => topic === "sport" || topic === "geography" || topic == "history")) {
-    offset = Math.floor(Math.random() * 100); 
-  }else{
-    offset = Math.floor(Math.random() * 100) + 200;
-  }
-  const finalQuery = query + ` LIMIT ` + offset + ` OFFSET ${offset}`;
-
+  const limit = 150;
+  const offset = Math.floor(Math.random() * 150);
+  const finalQuery = query + ` LIMIT ` + limit + ` OFFSET ${offset}`;
   const response = await axios.post(url, finalQuery, {
     headers: {
       "Content-Type": "application/sparql-query",
