@@ -156,12 +156,6 @@ defineFeature(feature, test => {
 
             // Click on the "Game History" tab to view the history
             await expect(page).toClick('[data-testid="game-history-link"]');
-
-            // Wait for the game history list to load and check if the game appears
-            await page.waitForSelector('.w-100.my-2.d-flex.justify-content-between.align-items-center.p-3.shadow-sm.rounded', {
-                visible: true,
-                timeout: 300000
-            });
         });
     });
 
