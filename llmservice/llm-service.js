@@ -114,14 +114,14 @@ app.post('/askllm/clue', async (req, res) => {
     let cleanContext = context.filter(msg => typeof msg.content === 'string' && msg.content.trim() !== '');
     let history = cleanContext.map((msg, i) => `Turno ${i + 1} [${msg.role}]: ${msg.content}`).join('\n');
     while (attempts < 3) {
-            /**
-       * Generates a question prompt for a user to guess a name without revealing it.
-       *
-       * @param {string} correctAnswer - The answer that the user needs to guess.
-       * @param {string} question - The question asked by the user.
-       * @param {string} language - The language in which the response should be given.
-       * @returns {string} - A response for the user to guess the name without revealing it, in the specified language.
-       */
+      /**
+ * Generates a question prompt for a user to guess a name without revealing it.
+ *
+ * @param {string} correctAnswer - The answer that the user needs to guess.
+ * @param {string} question - The question asked by the user.
+ * @param {string} language - The language in which the response should be given.
+ * @returns {string} - A response for the user to guess the name without revealing it, in the specified language.
+ */
       let prompt = `
             Estás ayudando a un usuario a adivinar el término secreto: **"${correctAnswer}"**.
             Tu tarea es proporcionarle pistas útiles, pero sin revelar directa o indirectamente el término ni ninguna de sus partes.
@@ -142,12 +142,12 @@ app.post('/askllm/clue', async (req, res) => {
       var llmResponse = "idk";
       try {
         llmResponse = await sendQuestionToLLM(prompt, apiKey, model);
+        break;
       }
       catch (error) {
         attempts++;
       }
       answer = llmResponse;
-      break;
     }
 
     if (answer === "idk") {
@@ -160,7 +160,7 @@ app.post('/askllm/clue', async (req, res) => {
       let fallbackResponse = await sendQuestionToLLM(fallbackQuestion, apiKey);
       answer = fallbackResponse;
     }
-    
+
     res.json({ answer });
 
   } catch (error) {
