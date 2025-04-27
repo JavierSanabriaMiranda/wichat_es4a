@@ -33,7 +33,7 @@ endif::arc42help[]
 | Riesgo | Descripción
 
 | **Inexperiencia del equipo en diseño arquitectónico y sistemas modulares** 
-| El equipo de desarrollo cuenta con experiencia limitada en el diseño de arquitecturas de software y en 
+|El equipo de desarrollo cuenta con experiencia limitada en el diseño de arquitecturas de software y en 
 la implementación de sistemas de gran escala con múltiples módulos interconectados, como los basados en microservicios
 
 | **Inexperiencia en el uso de Node.js**

@@ -8,16 +8,13 @@ ifdef::arc42help[]
 [role="arc42help"]
 ****
 
-.Content
-This section contains all quality requirements as quality tree with scenarios. The most important ones have already been described in section 1.2. (quality goals)
+.Contenido
+Esta sección contiene todos los requisitos de calidad en forma de un árbol de calidad con escenarios. Los más importantes ya han sido descritos en la sección 1.2 (objetivos de calidad).
 
-Here you can also capture quality requirements with lesser priority,
-which will not create high risks when they are not fully achieved.
+Aquí también se pueden capturar los requisitos de calidad de menor prioridad, los cuales no generarán altos riesgos si no se logran completamente.
 
-.Motivation
-Since quality requirements will have a lot of influence on architectural
-decisions you should know for every stakeholder what is really important to them,
-concrete and measurable.
+.Motivación
+Dado que los requisitos de calidad tendrán una gran influencia en las decisiones arquitectónicas, es importante saber qué es realmente importante para cada parte interesada, de manera concreta y medible.
 
 
 .Further Information
@@ -49,7 +46,7 @@ En cualquier caso, el árbol debe incluir enlaces a los escenarios de la siguien
 
 ****
 endif::arc42help[]
-
+[cols="e,2e" options="header"]
 |===
 |Escenario |Requisito |Objetivo
 
@@ -71,7 +68,7 @@ endif::arc42help[]
 |===
 
 === Escenarios de calidad
-
+[cols="e,2e" options="header"]
 |===
 |Id |Escenario
 

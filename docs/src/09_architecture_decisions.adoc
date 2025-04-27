@@ -1,7 +1,7 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-design-decisions]]
-== Architecture Decisions
+== Decisiones Arquitectónicas
 
 Durante el desarrollo de la aplicación, se han tomado diversas decisiones arquitectónicas que afectan tanto a la elección de tecnologías como a la estructura general del proyecto. A continuación, se detallan las principales decisiones, sus ventajas y desventajas, así como las razones detrás de cada una de ellas.
 

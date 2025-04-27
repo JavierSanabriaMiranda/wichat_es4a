@@ -66,8 +66,8 @@ Motivación::
 
 _La aplicación WiChat tiene la estructura básica para generar preguntas desde WikiData, plantearlas al usuario y, si lo desea, puede recibir pistas generadas por un modelo de lenguaje._
 
-Contained Building Blocks::
-[cols="1,2" options="header"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
@@ -118,8 +118,8 @@ endlegend
 Motivación::
 Esto muestra el flujo principal de datos de la aplicación y también la decisión arquitectónica de usar microservicios a los cuales se conectará la _Interfaz de Usuario_.
 
-Contained Building Blocks::
-[options="header",cols="1,3"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
@@ -204,8 +204,8 @@ endlegend
 Motivación::
 En este diagrama podemos ver los microservicios que proporcionarán todas las operaciones necesarias para que la aplicación funcione como el usuario se espera.
 
-Contained Building Blocks::
-[options="header",cols="1,3"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
