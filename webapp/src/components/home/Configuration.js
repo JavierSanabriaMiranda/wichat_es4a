@@ -162,6 +162,7 @@ const Configuration = ({ onClose }) => {
                 {t("sport-configuration")}
               </ToggleButton>
               <ToggleButton
+                data-testid="geography-button"
                 id="geography"
                 value={5}
                 className={`toggle-btn-geography ${selectedButtons.includes(5) ? "selected" : ""}`}

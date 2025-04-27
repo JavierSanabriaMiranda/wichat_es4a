@@ -67,7 +67,7 @@ const configureGame = async ({ questions = '10', time = '60s', topicClass = 'tog
         visible: true,
         timeout: 300000
     });
-    await expect(page).toMatchElement('#geography');
+    await expect(page).toMatchElement('[data-testid="geography-button"]');
 
     // Number of Questions
     await expect(page).toClick('button', { text: '30' });
@@ -83,7 +83,7 @@ const configureGame = async ({ questions = '10', time = '60s', topicClass = 'tog
     await expect(page).toMatchElement('[data-testid="play-configuration-button"]')
 
     // Selects the topic
-    await expect(page).toClick('#geography');
+    await expect(page).toClick('[data-testid="geography-button"]');
     // Makes sure the play button is enabled when a topic is selected
     await expect(page).toMatchElement('[data-testid="play-configuration-button"]')
     await expect(page).toClick('[data-testid="play-configuration-button"]')
