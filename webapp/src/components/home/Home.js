@@ -58,7 +58,7 @@ export const Home = () => {
   return (
     <div className="home-container">
       <NavBar />
-      <h1 className="home-heading">
+      <h1 className="home-heading" data-testid="home-title">
         {t("welcome-home")} <span className="app-name">WiChat</span>
       </h1>
       {greeting !== null && (
@@ -73,7 +73,7 @@ export const Home = () => {
         </p>
       )}
       <div className="home-buttons">
-        <Button size="lg" className="game-options" onClick={() => setShowConfig(true)}>
+        <Button size="lg" className="game-options" data-testid="quickGame-button" onClick={() => setShowConfig(true)}>
           {t("quickGame-home")}
         </Button>
         <GameConfigProvider>

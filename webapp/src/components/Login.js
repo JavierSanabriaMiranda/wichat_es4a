@@ -68,6 +68,7 @@ export const Login = () => {
                 <Form.Group className="mb-3" controlId="formPassword">
                   <Form.Label style={{ color: '#5D6C89', 'fontWeight': 'bold' }}>{t('password-message')}</Form.Label>
                   <Form.Control
+                    data-testid="login-password-input"
                     type="password"
                     placeholder={t('enter-password-placeholder')}
                     value={password}
@@ -75,7 +76,7 @@ export const Login = () => {
                     required
                   />
                 </Form.Group>
-                <Button type="submit" className="w-100" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
+                <Button type="submit" className="w-100" data-testid="login-button" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: '#5D6C89' }}>
                     {t('login-message')}
                 </Button>
               </Form>

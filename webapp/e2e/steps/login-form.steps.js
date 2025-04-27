@@ -44,9 +44,10 @@ defineFeature(feature, test => {
     when('I fill the login form and submit it', async () => {
       await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
 
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toClick('button', { text: i18n.t('login-message') });
+      await expect(page).toFill('[data-testid="login-username-input"]', username);
+      await expect(page).toFill('[data-testid="login-password-input"]', password)
+      
+      await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('I should be redirected to the homepage', async () => {
@@ -79,9 +80,10 @@ defineFeature(feature, test => {
     when('I fill the login form and submit it', async () => {
       await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
 
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-      await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-      await expect(page).toClick('button', { text: i18n.t('login-message') });
+      await expect(page).toFill('[data-testid="login-username-input"]', username);
+      await expect(page).toFill('[data-testid="login-password-input"]', password);
+      
+      await expect(page).toClick('[data-testid="login-button"]');
     });
 
     then('An error message should appear indicating invalid credentials', async () => {
@@ -98,9 +100,9 @@ defineFeature(feature, test => {
     when('I attempt to log in with invalid credentials more than 5 times', async () => {
       await page.waitForSelector('[data-testid="login-username-input"]', { visible: true });
       for (let i = 0; i < 4; i++) {
-        await expect(page).toFill(`input[placeholder="${i18n.t('enter-username-placeholder')}"]`, username);
-        await expect(page).toFill(`input[placeholder="${i18n.t('enter-password-placeholder')}"]`, password);
-        await expect(page).toClick('button', { text: i18n.t('login-message') });
+        await expect(page).toFill('[data-testid="login-username-input"]', username);
+        await expect(page).toFill('[data-testid="login-password-input"]', password)
+        await expect(page).toClick('[data-testid="login-button"]');
       }
     });
 
