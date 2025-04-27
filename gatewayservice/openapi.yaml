@@ -56,7 +56,7 @@ paths:
                     type: integer
                     example: '0'                                        
         '400':
-          description: Failed to add user due to missing fields or not secure password.
+          description: Failed to add user due to missing fields, not secure password or invalid username format.
           content:
             application/json:
               schema:
@@ -73,6 +73,12 @@ paths:
                         type: string
                         description: Password security error.
                         example: "Password error content: notSecurePassword"
+                  - type: object
+                    properties:
+                      error:
+                        type: string
+                        description: Username format error.
+                        example: "Invalid username format"
         '409':
           description: Username already exists.
           content:

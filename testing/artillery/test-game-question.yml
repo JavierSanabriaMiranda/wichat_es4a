@@ -1,16 +1,17 @@
 config:
   target: "http://localhost:8000"
   phases:
-  - duration: 10
-    arrivalRate: 10
-    rampTo: 100
+  - duration: 5
+    arrivalRate: 1
+    rampTo: 10
     name: Warm up phase
-  - duration: 20
-    arrivalRate: 100
-    rampTo: 500
+  - duration: 5
+    arrivalRate: 10
+    rampTo: 20
     name: Ramp up
-  - duration: 30
-    arrivalRate: 500
+  - duration: 5
+    arrivalRate: 20
+    rampTo: 30
     name: Steady phase
 scenarios:
   - name: "Test /api/game/question"

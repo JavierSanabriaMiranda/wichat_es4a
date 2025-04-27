@@ -101,7 +101,9 @@ export const Game = () => {
             }
 
         }
-    }, [questionResults, numberOfQuestionsAnswered, navigate, token, correctAnswers, wrongAnswers, notAnswered, points, isChaosMode]);
+        // I disable the eslint rule because I want to run this effect only when the questionResults changes
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [questionResults]);
 
     const askForNextQuestion = async () => {
         prepareUIForNextQuestion();
@@ -128,6 +130,8 @@ export const Game = () => {
             askForNextQuestion();
         };
         run();
+        // I disable the eslint rule because I want to run this effect only when the component mounts with an empty dependency array
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Empty dependency array means this effect runs only once on mount
 
     /**
@@ -278,6 +282,7 @@ export const Game = () => {
         }
     }, [exitRequested, isLoading, navigate]);
 
+
     /**
      * Finds the correct answer from a list of answers.
      * @param {Array} answers - The array of answer objects.
@@ -313,7 +318,7 @@ export const Game = () => {
                     <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
                 </div>
                 <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img className="question-img" src={question.imageUrl} alt="" />}
+                    {isLoading ? <Spinner animation="border" /> : <img alt="Question" className="question-img" src={question.imageUrl} />}
                 </div>
                 <section id="question-answers-section">
                     <div id="game-answer-buttons-section">

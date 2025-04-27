@@ -166,7 +166,7 @@ app.post('/askllm/clue', async (req, res) => {
       let fallbackResponse = await sendQuestionToLLM(fallbackQuestion, apiKey);
       answer = fallbackResponse;
     }
-    
+
     res.json({ answer });
 
   } catch (error) {
