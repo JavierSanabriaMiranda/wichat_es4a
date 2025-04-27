@@ -259,11 +259,10 @@ defineFeature(feature, test => {
 
         when('The user asks for a clue to the LLM', async () => {
             // Should be a first llm message saying hello
-            const llmMsgs = await page.waitForSelector('.llm-message', {
+            await page.waitForSelector('[data-testid="llm-message-0"]', {
                 visible: true,
                 timeout: 300000
               });
-            expect(llmMsgs.length).toBe(1);
 
             const msg = "¿Me puedes dar una pista sobre la imagen?";
 
@@ -273,18 +272,15 @@ defineFeature(feature, test => {
         });
 
         then('The LLM answers the question', async () => {
-            const llmMsgs = await page.waitForSelector('.llm-message', {
-                visible: true,
-                timeout: 300000
-              });
-            const userMsgs = await page.waitForSelector('.user-message', {
+            await page.waitForSelector('[data-testid="user-message-1"]', {
                 visible: true,
                 timeout: 300000
               });
 
-            // Check that there are 2 LLM messages and 1 user message
-            expect(llmMsgs.length).toBe(2);
-            expect(userMsgs.length).toBe(1);
+            await page.waitForSelector('[data-testid="llm-message-2"]', {
+                visible: true,
+                timeout: 300000
+              });
         });
     });
 
