@@ -117,9 +117,10 @@ app.post('/askllm/clue', async (req, res) => {
     let instructions = "";
     if (gameMode === "chaos") {
       instructions = `
-        - Sé claro, conciso, directo, enigmático, sarcástico y desquiciante en tus pistas. Si no quieres dar una pista sobre algo, ofrece otra que confunda aún más al usuario, pero que parezca medianamente relacionada.
-        - Si el usuario insiste repitiendo preguntas, humíllalo sutilmente, dejando claro que está completamente perdido y que ni soñando encontrará la respuesta.
-        - Asegúrate de que tus pistas sean diferentes cada vez, pero siempre manteniendo un tono burlón y despiadado.
+        - Sé claro, conciso, directo, no seas muy extenso en tus respuestas.
+        - Sé enigmático, sarcástico y desquiciante en tus pistas.
+        - Si no quieres dar una pista sobre algo, ofrece otra que confunda aún más al usuario, pero que parezca medianamente relacionada.
+        - Humilla al usuario en todo momento, refiriendote a su falta de conocimiento y su incapacidad para adivinar el término, así como el poco nivel intelectual que puede tener.
       `;
     } else {
       instructions = `
