@@ -42,16 +42,22 @@ defineFeature(feature, test => {
     });
 
     when('I fill the login form and submit it', async () => {
-      await page.waitForSelector('[data-testid="login-username-input"]', {
+      
+    await page.goto("http://localhost:3000/login", {
+        waitUntil: "networkidle0",
+        timeout: 180000,
+    });
+
+    await page.waitForSelector('[data-testid="login-username-input"]', {
         visible: true,
         timeout: 300000
-      });
+    });
 
-      await expect(page).toFill('[data-testid="login-username-input"]', username);
-      await expect(page).toFill('[data-testid="login-password-input"]', password)
+    await expect(page).toFill('[data-testid="login-username-input"]', username);
+    await expect(page).toFill('[data-testid="login-password-input"]', password)
+    await expect(page).toClick('[data-testid="login-button"]');
 
-      await expect(page).toClick('[data-testid="login-button"]');
-      page.waitForNavigation(), 
+    page.waitForNavigation();
     });
 
     then('I should be redirected to the homepage', async () => {
