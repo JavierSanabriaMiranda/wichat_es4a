@@ -54,10 +54,12 @@ defineFeature(feature, test => {
     });
 
     then('I should be redirected to the homepage', async () => {
-      await page.waitForSelector('[data-testid="home-title"]', {
-        visible: true,
-        timeout: 300000
-      });
+      await page.waitForFunction(() => {
+        return document.body.innerText.includes('WICHAT');
+      }, { timeout: 7500 });
+
+      const bodyText = await page.evaluate(() => document.body.textContent);
+      expect(bodyText).toContain('WICHAT');
 
       // Hacer clic en las tres rayitas para desplegar el menú
       await page.click('.navbar-toggler');  // Esto abre el menú hamburguesa en dispositivos móviles
