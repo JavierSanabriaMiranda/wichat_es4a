@@ -5,8 +5,8 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_wichat_es4a&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_wichat_es4a)
 [![Open Issues](https://img.shields.io/github/issues/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/issues?q=is%3Aissue+is%3Aclosed)
-[![Pull Requests](https://img.shields.io/github/issues-pr/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/pulls)
-[![Open Source](https://badgen.net/badge/open-source/yes/green)](https://github.com/arquisoft/wichat_es4a)
+[![Open Pull Requests](https://img.shields.io/github/issues-pr/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/pulls)
+[![Closed Pull Requests](https://img.shields.io/github/issues-pr-closed/arquisoft/wichat_es4a)](https://github.com/arquisoft/wichat_es4a/pulls?q=is%3Apr+is%3Aclosed)
 
 [![CodeScene Average Code Health](https://codescene.io/projects/66324/status-badges/average-code-health)](https://codescene.io/projects/66324)
 [![CodeScene Hotspot Code Health](https://codescene.io/projects/66324/status-badges/hotspot-code-health)](https://codescene.io/projects/66324)

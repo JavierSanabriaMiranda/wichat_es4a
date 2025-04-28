@@ -25,7 +25,7 @@ export const ChaosButton = () => {
   const { t } = useTranslation(); // Translation hook
 
    // Predefined lists for randomization
-  const topicList = ["history", "entertainment", "art", "sport", "geography"];
+  const topicList = ["history", "character", "art", "sport", "geography"];
   const questionOptions = [10, 20, 30];
   const timeOptions = [60, 120, 180];
 

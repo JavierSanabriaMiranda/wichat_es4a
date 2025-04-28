@@ -64,7 +64,7 @@ export const UserProfile = () => {
                                 <Nav.Link eventKey="edit" style={{ color: 'white' }}>{t('edit-profile')}</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="history" style={{ color: 'white' }}>{t('game-history')}</Nav.Link>
+                                <Nav.Link data-testid="game-history-link" eventKey="history" style={{ color: 'white' }}>{t('game-history')}</Nav.Link>
                             </Nav.Item>
                         </Nav>
                     </Col>

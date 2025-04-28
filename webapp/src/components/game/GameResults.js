@@ -40,7 +40,7 @@ export const GameResults = () => {
                     <h2 className="finalPoints">{points}pts</h2>
                 </Col>
                 <Col lg={6} xs={6} className="d-flex align-items-center">
-                    <h2 className="game-details-title">{t("game-details-text")}</h2>
+                    <h2 data-testid="game-details-text" className="game-details-title">{t("game-details-text")}</h2>
                 </Col>
             </Row>
             <Row className="d-flex justify-content-md-center align-items-center">

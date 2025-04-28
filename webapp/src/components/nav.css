@@ -66,6 +66,11 @@
   color: #FEB06A;
 }
 
+.donate-menu:hover {
+  color: #FEB06A;
+}
+
+
 .language-options:active, 
 .language-options:hover, 
 .language-options:focus {
@@ -91,6 +96,11 @@
 }
 
 .rules-menu:focus, .icon-menu:focus {
+  outline: none !important; /* Remove default outline */
+  box-shadow: none !important; /* Remove default shadow */
+}
+
+.donate-menu:focus {
   outline: none !important; /* Remove default outline */
   box-shadow: none !important; /* Remove default shadow */
 }
@@ -122,6 +132,19 @@
 .rules-menu:active {
   color: #FEB06A !important; 
 }
+
+.donate-menu:active,
+.donate-menu:visited {
+  color: #FBF6F3 !important; 
+  background-color: transparent !important; 
+}
+
+.donate-menu:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  color: #FBF6F3 !important;
+}
+
 
 /* ===================== RESPONSIVE STYLE ===================== */
 @media (max-width: 992px) {

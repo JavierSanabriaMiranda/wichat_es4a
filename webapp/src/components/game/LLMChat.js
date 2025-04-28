@@ -16,7 +16,7 @@ const LLMChat = ({ name }) => {
     const { t, i18n } = useTranslation();
 
     const [messages, setMessages] = useState([
-        <p className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
+        <p data-testid="llm-message-0" className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
     ]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
@@ -46,8 +46,10 @@ const LLMChat = ({ name }) => {
         // Adding the new message to the chat
         if (!inputValue.trim()) return;
 
+        const userMsgIndex = messages.length;
+
         // Agrega el mensaje del usuario al chat
-        const userMsg = <p className="user-message" key={`user-${messages.length}`}>{inputValue}</p>;
+        const userMsg = <p data-testid={`user-message-${messages.length}`} className="user-message" key={`user-${messages.length}`}>{inputValue}</p>;
         setMessages(prevMessages => [...prevMessages, userMsg]);
 
         // Activa estado de carga para deshabilitar la entrada mientras se espera la respuesta
@@ -69,7 +71,7 @@ const LLMChat = ({ name }) => {
             const answerText = response.data.answer
 
             const llmMsg = (
-                <p className="llm-message" key={`llm-${messages.length}`}>
+                <p data-testid={`llm-message-${userMsgIndex + 1}`} className="llm-message" key={`llm-${messages.length}`}>
                     <Typewriter
                         words={[answerText]}
                         delaySpeed={100}

@@ -35,7 +35,8 @@ const router = createBrowserRouter([
   {
     path: '/addUser',
     element: <NotAuthorizedRouter><AuthRoute><AddUser /></AuthRoute></NotAuthorizedRouter>
-  }
+  },
+
 ]);
 
 export default router;

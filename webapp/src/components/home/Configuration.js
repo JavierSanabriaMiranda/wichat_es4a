@@ -36,7 +36,7 @@ const Configuration = ({ onClose }) => {
   const [selectedButtons, setSelectedButtons] = useState([]); // UI state for selected topic buttons
   const [topics, setTopics] = useState([]);  // Selected topic names
 
-  const topicList = ["history", "entertainment", "art", "sport", "geography"]; // Topic options
+  const topicList = ["history", "character", "art", "sport", "geography"]; // Topic options
 
   const navigate = useNavigate();
 
@@ -136,12 +136,12 @@ const Configuration = ({ onClose }) => {
                 {t("history-configuration")}
               </ToggleButton>
               <ToggleButton
-                id="entertainment"
+                id="character"
                 value={2}
-                className={`toggle-btn-science ${selectedButtons.includes(2) ? "selected" : ""}`}
+                className={`toggle-btn-character ${selectedButtons.includes(2) ? "selected" : ""}`}
                 onClick={() => handleButtonClick(2)}
               >
-                {t("entertainment-configuration")}
+                {t("character-configuration")}
               </ToggleButton>
               <ToggleButton
                 id="art"
@@ -162,6 +162,7 @@ const Configuration = ({ onClose }) => {
                 {t("sport-configuration")}
               </ToggleButton>
               <ToggleButton
+                data-testid="geography-button"
                 id="geography"
                 value={5}
                 className={`toggle-btn-geography ${selectedButtons.includes(5) ? "selected" : ""}`}
@@ -172,7 +173,7 @@ const Configuration = ({ onClose }) => {
             </div>
           </ToggleButtonGroup>
         </div>
-        <Button disabled={topics.length === 0} className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
+        <Button data-testid="play-configuration-button" disabled={topics.length === 0} className="play-button" onClick={() => startGame()}>{t("play-configuration")}</Button>
       </div>
     </div>
   );

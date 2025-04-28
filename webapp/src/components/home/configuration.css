@@ -61,7 +61,7 @@ h2 {
   
   /* Category toggle buttons base style */
   .toggle-btn-history,
-  .toggle-btn-science,
+  .toggle-btn-character,
   .toggle-btn-art,
   .toggle-btn-sport,
   .toggle-btn-geography {
@@ -75,7 +75,7 @@ h2 {
     background-color: #9b59b6 !important;
   }
   
-  .toggle-btn-science.selected {
+  .toggle-btn-character.selected {
     background-color: #794c53 !important;
   }
   

@@ -155,7 +155,7 @@ export const EditUser = ({ userName }) => {
 
                 {error && <p className="text-danger">{error}</p>}
 
-                <Button type="submit" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: "#5D6C89" }}>
+                <Button data-testid="change-password-button" type="submit" style={{ backgroundColor: '#FEB06A', borderColor: '#FEB06A', color: "#5D6C89" }}>
                     {t('save-changes-button')}
                 </Button>
             </Form>
@@ -169,7 +169,7 @@ export const EditUser = ({ userName }) => {
                     <p>{t('password-update-success')}</p>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                    <Button data-testid="change-password-confirmation-modal-button" variant="secondary" onClick={() => setShowModal(false)}>
                         {t('close-button-text')}
                     </Button>
                 </Modal.Footer>
