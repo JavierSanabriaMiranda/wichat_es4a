@@ -51,15 +51,13 @@ defineFeature(feature, test => {
       await expect(page).toFill('[data-testid="login-password-input"]', password)
 
       await expect(page).toClick('[data-testid="login-button"]');
+      page.waitForNavigation(), 
     });
 
     then('I should be redirected to the homepage', async () => {
-      await page.waitForFunction(() => {
-        return document.body.innerText.includes('WICHAT');
-      }, { timeout: 7500 });
-
-      const bodyText = await page.evaluate(() => document.body.textContent);
-      expect(bodyText).toContain('WICHAT');
+     
+      console.log(await page.content());
+      await page.waitForSelector('[data-testid="home-title"]');
 
       // Hacer clic en las tres rayitas para desplegar el menú
       await page.click('.navbar-toggler');  // Esto abre el menú hamburguesa en dispositivos móviles
