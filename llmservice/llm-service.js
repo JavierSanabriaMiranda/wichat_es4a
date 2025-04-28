@@ -100,9 +100,9 @@ app.post('/askllm/clue', async (req, res) => {
   let model = 'gemini';
   try {
     // Check if required fields are present in the request body
-    validateRequiredFields(req, ['correctAnswer', 'question', 'context', 'language']);
+    validateRequiredFields(req, ['correctAnswer', 'question', 'context', 'language', 'gameMode']);
 
-    const { correctAnswer, question, context = [], language } = req.body;
+    const { correctAnswer, question, context = [], language, gameMode } = req.body;
     //load the api key from an environment variable
     const apiKey = process.env.LLM_API_KEY;
     if (!apiKey) {
@@ -114,15 +114,28 @@ app.post('/askllm/clue', async (req, res) => {
     let cleanContext = context.filter(msg => typeof msg.content === 'string' && msg.content.trim() !== '');
     let history = cleanContext.map((msg, i) => `Turno ${i + 1} [${msg.role}]: ${msg.content}`).join('\n');
 
+    let instructions = "";
+    if (gameMode === "chaos") {
+      instructions = `
+        - Sé enigmático, sarcástico y desquiciante en tus pistas. Si no quieres dar una pista sobre algo, ofrece otra que confunda aún más al usuario, pero que parezca medianamente relacionada.
+        - Si el usuario insiste repitiendo preguntas, humíllalo sutilmente, dejando claro que está completamente perdido y que ni soñando encontrará la respuesta.
+        - Asegúrate de que tus pistas sean diferentes cada vez, pero siempre manteniendo un tono burlón y despiadado.
+      `;
+    } else {
+      instructions = `
+        - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
+        - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
+        - Asegúrate de que tus pistas no se repitan.
+      `;
+    }
+
     let prompt = `
     Estás ayudando a un usuario a adivinar el término secreto: **"${correctAnswer}"**.
     Tu tarea es proporcionarle pistas útiles, pero sin revelar directa o indirectamente el término ni ninguna de sus partes.
     
     Instrucciones:
     - Jamás digas ni parte ni sinónimo de "${correctAnswer}".
-    - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
-    - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
-    - Asegúrate de que tus pistas no se repitan.
+    "${instructions}"
     
     Conversación hasta ahora:
     ${history}
