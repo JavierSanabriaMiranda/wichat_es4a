@@ -142,7 +142,7 @@ const NavBar = ({ hasPadding }) => {
         <Modal.Body>{t("confirm-logout")}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowLogoutModal(false)}>{t("cancel-button")}</Button>
-          <Button variant="danger" onClick={confirmLogout}>{t("confirm-button")}</Button>
+          <Button data-testid="logout-confirm-button" variant="danger" onClick={confirmLogout}>{t("confirm-button")}</Button>
         </Modal.Footer>
       </Modal>
     
