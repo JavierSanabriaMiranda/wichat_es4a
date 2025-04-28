@@ -11,7 +11,7 @@ config:
       name: Ramp up
     - duration: 30
       arrivalRate: 500
-      name: Steady phase
+      name: Spike phase
   defaults:
     headers:
       Content-Type: "application/json"
@@ -22,10 +22,8 @@ scenarios:
       - post:
           url: "/api/game/new"
           json:
-            gameId: "game123"
-            playerId: "playerXYZ"
-            language: "es"
-            cacheId: "cache-test-001"
+            lang: "es"
+            topics: ["history", "geography"]
 
   - name: "Cargar /api/game/history/gameQuestions"
     flow:

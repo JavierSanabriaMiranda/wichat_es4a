@@ -1,28 +1,40 @@
 config:
-  target: "http://localhost:8001"
+  target: "http://localhost:8000"
   phases:
-    - duration: 10
-      arrivalRate: 10
-      rampTo: 100
+    - duration: 5
+      arrivalRate: 5
+      rampTo: 10
       name: Warm up phase
-    - duration: 20
-      arrivalRate: 100
-      rampTo: 500
+    - duration: 5
+      arrivalRate: 5
+      rampTo: 20
       name: Ramp up
-    - duration: 30
-      arrivalRate: 500
-      name: Steady phase
-  defaults:
-    headers:
-      Content-Type: "application/json"
+    - duration: 5
+      arrivalRate: 5
+      rampTo: 50
+      name: Spike phase
 
+  processor: "./processor.js"
 
 scenarios:
-  - flow:
+  - name: "Prueba de carga: EditUser"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - think: 5
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - think: 5
       - post:
           url: '/editUser'
           json:
-            user:
-              userId: 'test1'  # Cambia el ID del usuario a uno válido
-            currentPassword: '123456Aa'  # Contraseña actual del usuario
-            newPassword: '123456Bb'  # Nueva contraseña
+            username: "{{ username }}"
+            currentPassword: "{{ password }}"
+            newPassword: "{{ password }}A"

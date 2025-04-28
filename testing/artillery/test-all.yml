@@ -1,0 +1,169 @@
+config:
+  target: "http://18.171.172.59:8000"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+      rampTo: 250
+      name: Warm up phase
+    - duration: 10
+      arrivalRate: 20
+      rampTo: 500
+      name: Ramp up load
+    - duration: 15
+      arrivalRate: 20
+      rampTo: 1000
+      name: Spike phase
+  
+  processor: "./processor.js"
+
+scenarios:
+  - name: "Home"
+    flow:
+      - get:
+          url: "http://18.171.172.59:3000"
+
+  - name: "Login"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - think: 5
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+
+  - name: "Register"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+
+  - name: "EditUser"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - think: 5
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - think: 5
+      - post:
+          url: '/editUser'
+          json:
+            username: "{{ username }}"
+            currentPassword: "{{ password }}"
+            newPassword: "{{ password }}A"
+
+  - name: "EndAndSaveGame"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+          capture:
+            - json: "$.token"
+              as:   authToken
+      - think: 5
+      - post:
+          url: "/api/game/endAndSaveGame"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            numberOfQuestions: 3
+            numberOfCorrectAnswers: 2
+            gameMode: "normal"
+            points: 150
+            questions:
+              - text: "¿Cuál es la capital de España?"
+                imageUrl: "https://example.com/images/spain.png"
+                selectedAnswer: "Madrid"
+                answers:
+                  - text: "Madrid"
+                    isCorrect: true
+                  - text: "Barcelona"
+                    isCorrect: false
+                  - text: "Valencia"
+                    isCorrect: false
+              - text: "¿Qué planeta es conocido como el Planeta Rojo?"
+                imageUrl: "https://example.com/images/mars.jpg"
+                selectedAnswer: "Marte"
+                answers:
+                  - text: "Júpiter"
+                    isCorrect: false
+                  - text: "Saturno"
+                    isCorrect: false
+                  - text: "Marte"
+                    isCorrect: true
+
+  - name: "GameList"
+    flow:
+      - function: "generateCredentials"
+      - post:
+          url: "/adduser"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+      - post:
+          url: "/login"
+          json:
+            username: "{{ username }}"
+            password: "{{ password }}"
+          capture:
+            - json: "$.token"
+              as: authToken
+      - think: 2
+      - get:
+          url: "/api/game/history/gameList"
+          headers:
+            Authorization: "Bearer {{ authToken }}"
+          json:
+            gameId: "game123"
+            playerId: "playerXYZ"
+
+  - name: "New Game"
+    flow:
+      - post:
+          url: "/api/game/new"
+          json:
+            lang: "es"
+            topics: ["history", "geography"]
+
+  - name: "Question"
+    flow:
+      - post:
+          url: "/api/game/question"
+          json:
+            gameId: "game123"
+            playerId: "playerXYZ"
+            language: "es"
+            cacheId: "cache-test-001"
+
+  - name: "New Question"
+    flow:
+      - post:
+          url: "/api/question/new"
+          json:
+            lang: "es"
+            topics: ["history", "geography"]
+

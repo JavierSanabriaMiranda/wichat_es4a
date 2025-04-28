@@ -19,7 +19,5 @@ scenarios:
       - post:
           url: "/api/question/new"
           json:
-            gameId: "game123"
-            playerId: "playerXYZ"
-            language: "es"
-            cacheId: "cache-test-001"
+            lang: "es"
+            topics: ["history", "geography"]

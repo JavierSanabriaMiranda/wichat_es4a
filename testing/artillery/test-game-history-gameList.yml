@@ -12,7 +12,8 @@ config:
     - duration: 5
       arrivalRate: 20
       rampTo: 30
-      name: Steady phase
+      name: Spike phase
+
   processor: "./processor.js"
 
 scenarios:

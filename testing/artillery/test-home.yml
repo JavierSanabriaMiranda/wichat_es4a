@@ -1,21 +1,21 @@
 config:
-  target: "http://localhost:8000"   # URL del servicio o aplicación a probar
+  target: "http://18.171.52.37:8000"
   phases:
-    - duration: 5
+    - duration: 10
       arrivalRate: 1
-      rampTo: 10
-      name: Warm up phase   # Fase de calentamiento: 60 segundos, comenzando con 1 solicitud por segundo y aumentando a 100 solicitudes por segundo
-    - duration: 5
-      arrivalRate: 10
-      rampTo: 20
-      name: Ramp up load    # Incremento de carga: 60 segundos, comenzando con 100 solicitudes por segundo y aumentando a 1000 solicitudes por segundo
-    - duration: 5
-      arrivalRate: 20
-      rampTo: 30
-      name: Spike phase     # Fase de pico: 300 segundos, comenzando con 1000 solicitudes por segundo y aumentando a 10000 solicitudes por segundo
+      rampTo: 250
+      name: Warm up phase
+    - duration: 10
+      arrivalRate: 250
+      rampTo: 500
+      name: Ramp up load
+    - duration: 15
+      arrivalRate: 500
+      rampTo: 1000
+      name: Spike phase
 
 scenarios:
   - name: "Prueba de carga: Inicio"
     flow:
       - get:
-          url: "http://localhost:3000"
+          url: "http://18.171.52.37:3000"
