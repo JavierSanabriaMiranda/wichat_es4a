@@ -100,6 +100,13 @@ resource "aws_security_group" "allow_ssh" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
+    ingress {
+        from_port   = 8006
+        to_port     = 8006
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
     egress {
         from_port   = 0
         to_port     = 0
@@ -111,10 +118,15 @@ resource "aws_security_group" "allow_ssh" {
 # Lanza una instancia EC2 con Docker instalado
 resource "aws_instance" "my_instance" {
     ami                    = "ami-0a94c8e4ca2674d5a"
-    instance_type          = "t3.medium"
+    instance_type          = "t3.large"
     key_name               = "wichat-es4a"
     subnet_id              = aws_subnet.public_subnet.id
     vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+
+    root_block_device {
+        volume_size = 16
+        volume_type = "gp2"
+    }
 
     user_data = <<-EOF
         #!/bin/bash
