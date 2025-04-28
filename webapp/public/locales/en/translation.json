@@ -33,6 +33,7 @@
     "modal-title-edit-profile": "Edit Profile",
     "pass-button-text": "Pass",
     "llm-chat-welcome-msg": "Hi! Im WiChat, can I help you with something?",
+    "llm-chat-chaos-welcome-msg": "Hi! I'm WiChat... what trouble can I cause for you today?",
     "llm-chat-placeholder": "Ask me for a clue!",
     "llm-chat-error-msg": "Sorry, I don't have any clues available.",
     "llm-chat-loading-msg": "Loading response...",

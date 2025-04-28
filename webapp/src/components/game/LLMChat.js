@@ -10,13 +10,14 @@ import Col from 'react-bootstrap/Col';
 /**
  * React component that represents a chat with the LLM to ask for clues.
  * @param {String} name - The name (correctAnswer) that the LLM has to avoid to say.
+ * @param {Boolean} isChaosMode - True if the game is in chaos mode, false otherwise.
  * @returns a chat with the LLM to ask for clues.
  */
-const LLMChat = ({ name }) => {
+const LLMChat = ({ name, isChaosMode }) => {
     const { t, i18n } = useTranslation();
 
     const [messages, setMessages] = useState([
-        <p data-testid="llm-message-0" className="llm-message" key="welcome">{t('llm-chat-welcome-msg')}</p>
+        <p data-testid="llm-message-0" className="llm-message" key="welcome">{isChaosMode ? t('llm-chat-chaos-welcome-msg') : t('llm-chat-welcome-msg')}</p>
     ]);
     const [inputValue, setInputValue] = useState('');
     const [loading, setLoading] = useState(false);
@@ -80,7 +81,7 @@ const LLMChat = ({ name }) => {
                     />
                 </p>
             );
-            
+
 
             setMessages(prevMessages => [...prevMessages, llmMsg]);
             setChatContext(prevContext => [
@@ -131,7 +132,7 @@ const LLMChat = ({ name }) => {
                             {msg.props.className === "llm-message" ? (
                                 <>
                                     <Col md={2}>
-                                        <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                                        <img src={isChaosMode ? "/iconoLLMDiabolico.png" : "/iconoLLM.png"} alt="LLM" className='llm-icon' />
                                     </Col>
                                     <Col md={8}>
                                         {msg}
@@ -152,7 +153,7 @@ const LLMChat = ({ name }) => {
                     {loading && (
                         <Row>
                             <Col md={2}>
-                                <img src="/iconoLLM.png" alt="LLM" className='llm-icon' />
+                                <img src={isChaosMode ? "/iconoLLMDiabolico.png" : "/iconoLLM.png"} alt="LLM" className='llm-icon' />
                             </Col>
                             <Col md={8}>
                                 <p className="llm-message loading">

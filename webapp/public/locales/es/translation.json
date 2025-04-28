@@ -33,6 +33,7 @@
     "modal-title-edit-profile": "Editar Perfil",
     "pass-button-text": "Siguiente",
     "llm-chat-welcome-msg": "¡Hola! Soy WiChat, ¿en qué puedo ayudarte?",
+    "llm-chat-chaos-welcome-msg": "¡Hola! Soy WiChat... ¿en qué problema quieres que te meta hoy?",
     "llm-chat-placeholder": "¡Pídeme una pista!",
     "llm-chat-error-msg": "Lo siento, no tengo pistas disponibles.",
     "llm-chat-loading-msg": "Cargando respuesta...",
