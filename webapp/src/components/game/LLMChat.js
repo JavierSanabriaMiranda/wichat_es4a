@@ -66,7 +66,8 @@ const LLMChat = ({ name, isChaosMode }) => {
                 correctAnswer: name,
                 question: inputValue,
                 context: chatContext,
-                language: i18n.language.split('-')[0]
+                language: i18n.language.split('-')[0],
+                gameMode: isChaosMode ? 'chaos' : 'normal'
             });
 
             const answerText = response.data.answer
