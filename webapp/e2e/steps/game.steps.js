@@ -157,11 +157,6 @@ defineFeature(feature, test => {
             // Click on the "Game History" tab to view the history
             await expect(page).toClick('[data-testid="game-history-link"]');
 
-            await page.waitForSelector('[data-testid="home-title"]', {
-                visible: true,
-                timeout: 300000
-            });
-
             // CERRAR SESIÓN
 
             await page.goto("http://localhost:3000/", {
@@ -192,100 +187,100 @@ defineFeature(feature, test => {
             await page.click('[data-testid="logout-confirm-button"]');
         });
     });
-});
 
-test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
-    given('The user has configured a game with:', async () => {
-        await configureGame({
-            questions: '10',
-            time: '60s',
-            topicClass: 'toggle-btn-geography',
+    test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
+        given('The user has configured a game with:', async () => {
+            await configureGame({
+                questions: '10',
+                time: '60s',
+                topicClass: 'toggle-btn-geography',
+            });
         });
+
+        when('The user answers all questions', async () => {
+            for (let i = 0; i < 10; i++) {
+                // Waits for the buttons to be visible and enabled
+                await page.waitForSelector('.answer-button-not-answered:not([disabled])', {
+                    visible: true,
+                    timeout: 300000
+                });
+
+                // Clicks always the first answer button
+                await page.click('.answer-button-not-answered');
+            }
+        });
+
+        then('The user is redirected to the game results page', async () => {
+
+            await expect(page).toMatchElement('[data-testid="game-details-text"]');
+        });
+        then('The results show 10 questions answered', async () => {
+            const accordionButtons = await page.$$('.accordion-button');
+            expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
+        });
+
     });
 
-    when('The user answers all questions', async () => {
-        for (let i = 0; i < 10; i++) {
-            // Waits for the buttons to be visible and enabled
-            await page.waitForSelector('.answer-button-not-answered:not([disabled])', {
+    test('The user exits the game before ending', ({ given, when, then }) => {
+        given('The user has configured a game with:', async () => {
+            await configureGame({
+                questions: '10',
+                time: '120s',
+                topicClass: 'toggle-btn-geography',
+            });
+        });
+
+        when('The user clicks the exit button', async () => {
+            await page.waitForSelector('.exit-button', {
                 visible: true,
                 timeout: 300000
             });
 
-            // Clicks always the first answer button
-            await page.click('.answer-button-not-answered');
-        }
-    });
+            await expect(page).toClick('.exit-button');
+            // Expects the modal to be visible
+            await expect(page).toMatchElement('[data-testid="exit-game-modal-button"]');
+            // Clicks on the exit button in the modal
+            await expect(page).toClick('[data-testid="exit-game-modal-button"]');
+        });
 
-    then('The user is redirected to the game results page', async () => {
+        then('The user is redirected to the home page', async () => {
 
-        await expect(page).toMatchElement('[data-testid="game-details-text"]');
-    });
-    then('The results show 10 questions answered', async () => {
-        const accordionButtons = await page.$$('.accordion-button');
-        expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
-    });
-
-});
-
-test('The user exits the game before ending', ({ given, when, then }) => {
-    given('The user has configured a game with:', async () => {
-        await configureGame({
-            questions: '10',
-            time: '120s',
-            topicClass: 'toggle-btn-geography',
+            await expect(page).toMatchElement('[data-testid="home-title"]');
         });
     });
 
-    when('The user clicks the exit button', async () => {
-        await page.waitForSelector('.exit-button', {
-            visible: true,
-            timeout: 300000
+    test('The user asks a question about the image to the LLM', ({ given, when, then }) => {
+        given('The user has configured a game with:', async () => {
+            await configureGame({
+                questions: '10',
+                time: '60s',
+                topicClass: 'toggle-btn-geography',
+            });
         });
 
-        await expect(page).toClick('.exit-button');
-        // Expects the modal to be visible
-        await expect(page).toMatchElement('[data-testid="exit-game-modal-button"]');
-        // Clicks on the exit button in the modal
-        await expect(page).toClick('[data-testid="exit-game-modal-button"]');
-    });
+        when('The user asks for a clue to the LLM', async () => {
+            // Should be a first llm message saying hello
+            await page.waitForSelector('[data-testid="llm-message-0"]', {
+                visible: true,
+                timeout: 300000
+            });
 
-    then('The user is redirected to the home page', async () => {
+            const msg = "¿Me puedes dar una pista sobre la imagen?";
 
-        await expect(page).toMatchElement('[data-testid="home-title"]');
-    });
-});
+            await expect(page).toFill('.llm-chat-input', msg);
+            await expect(page).toClick('.send-prompt-button');
 
-test('The user asks a question about the image to the LLM', ({ given, when, then }) => {
-    given('The user has configured a game with:', async () => {
-        await configureGame({
-            questions: '10',
-            time: '60s',
-            topicClass: 'toggle-btn-geography',
+        });
+
+        then('The LLM answers the question', async () => {
+            await page.waitForSelector('[data-testid="user-message-1"]', {
+                visible: true,
+                timeout: 300000
+            });
         });
     });
 
-    when('The user asks for a clue to the LLM', async () => {
-        // Should be a first llm message saying hello
-        await page.waitForSelector('[data-testid="llm-message-0"]', {
-            visible: true,
-            timeout: 300000
-        });
-
-        const msg = "¿Me puedes dar una pista sobre la imagen?";
-
-        await expect(page).toFill('.llm-chat-input', msg);
-        await expect(page).toClick('.send-prompt-button');
-
+    afterAll(async () => {
+        await browser.close();
     });
-
-    then('The LLM answers the question', async () => {
-        await page.waitForSelector('[data-testid="user-message-1"]', {
-            visible: true,
-            timeout: 300000
-        });
-    });
-});
-
-afterAll(async () => {
-    await browser.close();
 });
