@@ -28,73 +28,7 @@ defineFeature(feature, test => {
 
   let username, password;
 
-  test('The user logs in successfully', ({ given, when, then }) => {
-    given('A registered user with valid credentials', async () => {
-      username = "validUser";
-      password = "ValidPassword123";
-
-      // Register the user if not already registered
-      await axios.post('http://localhost:8000/adduser', {
-        username: username,
-        password: password,
-        confirmPassword: password,
-      });
-    });
-
-    when('I fill the login form and submit it', async () => {
-      
-    await page.goto("http://localhost:3000/login", {
-        waitUntil: "networkidle0",
-        timeout: 180000,
-    });
-
-    await page.waitForSelector('[data-testid="login-username-input"]', {
-        visible: true,
-        timeout: 300000
-    });
-
-    await expect(page).toFill('[data-testid="login-username-input"]', username);
-    await expect(page).toFill('[data-testid="login-password-input"]', password)
-    await expect(page).toClick('[data-testid="login-button"]');
-
-    page.waitForNavigation();
-    });
-
-    then('I should be redirected to the homepage', async () => {
-      //comprobamos que funciona la redirección
-      console.log(await page.content());
-      await page.waitForSelector('[data-testid="home-title"]');
-
-            // CERRAR SESIÓN
-
-            await page.goto("http://localhost:3000/", {
-                waitUntil: "networkidle0",
-                timeout: 180000,
-            });
-            page.waitForNavigation();
-            // Hacer clic en las tres rayitas para desplegar el menú
-            await page.click('.navbar-toggler');
-
-            // Esperamos que el botón de logout sea visible ahora
-            await page.waitForSelector('nav [data-testid="logout-icon"]', {
-                visible: true,
-                timeout: 300000
-            });
-
-            // Hacemos clic en el icono de logout
-            await page.click('nav [data-testid="logout-icon"]');
-
-
-            // Esperamos a que el modal de confirmación aparezca
-            await page.waitForSelector('[data-testid="logout-confirm-button"]', {
-                visible: true,
-                timeout: 300000
-            });
-
-            // Hacemos clic en el botón de "Confirmar" del modal para cerrar sesión
-            await page.click('[data-testid="logout-confirm-button"]');
-    });
-  });
+  // No test case for the user login successfully, as it is already covered in the game.feature file and the change-password.feature.
 
   test('The user logs in with invalid credentials', ({ given, when, then }) => {
     given('A user with invalid credentials', async () => {
