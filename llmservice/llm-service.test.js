@@ -57,11 +57,11 @@ describe('LLM Service', () => {
   it('the llm should reply', async () => {
     const response1 = await request(app)
       .post('/askllm/clue')
-      .send({ correctAnswer: 'answer', question: 'a question', context: [], language: 'en' });
+      .send({ correctAnswer: 'answer', question: 'a question', context: [], language: 'en', gameMode: 'normal' });
   
     const response2 = await request(app)
       .post('/askllm/clue')
-      .send({ correctAnswer: 'answer', question: 'a question', context: [], language: 'es' });
+      .send({ correctAnswer: 'answer', question: 'a question', context: [], language: 'es', gameMode: 'normal' });
   
     expect(response1.statusCode).toBe(200);
     expect(response1.body.answer).toBe('llmanswer');
@@ -125,23 +125,30 @@ describe('LLM Service', () => {
   it('should return 400 if required fields are missing', async () => {
     const response = await request(app)
       .post('/askllm/clue')
-      .send({ question: 'a question', context: [], language: 'es' });
+      .send({ question: 'a question', context: [], language: 'es', gameMode: 'normal' });
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: correctAnswer');
   });
   it('should return 400 if required fields are missing', async () => {
     const response = await request(app)
       .post('/askllm/clue')
-      .send({ correctAnswer: 'answer', question: 'a question', language: 'es' });
+      .send({ correctAnswer: 'answer', question: 'a question', language: 'es', gameMode: 'normal' });
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: context');
   });
   it('should return 400 if required fields are missing', async () => {
     const response = await request(app)
       .post('/askllm/clue')
-      .send({ correctAnswer: 'answer', question: 'a question', context: [] });
+      .send({ correctAnswer: 'answer', question: 'a question', context: [], gameMode: 'normal' });
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toBe('Missing required field: language');
+  });
+  it('should return 400 if required fields are missing', async () => {
+    const response = await request(app)
+      .post('/askllm/clue')
+      .send({ correctAnswer: 'answer', question: 'a question', context: [], language: 'es' });
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toBe('Missing required field: gameMode');
   });
 
   // Tests required fields /askllm/welcome endpoint
@@ -193,7 +200,8 @@ describe('LLM Service', () => {
         correctAnswer: 'resp',
         question: '¿qué?',
         context: [],
-        language: 'es'
+        language: 'es',
+        gameMode: 'normal'
       });
 
     expect(response.statusCode).toBe(400);
@@ -234,7 +242,8 @@ describe('LLM Service', () => {
         correctAnswer: 'secreto',
         question: '¿otra pista?',
         context: [],
-        language: 'es'
+        language: 'es',
+        gameMode: 'normal'
       });
 
     expect(response.statusCode).toBe(200);
