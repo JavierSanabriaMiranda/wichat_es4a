@@ -138,7 +138,7 @@ defineFeature(feature, test => {
                 await page.waitForSelector('.answer-button-not-answered:not([disabled])', {
                     visible: true,
                     timeout: 300000
-                  });
+                });
 
                 // Clicks always the first answer button
                 await page.click('.answer-button-not-answered');
@@ -156,102 +156,136 @@ defineFeature(feature, test => {
 
             // Click on the "Game History" tab to view the history
             await expect(page).toClick('[data-testid="game-history-link"]');
-        });
-    });
 
-    test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
-        given('The user has configured a game with:', async () => {
-            await configureGame({
-                questions: '10',
-                time: '60s',
-                topicClass: 'toggle-btn-geography',
-            });
-        });
-
-        when('The user answers all questions', async () => {
-            for (let i = 0; i < 10; i++) {
-                // Waits for the buttons to be visible and enabled
-                await page.waitForSelector('.answer-button-not-answered:not([disabled])', {
-                    visible: true,
-                    timeout: 300000
-                  });
-
-                // Clicks always the first answer button
-                await page.click('.answer-button-not-answered');
-            }
-        });
-
-        then('The user is redirected to the game results page', async () => {
-
-            await expect(page).toMatchElement('[data-testid="game-details-text"]');
-        });
-        then('The results show 10 questions answered', async () => {
-            const accordionButtons = await page.$$('.accordion-button');
-            expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
-        });
-
-    });
-
-    test('The user exits the game before ending', ({ given, when, then }) => {
-        given('The user has configured a game with:', async () => {
-            await configureGame({
-                questions: '10',
-                time: '120s',
-                topicClass: 'toggle-btn-geography',
-            });
-        });
-
-        when('The user clicks the exit button', async () => {
-            await page.waitForSelector('.exit-button', {
+            await page.waitForSelector('[data-testid="home-title"]', {
                 visible: true,
                 timeout: 300000
-              });
-
-            await expect(page).toClick('.exit-button');
-            // Expects the modal to be visible
-            await expect(page).toMatchElement('[data-testid="exit-game-modal-button"]');
-            // Clicks on the exit button in the modal
-            await expect(page).toClick('[data-testid="exit-game-modal-button"]');
-        });
-
-        then('The user is redirected to the home page', async () => {
-
-            await expect(page).toMatchElement('[data-testid="home-title"]');
-        });
-    });
-
-    test('The user asks a question about the image to the LLM', ({ given, when, then }) => {
-        given('The user has configured a game with:', async () => {
-            await configureGame({
-                questions: '10',
-                time: '60s',
-                topicClass: 'toggle-btn-geography',
             });
-        });
 
-        when('The user asks for a clue to the LLM', async () => {
-            // Should be a first llm message saying hello
-            await page.waitForSelector('[data-testid="llm-message-0"]', {
+            // CERRAR SESIÓN
+
+            await page.goto("http://localhost:3000/", {
+                waitUntil: "networkidle0",
+                timeout: 180000,
+            });
+
+            // Hacer clic en las tres rayitas para desplegar el menú
+            await page.click('.navbar-toggler');
+
+            // Esperamos que el botón de logout sea visible ahora
+            await page.waitForSelector('nav [data-testid="logout-icon"]', {
                 visible: true,
                 timeout: 300000
-              });
+            });
 
-            const msg = "¿Me puedes dar una pista sobre la imagen?";
+            // Hacemos clic en el icono de logout
+            await page.click('nav [data-testid="logout-icon"]');
 
-            await expect(page).toFill('.llm-chat-input', msg);
-            await expect(page).toClick('.send-prompt-button');
 
-        });
-
-        then('The LLM answers the question', async () => {
-            await page.waitForSelector('[data-testid="user-message-1"]', {
+            // Esperamos a que el modal de confirmación aparezca
+            await page.waitForSelector('[data-testid="logout-confirm-button"]', {
                 visible: true,
                 timeout: 300000
-              });
+            });
+
+            // Hacemos clic en el botón de "Confirmar" del modal para cerrar sesión
+            await page.click('[data-testid="logout-confirm-button"]');
+        });
+    });
+});
+
+test('The user completes a normal game with 10 geography questions, 60 seconds each', ({ given, when, then }) => {
+    given('The user has configured a game with:', async () => {
+        await configureGame({
+            questions: '10',
+            time: '60s',
+            topicClass: 'toggle-btn-geography',
         });
     });
 
-    afterAll(async () => {
-        await browser.close();
+    when('The user answers all questions', async () => {
+        for (let i = 0; i < 10; i++) {
+            // Waits for the buttons to be visible and enabled
+            await page.waitForSelector('.answer-button-not-answered:not([disabled])', {
+                visible: true,
+                timeout: 300000
+            });
+
+            // Clicks always the first answer button
+            await page.click('.answer-button-not-answered');
+        }
     });
+
+    then('The user is redirected to the game results page', async () => {
+
+        await expect(page).toMatchElement('[data-testid="game-details-text"]');
+    });
+    then('The results show 10 questions answered', async () => {
+        const accordionButtons = await page.$$('.accordion-button');
+        expect(accordionButtons.length).toBe(10); // Checks that there are 10 questions in the accordion
+    });
+
+});
+
+test('The user exits the game before ending', ({ given, when, then }) => {
+    given('The user has configured a game with:', async () => {
+        await configureGame({
+            questions: '10',
+            time: '120s',
+            topicClass: 'toggle-btn-geography',
+        });
+    });
+
+    when('The user clicks the exit button', async () => {
+        await page.waitForSelector('.exit-button', {
+            visible: true,
+            timeout: 300000
+        });
+
+        await expect(page).toClick('.exit-button');
+        // Expects the modal to be visible
+        await expect(page).toMatchElement('[data-testid="exit-game-modal-button"]');
+        // Clicks on the exit button in the modal
+        await expect(page).toClick('[data-testid="exit-game-modal-button"]');
+    });
+
+    then('The user is redirected to the home page', async () => {
+
+        await expect(page).toMatchElement('[data-testid="home-title"]');
+    });
+});
+
+test('The user asks a question about the image to the LLM', ({ given, when, then }) => {
+    given('The user has configured a game with:', async () => {
+        await configureGame({
+            questions: '10',
+            time: '60s',
+            topicClass: 'toggle-btn-geography',
+        });
+    });
+
+    when('The user asks for a clue to the LLM', async () => {
+        // Should be a first llm message saying hello
+        await page.waitForSelector('[data-testid="llm-message-0"]', {
+            visible: true,
+            timeout: 300000
+        });
+
+        const msg = "¿Me puedes dar una pista sobre la imagen?";
+
+        await expect(page).toFill('.llm-chat-input', msg);
+        await expect(page).toClick('.send-prompt-button');
+
+    });
+
+    then('The LLM answers the question', async () => {
+        await page.waitForSelector('[data-testid="user-message-1"]', {
+            visible: true,
+            timeout: 300000
+        });
+    });
+});
+
+afterAll(async () => {
+    await browser.close();
 });
