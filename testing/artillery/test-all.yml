@@ -1,16 +1,16 @@
 config:
-  target: "http://18.171.172.59:8000"
+  target: "http://3.8.6.23:8000"
   phases:
-    - duration: 10
-      arrivalRate: 10
+    - duration: 120
+      arrivalRate: 2
       rampTo: 250
       name: Warm up phase
-    - duration: 10
-      arrivalRate: 20
+    - duration: 120
+      arrivalRate: 4
       rampTo: 500
       name: Ramp up load
-    - duration: 15
-      arrivalRate: 20
+    - duration: 240
+      arrivalRate: 8
       rampTo: 1000
       name: Spike phase
   
@@ -20,7 +20,7 @@ scenarios:
   - name: "Home"
     flow:
       - get:
-          url: "http://18.171.172.59:3000"
+          url: "http://3.8.6.23:3000"
 
   - name: "Login"
     flow:
