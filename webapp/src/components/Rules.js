@@ -27,9 +27,11 @@ const Rules = ({ show, handleClose }) => {
         <p>{t("rules-content-1")}</p>
         <p>{t("rules-content-2")}</p>
         <p>{t("rules-content-3")}</p>
+        <h5 className="text-center">{t("chaosMode")}</h5>
         <p>{t("rules-content-4")}</p>
         <p>{t("rules-content-5")}</p>
         <p>{t("rules-content-6")}</p>
+        <p>{t('rules-content-7')}</p>
       </Modal.Body>
     </Modal>
 

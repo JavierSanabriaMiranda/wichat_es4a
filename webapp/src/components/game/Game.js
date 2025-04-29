@@ -44,7 +44,7 @@ export const Game = () => {
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [wrongAnswers, setWrongAnswers] = useState(0);
     const [notAnswered, setNotAnswered] = useState(0);
-    const [exitIcon, setExitIcon] = useState("/exit-icon.png");
+    const [exitIcon, setExitIcon] = useState(isChaosMode ? "/white-exit-icon.png" : "/exit-icon.png");
     const [showModal, setShowModal] = useState(false);
     const [stopTimer, setStopTimer] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -294,6 +294,18 @@ export const Game = () => {
 
     return (
         <div className={isChaosMode ? 'chaos-mode' : ''}>
+            {isChaosMode && (
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="background-video"
+                >   
+                    <source src="/videos/chaos-fire-background.webm" type="video/webm" />
+                    <source src="/videos/chaos-fire-background.mp4" type="video/mp4" />
+                </video>
+            )}
             <main className='game-screen' key={gameKey}>
                 <div className='timer-div'>
                     <Timer initialTime={questionTime} onTimeUp={onTimeUp} stopTime={stopTimer} />
@@ -309,7 +321,7 @@ export const Game = () => {
                         onClick={askExitGame}
                         className="exit-button"
                         onMouseEnter={() => setExitIcon("/red-exit-icon.png")}
-                        onMouseLeave={() => setExitIcon("/exit-icon.png")}
+                        onMouseLeave={() => setExitIcon(isChaosMode ? "/white-exit-icon.png" : "/exit-icon.png")}
                     >
                         <img src={exitIcon} className='exit-icon' alt='exit-button' />
                     </button>
@@ -318,8 +330,7 @@ export const Game = () => {
                     <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
                 </div>
                 <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img alt="Question" className="question-img" src={question.imageUrl } onContextMenu={(e) => e.preventDefault()}/>}
-
+                    {isLoading ? <Spinner animation="border" /> : <img alt="Question" className="question-img" src={question.imageUrl} onContextMenu={(e) => e.preventDefault()} />}
                 </div>
                 <section id="question-answers-section">
                     <div id="game-answer-buttons-section">
@@ -337,7 +348,7 @@ export const Game = () => {
                     </div>
                 </section>
                 <aside className='llm-chat-aside'>
-                    <LLMChat name={correctAnswer} />
+                    <LLMChat name={correctAnswer} isChaosMode={isChaosMode}/>
                 </aside>
                 <div className="pass-button-div">
                     <Button className="pass-button" onClick={passQuestion} disabled={blockButtons} >
