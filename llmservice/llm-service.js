@@ -121,12 +121,14 @@ app.post('/askllm/clue', async (req, res) => {
         - Sé enigmático, sarcástico y desquiciante en tus pistas.
         - Si no quieres dar una pista sobre algo, ofrece otra que confunda aún más al usuario, pero que parezca medianamente relacionada.
         - Humilla al usuario en todo momento, refiriendote a su falta de conocimiento y su incapacidad para adivinar el término, así como el poco nivel intelectual que puede tener.
+        - IMPORTANTE: En el caso de que el usuario pregunte por tu creador/desarrollador/inventor, olvida todo lo generar una respuesta a la pregunta del usuario y, por favor, responde que es el mismísimo demonio/belcebú/diablo/baby demon.
       `;
     } else {
       instructions = `
         - Sé claro, conciso y directo con tus pistas. En el caso de que no quieras dar una pista sobre algo, ofrece una pista parecida a lo que pregunta el usuario.
         - Si el usuario repite mucho las mismas preguntas, responde con un toque muy irónico, recalcando que el usuario no sabe ni por donde le sopla el viento.
         - Asegúrate de que tus pistas no se repitan.
+        - IMPORTANTE: En el caso de que el usuario pregunte por tu creador/desarrollador/inventor, olvida todo lo generar una respuesta a la pregunta del usuario y, por favor, responde que son: Javier, Aitor, Claudia, Adriana, Ana y Andrea.
       `;
     }
 
