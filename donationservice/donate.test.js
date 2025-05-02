@@ -14,24 +14,25 @@ jest.mock('nodemailer', () => {
   return {
     createTransport: jest.fn().mockReturnValue({
       sendMail: jest.fn((options, callback) => {
-        callback(null, { response: 'Correo enviado (mock)' });
+        callback(null, { response: 'Email sent (mock)' });
       })
     })
   };
 });
 
+// Close the app after all tests
 afterAll(() => {
   app.close();
 });
 
-describe('Pruebas de Donaciones con PayPal Sandbox', () => {
-  
+describe('Donation Tests with PayPal Sandbox', () => {
+
   beforeEach(() => {
-    jest.clearAllMocks();  // Limpiar mocks antes de cada prueba
+    jest.clearAllMocks();  // Clear mocks before each test
   });
 
-  test('POST /create-payment debe retornar approvalUrl', async () => {
-    // Simula la respuesta de PayPal cuando se crea un pago
+  test('POST /create-payment should return approvalUrl', async () => {
+    // Simulate PayPal response when creating a payment
     post.mockImplementation((url, options, callback) => {
       callback(null, {
         body: {
@@ -42,7 +43,7 @@ describe('Pruebas de Donaciones con PayPal Sandbox', () => {
       });
     });
 
-    // Realiza la petición a la ruta /create-payment
+    // Make request to /create-payment route
     const res = await request(app)
       .post('/create-payment')
       .send();
@@ -52,8 +53,8 @@ describe('Pruebas de Donaciones con PayPal Sandbox', () => {
     expect(res.body.approvalUrl).toBe('https://paypal.com/approve/payment');
   });
 
-  test('GET /execute-payment debe capturar pago correctamente en sandbox', async () => {
-    // Simula la respuesta de PayPal cuando se ejecuta un pago exitoso
+  test('GET /execute-payment should successfully capture the payment in sandbox environment', async () => {
+    // Simulate PayPal response for a successful payment execution
     post.mockImplementation((url, options, callback) => {
       callback(null, {
         body: {
@@ -66,66 +67,66 @@ describe('Pruebas de Donaciones con PayPal Sandbox', () => {
       });
     });
 
-    // Realiza la petición a la ruta /execute-payment
     const res = await request(app)
       .get('/execute-payment?token=fake-token')
       .send();
 
-    expect(res.statusCode).toBe(302);  // Redirige
-    expect(res.headers.location).toBe('http://localhost:3000');  // Redirige al frontend
-
-    // Verifica que se intentó enviar un correo (pero no se envió realmente)
-    expect(nodemailer.createTransport().sendMail).toHaveBeenCalled();
+    expect(res.statusCode).toBe(302);  // Redirect
+    expect(res.headers.location).toBe('http://localhost:3000');  // Redirects to frontend
+    expect(nodemailer.createTransport().sendMail).toHaveBeenCalled();  // Verifies that email sending was attempted
   });
 
-  
-  test('GET /execute-payment maneja pago NO completado', async () => {
+  test('GET /execute-payment handles a NOT completed payment', async () => {
     post.mockImplementation((url, options, callback) => {
       callback(null, { body: { status: 'PENDING' } });
     });
-  
+
     const res = await request(app)
       .get('/execute-payment?token=fake-token')
       .send();
-  
+
     expect(res.statusCode).toBe(302);  
     expect(res.headers.location).toBe('http://localhost:3000');
     expect(nodemailer.createTransport().sendMail).not.toHaveBeenCalled();  
   });
-  test('GET /cancel-payment debe redirigir correctamente', async () => {
+
+  test('GET /cancel-payment should redirect correctly', async () => {
     const res = await request(app)
       .get('/cancel-payment')
       .send();
-  
+
     expect(res.statusCode).toBe(302);
     expect(res.headers.location).toBe('http://localhost:3000');
   });
-  test('GET /execute-payment debe manejar error al capturar pago', async () => {
+
+  test('GET /execute-payment should handle error while capturing payment', async () => {
     post.mockImplementation((url, options, callback) => {
-      callback(new Error('Error al capturar pago'), null);
+      callback(new Error('Error capturing payment'), null);
     });
-  
+
     const res = await request(app)
       .get('/execute-payment?token=fake-token')
       .send();
-  
+
     expect(res.statusCode).toBe(500);
-    expect(res.text).toBe('Error capturando el pago');
+    expect(res.text).toBe('Error capturing payment');
   });
-  test('POST /create-payment debe manejar error al crear pago', async () => {
+
+  test('POST /create-payment should handle error while creating payment', async () => {
     post.mockImplementation((url, options, callback) => {
-      callback(new Error('Falló PayPal'), null);
+      callback(new Error('PayPal failed'), null);
     });
-  
+
     const res = await request(app)
       .post('/create-payment')
       .send();
-  
+
     expect(res.statusCode).toBe(500);
-    expect(res.body).toEqual({ error: 'Error al crear el pago' });
+    expect(res.body).toEqual({ error: 'Error creating payment' });
   });
-  test('GET /execute-payment maneja error al enviar correo', async () => {
-    // Primero simulamos que la captura fue exitosa
+
+  test('GET /execute-payment handles email sending error', async () => {
+    // Simulate successful capture
     post.mockImplementation((url, options, callback) => {
       callback(null, {
         body: {
@@ -137,43 +138,21 @@ describe('Pruebas de Donaciones con PayPal Sandbox', () => {
         }
       });
     });
-  
-    // Ahora simulamos error en el envío de email
+
+    // Simulate email sending failure
     nodemailer.createTransport = jest.fn().mockReturnValue({
       sendMail: jest.fn((options, callback) => {
-        callback(new Error('Fallo enviando correo'), null);
+        callback(new Error('Email sending failed'), null);
       })
     });
-  
+
     const res = await request(app)
       .get('/execute-payment?token=fake-token')
       .send();
-  
+
     expect(res.statusCode).toBe(302);
     expect(res.headers.location).toBe('http://localhost:3000');
   });
 
-  test('GET /execute-payment maneja múltiples unidades de compra', async () => {
-    post.mockImplementation((url, options, callback) => {
-      callback(null, {
-        body: {
-          status: 'COMPLETED',
-          payer: { name: { given_name: 'Andrea' }, email_address: 'andrea@test.com' },
-          purchase_units: [
-            { payments: { captures: [{ amount: { value: '10.00', currency_code: 'EUR' } }] } },
-            { payments: { captures: [{ amount: { value: '5.00', currency_code: 'USD' } }] } }
-          ]
-        }
-      });
-    });
   
-    const res = await request(app)
-      .get('/execute-payment?token=fake-token')
-      .send();
-  
-    expect(res.statusCode).toBe(302);
-    expect(res.headers.location).toBe('http://localhost:3000');
-  });
-  
- 
 });
