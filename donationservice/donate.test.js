@@ -154,5 +154,26 @@ describe('Donation Tests with PayPal Sandbox', () => {
     expect(res.headers.location).toBe('http://localhost:3000');
   });
 
-  
+  test('GET /execute-payment handles multiple purchase units', async () => {
+    post.mockImplementation((url, options, callback) => {
+      callback(null, {
+        body: {
+          status: 'COMPLETED',
+          payer: { name: { given_name: 'Andrea' }, email_address: 'andrea@test.com' },
+          purchase_units: [
+            { payments: { captures: [{ amount: { value: '10.00', currency_code: 'EUR' } }] } },
+            { payments: { captures: [{ amount: { value: '5.00', currency_code: 'USD' } }] } }
+          ]
+        }
+      });
+    });
+
+    const res = await request(app)
+      .get('/execute-payment?token=fake-token')
+      .send();
+
+    expect(res.statusCode).toBe(302);
+    expect(res.headers.location).toBe('http://localhost:3000');
+  });
+
 });
