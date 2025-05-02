@@ -383,7 +383,32 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'en') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
         "imageurl": "<output>",
         "lang": "en"
-      },         
+      },    
+      {
+        "question": "Qui est ce chanteur?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'fr') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },  
+      {
+        "question": "Chi è questo cantante?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'it') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "it"
+      },   
+      {
+        "question": "Wer ist dieser Sänger?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'de') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "de"
+      },  
+
       {
         "question": "¿Quién es este científico?",
         "selector": "<input>",
@@ -392,6 +417,7 @@
         "imageurl": "<output>",
         "lang": "es"
       },   
+
       {
         "question": "Who is this scientist?",
         "selector": "<input>",
