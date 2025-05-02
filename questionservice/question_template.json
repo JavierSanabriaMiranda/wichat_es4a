@@ -261,7 +261,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Quelle équipe de football est-ce?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr')}",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "Quale squadra di calcio è questa?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it')}",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welches Fußballteam ist das?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de')}",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿Quién es el jugador de fútbol en esta imagen?",
