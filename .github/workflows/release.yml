@@ -12,6 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: npm --prefix users/authservice ci
       - run: npm --prefix users/userservice ci
       - run: npm --prefix llmservice ci
       - run: npm --prefix questionservice ci
@@ -19,6 +20,7 @@ jobs:
       - run: npm --prefix gatewayservice ci
       - run: npm --prefix webapp ci -- --legacy-peer-deps
       - run: npm --prefix donationservice ci
+      - run: npm --prefix users/authservice test -- --coverage
       - run: npm --prefix users/userservice test -- --coverage
       - run: npm --prefix llmservice test -- --coverage
       - run: npm --prefix questionservice test -- --coverage
@@ -46,6 +48,8 @@ jobs:
       - run: npm --prefix gatewayservice install
       - run: npm --prefix donationservice install
       - run: npm --prefix webapp install
+      - run: npm --prefix webapp run build
+      - run: npm --prefix webapp run test:e2e
   docker-push-webapp:
     name: Push webapp Docker Image to GitHub Packages
     runs-on: ubuntu-latest
