@@ -94,5 +94,8 @@
     "donate-text": "¡Apóyanos!",
     "donation-error": "Error al acceder a PayPal",
     "server-connection-error": "Error al conectar con el servidor. Por favor, inténtelo de nuevo más tarde.",
-    "paypal-access-error-modal-title": "Error al acceder a PayPal"
+    "paypal-access-error-modal-title": "Error al acceder a PayPal",
+    "chart-correct": "Correctas",
+    "chart-wrong": "Incorrectas",
+    "chart-unanswered": "No respondidas"
 }

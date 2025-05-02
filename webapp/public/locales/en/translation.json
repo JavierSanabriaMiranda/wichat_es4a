@@ -94,5 +94,8 @@
     "donate-text": "Support us!",
     "donation-error": "Error accessing PayPal",
     "server-connection-error": "Error connecting to the server. Please try again later.",
-    "paypal-access-error-modal-title": "Error accessing PayPal"
+    "paypal-access-error-modal-title": "Error accessing PayPal",
+    "chart-correct": "Correct",
+    "chart-wrong": "Wrong",
+    "chart-unanswered": "Unanswered"
 }
