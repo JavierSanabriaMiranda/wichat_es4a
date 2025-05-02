@@ -58,6 +58,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
+    {
+        "question": "Quelle ville est-ce?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "Quale città è questa?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welche Stadt ist das?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
     
 
 
