@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const request = require('request');
 
-
 const app = express();
 app.use(cors());
 const port = 8006;
@@ -10,13 +9,6 @@ const port = 8006;
 const redirectionUrl = process.env.REDIRECTION_PAGE || 'http://localhost:3000';
 const donationServiceUrl = process.env.DONATION_SERVICE || 'http://localhost:8006';
 
-/*
-Crear una aplicacion en PayPal
-Agregar las credenciales de nuestra app de PayPal
-https://developer.paypal.com/developer/applications (debemos acceder con nuestra cuenta de paypal)
-cuentas de test -> https://developer.paypal.com/developer/accounts/
-*/
-//LIVE
 const CLIENT = process.env.PAYPAL_CLIENT_ID;
 const SECRET = process.env.PAYPAL_SECRET_KEY;
 
@@ -24,6 +16,7 @@ const PAYPAL_API ='https://api-m.paypal.com'
 const auth = {user: CLIENT, pass: SECRET}
 const nodemailer = require('nodemailer');
 
+// Email configuration using Gmail SMTP
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -34,9 +27,17 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-/*
-Establecemos los controladores que vamos a usar
-*/
+/**
+ * Creates a PayPal payment order.
+ * 
+ * @route POST /create-payment
+ * @function
+ * 
+ * @param {Object} req - The HTTP request object.
+ * @param {Object} res - The HTTP response object.
+ * 
+ * @returns {Object} - JSON response with PayPal approval URL or error message.
+ */
 const createPayment = (req, res) => {
     const body = {
       intent: 'CAPTURE',
@@ -67,14 +68,19 @@ const createPayment = (req, res) => {
       const links = response.body.links;
       const approvalUrl = links.find(link => link.rel === 'approve')?.href;
   
-      res.json({ approvalUrl }); //  esto es lo que espera el frontend
+      res.json({ approvalUrl }); 
     });
   };
   
-
-/*
-Esta funcion captura el dinero REALMENTE
-*/
+/**
+ * Executes a PayPal payment once approved by the user, and sends confirmation email.
+ * 
+ * @route GET /execute-payment
+ * @function
+ * 
+ * @param {Object} req - The HTTP request object, includes the PayPal token as query param.
+ * @param {Object} res - The HTTP response object.
+ */
 const executePayment = (req, res) => {
   const token = req.query.token;
 
@@ -86,7 +92,7 @@ const executePayment = (req, res) => {
       if (err) {
           return res.status(500).send('Error capturando el pago');
       }
-      const status = response.body.status; // ejemplo: COMPLETED, etc.
+      const status = response.body.status; 
 
       if (status === 'COMPLETED') {
         console.log('Pago completado:', response.body);
@@ -97,7 +103,7 @@ const executePayment = (req, res) => {
         const moneda = response.body.purchase_units[0].payments.captures[0].amount.currency_code;
         const mailOptions = {
           from: 'WiChat4a@gmail.com',
-          to: correoDelDonante, // <- este lo sacamos de los datos de PayPal
+          to: correoDelDonante, 
           subject: '¡Gracias por tu donación a Wichat!',
           html: `
               <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5; color: #333;">
@@ -127,8 +133,8 @@ const executePayment = (req, res) => {
           `,
           attachments: [{
               filename: 'logo.png',
-              path: __dirname + '/public/images/logo.png', // asegúrate que esté en la carpeta correcta
-              cid: 'logo' // el mismo que pusimos en <img src="cid:logo">
+              path: __dirname + '/public/images/logo.png', 
+              cid: 'logo' 
           }]
       };
       
@@ -140,19 +146,23 @@ const executePayment = (req, res) => {
               }
           });
       }
-      // Redirigir al usuario a la página principal después del pago exitoso
       res.redirect(redirectionUrl);
   });
 };
 
-//http://localhost:8006/create-payment
-app.post(`/create-payment`, createPayment)
-
-app.get(`/execute-payment`, executePayment)
-
+/**
+ * Cancels the PayPal payment and redirects to the redirection page.
+ * 
+ * @route GET /cancel-payment
+ * @function
+ */
 app.get('/cancel-payment', (req, res) => {
     res.redirect(redirectionUrl)
 });
+
+// Register endpoints
+app.post(`/create-payment`, createPayment)
+app.get(`/execute-payment`, executePayment)
 
 const server = app.listen(port, '0.0.0.0', () => {  
 })
