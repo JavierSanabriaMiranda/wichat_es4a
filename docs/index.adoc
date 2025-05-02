@@ -7,8 +7,8 @@
 include::src/config.adoc[]
 
 = image:logo.png[WiChat Logo] wichat_es4a
-:revnumber: 8.2 EN
-:revdate: January 2023
+:revnumber: 8.2 ES
+:revdate: May 2025
 :revremark: (based upon AsciiDoc version)
 // toc-title definition MUST follow document title without blank line!
 :toc-title: Tabla de Contenido
