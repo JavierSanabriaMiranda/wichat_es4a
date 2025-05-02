@@ -465,7 +465,31 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'en') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
         "imageurl": "<output>",
         "lang": "en"
-      },             
+      },       
+      {
+        "question": "Qui est cette célébrité?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'fr') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "fr"
+      }, 
+      {
+        "question": "Chi è questa celebrità?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'it') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "it"
+      }, 
+      {
+        "question": "Wer ist dieser Promi?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'de') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "de"
+      },       
               
       {
         "question": "¿Cuál es el título de esta obra de arte?",
