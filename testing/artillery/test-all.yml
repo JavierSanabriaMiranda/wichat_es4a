@@ -1,5 +1,5 @@
 config:
-  target: "http://3.8.6.23:8000"
+  target: "http://18.130.151.40:8000"
   phases:
     - duration: 120
       arrivalRate: 2
@@ -20,7 +20,7 @@ scenarios:
   - name: "Home"
     flow:
       - get:
-          url: "http://3.8.6.23:3000"
+          url: "http://18.130.151.40:3000"
 
   - name: "Login"
     flow:
@@ -36,37 +36,6 @@ scenarios:
           json:
             username: "{{ username }}"
             password: "{{ password }}"
-
-  - name: "Register"
-    flow:
-      - function: "generateCredentials"
-      - post:
-          url: "/adduser"
-          json:
-            username: "{{ username }}"
-            password: "{{ password }}"
-
-  - name: "EditUser"
-    flow:
-      - function: "generateCredentials"
-      - post:
-          url: "/adduser"
-          json:
-            username: "{{ username }}"
-            password: "{{ password }}"
-      - think: 5
-      - post:
-          url: "/login"
-          json:
-            username: "{{ username }}"
-            password: "{{ password }}"
-      - think: 5
-      - post:
-          url: '/editUser'
-          json:
-            username: "{{ username }}"
-            currentPassword: "{{ password }}"
-            newPassword: "{{ password }}A"
 
   - name: "EndAndSaveGame"
     flow:
@@ -149,16 +118,6 @@ scenarios:
             lang: "es"
             topics: ["history", "geography"]
 
-  - name: "Question"
-    flow:
-      - post:
-          url: "/api/game/question"
-          json:
-            gameId: "game123"
-            playerId: "playerXYZ"
-            language: "es"
-            cacheId: "cache-test-001"
-
   - name: "New Question"
     flow:
       - post:
@@ -166,4 +125,5 @@ scenarios:
           json:
             lang: "es"
             topics: ["history", "geography"]
+      - think: 5
 
