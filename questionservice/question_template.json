@@ -507,6 +507,30 @@
         "imageurl": "<output>",
         "lang": "en"
       },
+      {
+        "question": "Quel est le titre de cette œuvre d'art?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },
+      {
+        "question": "Qual è il titolo di quest'opera d'arte?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+      },
+      {
+        "question": "Wie heißt dieses Kunstwerk?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+      },
 
       {
         "question": "¿De qué estilo artístico es esta obra?",
