@@ -122,7 +122,6 @@
         "lang": "de"
     },
 
-
     {
         "question": "¿En qué sitio arqueológico fue tomada esta imagen?",
         "selector": "<input>",
@@ -139,7 +138,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Dans quel site archéologique cette image a-t-elle été prise?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "In quale sito archeologico è stata scattata questa immagine?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "An welcher archäologischen Stätte wurde dieses Bild aufgenommen?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿A qué monumento histórico pertenece esta imagen?",
