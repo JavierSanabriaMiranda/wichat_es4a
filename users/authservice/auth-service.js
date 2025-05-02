@@ -25,7 +25,7 @@ function loginLimiter(req, res, next) {
   const entry = failedAttempts.get(ip);
 
   if (entry && entry.count+1 >= MAX_ATTEMPTS && (Date.now() - entry.lastAttempt) < WINDOW_MS) {
-    return res.status(429).json({ error: 'Too many login attempts, please try again later' });
+    // return res.status(429).json({ error: 'Too many login attempts, please try again later' });
   }
 
   next();
