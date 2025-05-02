@@ -102,6 +102,15 @@ const NavBar = ({ hasPadding }) => {
                   <Dropdown.Item onClick={() => changeLanguage("en")}>
                     {t("english-menu")}
                   </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeLanguage("de")}>
+                    {t("german-menu")}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeLanguage("fr")}>
+                    {t("french-menu")}
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeLanguage("it")}>
+                    {t("italian-menu")}
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
 
