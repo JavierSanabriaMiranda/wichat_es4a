@@ -547,5 +547,29 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
+      },
+      {
+        "question": "De quel style artistique est cette œuvre?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },
+      {
+        "question": "A quale stile artistico appartiene quest'opera?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+      },
+      {
+        "question": "Welchem künstlerischen Stil gehört dieses Werk an?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
       }
 ]
