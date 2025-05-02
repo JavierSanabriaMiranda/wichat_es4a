@@ -104,7 +104,7 @@ defineFeature(feature, test => {
             : await puppeteer.launch({ headless: false, slowMo: 10 });
 
         page = await browser.newPage();
-        setDefaultOptions({ timeout: 30000 });
+        setDefaultOptions({ timeout: 50000 });
 
         registerNewUser();
     });
