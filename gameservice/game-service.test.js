@@ -375,8 +375,6 @@ it('should return 400 when creating a new game without required fields', async (
     expect(res.body.error).toBe("No games found for this user.");
   });
 
-
-
   // getGameQuestions tests
   it('should return 400 if gameId is missing in getGameQuestions', async () => {
     const res = await request(app)
