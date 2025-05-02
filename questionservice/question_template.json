@@ -417,7 +417,6 @@
         "imageurl": "<output>",
         "lang": "es"
       },   
-
       {
         "question": "Who is this scientist?",
         "selector": "<input>",
@@ -425,7 +424,32 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'en') } ",
         "imageurl": "<output>",
         "lang": "en"
-      },            
+      },  
+      {
+        "question": "Qui est ce scientifique?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },  
+      {
+        "question": "Chi è questo scienziato?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
+        "imageurl": "<output>",
+        "lang": "it"
+      },  
+      {
+        "question": "Wer ist dieser Wissenschaftler?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
+        "imageurl": "<output>",
+        "lang": "de"
+      },  
+
       {
         "question": "¿Quién es este famoso?",
         "selector": "<input>",
