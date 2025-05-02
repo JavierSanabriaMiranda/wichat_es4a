@@ -168,7 +168,7 @@ describe('Donation Tests with PayPal Sandbox', () => {
 
     // Assertions
     expect(res.statusCode).toBe(500);  // Error response expected
-    expect(res.text).toBe('Error capturing payment');  // Error message
+    expect(res.text).toBe('Error capturando el pago');  // Error message
   });
 
   /**
@@ -192,7 +192,7 @@ describe('Donation Tests with PayPal Sandbox', () => {
 
     // Assertions
     expect(res.statusCode).toBe(500);  // Error response expected
-    expect(res.body).toEqual({ error: 'Error creating payment' });  // Error message
+    expect(res.body).toEqual({ error: 'Error al crear el pago' });  // Error message
   });
 
   /**
