@@ -507,6 +507,7 @@
         "imageurl": "<output>",
         "lang": "en"
       },
+
       {
         "question": "¿De qué estilo artístico es esta obra?",
         "selector": "<input>",
@@ -522,42 +523,5 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
-      },    
-                         
-
-    {
-        "question": "¿Cuál es el género de este videojuego?",
-        "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
-        "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "What is the genre of this video game?",
-        "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
-        "imageurl": "<output>",
-        "lang": "en"
-    },
-
-    {
-        "question": "¿En qué país fue desarrollado este videojuego?",
-        "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
-        "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "¿En qué país fue desarrollado este videojuego?",
-        "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
-        "imageurl": "<output>",
-        "lang": "en"
-    }
-
-    
+      }
 ]
