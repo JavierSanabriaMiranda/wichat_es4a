@@ -40,8 +40,6 @@
         "lang": "de"
     },
 
-
-
     {
         "question": "¿Qué ciudad es esta?",
         "selector": "<input>",
@@ -82,8 +80,6 @@
         "imageurl": "<output>",
         "lang": "de"
     },
-    
-
 
     {
         "question": "¿A que país pertenece esta ciudad?",
@@ -100,6 +96,30 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
+    },
+    {
+        "question": "À quel pays appartient cette ville?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "A quale paese appartiene questa città?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Zu welchem Land gehört diese Stadt?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
     },
 
 
