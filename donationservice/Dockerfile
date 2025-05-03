@@ -12,7 +12,7 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
-ARG REDIRECTION_URI="http://wichat-es4a.es"
+ARG REDIRECTION_URI="http://localhost:3000"
 ENV REDIRECTION_PAGE=$REDIRECTION_URI
 
 ARG DONATION_SERVICE_URI="http://localhost:8006"
