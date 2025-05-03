@@ -318,10 +318,11 @@ button:not(:disabled):active {
 .game-results-container {
     background: linear-gradient(135deg, #F3F4F6, #B8C6D8);
     height: 100vh;
+    padding: 2%;
 }
 
 .finalPoints {
-    font-size: 4em;
+    font-size: 4vw;
     color: #f88c2e;
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -341,8 +342,9 @@ button:not(:disabled):active {
 }
 
 .game-results-button {
-    margin: 2% 0%;
+    margin: 4% 0%;
     background-color:#475a80;
+    font-size: 1vw !important;
 }
 
 .game-results-button:hover {
@@ -350,7 +352,7 @@ button:not(:disabled):active {
 }
 
 .game-details {
-    max-height: 70vh;
+    max-height: 65vh;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
