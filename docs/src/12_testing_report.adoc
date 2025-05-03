@@ -8,7 +8,9 @@ endif::arc42help[]
 
 === Test unitarios
 Cada componente del Front-End tiene sus correspondientes pruebas unitarias que verfican que funciona correctamente, proporcionando seguridad, fiabilidad y consistencia al proyecto realizado.
-**Cambio de contraseña**  
+
+*Cobertura de código*
+
 Para la cobertura de código utilizamos la herramienta SonarQube.Esta herramienta ofrece una métrica que indica qué porcentaje del código fuente ha sido ejecutado por las pruebas automatizadas (unitarias, de integración, etc.). Es un indicador clave de la calidad del software y de cuán bien está siendo probado.
 Para este proyecto nos piden un 80% de cobertura de código y menos de un 3% de duplicación. En la siguiente imagen vemos como cumplimos con estos dos parámetros:
 
