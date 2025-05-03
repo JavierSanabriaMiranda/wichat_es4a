@@ -14,10 +14,7 @@ if (!i18n.isInitialized) {
       debug: true, // Show useful information for debugging
 
       detection: {
-        // Orden de detección: navegador primero para que coja siempre
-        // el valor del idioma del navegador que el último idioma seleccionado
-        // en la sección anterior
-        order: ['navigator', 'localStorage', 'sessionStorage', 'cookie', 'htmlTag'],
+        order: ['localStorage', 'navigator', 'sessionStorage', 'cookie', 'htmlTag'],
         checkWhitelist: true,
       },
 
