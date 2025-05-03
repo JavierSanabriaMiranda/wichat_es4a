@@ -144,6 +144,7 @@ resource "aws_instance" "my_instance" {
         sudo apt update
         sudo apt install docker-ce -y
         sudo usermod -aG docker ubuntu
+        sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3000
     EOF
 
     tags = {
