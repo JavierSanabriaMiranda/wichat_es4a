@@ -1,5 +1,6 @@
 import React from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { useTranslation } from 'react-i18next';
 
 /**
  * React component that represents a pie chart with the results of a game.
@@ -10,14 +11,14 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recha
  * @returns the pie chart with the results of the game.
  */
 export const ResultSectorChart = ({ correctAnswers, wrongAnswers, notAnswered }) => {
-
+    const { t } = useTranslation();
     /**
      * Constant that represents the data of the pie chart.
      */
     const data = [
-        { name: "Correctas", value: correctAnswers },
-        { name: "Incorrectas", value: wrongAnswers },
-        { name: "No Respondidas", value: notAnswered }
+        { name: t("chart-correct"), value: correctAnswers },
+        { name: t("chart-wrong"), value: wrongAnswers },
+        { name: t("chart-unanswered"), value: notAnswered }
     ];
 
     const COLORS = ["#00C49F", "#f13e3e", "#f7ab08"];

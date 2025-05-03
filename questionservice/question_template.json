@@ -2,9 +2,7 @@
     {
         "question": "¿A qué país pertenece esta bandera?",
         "selector": "<input>",
-
         "topics": ["geography"],
-
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
         "imageurl": "<output>",
         "lang": "es"
@@ -17,7 +15,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "À quel pays appartient ce drapeau?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "A quale paese appartiene questa bandiera?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welchem Land gehört diese Flagge?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P41 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿Qué ciudad es esta?",
@@ -35,7 +56,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Quelle ville est-ce?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "Quale città è questa?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welche Stadt ist das?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q515. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿A que país pertenece esta ciudad?",
@@ -53,7 +97,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "À quel pays appartient cette ville?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "A quale paese appartiene questa città?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Zu welchem Land gehört diese Stadt?",
+        "selector": "<input>",
+        "topics": ["geography"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q6256. ?entity wdt:P36 ?capital. ?capital wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿En qué sitio arqueológico fue tomada esta imagen?",
@@ -71,7 +138,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Dans quel site archéologique cette image a-t-elle été prise?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "In quale sito archeologico è stata scattata questa immagine?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "An welcher archäologischen Stätte wurde dieses Bild aufgenommen?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q839954. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿A qué monumento histórico pertenece esta imagen?",
@@ -89,7 +179,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "À quel monument historique appartient cette image?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q4989906. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "A quale monumento storico appartiene questa immagine?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q4989906. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welchem historischen Denkmal gehört dieses Bild?",
+        "selector": "<input>",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q4989906. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿Qué museo histórico es este?",
@@ -107,61 +220,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
-
     {
-        "question": "¿Cuál es el nombre del animal?",
+        "question": "Quel musée historique est-ce?",
         "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P171 ?taxon. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q33506. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
         "imageurl": "<output>",
-        "lang": "es"
+        "lang": "fr"
     },
     {
-        "question": "What is the name of the animal?",
+        "question": "Che museo storico è questo?",
         "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225. ?entity wdt:P171. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q33506. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
         "imageurl": "<output>",
-        "lang": "en"
-    },
-
-
-    {
-        "question": "¿Cuál es el nombre de la planta?",
-        "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P18 ?image. ?entity wdt:P5037 ?value. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es') }",
-        "imageurl": "<output>",
-        "lang": "es"
+        "lang": "it"
     },
     {
-        "question": "What is the name of the plant?",
+        "question": "Welches historische Museum ist das?",
         "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P225 ?nombre_cientifico. ?entity wdt:P18 ?image. ?entity wdt:P5037 ?value. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
+        "topics": ["history"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q33506. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
         "imageurl": "<output>",
-        "lang": "en"
+        "lang": "de"
     },
-
-
-    {
-        "question": "¿Qué alimento es este?",
-        "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q8195619. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'es')}",
-        "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "What food is this?",
-        "selector": "<input>",
-        "topics": ["science"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q2095. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'en')}",
-        "imageurl": "<output>",
-        "lang": "en"
-    },
-
 
     {
         "question": "¿Qué equipo de fútbol es este?",
@@ -179,7 +261,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Quelle équipe de football est-ce?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr')}",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "Quale squadra di calcio è questa?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it')}",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Welches Fußballteam ist das?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q476028; wdt:P154 ?image. ?entity wdt:P18 ?imagen. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de')}",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿Quién es el jugador de fútbol en esta imagen?",
@@ -197,7 +302,30 @@
         "imageurl": "<output>",
         "lang": "en"
     },
-
+    {
+        "question": "Qui est le joueur de football sur cette image?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5; wdt:P106 wd:Q937857. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr')}",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "Chi è il giocatore di calcio in questa immagine?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5; wdt:P106 wd:Q937857. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it')}",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "Wer ist der Fußballspieler auf diesem Bild?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q5; wdt:P106 wd:Q937857. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de')}",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
 
     {
         "question": "¿En qué estadio deportivo fue tomada esta imagen?",
@@ -215,8 +343,31 @@
         "imageurl": "<output>",
         "lang": "en"
     },
+    {
+        "question": "Dans quel stade sportif cette image a-t-elle été prise?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q483110. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'fr')}",
+        "imageurl": "<output>",
+        "lang": "fr"
+    },
+    {
+        "question": "In quale stadio sportivo è stata scattata questa immagine?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q483110. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'it')}",
+        "imageurl": "<output>",
+        "lang": "it"
+    },
+    {
+        "question": "In welchem Sportstadion wurde dieses Bild aufgenommen?",
+        "selector": "<input>",
+        "topics": ["sport"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q483110. ?entity wdt:P18 ?image. ?entity rdfs:label ?label. FILTER(LANG(?label) = 'de')}",
+        "imageurl": "<output>",
+        "lang": "de"
+    },
     
-
     {
         "question": "¿Quién es este cantante?",
         "selector": "<input>",
@@ -232,7 +383,32 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'en') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
         "imageurl": "<output>",
         "lang": "en"
-      },         
+      },    
+      {
+        "question": "Qui est ce chanteur?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'fr') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },  
+      {
+        "question": "Chi è questo cantante?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'it') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "it"
+      },   
+      {
+        "question": "Wer ist dieser Sänger?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P106 wd:Q177220; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'de') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1980) } } ",
+        "imageurl": "<output>",
+        "lang": "de"
+      },  
+
       {
         "question": "¿Quién es este científico?",
         "selector": "<input>",
@@ -248,7 +424,32 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'en') } ",
         "imageurl": "<output>",
         "lang": "en"
-      },            
+      },  
+      {
+        "question": "Qui est ce scientifique?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'fr') } ",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },  
+      {
+        "question": "Chi è questo scienziato?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'it') } ",
+        "imageurl": "<output>",
+        "lang": "it"
+      },  
+      {
+        "question": "Wer ist dieser Wissenschaftler?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?scientist { wd:Q901 wd:Q9143 wd:Q937857 wd:Q28389 wd:Q80060 wd:Q74751 } ?entity wdt:P31 wd:Q5; wdt:P106 ?scientist; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'de') } ",
+        "imageurl": "<output>",
+        "lang": "de"
+      },  
+
       {
         "question": "¿Quién es este famoso?",
         "selector": "<input>",
@@ -264,7 +465,31 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'en') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
         "imageurl": "<output>",
         "lang": "en"
-      },             
+      },       
+      {
+        "question": "Qui est cette célébrité?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'fr') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "fr"
+      }, 
+      {
+        "question": "Chi è questa celebrità?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'it') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "it"
+      }, 
+      {
+        "question": "Wer ist dieser Promi?",
+        "selector": "<input>",
+        "topics": ["character"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { VALUES ?profession { wd:Q33999 wd:Q82955 wd:Q1028181 wd:Q49757 wd:Q10800557 wd:Q36180 wd:Q2259451 wd:Q937857 wd:Q947873 } ?entity wdt:P106 ?profession; wdt:P18 ?image; wdt:P31 wd:Q5; rdfs:label ?label. FILTER(LANG(?label) = 'de') FILTER NOT EXISTS { ?entity wdt:P570 ?deathDate FILTER(YEAR(?deathDate) < 1970) } FILTER NOT EXISTS { ?entity wdt:P106 wd:Q488111 } }",
+        "imageurl": "<output>",
+        "lang": "de"
+      },       
               
       {
         "question": "¿Cuál es el título de esta obra de arte?",
@@ -283,6 +508,31 @@
         "lang": "en"
       },
       {
+        "question": "Quel est le titre de cette œuvre d'art?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
+        "imageurl": "<output>",
+        "lang": "fr"
+      },
+      {
+        "question": "Qual è il titolo di quest'opera d'arte?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
+        "imageurl": "<output>",
+        "lang": "it"
+      },
+      {
+        "question": "Wie heißt dieses Kunstwerk?",
+        "selector": "<input>",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image ?date WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P18 ?image; rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
+        "imageurl": "<output>",
+        "lang": "de"
+      },
+
+      {
         "question": "¿De qué estilo artístico es esta obra?",
         "selector": "<input>",
         "topics": ["art"],
@@ -297,42 +547,29 @@
         "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'en') }",
         "imageurl": "<output>",
         "lang": "en"
-      },    
-                         
-
-    {
-        "question": "¿Cuál es el género de este videojuego?",
+      },
+      {
+        "question": "De quel style artistique est cette œuvre?",
         "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'fr') }",
         "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "What is the genre of this video game?",
+        "lang": "fr"
+      },
+      {
+        "question": "A quale stile artistico appartiene quest'opera?",
         "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P136 ?genreItem. ?genreItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'it') }",
         "imageurl": "<output>",
-        "lang": "en"
-    },
-
-    {
-        "question": "¿En qué país fue desarrollado este videojuego?",
+        "lang": "it"
+      },
+      {
+        "question": "Welchem künstlerischen Stil gehört dieses Werk an?",
         "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'es') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
+        "topics": ["art"],
+        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q3305213; wdt:P136 ?style; wdt:P18 ?image. ?style rdfs:label ?label. FILTER(LANG(?label) = 'de') }",
         "imageurl": "<output>",
-        "lang": "es"
-    },
-    {
-        "question": "¿En qué país fue desarrollado este videojuego?",
-        "selector": "<input>",
-        "topics": ["entertainment"],
-        "query": "SELECT DISTINCT ?entity ?label ?image WHERE { ?entity wdt:P31 wd:Q7889. ?entity wdt:P2664 ?unitsSoldValue. ?entity wdt:P18 ?image. ?entity wdt:P495 ?countryItem. ?countryItem rdfs:label ?label. FILTER(LANG(?label) = 'en') } GROUP BY ?entity ?label ?image ORDER BY DESC(MAX(?unitsSoldValue))",
-        "imageurl": "<output>",
-        "lang": "en"
-    }
-
-    
+        "lang": "de"
+      }
 ]

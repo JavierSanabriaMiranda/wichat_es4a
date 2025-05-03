@@ -39,8 +39,8 @@ const newGame = async (req, res) => {
         const { topics, lang } = req.body;
 
 
-        const allowedTopics = ["geography", "history", "science", "sport", "character", "art", "entertainment"];
-        const allowedLangs = ["es", "en"];
+        const allowedTopics = ["geography", "history", "sport", "character", "art"];
+        const allowedLangs = ["es", "en", "fr", "it", "de"];
 
         if (
             !cacheId ||

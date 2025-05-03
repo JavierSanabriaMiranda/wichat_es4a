@@ -118,7 +118,7 @@ describe('Game Service API', () => {
   it('should start a new game and return a cacheId', async () => {
     const response = await request(app)
       .post('/api/game/new')
-      .send({ cacheId: '60d0fe4f5311236168a109cf', topics: ['science'], lang: 'en' });
+      .send({ cacheId: '60d0fe4f5311236168a109cf', topics: ['geography'], lang: 'en' });
     
     expect(response.statusCode).toBe(200);
   });
@@ -283,7 +283,7 @@ it('should return 400 when creating a new game without required fields', async (
   it('should return 400 if lang is invalid in newGame', async () => {
     const res = await request(app)
       .post('/api/game/new')
-      .send({ cacheId: '12345', topics: ['science'], lang: 'jp' });
+      .send({ cacheId: '12345', topics: ['geography'], lang: 'jp' });
 
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe("Invalid topics or language");
@@ -292,7 +292,7 @@ it('should return 400 when creating a new game without required fields', async (
   it('should return 400 if any topic is invalid in newGame', async () => {
     const res = await request(app)
       .post('/api/game/new')
-      .send({ cacheId: '12345', topics: ['science', 'unknown'], lang: 'en' });
+      .send({ cacheId: '12345', topics: ['geography', 'unknown'], lang: 'en' });
 
     expect(res.statusCode).toBe(400);
     expect(res.body.error).toBe("Invalid topics or language");
@@ -374,8 +374,6 @@ it('should return 400 when creating a new game without required fields', async (
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe("No games found for this user.");
   });
-
-
 
   // getGameQuestions tests
   it('should return 400 if gameId is missing in getGameQuestions', async () => {

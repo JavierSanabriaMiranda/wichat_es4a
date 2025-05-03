@@ -3,6 +3,9 @@
     "language-menu": "Language",
     "spanish-menu": "Spanish",
     "english-menu": "English",
+    "french-menu": "French",
+    "german-menu": "German",
+    "italian-menu": "Italian",
     "welcome-home": "Welcome to",
     "hello-home": "Hellooo",
     "quickGame-home": "Quick Game",
@@ -91,5 +94,8 @@
     "donate-text": "Support us!",
     "donation-error": "Error accessing PayPal",
     "server-connection-error": "Error connecting to the server. Please try again later.",
-    "paypal-access-error-modal-title": "Error accessing PayPal"
+    "paypal-access-error-modal-title": "Error accessing PayPal",
+    "chart-correct": "Correct",
+    "chart-wrong": "Wrong",
+    "chart-unanswered": "Unanswered"
 }
