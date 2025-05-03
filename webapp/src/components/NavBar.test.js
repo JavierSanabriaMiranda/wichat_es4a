@@ -102,8 +102,8 @@ describe('NavBar component', () => {
   });
   
 
-  // Should call language change when language is selected from dropdown
-  it('changes language when a language is selected', async () => {
+  // Should call spanish language change when language is selected from dropdown
+  it('changes to spanish when spanish is selected', async () => {
     await renderWithContext();
 
     const langDropdown = screen.getByText('language-menu');
@@ -117,6 +117,40 @@ describe('NavBar component', () => {
     });
 
     expect(i18n.changeLanguage).toHaveBeenCalledWith('es');
+  });
+
+  // Should call english language change when english is selected from dropdown
+  it('changes to english when english is selected', async () => {
+    await renderWithContext();
+
+    const langDropdown = screen.getByText('language-menu');
+    await act(async () => {
+      await userEvent.click(langDropdown);
+    });
+
+    const englishOption = screen.getByText('english-menu');
+    await act(async () => {
+      await userEvent.click(englishOption);
+    });
+
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('en');
+  });
+
+  // Should call french language change when french is selected from dropdown
+  it('changes to french when french is selected', async () => {
+    await renderWithContext();
+
+    const langDropdown = screen.getByText('language-menu');
+    await act(async () => {
+      await userEvent.click(langDropdown);
+    });
+
+    const frenchOption = screen.getByText('french-menu');
+    await act(async () => {
+      await userEvent.click(frenchOption);
+    });
+
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('fr');
   });
 
 
