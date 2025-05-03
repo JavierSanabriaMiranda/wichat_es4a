@@ -111,7 +111,7 @@ sudo usermod -aG docker ${USER}
 ### Continuous delivery (GitHub Actions)
 Once we have our machine ready, we could deploy by hand the application, taking our docker-compose file and executing it in the remote machine. In this repository, this process is done automatically using **GitHub Actions**. The idea is to trigger a series of actions when some condition is met in the repository. The precondition to trigger a deployment is going to be: "create a new release". The actions to execute are the following:
 
-![imagen](https://github.com/user-attachments/assets/7ead6571-0f11-4070-8fe8-1bbc2e327ad2)
+![release actions](https://github.com/user-attachments/assets/3bae2f51-0ef2-446c-a802-65b86edd4cf3)
 
 
 As you can see, unitary tests of each module and e2e tests are executed before pushing the docker images and deploying them. Using this approach we avoid deploying versions that do not pass the tests.
@@ -119,26 +119,43 @@ As you can see, unitary tests of each module and e2e tests are executed before p
 The deploy action is the following:
 
 ```yml
-deploy:
+  deploy:
     name: Deploy over SSH
     runs-on: ubuntu-latest
-    needs: [docker-push-userservice,docker-push-authservice,docker-push-llmservice,docker-push-gatewayservice,docker-push-webapp]
+    needs: [
+      docker-push-userservice,
+      docker-push-authservice,
+      docker-push-llmservice,
+      docker-push-gatewayservice,
+      docker-push-questionservice,
+      docker-push-gameservice,
+      docker-push-donationservice,
+      docker-push-webapp
+    ]
     steps:
-    - name: Deploy over SSH
-      uses: fifsky/ssh-action@master
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        user: ${{ secrets.DEPLOY_USER }}
-        key: ${{ secrets.DEPLOY_KEY }}
-        command: |
-          wget https://raw.githubusercontent.com/arquisoft/wichat_es4a/master/docker-compose.yml -O docker-compose.yml
-          docker compose --profile prod down
-          docker compose --profile prod up -d --pull always
+      - name: Deploy over SSH
+        uses: fifsky/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          user: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          command: |
+            wget https://raw.githubusercontent.com/arquisoft/wichat_es4a/master/docker-compose.yml -O docker-compose.yml
+            docker compose --profile prod down
+            echo "LLM_API_KEY=${{ secrets.LLM_API_KEY }}" > .env
+            echo "TOKEN_SECRET_KEY=${{ secrets.TOKEN_SECRET_KEY }}" >> .env
+            echo "PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }}" >> .env
+            echo "PAYPAL_SECRET_KEY=${{ secrets.PAYPAL_SECRET_KEY }}" >> .env
+            docker compose --profile prod up -d --pull always
 ```
 
-This action uses three secrets that must be configured in the repository:
+This action uses seven secrets that must be configured in the repository:
 - DEPLOY_HOST: IP of the remote machine.
 - DEPLOY_USER: user with permission to execute the commands in the remote machine.
 - DEPLOY_KEY: key to authenticate the user in the remote machine.
+- LLM_API_KEY: key to use the API of the LLM in the application
+- TOKEN_SECRET_KEY: key used to encrypt user session tokens
+- PAYPAL_CLIENT_ID: ID used to access the PayPal API for donations
+- PAYPAL_SECRET_KEY: Secret key used to access the PayPal API for donations
 
 Note that this action logs in the remote machine and downloads the docker-compose file from the repository and launches it. Obviously, previous actions have been executed which have uploaded the docker images to the GitHub Packages repository.
