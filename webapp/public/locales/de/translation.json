@@ -97,5 +97,7 @@
   "paypal-access-error-modal-title": "Fehler beim Zugriff auf PayPal",
   "chart-correct": "Richtige",
   "chart-wrong": "Falsche",
-  "chart-unanswered": "Nicht beantwortet"
+  "chart-unanswered": "Nicht beantwortet",
+  "normal-game": "normal",
+  "chaos-game": "Chaos"
 }

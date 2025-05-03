@@ -97,6 +97,8 @@
     "paypal-access-error-modal-title": "Errore di accesso a PayPal",
     "chart-correct": "Corrette",
     "chart-wrong": "Errate",
-    "chart-unanswered": "Non risposte"
+    "chart-unanswered": "Non risposte",
+    "normal-game": "normale",
+    "chaos-game": "caos"
   }
   

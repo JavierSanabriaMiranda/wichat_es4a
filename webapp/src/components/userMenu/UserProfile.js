@@ -89,7 +89,7 @@ export const UserProfile = () => {
                                                         totalQuestions={game.numberOfQuestions}
                                                         date={game.date}
                                                         onClick={() => getGameQuestionsByGameId(game)}
-                                                        gameMode={game.gameMode}
+                                                        gameMode={game.gameMode === 'normal' ? t('normal-game') : t('chaos-game')}
                                                         index={index}
                                                     />
                                                 ))}

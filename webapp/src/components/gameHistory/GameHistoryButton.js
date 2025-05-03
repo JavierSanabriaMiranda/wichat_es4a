@@ -28,9 +28,9 @@ export const GameHistoryButton = ( {points, correctAnswers, totalQuestions, date
             </span>
             <span
                 className={`d-flex align-items-center ${
-                    gameMode === 'normal'
+                    gameMode === t('normal-game')
                     ? 'text-success'
-                    : gameMode === 'caos'
+                    : gameMode === t('chaos-game')
                     ? 'text-danger'
                     : ''
                 }`}
