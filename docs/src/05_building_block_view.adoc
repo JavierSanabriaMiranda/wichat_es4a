@@ -48,10 +48,12 @@ actor a as "Usuario"
 component w as "WiChat" #LightGray
 component q as "WikiData" #2aa198
 component g as "Gemini" #268bd2
+component p as "Paypal" #2aa198
 
 a -> w: Interactúa
 w -> q: Solicita datos de trivia
 w -> g: Genera pistas basadas en preguntas
+w -> p: Realiza donaciones monetarias
 
 legend
 |<back:#2aa198>   </back>| Fuente externa |
@@ -64,8 +66,8 @@ Motivación::
 
 _La aplicación WiChat tiene la estructura básica para generar preguntas desde WikiData, plantearlas al usuario y, si lo desea, puede recibir pistas generadas por un modelo de lenguaje._
 
-Contained Building Blocks::
-[cols="1,2" options="header"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
@@ -80,6 +82,9 @@ Contained Building Blocks::
 
 |*Gemini*
 |Es un modelo de lenguaje que se utiliza para generar pistas basadas en las preguntas generadas, proporcionando respuestas coherentes y contextuales.
+
+|*Paypal*
+|Es una plataforma de pagos en línea que permite que se puedan realizar donaciones a los desarrolladores de la aplicación.
 |===
 
 === Nivel 2
@@ -95,12 +100,14 @@ Component WiChat {
 
 Component w as "WikiData" #2aa198
 Component g as "Gemini" #268bd2
+Component p as "Paypal" #2aa198
 
 a -> ui: Interactúa con la Interfaz de Usuario
 ui -> ms: Utiliza API REST
 
 ms <- w: Proporciona datos de preguntas
 ms <- g: Proporciona pistas generadas
+ms <- p: Proporciona confirmación de pagos
 
 legend
 |<back:#2aa198>   </back>| Fuente externa |
@@ -111,8 +118,8 @@ endlegend
 Motivación::
 Esto muestra el flujo principal de datos de la aplicación y también la decisión arquitectónica de usar microservicios a los cuales se conectará la _Interfaz de Usuario_.
 
-Contained Building Blocks::
-[options="header",cols="1,3"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
@@ -155,6 +162,10 @@ Component WiChat as "WiChat" {
             Component llm as "LLM Service" #6c71c4
         }
 
+        Component c6 as "Donation MicroService" {
+            Component donation as "Donation Service" #6c71c4
+        }
+
     }
 
     Component ui as "User Interface" #d33682
@@ -173,10 +184,12 @@ Component WiChat as "WiChat" {
 
 Component w as "Wikidata" #2aa198
 Component g as "Gemini" #268bd2
+Component p as "Paypal" #2aa198
 
 game <-- questions: Genera preguntas
 questions <-left- w: Proveee datos de preguntas
-llm <-left- llm: Genera preguntas
+llm <-left- g: Genera pistas
+donation <-left- p: Aporta información de pagos
 
 legend
  |<back:#d33682>   </back>| Lado del cliente |
@@ -191,8 +204,8 @@ endlegend
 Motivación::
 En este diagrama podemos ver los microservicios que proporcionarán todas las operaciones necesarias para que la aplicación funcione como el usuario se espera.
 
-Contained Building Blocks::
-[options="header",cols="1,3"]
+Bloques de Construcción Contenidos::
+[cols="e,2e" options="header"]
 |===
 |Nombre| Descripción
 
@@ -210,6 +223,9 @@ Contained Building Blocks::
 
 |*LLM Service* 
 |Es un microservicio que utiliza un modelo de lenguaje para generar pistas basadas en las preguntas proporcionadas, asegurando respuestas coherentes y contextuales para mejorar la experiencia del usuario.
+
+|*Donation Service* 
+|Es un microservicio responsable de gestionar las donaciones de los usuarios a través de PayPal, capturando los pagos exitosos y enviando automáticamente correos de agradecimiento personalizados para fortalecer el vínculo con la comunidad.
 
 |*Game Data y User Data* 
 |Son las bases de datos principales de la aplicación y juntas almacenarán todos los datos persistentes importantes de la aplicación.

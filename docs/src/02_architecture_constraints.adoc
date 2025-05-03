@@ -3,6 +3,27 @@ ifndef::imagesdir[:imagesdir: ../images]
 [[section-architecture-constraints]]
 == Restricciones de arquitectura
 
+ifdef::arc42help[]
+[role="arc42help"]
+****
+.Contenidos
+Cualquier requisito que limite la libertad de los arquitectos de software en sus decisiones de diseño e implementación, o en decisiones sobre el proceso de desarrollo. Estas restricciones a veces van más allá de los sistemas individuales y son aplicables a organizaciones y empresas enteras.
+
+.Motivación
+Los arquitectos deben saber exactamente dónde tienen libertad en sus decisiones de diseño y dónde deben adherirse a restricciones.
+Las restricciones siempre deben ser consideradas; sin embargo, pueden ser negociables.
+
+.Formato
+Tablas simples de restricciones con explicaciones.
+Si es necesario, puedes subdividirlas en: Restricciones técnicas, Restricciones organizativas y políticas, y convenciones (por ejemplo, guías de programación o versionado, documentación o convenciones de nomenclatura).
+
+.Información Adicional
+
+Consulta https://docs.arc42.org/section-2/[Architecture Constraints] en la documentación de arc42.
+
+****
+endif::arc42help[]
+
 Para desarrollar cualquier proyecto de software, aparecen limitaciones y condiciones que debemos tener en cuenta.
 No tenemos total libertad ni para diseñar el sistema ni para implementarlo. Además, el nivel y la cantidad de restricciones aumentan a medida que el desarrollo evoluciona. Un ejemplo de esto es la mayor dificultad para modificar el modelo de datos a medida que pasa el tiempo. 
 
@@ -13,13 +34,13 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción
-| _Uso de un LLM_              | Se utilizará un modelo de lenguaje grande (LLM) para generar automáticamente preguntas y respuestas y permitir obtener pistas.
+| _Uso de un LLM_              | Se utilizará un modelo de lenguaje grande (LLM) para generar automáticamente respuestas al usuario y que le permita obtener pistas.
 | _Wikidata_                   | Las preguntas y respuestas, así como las pistas, se generarán a partir de los datos de Wikidata.
-| _Docker_                 | La web deberá estar desplegada y accesible a través de la Web.
-| _Generación de Preguntas_    | Las preguntas tendrán una respuesta correcta y varias incorrectas. Las respuestas se generarán automáticamente.
-| _API Usage_                 | Se utilizarán APIs para acceder a la información de usuarios y preguntas generadas. 
-| _Frontend Web_               | El sistema tendrá al menos un frontend web desplegado y accesible a través de la Web.
+| _Docker_                 | La aplicación deberá estar desplegada y accesible a través de la Web.
+| _Generación de Preguntas_    | Las preguntas tendrán una respuesta correcta y varias incorrectas y se generarán automáticamente.
 | _Límite de tiempo_           | Las preguntas deben ser respondidas dentro de un plazo de tiempo determinado.
+| _Sistema de Donaciones (PayPal)_ | Se implementará un sistema de donaciones integrando PayPal, enviando un email automático de agradecimiento tras cada donación exitosa. 
+| _Correo Transaccional_ | Se utilizará un servicio de correo para notificaciones automáticas, empleando autenticación segura (App Passwords).
 |===
 
 **RESTRICCIONES ORGANIZATIVAS**
@@ -27,7 +48,7 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción
-| _Gestión de Usuarios_        | Los usuarios podrán registrarse, iniciar sesión y revisar su historial de participación en el sistema.
+| _Gestión de Usuarios_        | Los usuarios podrán registrarse, iniciar sesión y revisar su historial de partidas.
 | _Grupos de 4-6 personas_      | Grupos pequeños de alumnos para realizar el trabajo, elegidos por el profesor.
 |===
 
@@ -46,30 +67,9 @@ Es importante que el arquitecto sepa cómo equilibrar los requisitos del proyect
 [cols="1,3",options="header"]
 |===
 | Restricción               | Descripción 
-| _Convenciones de Nombres_    | El nombre de la aplicación será WIChat.
+| _Convenciones de Nombres_    | El nombre de la aplicación será WiChat.
 | _Uso de Git y Github_        | Se utilizará Git como sistema de control de versiones, y el repositorio será alojado en GitHub.
 | _Documentación Arc42_        | Se seguirá la convención de documentación Arc42.
 |===
  
-ifdef::arc42help[]
-[role="arc42help"]
-****
-.Contents
-Any requirement that constraints software architects in their freedom of design and implementation decisions or decision about the development process. These constraints sometimes go beyond individual systems and are valid for whole organizations and companies.
 
-.Motivation
-Architects should know exactly where they are free in their design decisions and where they must adhere to constraints.
-Constraints must always be dealt with; they may be negotiable, though.
-
-.Form
-Simple tables of constraints with explanations.
-If needed you can subdivide them into
-technical constraints, organizational and political constraints and
-conventions (e.g. programming or versioning guidelines, documentation or naming conventions)
-
-.Further Information
-
-See https://docs.arc42.org/section-2/[Architecture Constraints] in the arc42 documentation.
-
-****
-endif::arc42help[]

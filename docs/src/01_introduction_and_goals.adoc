@@ -1,31 +1,31 @@
 ifndef::imagesdir[:imagesdir: ../images]
 
 [[section-introduction-and-goals]]
-== Introduction and Goals
+== Introducción y Objetivos
 
 ifdef::arc42help[]
 [role="arc42help"]
 ****
-Describes the relevant requirements and the driving forces that software architects and development team must consider. 
-These include
+Describe las necesidades importantes y las fuerzas mayores que los arquitectos del software y el equipo de desarrollo deben considerar 
+Esto incluye
 
-* underlying business goals, 
-* essential features, 
-* essential functional requirements, 
-* quality goals for the architecture and
-* relevant stakeholders and their expectations
+* Objetivos comerciales subyacentes,
+* Características esenciales,
+* Requisitos funcionales esenciales,
+* Objetivos de calidad para la arquitectura y
+* Partes interesadas relevantes y sus expectativas.
 ****
 endif::arc42help[]
 
 === Descripción de los requisitos
 
-* **Registro e Inicio de Sesión de Usuarios:** Los usuarios deberán registrarse para participar en los juegos, o iniciar sesión si ya se han registrado previamente.
+* **Registro e Inicio de Sesión de Usuarios:** Los usuarios podrán registrarse para guardar o consultar los resultados de sus partidas, o iniciar sesión si ya se han registrado previamente.
 
 * **Generación de Preguntas y Respuestas:** El sistema proporcionará preguntas de diversas temáticas. Se generarán automáticamente respuestas correctas e incorrectas utilizando datos de Wikidata. Cada pregunta tendrá 4 posibles respuestas.
 
-* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
+* **Interacción con el Sistema de Pistas:** Los usuarios podrán interactuar con la aplicación para obtener pistas sobre las preguntas. Las pistas serán generadas de forma conversacional mediante un modelo de lenguaje (LLM), accediendo a través de una API.
 
-* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de juegos jugados, preguntas acertadas y falladas, y el tiempo utilizado.
+* **Historial de Participación del Usuario:** El sistema registrará el historial de los usuarios. Se almacenarán datos como el número de puntos obtenidos, las preguntas acertadas y falladas, y la fecha.
 
 * **Límite de Tiempo para Responder:** Cada pregunta tendrá un límite de tiempo determinado para ser respondida por los usuarios.
 
@@ -33,11 +33,13 @@ endif::arc42help[]
 
 * **Generación Automática de Contenidos:** Las imágenes de las preguntas y las pistas serán generadas automáticamente utilizando datos de Wikidata. Esto garantizará la variedad y el contexto adecuado de las preguntas.
 
+* **Donaciones con PayPal:** Implementamos un flujo completo donde, tras capturar un pago exitoso en PayPal, enviamos automáticamente un email personalizado de agradecimiento al donante. Además, configuramos tanto el entorno sandbox para pruebas como la preparación para producción real.
+
 === Objetivos de Calidad
 
 ifdef::arc42help[]
 [role="arc42help"]
-
+****
 .Contenido
 Los tres (máximo cinco) objetivos de calidad más importantes para la arquitectura, cuya satisfacción es de máxima importancia para los principales interesados.
 Nos referimos realmente a los objetivos de calidad de la arquitectura. No los confundas con los objetivos del proyecto.
@@ -55,6 +57,7 @@ Si como arquitecto no sabes cómo se juzgará la calidad de tu trabajo...
 .Formato
 Una tabla con los objetivos de calidad y escenarios concretos, ordenados por prioridades.
 
+****
 endif::arc42help[]
 
 [cols="2,3", options="header"]
@@ -62,7 +65,7 @@ endif::arc42help[]
 |Meta |Descripción
 
 |Rendimiento
-|El sistema debe garantizar tiempos de respuesta dentro de los límites aceptables, incluso en condiciones de alta demanda. Se optimizará el uso de recursos para minimizar la latencia y mejorar la experiencia del usuario. Además, se implementarán optimizaciones de consultas para reducir la carga en los servidores y mejorar la velocidad de ejecución de las funciones más críticas.
+|Se realizan consultas al servicio que proporciona las imágenes y las preguntas del juego de manera eficiente para que el tiempo de carga de estas sea el menor posible y el rendimiento sea el máximo alcanzable.
 
 |Escalabilidad
 |El diseño del sistema debe permitir un crecimiento eficiente, asegurando que pueda manejar un aumento en la cantidad de usuarios y datos sin afectar negativamente el rendimiento.

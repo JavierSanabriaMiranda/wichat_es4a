@@ -7,7 +7,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 ==== Frontend
 * **Motivación**: Elegimos _**JavaScript**_ y _**React**_ para el desarrollo del frontend por su flexibilidad y su capacidad para crear interfaces dinámicas y altamente interactivas. Dado que uno de los objetivos clave del proyecto es la _usabilidad_, _React_ facilita el desarrollo de interfaces modernas y centradas en el usuario, lo que optimiza la experiencia. Además, _React_ es ampliamente utilizado y bien soportado, lo que facilita la integración y el mantenimiento.
 * **Objetivos de calidad**: _Usabilidad_, _Mantenibilidad_, _Integrabilidad_
-* **Restricciones clave**: El sistema debe ser accesible desde diferentes plataformas y dispositivos, incluyendo navegadores web modernos.
+* **Restricciones clave**: El sistema debe ser accesible desde diferentes plataformas, incluyendo navegadores web modernos.
 
 ==== Backend
 * **Motivación**: _**Node.js**_ con _**Express**_ fue elegido para el desarrollo del backend debido a su rendimiento, escalabilidad y naturaleza no bloqueante, lo cual es crucial cuando se manejan múltiples solicitudes simultáneas en una aplicación web. _Express_, por su parte, es un framework minimalista y permite construir APIs RESTful eficientes, lo que se adapta bien a las necesidades de integración del sistema con diversas APIs externas.
@@ -20,9 +20,9 @@ ifndef::imagesdir[:imagesdir: ../images]
 * **Restricciones clave**: El sistema debe ser capaz de manejar grandes volúmenes de datos y ser altamente escalable.
 
 ==== APIs Externas
-* **Motivación**: La elección de _**SPARQL**_ permite integrar consultas semánticas eficientes a bases de datos con información estructurada. Además, utilizamos la _**API de Gemini**_ debido a los problemas recurrentes de caídas de los servidores de _Empathy_, lo que hace que la solución basada en _Gemini_ sea más confiable. Esta decisión ayuda a garantizar la disponibilidad del sistema y evitar puntos de fallo únicos.
-* **Objetivos de calidad**: _Disponibilidad_, _Fiabilidad_, _Rendimiento_
-* **Restricciones clave**: La _API de Gemini_ debe integrarse de manera eficiente con el sistema, proporcionando una solución confiable en lugar de las APIs de _Empathy_ que presentan interrupciones.
+* **Motivación**: La elección de _**SPARQL**_ permite integrar consultas semánticas eficientes a bases de datos con información estructurada. Además, utilizamos la _**API de Gemini**_ debido a los problemas recurrentes de caídas de los servidores de _Empathy_, lo que hace que la solución basada en _Gemini_ sea más confiable. Esta decisión ayuda a garantizar la disponibilidad del sistema y evitar puntos de fallo únicos. También integramos la API de PayPal para gestionar un apartado de donaciones, proporcionando una forma segura y ampliamente reconocida para que los usuarios puedan apoyar el proyecto.
+* **Objetivos de calidad**: _Disponibilidad_, _Fiabilidad_, _Rendimiento_, _Seguridad_
+* **Restricciones clave**: La _API de Gemini_ debe integrarse de manera eficiente con el sistema, proporcionando una solución confiable en lugar de las APIs de _Empathy_ que presentan interrupciones. La API de PayPal debe cumplir con los requisitos de seguridad y privacidad en el manejo de transacciones financieras.
 
 ==== Contenedores
 * **Motivación**: _**Docker**_ fue elegido para la creación de contenedores por su capacidad para simplificar el proceso de despliegue y asegurar la consistencia entre entornos de desarrollo, pruebas y producción. El uso de _Docker_ facilita la escalabilidad del sistema, permitiendo agregar más instancias de servicios según sea necesario y mejorar la disponibilidad del sistema.
