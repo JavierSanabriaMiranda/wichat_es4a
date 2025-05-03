@@ -201,7 +201,7 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         env:
-          REDIRECTION_URI: http://${{ secrets.DEPLOY_HOST }}:3000
+          REDIRECTION_URI: http://${{ secrets.DEPLOY_HOST }}
           DONATION_SERVICE_URI: http://${{ secrets.DEPLOY_HOST }}:8006
         with:
           name: arquisoft/wichat_es4a/donationservice
