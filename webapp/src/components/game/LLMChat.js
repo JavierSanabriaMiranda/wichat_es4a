@@ -132,10 +132,10 @@ const LLMChat = ({ name, isChaosMode }) => {
                         <Row key={index}>
                             {msg.props.className === "llm-message" ? (
                                 <>
-                                    <Col md={2}>
+                                    <Col md={2} sm={2}>
                                         <img src={isChaosMode ? "/iconoLLMDiabolico.png" : "/iconoLLM.png"} alt="LLM" className='llm-icon' />
                                     </Col>
-                                    <Col md={8}>
+                                    <Col md={8} sm={8}>
                                         {msg}
                                     </Col>
                                 </>
