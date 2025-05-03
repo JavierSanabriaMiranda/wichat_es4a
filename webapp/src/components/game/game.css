@@ -175,15 +175,21 @@ button:not(:disabled):active {
 .llm-chat-input {
     width: 100%;
     font-size: 1.2vw;
+    border: none;
+    border-radius: 8px 0px 0px 8px;
+    background-color: white;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
 }
 
 .send-prompt-button {
     width: 15%;
     height: 2em;
     font-size: 1.2em;
-    border-radius: 3%;
+    border-radius: 0px 8px 8px 0px;
     background-color: white;
+    border: none;
     cursor: pointer;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
 }
 
 .send-prompt-button:hover {
