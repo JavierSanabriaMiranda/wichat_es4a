@@ -246,10 +246,12 @@ button:not(:disabled):active {
 /* ===================== IMG STYLE ===================== */
 
 .question-img {
-    max-width: 20vw;
-    max-height: 50vh;
+    max-width: 60%;
+    max-height: 40vh;
     height: auto;
+    object-fit: contain;
 }
+
 
 .div-question-img {
     grid-column: 1/4;
