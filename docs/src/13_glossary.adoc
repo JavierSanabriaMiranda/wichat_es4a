@@ -23,7 +23,7 @@ Una tabla con las columnas <Término> y <Definición>.
 Se pueden agregar más columnas si necesitas traducciones.
 
 .Información adicional
-Consulta https://docs.arc42.org/section-12/[Glossary] en la documentación de arc42.
+Consulta https://docs.arc42.org/section-13/[Glossary] en la documentación de arc42.
 
 ****
 endif::arc42help[]

@@ -1,0 +1,13 @@
+ifndef::imagesdir[:imagesdir: ../images]
+
+[[section-testing-report]]
+== Informe de pruebas
+ifdef::arc42help[]
+[role="arc42help"]
+endif::arc42help[]
+
+=== Test unitarios
+
+=== Test E2E
+
+=== Test de carga
