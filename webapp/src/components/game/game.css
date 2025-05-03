@@ -6,6 +6,7 @@
     justify-content: space-between;
     height: 100vh;
     width: 100vw;
+    padding-bottom: 1%;
 }
 
 /* ===================== QUESTION STYLE ===================== */
@@ -66,6 +67,7 @@
     align-items: center;
     display: flex;
     justify-content: center;
+    font-size: 1.2vw;
 }
 
 .answer-icon {
@@ -130,8 +132,9 @@ button:not(:disabled):active {
 
 .llm-chat-aside {
     margin-right: 1em;
+    padding-bottom: 10%;
     grid-column: -1;
-    grid-row: 2/5;
+    grid-row: 2/-1;
     display: flex;
     justify-content: center;
 }
@@ -153,6 +156,7 @@ button:not(:disabled):active {
     padding: 1em;
     border-radius: 15px; 
     word-wrap: break-word;
+    font-size: 1.1vw;
 }
 
 .llm-message-loading {
@@ -170,7 +174,7 @@ button:not(:disabled):active {
 
 .llm-chat-input {
     width: 100%;
-    font-size: 1.2em;
+    font-size: 1.2vw;
 }
 
 .send-prompt-button {
@@ -196,6 +200,7 @@ button:not(:disabled):active {
     height: auto;
     border-radius: 50%;
     background-color: white;
+    min-width: 3vw;
 }
 
 .llm-chat-form {
@@ -261,7 +266,7 @@ button:not(:disabled):active {
     justify-content: center;
     text-align: center;
     grid-column: 1/4;
-    font-size: 1.5em;
+    font-size: 2vw;
 }
 
 /* ===================== NEXT BUTTON STYLE ===================== */
@@ -280,6 +285,7 @@ button:not(:disabled):active {
     text-decoration: none;
     border-radius: 15px;
     cursor: pointer;
+    font-size: 1.2vw !important;
 }
 
 .pass-button:disabled {
