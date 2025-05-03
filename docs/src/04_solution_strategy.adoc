@@ -54,6 +54,11 @@ ifndef::imagesdir[:imagesdir: ../images]
 * **Objetivos de calidad**: _Rendimiento_, _Escalabilidad_
 * **Restricciones clave**: El sistema debe soportar un alto volumen de tráfico sin afectar la experiencia del usuario ni comprometer la estabilidad.
 
+==== Nombre de Dominio
+* **Motivación**: Se adquirió un nombre de dominio personalizado (_wichat-es4a.es_) para mejorar la accesibilidad y profesionalismo del sistema, facilitando a los usuarios el acceso a la aplicación mediante una URL clara y memorable.
+* **Objetivos de calidad**: _Usabilidad_, _Disponibilidad_, _Seguridad_
+* **Restricciones clave**: El dominio debe estar correctamente configurado en los registros DNS y asociado a la infraestructura desplegada en _AWS_.
+
 === Decisiones sobre la Descomposición de Alto Nivel
 ==== Patrón Arquitectónico
 * **Motivación**: El sistema sigue un patrón de _**microservicios**_, donde cada componente del sistema se gestiona de manera independiente. Sin embargo, _userservice_ y _authservice_ son los únicos servicios que comparten una misma base de datos, ya que ambos requieren acceso frecuente a la misma información de usuarios y autenticación. Los demás servicios tienen bases de datos propias, lo que mejora la modularidad y la independencia de cada servicio. Este enfoque permite escalabilidad y flexibilidad, y facilita el despliegue y la gestión de los servicios de manera autónoma.
