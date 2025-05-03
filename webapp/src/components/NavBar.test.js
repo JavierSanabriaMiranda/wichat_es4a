@@ -153,5 +153,38 @@ describe('NavBar component', () => {
     expect(i18n.changeLanguage).toHaveBeenCalledWith('fr');
   });
 
+  // Should call german language change when german is selected from dropdown
+  it('changes to german when german is selected', async () => {
+    await renderWithContext();
+
+    const langDropdown = screen.getByText('language-menu');
+    await act(async () => {
+      await userEvent.click(langDropdown);
+    });
+
+    const germanOption = screen.getByText('german-menu');
+    await act(async () => {
+      await userEvent.click(germanOption);
+    });
+
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('de');
+  });
+
+  // Should call italian language change when italian is selected from dropdown
+  it('changes to italian when italian is selected', async () => {
+    await renderWithContext();
+
+    const langDropdown = screen.getByText('language-menu');
+    await act(async () => {
+      await userEvent.click(langDropdown);
+    });
+
+    const italianOption = screen.getByText('italian-menu');
+    await act(async () => {
+      await userEvent.click(italianOption);
+    });
+
+    expect(i18n.changeLanguage).toHaveBeenCalledWith('it');
+  });
 
 });
