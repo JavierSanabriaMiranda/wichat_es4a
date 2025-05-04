@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Accordion from 'react-bootstrap/Accordion';
-import Image from 'react-bootstrap/Image';
 import QuestionImage from '../game/QuestionImage';
 import '../game/game.css';
 
