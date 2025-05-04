@@ -36,7 +36,7 @@
 
 <p align="center">
   <a href="https://youtu.be/-FqBrFOpaTw" target="_blank">
-    <img src="https://img.youtube.com/vi/-FqBrFOpaTw/0.jpg" alt="Watch demo on YouTube" width="600">
+    <img src="https://github.com/user-attachments/assets/0e630fff-9ebd-40c0-a4c3-ca6920430575" alt="Watch demo on YouTube" width="600">
   </a>
 </p>
 
