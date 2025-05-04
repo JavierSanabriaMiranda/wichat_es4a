@@ -32,6 +32,13 @@
 | Claudia Nistal Martínez | <a href="https://github.com/claudianistal"><img src="https://img.shields.io/badge/UO294420-Claudia%20Nistal-orange"></a> |
 | Javier Sanabria Miranda | <a href="https://github.com/JavierSanabriaMiranda"><img src="https://img.shields.io/badge/UO293758-Javier%20Sanabria-yellow"></a> |
 
+### 🎥 Demostración de funcionamiento de **wichat-es4a**
+
+[![Ver demo en YouTube](https://img.youtube.com/vi/-FqBrFOpaTw/0.jpg)](https://youtu.be/-FqBrFOpaTw)
+
+> El video presenta una demostración del funcionamiento de la aplicación, mostrando sus principales características y funcionalidades.
+
+
 ## Context
 
 This is a base project for the Software Architecture course in 2024/2025. It is a basic application composed of several components.
