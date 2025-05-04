@@ -32,11 +32,11 @@
 | Claudia Nistal Martínez | <a href="https://github.com/claudianistal"><img src="https://img.shields.io/badge/UO294420-Claudia%20Nistal-orange"></a> |
 | Javier Sanabria Miranda | <a href="https://github.com/JavierSanabriaMiranda"><img src="https://img.shields.io/badge/UO293758-Javier%20Sanabria-yellow"></a> |
 
-### 🎥 Demostración de funcionamiento de **wichat-es4a**
+### 🎥 Functionality demonstration of **wichat-es4a**
 
-[![Ver demo en YouTube](https://img.youtube.com/vi/-FqBrFOpaTw/0.jpg)](https://youtu.be/-FqBrFOpaTw)
+[![Watch demo on YouTube](https://img.youtube.com/vi/-FqBrFOpaTw/0.jpg)](https://youtu.be/-FqBrFOpaTw)
 
-> El video presenta una demostración del funcionamiento de la aplicación, mostrando sus principales características y funcionalidades.
+> The video presents a demonstration of the application's functionality, showcasing its main features and capabilities.
 
 
 ## Context
