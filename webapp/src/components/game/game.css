@@ -12,9 +12,17 @@
 /* ===================== QUESTION STYLE ===================== */
 
 @keyframes loadingAnimation {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .question-loading {
@@ -33,18 +41,22 @@
     grid-column: 1 / 4;
 }
 
-.answer-button-not-answered, .answer-button-correct-answer, .answer-button-wrong-answer {
+.answer-button-not-answered,
+.answer-button-correct-answer,
+.answer-button-wrong-answer {
     margin: 3%;
     width: 90%;
     height: 3em;
     font-size: 1.2em;
-    
+
     background-color: #5d6c89 !important;
     color: #fbf6f3 !important;
     cursor: pointer;
 }
 
-.answer-button-not-answered:disabled, .answer-button-correct-answer:disabled, .answer-button-wrong-answer:disabled {
+.answer-button-not-answered:disabled,
+.answer-button-correct-answer:disabled,
+.answer-button-wrong-answer:disabled {
     opacity: 100%;
 }
 
@@ -57,8 +69,9 @@
     color: white;
 }
 
-.answer-button-wrong-answer, .answer-button-wrong-answer:active {
-    background-color: #f71e0e !important; 
+.answer-button-wrong-answer,
+.answer-button-wrong-answer:active {
+    background-color: #f71e0e !important;
     color: white;
 }
 
@@ -78,7 +91,8 @@
 }
 
 button:not(:disabled):active {
-    transform: scale(0.98) !important; /* Slightly scale down the button to give a pressed effect */
+    transform: scale(0.98) !important;
+    /* Slightly scale down the button to give a pressed effect */
 }
 
 /* ===================== TIMER STYLE ===================== */
@@ -90,11 +104,13 @@ button:not(:disabled):active {
     grid-column: 0;
 }
 
-.game-timer, .game-timer-warning-minus-10, .game-timer-warning-minus-5 {
+.game-timer,
+.game-timer-warning-minus-10,
+.game-timer-warning-minus-5 {
     margin-left: 20%;
     font-family: 'Lucida Console', 'Monaco', monospace;
     font-size: 4vw;
-    font-weight: bolder;    
+    font-weight: bolder;
 }
 
 .game-timer {
@@ -102,7 +118,9 @@ button:not(:disabled):active {
 }
 
 @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 .game-timer-warning-minus-10 {
@@ -132,7 +150,7 @@ button:not(:disabled):active {
 
 .llm-chat-aside {
     margin-right: 1em;
-	padding-bottom: 10%;
+    padding-bottom: 10%;
     grid-column: -1;
     grid-row: 2/-1;
     display: flex;
@@ -151,10 +169,12 @@ button:not(:disabled):active {
     padding: 2%;
 }
 
-.llm-message, .user-message, .llm-message-loading {
+.llm-message,
+.user-message,
+.llm-message-loading {
     margin: 2% 0;
     padding: 1em;
-    border-radius: 15px; 
+    border-radius: 15px;
     word-wrap: break-word;
     font-size: 1.1vw;
 }
@@ -196,7 +216,7 @@ button:not(:disabled):active {
     background-color: rgb(237, 230, 230);
 }
 
-.send-prompt-button > img {
+.send-prompt-button>img {
     width: 70%;
     height: auto;
 }
@@ -214,14 +234,16 @@ button:not(:disabled):active {
     justify-content: space-between;
 }
 
-.llm-chat-form, .llm-chat {
+.llm-chat-form,
+.llm-chat {
     border-width: 0.2em;
 }
 
 /* ===================== POINTS STYLE ===================== */
 
 .game-points-and-exit-div {
-    position: relative; /* Add relative positioning */
+    position: relative;
+    /* Add relative positioning */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -237,14 +259,24 @@ button:not(:disabled):active {
 }
 
 @keyframes pointsToAddAnimation {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-20px); opacity: 0; } /* Adjust translateY to move less */
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    /* Adjust translateY to move less */
 }
 
 .points-to-add {
     position: absolute;
     right: 107%;
-    font-size: 3em; /* Make the font size even smaller */
+    font-size: 3em;
+    /* Make the font size even smaller */
     color: green;
     animation: pointsToAddAnimation 1.1s ease-in-out;
 }
@@ -256,9 +288,29 @@ button:not(:disabled):active {
     max-height: 40vh;
     height: auto;
     object-fit: contain;
+    cursor: pointer;
 }
 
+.zoomed-image-div {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
 
+.zoomed-image {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 20px white;
+  }
+  
+  
 .div-question-img {
     grid-column: 1/4;
     display: flex;
@@ -339,9 +391,11 @@ button:not(:disabled):active {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.1);
     }
+
     100% {
         transform: scale(1);
     }
@@ -349,7 +403,7 @@ button:not(:disabled):active {
 
 .game-results-button {
     margin: 4% 0%;
-    background-color:#475a80;
+    background-color: #475a80;
     font-size: 1vw !important;
 }
 
@@ -374,21 +428,36 @@ button:not(:disabled):active {
 }
 
 @keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-  }
-  
-  .answer-button-wrong-answer {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+
+    75% {
+        transform: translateX(-5px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.answer-button-wrong-answer {
     animation: shake 0.4s ease;
-  }
+}
 
 .chaos-mode .points-to-remove {
     position: absolute;
     right: 107%;
-    font-size: 3em; /* Make the font size even smaller */
+    font-size: 3em;
+    /* Make the font size even smaller */
     color: rgb(217, 38, 14);
     animation: pointsToAddAnimation 1.1s ease-in-out;
 }
@@ -401,24 +470,25 @@ button:not(:disabled):active {
     height: 100%;
     object-fit: cover;
     z-index: -1;
-    pointer-events: none; /* El video no bloquea clics */
-  }
+    pointer-events: none;
+    /* El video no bloquea clics */
+}
 
 .chaos-mode .game-questions-answered {
     color: white;
-  }
+}
 
 .chaos-mode .game-points-and-exit-div {
     color: white;
-  }
+}
 
 .chaos-mode .game-question {
     color: white;
-  }
+}
 
 .chaos-mode .game-timer {
     color: red;
-  }
+}
 
 .chaos-mode .llm-icon {
     width: 170%;
