@@ -301,7 +301,7 @@ button:not(:disabled):active {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9999;
 }
 
 .zoomed-image {
@@ -310,12 +310,22 @@ button:not(:disabled):active {
     box-shadow: 0 0 20px white;
   }
   
+.no-border {
+    box-shadow: none;
+}
   
 .div-question-img {
     grid-column: 1/4;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.history-img {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    cursor: pointer;
 }
 
 /* ===================== QUESTION STYLE ===================== */

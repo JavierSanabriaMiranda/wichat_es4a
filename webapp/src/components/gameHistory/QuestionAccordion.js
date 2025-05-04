@@ -2,6 +2,8 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Accordion from 'react-bootstrap/Accordion';
 import Image from 'react-bootstrap/Image';
+import QuestionImage from '../game/QuestionImage';
+import '../game/game.css';
 
 /** 
  * This component represents each of the questions displayed in the history or summary of a game.
@@ -17,11 +19,11 @@ export const QuestionAccordion = ({ questions }) => {
                     <Accordion.Item eventKey={index.toString()} key={index}>
                         <Accordion.Header>{index + 1}. {question.text}</Accordion.Header>
                         <Accordion.Body>
-                            <Image
+                            <QuestionImage
                                 src={question.imageUrl}
+                                alt={question.text}
                                 rounded
-                                className="img-fluid"
-                                style={{ maxWidth: '200px', height: 'auto' }}
+                                className="history-img"
                             />
                             {question.answers.map((answer, i) => {
                                 let symbol = '';

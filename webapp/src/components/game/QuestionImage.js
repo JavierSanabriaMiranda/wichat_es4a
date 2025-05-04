@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 
-const QuestionImage = ({ src, alt }) => {
+const QuestionImage = ({ src, alt, className }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isPng = src.toLowerCase().endsWith('.png');
 
   return (
     <>
       <img
         src={src}
         alt={alt}
-        className="question-img"
+        className={className ? className : ''}
         onClick={() => setIsOpen(true)}
         onContextMenu={(e) => e.preventDefault()}
       />
@@ -19,7 +20,7 @@ const QuestionImage = ({ src, alt }) => {
           onClick={() => setIsOpen(false)}
         >
           <img
-            className="zoomed-image"
+            className={`zoomed-image ${isPng ? 'no-border' : ''}`}
             src={src}
             alt={alt}
           />
