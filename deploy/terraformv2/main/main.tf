@@ -67,38 +67,45 @@ resource "aws_security_group" "instance_sg" {
     }
 
     ingress {
+        from_port   = 8000
+        to_port     = 8000
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
         from_port   = 8001
         to_port     = 8001
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [data.aws_vpc.mainlb.cidr_block]
     }
 
     ingress {
         from_port   = 8002
         to_port     = 8002
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [data.aws_vpc.mainlb.cidr_block]
     }
 
     ingress {
         from_port   = 8003
         to_port     = 8003
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [data.aws_vpc.mainlb.cidr_block]
     }
 
     ingress {
         from_port   = 8004
         to_port     = 8004
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [data.aws_vpc.mainlb.cidr_block]
     }
 
     ingress {
         from_port   = 8005
         to_port     = 8005
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [data.aws_vpc.mainlb.cidr_block]
     }
 
     ingress {
