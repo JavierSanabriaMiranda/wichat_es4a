@@ -52,6 +52,22 @@ describe('QuestionImage', () => {
   
     expect(screen.queryAllByAltText(altText).length).toBe(1);
   });
+
+  test('closes zoomed image when pressing Escape', () => {
+    render(<QuestionImage src={jpgSrc} alt={altText} />);
+    fireEvent.click(screen.getByAltText(altText));
+  
+    // Ensure the zoomed image is displayed
+    expect(screen.getAllByAltText(altText).length).toBe(2);
+  
+    // Simulate Escape key press on the overlay
+    const overlay = document.querySelector('.zoomed-image-div');
+    overlay.focus(); // Necessary for key events to register
+    fireEvent.keyDown(overlay, { key: 'Escape' });
+  
+    // Expect the zoomed image to be closed
+    expect(screen.queryAllByAltText(altText).length).toBe(1);
+  });
   
 
   test('applies no-border class if image is PNG', () => {
