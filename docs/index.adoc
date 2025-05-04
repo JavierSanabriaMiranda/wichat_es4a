@@ -6,12 +6,12 @@
 // configure EN settings for asciidoc
 include::src/config.adoc[]
 
-= image:arc42-logo.png[arc42] wichat_es4a
-:revnumber: 8.2 EN
-:revdate: January 2023
+= image:logo.png[WiChat Logo] wichat_es4a
+:revnumber: 8.2 ES
+:revdate: May 2025
 :revremark: (based upon AsciiDoc version)
 // toc-title definition MUST follow document title without blank line!
-:toc-title: Table of Contents
+:toc-title: Tabla de Contenido
 
 //additional style for arc42 help callouts
 ifdef::backend-html5[]
@@ -94,6 +94,10 @@ include::src/10_quality_requirements.adoc[]
 include::src/11_technical_risks.adoc[]
 
 <<<<
-// 12. Glossary
-include::src/12_glossary.adoc[]
+// 12. Testing Report
+include::src/12_testing_report.adoc[]
+
+<<<<
+// 13. Glossary
+include::src/13_glossary.adoc[]
 
