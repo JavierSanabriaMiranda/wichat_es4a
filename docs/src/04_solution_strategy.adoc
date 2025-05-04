@@ -20,9 +20,9 @@ ifndef::imagesdir[:imagesdir: ../images]
 * **Restricciones clave**: El sistema debe ser capaz de manejar grandes volúmenes de datos y ser altamente escalable.
 
 ==== APIs Externas
-* **Motivación**: La elección de _**SPARQL**_ permite integrar consultas semánticas eficientes a bases de datos con información estructurada. Además, utilizamos la _**API de Gemini**_ debido a los problemas recurrentes de caídas de los servidores de _Empathy_, lo que hace que la solución basada en _Gemini_ sea más confiable. Esta decisión ayuda a garantizar la disponibilidad del sistema y evitar puntos de fallo únicos. También integramos la API de PayPal para gestionar un apartado de donaciones, proporcionando una forma segura y ampliamente reconocida para que los usuarios puedan apoyar el proyecto.
+* **Motivación**: La elección de _**SPARQL**_ permite integrar consultas semánticas eficientes a bases de datos con información estructurada. Además, utilizamos la _**API de Gemini**_ debido a los problemas recurrentes de caídas de los servidores de _Empathy_, lo que hace que la solución basada en _Gemini_ sea más confiable. Esta decisión ayuda a garantizar la disponibilidad del sistema y evitar puntos de fallo únicos. También integramos la _**API de PayPal**_ para gestionar un apartado de donaciones, proporcionando una forma segura y ampliamente reconocida para que los usuarios puedan apoyar el proyecto.
 * **Objetivos de calidad**: _Disponibilidad_, _Fiabilidad_, _Rendimiento_, _Seguridad_
-* **Restricciones clave**: La _API de Gemini_ debe integrarse de manera eficiente con el sistema, proporcionando una solución confiable en lugar de las APIs de _Empathy_ que presentan interrupciones. La API de PayPal debe cumplir con los requisitos de seguridad y privacidad en el manejo de transacciones financieras.
+* **Restricciones clave**: La _API de Gemini_ debe integrarse de manera eficiente con el sistema, proporcionando una solución confiable en lugar de las APIs de _Empathy_ que presentan interrupciones. La _API de PayPal_ debe cumplir con los requisitos de seguridad y privacidad en el manejo de transacciones financieras.
 
 ==== Contenedores
 * **Motivación**: _**Docker**_ fue elegido para la creación de contenedores por su capacidad para simplificar el proceso de despliegue y asegurar la consistencia entre entornos de desarrollo, pruebas y producción. El uso de _Docker_ facilita la escalabilidad del sistema, permitiendo agregar más instancias de servicios según sea necesario y mejorar la disponibilidad del sistema.
@@ -55,7 +55,7 @@ ifndef::imagesdir[:imagesdir: ../images]
 * **Restricciones clave**: El sistema debe soportar un alto volumen de tráfico sin afectar la experiencia del usuario ni comprometer la estabilidad.
 
 ==== Nombre de Dominio
-* **Motivación**: Se adquirió un nombre de dominio personalizado (_wichat-es4a.es_) para mejorar la accesibilidad y profesionalismo del sistema, facilitando a los usuarios el acceso a la aplicación mediante una URL clara y memorable.
+* **Motivación**: Se adquirió un nombre de dominio personalizado (_**wichat-es4a.es**_) para mejorar la accesibilidad y profesionalismo del sistema, facilitando a los usuarios el acceso a la aplicación mediante una URL clara y memorable.
 * **Objetivos de calidad**: _Usabilidad_, _Disponibilidad_, _Seguridad_
 * **Restricciones clave**: El dominio debe estar correctamente configurado en los registros DNS y asociado a la infraestructura desplegada en _AWS_.
 
