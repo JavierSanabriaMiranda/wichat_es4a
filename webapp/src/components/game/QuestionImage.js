@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 /**
- * This component displays an image that can be clicked to zoom in.
+ * This component displays an image that can be clicked or activated via keyboard to zoom in.
  * 
  * @param {String} src - The source URL of the image.
  * @param {String} alt - The alternative text for the image.
@@ -9,26 +9,56 @@ import React, { useState } from 'react';
  * @returns Component that displays the image and handles zoom functionality.
  */
 const QuestionImage = ({ src, alt, className }) => {
-    
-    // State to manage the zoomed image visibility
     const [isOpen, setIsOpen] = useState(false);
-    // Check if the image is a PNG to apply specific styles
     const isPng = src.toLowerCase().endsWith('.png');
+
+    const overlayRef = useRef(null);
+
+    const handleOpen = () => setIsOpen(true);
+    const handleClose = () => setIsOpen(false);
+
+    const handleImageKeyPress = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleOpen();
+        }
+    };
+
+    const handleOverlayKeyPress = (e) => {
+        if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+            handleClose();
+        }
+    };
+
+    useEffect(() => {
+        if (isOpen && overlayRef.current) {
+            overlayRef.current.focus();
+        }
+    }, [isOpen]);
 
     return (
         <>
             <img
                 src={src}
                 alt={alt}
-                className={className ? className : ''}
-                onClick={() => setIsOpen(true)}
+                className={className || ''}
+                onClick={handleOpen}
                 onContextMenu={(e) => e.preventDefault()}
+                tabIndex={0}
+                role="button"
+                onKeyDown={handleImageKeyPress}
+                aria-label="Open image zoom view"
             />
 
             {isOpen && (
                 <div
                     className="zoomed-image-div"
-                    onClick={() => setIsOpen(false)}
+                    onClick={handleClose}
+                    onKeyDown={handleOverlayKeyPress}
+                    tabIndex={0}
+                    role="button"
+                    ref={overlayRef}
+                    aria-label="Zoomed image overlay"
                 >
                     <img
                         className={`zoomed-image ${isPng ? 'no-border' : ''}`}
