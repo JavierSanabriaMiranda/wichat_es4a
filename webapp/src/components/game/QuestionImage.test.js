@@ -24,6 +24,24 @@ describe('QuestionImage', () => {
     expect(zoomedImage).toHaveClass('zoomed-image');
   });
 
+  test('displays zoomed image when pressing Enter on image', () => {
+    render(<QuestionImage src={jpgSrc} alt={altText} />);
+    const image = screen.getByAltText(altText);
+    fireEvent.keyDown(image, { key: 'Enter' });
+
+    const zoomedImage = screen.getAllByAltText(altText)[1];
+    expect(zoomedImage).toBeInTheDocument();
+  });
+
+  test('displays zoomed image when pressing Space on image', () => {
+    render(<QuestionImage src={jpgSrc} alt={altText} />);
+    const image = screen.getByAltText(altText);
+    fireEvent.keyDown(image, { key: ' ' });
+
+    const zoomedImage = screen.getAllByAltText(altText)[1];
+    expect(zoomedImage).toBeInTheDocument();
+  });
+
   test('closes zoomed image when clicking on the background', () => {
     render(<QuestionImage src={jpgSrc} alt={altText} />);
     fireEvent.click(screen.getByAltText(altText));
