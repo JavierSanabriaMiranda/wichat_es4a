@@ -13,7 +13,10 @@
 [![CodeScene System Mastery](https://codescene.io/projects/66324/status-badges/system-mastery)](https://codescene.io/projects/66324)
 [![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/66324)
 
-<img align="center" src="https://github.com/Arquisoft/wichat_es4a/blob/fb12a447b31793acba7aa8dd72ca83e6fe88f601/webapp/public/images/logo.png" height="200">
+
+<p align="center">
+  <img src="https://github.com/Arquisoft/wichat_es4a/blob/fb12a447b31793acba7aa8dd72ca83e6fe88f601/webapp/public/images/logo.png" height="200">
+</p>
 
 ## Contributors
 
