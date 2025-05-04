@@ -77,7 +77,7 @@ const LLMChat = ({ name, isChaosMode }) => {
                     <Typewriter
                         words={[answerText]}
                         delaySpeed={100}
-                        typeSpeed={50}
+                        typeSpeed={30}
                         onType={scrollToBottom}
                     />
                 </p>
