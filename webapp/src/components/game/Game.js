@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import AnswerButton from './AnswerButton';
+import QuestionImage from './QuestionImage';
 import Timer from './Timer';
 import LLMChat from './LLMChat';
 import Modal from "react-bootstrap/Modal";
@@ -330,7 +331,7 @@ export const Game = () => {
                     <p className={question.text === "Generando Pregunta..." ? 'question-loading' : ''}>{question.text}</p>
                 </div>
                 <div className='div-question-img'>
-                    {isLoading ? <Spinner animation="border" /> : <img alt="Question" className="question-img" src={question.imageUrl} onContextMenu={(e) => e.preventDefault()} />}
+                    {isLoading ? <Spinner animation="border" /> : <QuestionImage alt="Question" className="question-img" src={question.imageUrl}  />}
                 </div>
                 <section id="question-answers-section">
                     <div id="game-answer-buttons-section">
