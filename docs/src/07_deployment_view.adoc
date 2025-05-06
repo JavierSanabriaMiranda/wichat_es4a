@@ -68,7 +68,7 @@ Para múltiples entornos o despliegues alternativos, copia y adapta esta secció
 ****
 endif::arc42help[]
 
-image::../images/vista-de-despliegue-nivel-1.png[Vista de Despliegue Nivel 1]
+image::../images/07-Diagrama-Despliegue-Nivel-1.png[Vista de Despliegue Nivel 1, width=600]
 
 Motivación::
 * Escalabilidad: AWS permite escalar horizontalmente mediante la creación de múltiples instancias de contenedores según la demanda.
@@ -96,7 +96,7 @@ Please copy the structure from level 1 for each selected element.
 ****
 endif::arc42help[]
 
-image::../images/vista-de-despliegue-nivel-2.png[Vista de Despliegue Nivel 2]
+image::../images/07-Diagrama-Despliegue-Nivel-2.png[Vista de Despliegue Nivel 2]
 
 Microservicios::
 * WebApp: Servicio que sirve la aplicación frontend y se comunica con el GatewayService.

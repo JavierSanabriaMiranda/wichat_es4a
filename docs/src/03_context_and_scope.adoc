@@ -87,7 +87,7 @@ endif::arc42help[]
 
 ==== Diagrama de Despliegue
 
-image::../images/03-Diagrama-Despliegue.png[Diagrama de Despliegue]
+image::../images/03-Diagrama-Despliegue.png[Diagrama de Despliegue, width=600]
 
 
 ==== Explicación de Interfaces Técnicas
