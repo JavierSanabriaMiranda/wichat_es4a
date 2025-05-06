@@ -92,50 +92,18 @@ image::../images/03-Diagrama-Despliegue.png[Diagrama de Despliegue]
 
 ==== Explicación de Interfaces Técnicas
 
-===== WebApp
-Aplicación web hecha con React que aporta al usuario una interfaz con la que interactuar y por medio de la cual hacer las peticiones
-correspondientes al backend
+===== Microservicios WiChat
+Microservicios de la aplicación que implementan la funcionalidad de la misma de forma modular
 
-===== gatewayservice
-API que hace de enlace entre las distintas partes de la aplicación. Funciona como una especie de fachada que sirve para que los
-distintos microservicios no tengan por qué conocerse entre ellos. Para comunicarse solo deben de hacer peticiones al gateway y este
-hará una redirección de la petición al servicio correspondiente.
-
-===== authservice
-Servicio que se comunica con la base de datos de usuarios a fin de comprobar si los datos introducidos de inicio de sesión
-se corresponden con un usuario
-
-===== userservice
-Servicio que se comunica con la base de datos de usuarios a fin de añadir usuarios y modificar los datos relativos a los usuarios.
-
-===== Base de Datos "userdb"
-Base de datos que almacena toda la información de los usuarios como su nombre de usuario, sus datos de logIn, etc
-
-===== gameservice
-Servicio que guarda la información relativa a las partidas de los usuarios en la base de datos "bd". Además, gestiona 
-los datos de configuración de la partida (topics e idioma), almacenandolos en una caché para un rápido acceso. Estos datos posteriormente
-son utilizados por el questionservice para obtener las preguntas usando dicha configuración.
-
-===== Base de Datos "bd"
-Base de datos que almacena la información de las partidas jugadas por los usuarios
-
-===== questionservice
-Servicio que genera las preguntas por medio de plantillas para los diferentes topics e idiomas y utiliza Wikidata para la 
-obtención de las respuestas correctas y falsas.
+===== Base de Datos
+Contenedor con MongoDB que será el que almacene la instancia de MongoDB con las bases de datos de toda la aplicación
 
 ===== API WikiData
 API del servicio web WikiData que aportará a la aplicación las imágenes para el juego, las respuestas a las mismas y las
 pistas que el LLM utilizará para responder a los usuarios
 
-===== llmservice
-Servicio que, por medio de la respuesta correcta a la pregunta actual de la partida, procesará y responderá a las preguntas que tenga 
-el usuario por medio de pistas, sin dar dicha respuesta correcta directamente
-
 ===== API LLM
 Servicio externo que nos permite acceder al modelo de lenguaje y utilizarlo
-
-===== donationservice
-Servicio que gestiona las donaciones a los desarrolladores de la aplicación por medio de su conexión con la API de Paypal
 
 ===== API Paypal
 API de Paypal que permite acceder a sus servicios para usarlos como medio para enviar dinero a los desarrolladores
@@ -145,18 +113,10 @@ API de Paypal que permite acceder a sus servicios para usarlos como medio para e
 [options="header",cols="1,2,2"]
 |===
 | Canal | Entrada | Salida
-| WebApp | Peticiones HTTP del usuario indicando sus acciones | Responde con información a través de la interfaz.
-| gatewayservice | Peticiones REST de los microservicios para realizar acciones en la aplicación | Respuesta con la información/acciones solicitadas obtenida de otros microservicios.
-| authservice | Datos de inicio de sesión de un usuario | Resultado de comprobación de los datos de inicio de sesión
-| userservice | Datos a insertar/modificar en la base de datos | Modificación o inserción completa a la base de datos
-| Base de Datos "userdb" | Instrucciones para consultas o insercioes en base de datos | Resultado de las consultas o confirmación de las inserciones
-| gameservice | Información de inicio de partida o final de partida | Responde con confirmación de las operaciones o con id de caché para rápido acceso a la configuración de la partida
-| Base de Datos "bd" | Instrucciones para consultas o inserciones en base de datos | Resultado de las consultas o confirmación de las inserciones
-| questionservice | Configuración de la partida | Pregunta con las posibles respuestas (correcta e incorrectas)
+| Microservicios | Respuestas o peticiones HTTP | Peticiones HTTP a otros microservicios o servicios externos
+| Base de Datos | Instrucciones para consultas o inserciones en base de datos | Resultado de las consultas o confirmación de operaciones
 | API Wikidata | Solicitud de imagenes o pistas | Imagen nueva, respuesta o pista sobre la imagen ofrecida con anterioridad
-| llmservice | Prompt de solicitud de pistas y respuesta correcta a la pregunta | Pista generada por el modelo evitando decir la respuesta correcta
 | API LLM | Prompt de solicitud de pistas | Respuesta del modelo de lenguaje generada a partir del prompt
-| donationservice | Petición HTTP de acceso al servicio de donación | Redirección al servicio de Paypal
 | API Paypal | Petición HTTP con la configuración | Petición HTTP para confirmación o cancelación de la operación
 |===
 
